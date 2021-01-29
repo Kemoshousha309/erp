@@ -1,0 +1,33 @@
+.row{
+    margin-left:0 !important;
+}
+
+.center{
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.contianer{
+    width: 100vw;
+    display: flex;
+    flex-wrap: nowrap;
+    transition: all .3s;
+    align-items: stretch;
+
+}
+.right{
+    margin: 0;
+    min-height: 100%;
+    flex-grow: 20;
+    display: flex;
+    flex-direction: column;
+    .navContianer{
+        width: 100%;
+    }
+    .screenContainer{
+        min-height: 94vh
+    }
+
+}

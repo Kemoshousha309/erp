@@ -1,0 +1,16 @@
+.AuditTable{
+    font-size: 1.9rem;
+    font-family: inherit;
+    border-color: #bdbebe;
+    width: 100%;
+    thead, tr{
+        vertical-align: middle !important;
+        width: 100%;
+
+    }
+    td{
+        vertical-align: middle !important;
+        width: 12.5% !important;
+    }
+}
+

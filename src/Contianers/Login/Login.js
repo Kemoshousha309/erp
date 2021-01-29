@@ -1,0 +1,150 @@
+import React, { Component } from "react";
+import style from "./Login.module.scss";
+import companyLogo from "../../assests/campanyLogoPlaceholder.png";
+import LanSelect from "../../Components/Navigation/LanSelect/LanSelect"
+import { connect } from "react-redux";
+import Spinner from "../../Components/UI/Spinner/Spinner";
+import { authRequest, langRequestFailure, storeLanguagesTable } from "../../store";
+import {t} from "../../utilities"
+import Aux from "../../hoc/Aux";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { faExclamationCircle} from "@fortawesome/free-solid-svg-icons"
+
+class Login extends Component {
+    state={
+        user_no: "",
+        password: ""
+    }
+    componentDidUpdate(){
+        console.log("Login Updated")
+    }
+    onChanageHandler = (event, identifier) => {
+        const value = event.target.value;
+        this.setState({[identifier]: value})
+    }
+    redirect = () => {
+        if(this.props.isAuthed){
+            this.props.history.push("/")
+        }
+    }
+    onLoginClickHandler = (event) => {
+        event.preventDefault()
+        const authData = {
+            user_id: this.state.user_no,
+            password: this.state.password
+        }
+        this.props.onLoginClick(authData, this.redirect);
+    }
+    
+    render() {
+        
+        const lagSelectStyle={
+            margin: "0",
+            width: "100%"
+        }
+        let errorMessage = null
+        if(this.props.authError){
+            if(parseInt(this.props.lanState) === 1){
+                errorMessage = this.props.authError.ar
+            }else{
+                errorMessage = this.props.authError.en
+            }
+            if(this.props.authError === 503){
+                errorMessage = "There is no network connection, please check out and try agian"
+                if(parseInt(this.props.lanState) === 1){
+                    errorMessage = "لا يوجد اتصال بالشبكه, الرجاء التحقق من الاتصال و المحاوله من جديد"
+                }
+                
+            }
+        }
+        
+        const errorNotify = (
+            <Aux>
+                <FontAwesomeIcon icon={faExclamationCircle} /> 
+                <span>  {errorMessage}</span>
+            </Aux>
+        )
+        let login;
+        if(this.props.langLoading){
+            if(this.props.langTable){
+                login = (
+                    <div className={style.loginFrom}>
+                    <div className={style.side}>
+                        <p >Experts Vision</p>-
+                    </div>
+                    <div className={style.formContent}>
+                        <div >
+                      
+                        <img className={style.companyLogo} src={companyLogo} alt="customer logo" ></img>
+                        </div>
+                        <form onSubmit={this.onLoginClickHandler}>
+                        <p style={{color: "red", fontSize: "1.9rem"}}> {errorMessage ? errorNotify : null}</p>
+                            <div className="form-group">
+                            <label htmlFor="user">{t("user_no",this.props.langTable, this.props.lanState)}</label>
+                                <input 
+                                value={this.state.user_no}
+                                onChange={(event) => this.onChanageHandler(event,"user_no")}
+                                className="form-control" 
+                                id="user" 
+                                placeholder={t("user_no",this.props.langTable, this.props.lanState)}></input>
+                            </div>
+                            <div className="form-group mb-4">
+                                <label htmlFor="password">{t("password",this.props.langTable, this.props.lanState)}</label>
+                                <input 
+                                value={this.state.password}
+                                onChange={(event) => this.onChanageHandler( event,"password")}
+                                type="password" 
+                                className="form-control" 
+                                id="password" 
+                                placeholder={t("password",this.props.langTable, this.props.lanState)}></input>
+                            </div>
+                            <LanSelect style={lagSelectStyle} />
+                            <button type="submit"
+                            style={
+                                parseInt(this.props.lanState) === 1 ?
+                                {left: "2rem"} : {right: "2rem"}
+                            }
+                            className="btn btn-secondary">{t("login",this.props.langTable, this.props.lanState )}</button>
+                        </form>
+                    </div>
+                </div>
+                    )
+            }else{
+                login = <h1>Something went wrong, please check out you network connection and try agian . . .</h1>
+            }
+        }else{
+            login = <div className={style.center}><Spinner color=" #222831" /></div>;
+        }
+        if(this.props.authloading){
+            login = <div className={style.center}><Spinner color=" #222831" /></div>;
+        }
+        
+        return(
+            <div className={style.loginContainer}>
+               {login}
+            </div>
+        )
+    }
+}
+
+const mapStateToProps = state => {
+    return {
+        lanState: state.lang.lan,
+        langTable: state.lang.langTables,
+        langLoading: state.lang.langLoading,
+        authloading: state.auth.authloading,
+        authError: state.auth.autherror,
+        isAuthed: !(state.auth.authData == null)
+    }
+  }
+  
+const mapDispatchToProps = dispatch => {
+    return {
+       storeLanguagesTable: (langTable) => dispatch(storeLanguagesTable(langTable)),
+       onLangRequestFailure: () => dispatch(langRequestFailure()),
+       onLoginClick: (authData, redirect) => dispatch(authRequest(authData, redirect)),
+    }
+  }
+  
+
+export default connect(mapStateToProps,mapDispatchToProps)(Login);

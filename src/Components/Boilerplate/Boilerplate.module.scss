@@ -1,0 +1,75 @@
+.Boilerplate{
+    position: relative;
+    min-height: 94vh;
+    padding-bottom: 2rem;
+    box-sizing: border-box;
+}
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 6rem;
+    padding: 0 1rem;
+    flex-wrap: wrap;
+}
+
+
+
+.container{
+    position: relative;
+    height:   74vh;
+    @media only screen and (max-width: 400px){
+        height:   63vh;
+    }
+    overflow-y: scroll;
+    overflow-x: hidden;
+    
+        
+    /* width */
+    &::-webkit-scrollbar {
+        width: 7px;
+        
+    }
+    
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: #dddddd;
+    }
+    
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: rgb(182, 182, 182);
+        border-radius: 5px;
+    }
+    
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+  
+  
+    box-sizing: border-box;
+    background-color: #dddddd;
+    padding: 1rem;
+    margin: 1rem 1rem 8rem 1rem;
+    border-radius: 10px;
+}
+
+
+.audit{
+    min-height: 9rem;
+    padding: 1rem;
+    position: absolute;
+    width: 100%;
+    bottom: 3.5rem;
+    font-size: 2rem;
+    @media only screen and (max-width: 500px){
+        bottom: 6rem;
+    }
+}
+.newsBar{
+
+    width: 100%;
+    position: absolute;
+    bottom: 0rem;
+}

@@ -1,0 +1,73 @@
+.Nav{
+    width: 100%;
+    min-height: 5rem;
+    display: flex;
+    color:  rgba(255, 255, 255, 0.829);
+    z-index: 0;
+    padding: .8rem 1rem;
+    justify-content: space-between;
+    background-color: #222831;
+    div{
+        align-self: center;
+    }
+    i{
+        align-self: center;
+        font-size: 2rem;
+        cursor: pointer;
+        transition: all .3s;    
+        &:hover{
+            color: #4a8ff0;
+            transform: translate(-1px, -1px);
+            text-shadow: 0 1px 2px #333;
+        }
+        &:active{
+            transform: translate(0px, 0px);
+            text-shadow: 0 2px 2px #333;
+        }
+    }
+    .date{
+        display: inline-block;
+        padding: .1rem .5rem;
+        border-radius: 5px;
+        font-size: 2rem;
+        margin: 0 1rem;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        position: relative;
+        i{
+            font-size: 2rem;
+        }
+    }
+}
+
+.navitems{
+    @media only screen and (min-width: 521px){
+        display: flex;
+      }
+    img, span, select, i{
+        align-self: center;
+        margin: 0 1rem;
+        
+    }
+    display: none;
+    
+    img{
+        border-radius: 50%;
+        width: 4rem;
+        height: 4rem;
+       cursor: pointer;
+    }
+}
+
+.ListIcon{
+    display: none;
+    margin-right: 2rem;
+    @media only screen and (max-width: 520px){
+        display: block;
+      }
+}
+
+.sideBarIcon{
+    @media only screen and (min-width: 1024px){
+        display: none;
+    }
+}

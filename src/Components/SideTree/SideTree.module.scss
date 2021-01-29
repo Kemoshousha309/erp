@@ -1,0 +1,107 @@
+.SideTree{
+    background-color:  #222831;
+    min-height: 94vh;
+    color: white;
+    transition: all .3s;
+    margin: 0; 
+    background: linear-gradient(-45deg,#dddddd, #222831, #30475e, #f05454);
+    animation: gradient 15s ease infinite;
+    background-size: 400% 400%;
+    text-align: center;
+    @media only screen and (max-width: 1024px){
+        display: none;
+    }
+
+    div>span{
+        &:last-child{
+            i{
+                width: fit-content;
+                align-self: center;
+                font-size: 2rem;
+                cursor: pointer;
+                transition: all .3s;    
+                &:hover{
+                    color: #4a8ff0;
+                    transform: translate(-1px, -1px);
+                    text-shadow: 0 1px 2px #333;
+                }
+                &:active{
+                    transform: translate(0px, 0px);
+                    text-shadow: 0 2px 2px #333;
+                }
+            }
+            border: 1px solid #222831;
+        }
+    }
+    span{
+        font-size: 2rem;
+        display: block;
+        padding: 1.1rem .5rem;
+        width: 100%;
+        border-bottom: 1px solid #222831;
+
+    }
+    img{
+        width: 5rem;
+    }
+.toggleIcon{
+    cursor: pointer;
+    }
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.active{
+    width: 30rem;
+    flex-grow: 0; 
+}
+.inActive{
+    flex-grow: .1; 
+}
+
+
+// .mobileViewActive{
+//     @media only screen and (max-width: 750px){
+//         position: fixed;
+//         min-height: 100vh;
+//         width: 30rem;
+//         flex-grow: 0; 
+//     }
+// }
+
+// .mobileViewInActive{
+//     @media only screen and (max-width: 750px){
+//        display: none;
+//     }
+// }
+
+
+// .enStateActive{
+
+// }
+// .enStateInactive{
+//     // opacity: 0;
+//     left: 0;
+//     // transform: translateX(-50rem);
+// }
+
+// // .arStateActive{
+// //     // opacity: 1;
+// //     right: 0;
+// //     // transform: translateX(0rem);
+// // }
+// // .arStateInactive{
+// //     // opacity: 0;
+// //     right: 0;
+// //     // transform: translateX(50rem);
+// // }

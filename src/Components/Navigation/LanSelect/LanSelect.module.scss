@@ -1,0 +1,16 @@
+.LanSelect{
+    padding: .2rem 1rem;
+    font-size: 2rem;
+    border-radius: 5px;
+    margin: 0 1rem;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.825);
+    &:focus{
+        outline: none;
+    }
+    text-align: center;
+    }
+    option{
+        font-size: 2rem;
+        
+}

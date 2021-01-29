@@ -1,0 +1,46 @@
+.Tool{
+    margin: 0rem 1rem;
+    @media only screen and (max-width: 500px){
+        margin: 1rem;
+    }
+    svg{
+        font-size: 3rem;
+    }
+    button{
+        &:focus{
+            outline: none;
+        }
+        &:disabled{
+            cursor: not-allowed;
+            svg, path{
+                cursor: not-allowed;
+            }
+        }
+        border: none;
+        background-color: rgba(255, 255, 255, 0);
+    }
+}
+
+.active{
+     svg{
+        color:  #30475e;
+        font-size: 3rem;
+        cursor: pointer;
+        transition: all .3s;    
+        &:hover{
+            color: #4a8ff0;
+            transform: translate(-2px, -2px);
+            text-shadow: 0 1px 2px #333;
+        }
+        &:active{
+            transform: translate(0px, 0px);
+            text-shadow: 0 2px 2px #333;
+        }
+    }
+}
+
+.inActive{
+    svg{
+        color:  #222831;
+    }
+}
