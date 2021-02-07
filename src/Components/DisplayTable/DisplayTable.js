@@ -1,133 +1,165 @@
 import React, { Component } from "react";
 import { connect } from "react-redux"
 import { t } from "../../utilities";
+import TableHead from "../TableHead/TableHead";
 import style from "./DisplayTable.module.scss"
 class DisplayTable extends Component{
     state={
         table: null,
-        codeSearchValue: "",
-        descSearchValue: "",
-        langSearchValue: ""
-    }
+    }   
 
     componentDidUpdate(){
-        console.log("Navigation displayed tabel")
+        console.log("DisplayedTabel Updated")
     }
+    shouldComponentUpdate(nextProps, nextState){ 
+        if(this.state.identifiers){
+            const [SV_arr, ident_arr] = this.setArrs();
+            let valid = true;
+            for(let i in ident_arr){
+           valid = nextState[SV_arr[i]] !== this.state[SV_arr[i]] || valid
+        }
+            return (nextProps.show !== this.props.show || valid)
+        }else{
+            return (nextProps.show !== this.props.show)
+        }
+    }
+    
+    setArrs = () => {
+        let SV_arr = []
+        let ident_arr = []
+            this.state.identifiers.forEach(ele => {
+                const SV = `${ele.name}S_V`;
+                const id = ele.name;
+                SV_arr.push(SV)
+                ident_arr.push(id)
+            })
+
+        return [SV_arr, ident_arr]
+    }
+
     searchHandler = (event, identifier) => {
         let value = null;
-        switch (identifier) {
-            case "label_code":
-                this.setState({codeSearchValue: event.target.value.toLowerCase()})
-                value = {type: "label_code", value: event.target.value.toLowerCase()}
-                break;
-            case "label_desc":
-                this.setState({descSearchValue: event.target.value.toLowerCase()})
-                value = {type: "label_desc", value: event.target.value.toLowerCase()}
-                break;
-            case "lang_no":
-                this.setState({langSearchValue: event.target.value})
-                value = {type: "lang_no", value: event.target.value}
-                break;
-            default:
-                break;
+        const [SV_arr, ident_arr] = this.setArrs();
+        for(let i in ident_arr){
+            if(identifier === ident_arr[i]){
+                this.setState({[SV_arr[i]]: event.target.value.toLowerCase()})
+                value = {type: ident_arr[i], value: event.target.value.toLowerCase()}
+            }
         }
         const result = this.state.completeTable.filter(ele => {
-            switch (value.type) {
-                case "label_code":
-                    return(
-                        ele.label_code.toLowerCase().includes(value.value) &&
-                        ele.label_desc.toLowerCase().includes(this.state.descSearchValue) &&
-                        ele.lang_no.toString().includes(this.state.langSearchValue)
-                    )
-                case "label_desc":
-                    return(
-                        ele.label_code.toLowerCase().includes(this.state.codeSearchValue) &&
-                        ele.label_desc.toLowerCase().includes(value.value) &&
-                        ele.lang_no.toString().includes(this.state.langSearchValue)
-                    )
-                case "lang_no":
-                    return(
-                        ele.label_code.toLowerCase().includes(this.state.codeSearchValue) &&
-                        ele.label_desc.toLowerCase().includes(this.state.descSearchValue) &&
-                        ele.lang_no.toString().includes(value.value)
-                    )
-                default:
-                    break;
+            let filterValue = true;
+            for(let i in ident_arr){
+                if(value.type === ident_arr[i]){
+                    if(typeof(ele[ident_arr[i]]) === "number"){
+                        filterValue = (ele[ident_arr[i]]).toString().includes(value.value) && filterValue
+                    }else{
+                        filterValue = (ele[ident_arr[i]]).toLowerCase().includes(value.value) && filterValue
+                    }
+                    const rest_id_arr = [...ident_arr];
+                    const rest_SV_arr = [...SV_arr];
+                    rest_id_arr.splice(i,1)
+                    rest_SV_arr.splice(i,1)
+                    console.log(rest_SV_arr, rest_id_arr)
+
+                    for(let n in rest_id_arr){
+                        console.log(ele[rest_id_arr[n]])
+                        if(typeof(ele[rest_id_arr[n]]) === "number"){
+                            filterValue =  (ele[rest_id_arr[n]]).toString().includes(this.state[rest_SV_arr[n]]) && filterValue
+                        }else{
+                            filterValue =  (ele[rest_id_arr[n]]).toLowerCase().includes(this.state[rest_SV_arr[n]]) && filterValue
+                        }
+                    }
+                    
+                }
             }
+
+            return filterValue;
+
         })
         this.setState({table: result})
     }
+
     static getDerivedStateFromProps(props, state){
+        
+        let identifiers = null;
+        switch (props.tableType) {
+            case "label":
+                identifiers = [{name:"label_code", code: "label_code"}, {name:"label_desc", code: "label_desc"},
+                 {name:"lang_no", code: "lang_no"}]
+                break;
+            case "language":
+                identifiers = [{name: "lang_name", code: "name"}, {name: "lang_no", code: "lang_no"}]
+                break;
+            default:
+                identifiers = null;
+                break;
+        } 
         if(state.table){
             return null
         }else{
-            return{
-                table: props.content,
-                completeTable: props.content
-            }
+            if(identifiers){
+                const identSV={}
+                identifiers.forEach(ele =>{
+                    identSV[`${ele.name}S_V`] = ""
+                })
+                return{
+                    table: props.content,
+                    completeTable: props.content,
+                    identifiers: identifiers,
+                    ...identSV
+                }
+            }else{
+                return{
+                    table: props.content,
+                    completeTable: props.content,
+                }
+            }   
         }   
     }
     render(){
-        let headerLabels = null;
-        switch (this.props.tableType) {
-            case "label":
-                headerLabels = [
-                    t("label_code", this.props.lanTable, this.props.lanState),
-                    t("label_desc", this.props.lanTable, this.props.lanState),
-                    t("lang_no", this.props.lanTable, this.props.lanState)
-                ]
-                break;
-        
-            default:
-                headerLabels = null;
-                break;
-        }
-
-        const headers = headerLabels.map(head =>{
-                return (
-                    <th key={head}>{head}</th>
-                )
-            })
-
         let tableContent = null
         if(this.props.content){
             tableContent = this.state.table.map((ele, index) => {
                 return(
-                    <tr onClick={(event) => this.props.rowClick(event, index)} key={ele.label_code + ele.lang_no}>
-                        <td>{ele.label_code}</td>
-                        <td>{ele.label_desc}</td>
-                        <td>{ele.lang_no}</td>
+                    <tr onClick={(event) => this.props.rowClick(event, ele, this.props.rowIdentifier)} key={index}>
+                        {this.state.identifiers.map((identifier , i)=> {
+                          return  <td key={i}>{ele[identifier.name]}</td>
+                        })}
                     </tr>
                 )
             })
         }
+
+        let header = null;
+        let saerchHader = null
+        if(this.props.search){
+            saerchHader = (
+                <TableHead 
+                headers={this.state.identifiers}
+                onSearch={this.searchHandler} />
+            )
+        }else{
+            header = this.state.identifiers.map(ele =>{
+                const head = t(ele.code , this.props.lanTable, this.props.lanState);
+                            return (
+                            <th key={head}>{head}</th>
+                        )
+                })
+        }
+
         const content = (
             <div className={style.tableContainer}>
-                <div className="text-end">
+                <div style={{textAlign: "end"}}>
                     <span onClick={this.props.closeModal}>&times;</span> 
                 </div>                
-                    <table  className="table table-dark head">
-                        <thead>
-                                <tr>
-                                    {headers}
-                                </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input onChange={(event) => this.searchHandler(event, "label_code")} className="form-control"></input>
-                                </td>
-                                <td>
-                                    <input onChange={(event) => this.searchHandler(event, "label_desc")} className="form-control"></input>
-                                </td>
-                                <td>
-                                    <input onChange={(event) => this.searchHandler(event, "lang_no")}  className="form-control"></input>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                {saerchHader}
                 <div className={style.body}>
                     <table className="table table-hover table-dark table-bordered">
+                        <thead>
+                            <tr>
+                                 {header}
+                            </tr>
+                        </thead>
                         <tbody >
                             {tableContent}
                         </tbody>
@@ -137,6 +169,7 @@ class DisplayTable extends Component{
         )
         return this.props.error ? this.props.error : content;
         }
+
 }
 
 
@@ -154,3 +187,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DisplayTable);
+

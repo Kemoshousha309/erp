@@ -1,6 +1,6 @@
 .SideTree{
     background-color:  #222831;
-    min-height: 94vh;
+    height: 100vh;
     color: white;
     transition: all .3s;
     margin: 0; 
@@ -11,8 +11,22 @@
     @media only screen and (max-width: 1024px){
         display: none;
     }
-
+    a{
+        color: white !important;
+        text-decoration: none;
+        &:hover{
+            text-decoration: none;
+            color: #4a8ff0 !important;
+            transform: translate(-1px, -1px);
+            text-shadow: 0 1px 2px #333;
+        }
+        &:active{
+            transform: translate(0px, 0px);
+            text-shadow: 0 2px 2px #333;
+        }
+    }
     div>span{
+        
         &:last-child{
             i{
                 width: fit-content;

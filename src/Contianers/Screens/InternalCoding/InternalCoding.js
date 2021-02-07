@@ -3,6 +3,7 @@ import Aux from "../../../hoc/Aux";
 import { getParam } from "../../../utilities";
 import Labels from "./Taps/label";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
+import MenuItem from '@material-ui/core/MenuItem';
 
 class InternalCoding extends Component {
     state={
@@ -33,7 +34,7 @@ class InternalCoding extends Component {
     render(){
         const dropDown = (
             <SelectDrop current={this.state.currentTap} changed={this.onChangeHandler}>
-                {this.state.tapOptions.map(ele => <option key={ele} value={ele} >{ele}</option>)}
+                {this.state.tapOptions.map(ele => <MenuItem key={ele} value={ele} >{ele}</MenuItem>)}
             </SelectDrop>
         )
         let currentTap = null;

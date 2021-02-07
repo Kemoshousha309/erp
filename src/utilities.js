@@ -30,14 +30,29 @@ import {
     faWpforms
 } from "@fortawesome/free-brands-svg-icons"
 
-export const t = (label_code, langTables, lang_no) => {
+export const t = (label_code, langTables, lang_no, placeholder) => {
     let description;
     langTables.forEach(element => {
         if(element.label_code  === label_code  && parseInt(element.lang_no)  === parseInt(lang_no)){
             description = element.label_desc
         }
     });
-    return description;
+    if(placeholder){
+        langTables.forEach(element => {
+            if(element.message_code  === label_code  && parseInt(element.lang_no)  === parseInt(lang_no)){
+                description = element.message_desc
+            }
+        });
+        let holder;
+        langTables.forEach(element => {
+            if(element.label_code  === placeholder  && parseInt(element.lang_no)  === parseInt(lang_no)){
+                holder = element.label_desc
+            }
+        });
+
+        description = description.replace(/#[1-9]/g, holder)
+    }
+    return description; 
 }
 
 export const storeLocally = (itemName,value) => {
@@ -86,7 +101,7 @@ export const doubleItems = (array) =>{
 
 
 
-export const displayPattren = (fields, changeHandler) => {
+export const displayPattren = (fields, changeHandler, iconClick) => {
     let fieldsArr = [];
         for(let key in fields){
             let fieldobj = {
@@ -114,6 +129,11 @@ export const displayPattren = (fields, changeHandler) => {
                         config={item1.config}
                         options={item1.options}
                         changed={(event) => changeHandler(event, item1.config.id)}
+                        readOnly={item1.readOnly}
+                        validitiy={item1.valid}
+                        touched={item1.touched}
+                        button={item1.button}
+                        iconClick={event => iconClick(event, item1.config.id)}
                     />
                 </div>
                 <div className="col-md-6">
@@ -125,6 +145,11 @@ export const displayPattren = (fields, changeHandler) => {
                         config={item2.config}
                         options={item2.options}
                         changed={(event) => changeHandler(event, item2.config.id)}
+                        readOnly={item2.readOnly}
+                        validitiy={item2.valid}
+                        touched={item2.touched}
+                        button={item2.button}
+                        iconClick={event => iconClick(event, item2.config.id)}
                     />
                 </div>
             </Aux>
@@ -141,6 +166,11 @@ export const displayPattren = (fields, changeHandler) => {
                             config={item1.config}
                             options={item1.options}
                             changed={(event) => changeHandler(event, item1.config.id)}
+                            readOnly={item1.readOnly}
+                            validitiy={item1.valid}
+                            touched={item1.touched}
+                            button={item1.button}
+                            iconClick={event => iconClick(event, item1.config.id)}
 
                         />
                     </div>
@@ -573,8 +603,72 @@ export const getParam = (searchParam) => {
 
 export const fillRow = (fields, row) => { 
     const fieldsClone = {...fields};
-    for(let i in fieldsClone){
-        fieldsClone[i].value = row[i]
+    if(row === ""){
+        for(let i in fieldsClone){
+            fieldsClone[i].value = ""
+        }
+    }else{
+        for(let i in fieldsClone){
+            fieldsClone[i].value = row[i]
+        }
     }
     return fieldsClone;
+}
+
+export const openFields = (fields, mode, except) =>{
+    const fieldsClone = {...fields};
+    if(mode){
+        for(let i in fieldsClone){
+            fieldsClone[i].readOnly = false
+        }
+        if(except){
+            fieldsClone[except].readOnly = true
+        } 
+    }else{
+        for(let i in fieldsClone){
+            fieldsClone[i].readOnly = true
+        }
+    }   
+
+    return fieldsClone;
+}
+
+export const closeRow = (fields) =>{
+    const fieldsClone = {...fields};
+    for(let i in fieldsClone){
+        fieldsClone[i].value = ""
+        fieldsClone[i].readOnly = true
+    }
+    return fieldsClone;
+}
+
+
+export const validityCheck = (value, rule) => {
+    let isValid = true
+    if(rule.requiered){
+        isValid = value.trim() !== "" && isValid; 
+    }
+    if(rule.length){
+        isValid = parseInt( value.length) <=  parseInt(rule.length) && isValid;
+    }
+    return isValid
+}
+
+export const decideLanguageName = (languages, input)=> {
+    let name = "" 
+    languages.forEach(lan => {
+        if(parseInt(input) === parseInt(lan.lang_no)){
+            name = lan.lang_name
+        }
+    })
+    return name
+}
+
+export const resetValidation = (fields) => {
+    const fieldsClone = {...fields};
+     for(let i in fieldsClone){
+        fieldsClone[i].valid = false
+        fieldsClone[i].touched = false
+    }
+    return fieldsClone
 }

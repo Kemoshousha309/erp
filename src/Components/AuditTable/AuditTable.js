@@ -7,7 +7,6 @@ import { t } from "../../utilities";
 
 
 const AuditTable = props => {
-    console.log(props.content)
     const selectlang = (f_name, d_name, langNum) =>{
         let output= null;
         if(parseInt(langNum) === 1) {
@@ -27,7 +26,6 @@ const AuditTable = props => {
         const sec = recordDate.getSeconds();
         return `${year}/${month}/${day} -- ${hour} : ${min} : ${sec}`
     }
-    console.log(props.content.add_date)
     return(
         <div className="table-responsive-md">
             <table className={["table table-bordered", style.AuditTable].join(' ')}>

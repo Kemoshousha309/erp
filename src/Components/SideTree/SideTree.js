@@ -3,20 +3,29 @@ import style from "./SideTree.module.scss";
 import { connect } from 'react-redux';
 import logo from "../../assests/logo.png"
 import Tree from "./Tree/Tree";
+import { NavLink } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import {t} from "../../utilities"
 
 const SideTree = props => {
 
     const classes = [style.SideTree,
         props.sideNavActivity ? style.active : style.inActive,
     ].join(" ");
-     
+ 
+      const output = t("dash_board", props.lanTable, props.lanState)
     return(
         <div className={classes}>
             <div >
-                <span>
-                    <img src={logo} alt="logo" ></img>
-                    {props.sideNavActivity ? " Experts Vision" : null }
-                </span> 
+                        <NavLink to='/' >
+                            <span>
+                            <Tooltip enterDelay={800} title={props.sideNavActivity ? "" : output} arrow placement="right">
+                                <img src={logo} alt="logo" ></img>
+                            </Tooltip>
+                                {props.sideNavActivity ? "Experts Vision" : null }
+                            </span> 
+                        </NavLink>
                     <Tree {...props} /> 
                 <span>
                     <i onClick={props.sideNavClick} className={style.toggleIcon}>{props.sideNavActivity ? "<" : ">"}</i>
@@ -27,7 +36,8 @@ const SideTree = props => {
 }
 const mapStateToProps = state => {
     return {
-        lanState: state.lan
+        lanState: state.lang.lan,
+        lanTable: state.lang.langTables
     }
 }
 

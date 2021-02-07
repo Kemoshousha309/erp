@@ -67,9 +67,10 @@
         bottom: 6rem;
     }
 }
-.newsBar{
-
+.Bar{
+    transform: translateX(-50%);
     width: 100%;
     position: absolute;
-    bottom: 0rem;
+    bottom: 1rem;
+    left: 50%;
 }

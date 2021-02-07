@@ -5,7 +5,20 @@ import { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Login from "./Contianers/Login/Login";
 import { checkLabelesLocalStorage} from "./store";
-import {Redirect} from "react-router"
+import {Redirect} from "react-router";
+import { createMuiTheme, ThemeProvider, jssPreset, StylesProvider } from '@material-ui/core/styles';
+import { create } from 'jss';
+import rtl from 'jss-rtl';
+
+// Configure JSS
+const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+
+const theme = createMuiTheme({
+  typography: {
+    fontSize:  28,
+  },
+});
+  
 
 class App extends Component  {
   componentDidMount = () => {
@@ -29,7 +42,11 @@ class App extends Component  {
     )
     return (  
       <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <StylesProvider jss={jss}>
         {app}
+        </StylesProvider>
+        </ThemeProvider>
       </BrowserRouter>
     );
   }

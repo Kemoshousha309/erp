@@ -4,6 +4,8 @@ import style from "./ParentNonde.module.scss"
 import {getRelatedIcon, iconMap, treehandler, getRelatedRoute, routeMap} from "../../../../utilities"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 
 
@@ -39,6 +41,7 @@ const ParentNode = props => {
             }
         })
     }
+
     let iconClick = props.sideNavActivity ? null : props.sideNavClick;
     const output = parseInt(props.lang) === 1 ?  props.config.form_d_name : props.config.form_f_name;
     let itemContent = null;
@@ -46,14 +49,18 @@ const ParentNode = props => {
     if(props.route){
         itemContent=(
             <NavLink to={`${rootUrl}/${props.route}`} >
-                <i><FontAwesomeIcon onClick={iconClick} icon={props.icon} /> </i>
+                    <Tooltip enterDelay={800} title={props.sideNavActivity ? "" : output} arrow placement="right">
+                    <i><FontAwesomeIcon onClick={iconClick} icon={props.icon} /> </i>
+                    </Tooltip>
                 {props.sideNavActivity ? output : null}
             </NavLink>
         )
     }else{
         itemContent=(
             <Aux>
-                <i><FontAwesomeIcon onClick={iconClick} icon={props.icon} /> </i>
+                    <Tooltip enterDelay={800} title={props.sideNavActivity ? "" : output} arrow placement="right">
+                        <i><FontAwesomeIcon onClick={iconClick} icon={props.icon} /> </i>
+                    </Tooltip>
                 {props.sideNavActivity ? output : null}
             </Aux>
         )

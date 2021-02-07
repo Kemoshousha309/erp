@@ -44,6 +44,17 @@ const storeTree = (state, action) => {
     )
 }   
 
+const logout = (state, action) => {
+    localStorage.removeItem("authData");
+    localStorage.removeItem("authData_storeTime")
+    return (
+        updateState(state, {
+            authData: null,
+            tree: null
+        })
+    )
+}
+
 
 export const authReducer = (state=initState, action) => {
     switch(action.type){
@@ -51,6 +62,7 @@ export const authReducer = (state=initState, action) => {
         case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
         case actionTypes.AUTH_FAIL: return authFail(state, action);
         case actionTypes.STORE_TREE: return storeTree(state, action);
+        case actionTypes.LOGOUT: return logout(state, action);
         default:
             return state
     }

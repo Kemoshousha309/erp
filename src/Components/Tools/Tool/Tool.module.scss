@@ -7,6 +7,10 @@
         font-size: 3rem;
     }
     button{
+        font-size: 3rem;
+        &:hover{
+            font-size: 3rem;
+        }
         &:focus{
             outline: none;
         }

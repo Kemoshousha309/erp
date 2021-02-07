@@ -12,6 +12,8 @@ const authSuccessStart = () => ({type: actionTypes.AUTH_START});
 
 const authFail = (err) => ({type: actionTypes.AUTH_FAIL, error: err});
 
+export const logout = () => ({type: actionTypes.LOGOUT})
+
 
 
 export const authRequest = (authData, redirect) => {
@@ -42,8 +44,7 @@ const checkAuth = (dispatch) =>{
     const authData = JSON.parse(localStorage.getItem("authData"));
     if(authData){
         if(isExpire("authData", 3600 * 1000 * 24)){
-            localStorage.removeItem("authData");
-            localStorage.removeItem("authData_storeTime")
+            dispatch(logout())
         }else{
             dispatch(authSuccess(authData))
         }

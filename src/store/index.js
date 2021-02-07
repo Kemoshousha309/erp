@@ -16,7 +16,8 @@ export {
  export {
     authRequest,
     treeRequest,
-    checkAuthLocalStorage
+    checkAuthLocalStorage,
+    logout
  } from "./actions/auth"
 
 
