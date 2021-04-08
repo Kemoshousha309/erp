@@ -145,14 +145,6 @@ const mapStateToProps = state => {
 
 
 
-// legacy function
-const calcIndex = (page_index, page_no) => {
-    const prevPages = page_no-1
-    const prevIndeces = (prevPages) * 30
-    const index = prevIndeces + page_index
-    return index
-}
-
 const isEmpty = (obj) => {
     let empty = true
     for(const k in obj){
