@@ -5,7 +5,8 @@ import * as actionTypes from "../actions/actionTypes";
 const initState = {
     lan: 2,
     langTables: [],
-    langLoading: false
+    langLoading: false,
+    langInfo: null
 }
 
 
@@ -52,6 +53,16 @@ const storeMessageTable = (state, action) => {
     )
 }
 
+const setlangInfo = (state, action) => {
+    return(
+        updateState(state, {
+            ...state,
+            langInfo: action.info
+        })
+    )
+}
+
+
 
 
 export const languageReducer = (state = initState, action) => {
@@ -60,6 +71,7 @@ export const languageReducer = (state = initState, action) => {
         case actionTypes.GET_LANG_TABLE: return getLangTable(state, action)
         case actionTypes.LANG_REQUEST_FAILURE: return langRequestFail(state, action);
         case actionTypes.STORE_MESSAGES: return storeMessageTable(state, action);
+        case actionTypes.LANG_INFO: return setlangInfo(state, action);
         default:
             return state
     }

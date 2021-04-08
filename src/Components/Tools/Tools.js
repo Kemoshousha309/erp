@@ -10,12 +10,12 @@ const Tools = props => {
             return <Tool clicked={props.clicked} key={tool.name} state={tool.state} type={tool.name} />
         })
     }
-    let transform  ={transform: "translateX(8rem)"}
-    if(parseInt(props.lanState) === 2){
-        transform.transform = "translateX(-8rem)"
-    }
+    // let transform  ={transform: "translateX(3rem)"}
+    // if(parseInt(props.lanState) === 2){
+    //     transform.transform = "translateX(-3rem)"
+    // }
     return(
-        <ul style={transform} className={[style.Tools].join(" ")}>
+        <ul  className={[style.Tools].join(" ")}>
            {tools}
         </ul>
        

@@ -7,6 +7,7 @@ export const changeLnaguage = (langValue) => ({type: actionTypes.CHANGE_LANGUAGE
 export const storeLanguagesTable = (langTable) => ({type: actionTypes.GET_LANG_TABLE, langTable: langTable })
 export const storeMessages = (messages) => ({type: actionTypes.STORE_MESSAGES, messages: messages })
 export const langRequestFailure = () => ({type: actionTypes.LANG_REQUEST_FAILURE})
+const langInfo = (data) => ({type: actionTypes.LANG_INFO, info: data})
 
 export const langRequest = () => {
     return dispatch => {
@@ -70,10 +71,18 @@ const checkLang = (dispatch) =>{
     }
 }
 
+const getLanguages = (dispatch) =>{
+    axios.get("public/language")
+    .then(res => {
+        dispatch(langInfo(res.data))
+    })
+    .catch(err => console.log(err))
+}
 
 
 export const checkLabelesLocalStorage = () => {
     return dispatch => {
+        getLanguages(dispatch)
         checkLabels(dispatch);
         checkLang(dispatch);
         checkMessages(dispatch)

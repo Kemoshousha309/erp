@@ -29,11 +29,14 @@ const Boilerplate = props => {
         
     }
     
-
+    let transform  = style.headerLtr
+    if(parseInt(props.lanState) === 2){
+        transform = style.haederRtl
+    }
     return(
         <Aux>
             <div className={style.Boilerplate}>
-            <div className={style.header}>
+            <div className={[style.header, transform].join(" ")}>
                 {props.dropDown}
                 <Tools clicked={props.toolsClicked} tools={props.tools} />
             </div>

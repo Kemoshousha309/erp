@@ -29,3 +29,12 @@ export const selectMessage = (messages, lang_no) => {
         return messages.en
     }
 }
+export const decideLanguageName = (languages, input)=> {
+    let name = "" 
+    languages.forEach(lan => {
+        if(parseInt(input) === parseInt(lan.lang_no)){
+            name = lan.lang_name
+        }
+    })
+    return name
+}

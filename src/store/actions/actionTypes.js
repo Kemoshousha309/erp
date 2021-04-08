@@ -2,7 +2,7 @@ export const CHANGE_LANGUAGE = "CHANGE_LANGUAGE";
 export const GET_LANG_TABLE = "GET_LANG_TABLE";
 export const LANG_REQUEST_FAILURE = "LANG_REQUEST_FAILURE";
 export const STORE_MESSAGES = "STORE_MESSAGES"
-
+export const LANG_INFO = "LANG_INFO"
 
 export const LOGOUT = "LOGOUT"
 export const AUTH_SUCCESS = "AUTH_SUCCESS";

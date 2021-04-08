@@ -24,8 +24,9 @@
     display: flex;
     justify-content: center;
     align-content: center;
-    height: 2rem;
+    height: 2.5rem;
     width: 2rem;
+    top: 4rem;
     position: absolute;
     cursor: pointer;
     &:hover{
@@ -33,10 +34,10 @@
     }
 }
 .rtl{
-    left: 2rem;
+    left: 3.5rem;
 }
 .ltr{
-    right: 2rem;
+    right: 3.5rem;
 }
 .disabledIcon {
     opacity: .5 !important;

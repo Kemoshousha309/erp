@@ -13,7 +13,8 @@ import StatusBar from '../../../../Components/StatusBar/StatusBar';
 import Spinner from '../../../../Components/UI/Spinner/Spinner';
 import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
 import AlertDialog from '../../../../Components/AlertDialog/AlertDialog';
-
+import { decideLanguageName } from '../../../../utilities/lang';
+import {t} from "../../../../utilities/lang"
 
 
 class Label extends Component{
@@ -30,7 +31,8 @@ class Label extends Component{
         },
         mainFields: ["label_code", "label_desc", "lang_no"],
         tapName: "labels",
-        alertOpen: false
+        alertOpen: false,
+        auditTable: null
     }
 
     // Tools Handle ****************************************************************
@@ -58,18 +60,9 @@ class Label extends Component{
             default:
                  // undo to start mode
                 fields(this.state.fields, "close")
-                this.setState({mode: "start"})
+                this.setState({mode: "start", auditTable: null})
                 break;
         }
-        // if(this.state.mode === "modify" || this.state.mode === "copy"){
-        //     // undo one step back
-        //     fields(this.state.fields, "close", false)
-        //     this.setState({mode: "d_record"})
-        // }else{
-        //     // undo to start mode
-        //     fields(this.state.fields, "close")
-        //     this.setState({mode: "start"})
-        // }
     }
     save = () => {
         const [fieldsUpdate, valid] = setValidity(this.state.fields)
@@ -81,7 +74,7 @@ class Label extends Component{
     }
     copy = () => {
         fields(this.state.fields, "open", false)
-        this.setState({mode: "copy"})
+        this.setState({mode: "copy", auditTable: null})
     }
     list = () => {
         this.setState({list: {show: true}})
@@ -113,13 +106,19 @@ class Label extends Component{
         const currentState = this.state.list.show
         this.setState({list: {show: !currentState}})
     }
-    recordClick = (record, i) =>{
+    recordClick = (record, i, targetRecord) =>{
         fillRecord(this.state.fields, record)
-        this.setState({list: {show: false}, mode: "d_record", recordIndex: i})
+        this.setState({list: {show: false}, mode: "d_record", recordIndex: i, auditTable: targetRecord})
     }
     inputChangeHandler = (value, identifier) => {
         const fields = {...this.state.fields};
         fields[identifier].value = value;
+        if(identifier === "lang_no"){
+            fields["lang_no_name"].value = decideLanguageName(this.props.languages, value);
+            if(decideLanguageName(this.props.languages, value) === ""){
+                fields["lang_no_name"].value = t("not_exist", this.props.lanTable, this.props.lanState, "language");
+            }
+        }
         this.setState({fields: fields}) 
     }
     handleClose = (res) => {
@@ -160,6 +159,7 @@ class Label extends Component{
                 dropDown={this.props.dropDown}
                 toolsClicked={this.toolsClickedHandler}
                 tools={this.state.tools}
+                auditTable={this.state.auditTable}
                 >
                     {content}
                 </Boilerplate>
@@ -208,7 +208,8 @@ const mapStateToProps = state => {
     return {
         lanState: state.lang.lan,
         lanTable: state.lang.langTables,
-        token: state.auth.authData.token
+        token: state.auth.authData.token,
+        languages: state.lang.langInfo
     }
 }
 

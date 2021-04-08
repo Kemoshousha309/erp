@@ -85,22 +85,9 @@ class RecordDisply extends Component {
             .then(res => {
                 index = res.data.page_no
                 this.setState({loading: false})
-                this.props.recordClick(recordData, index)
+                this.props.recordClick(recordData, index, targetRecord)
             })
             .catch(err => console.log(err))
-        // if(this.state.mode === "d"){
-        //     index = calcIndex(i, this.state.page_no)
-        //     this.props.recordClick(recordData, index+1)
-        // }else{
-        //     this.setState({loading: true})
-        //     const pk = getPk(this.props.TapFields)
-        //     axios.get(`/public/${this.props.tapRequest}/pageNo/${recordData[pk]}/${recordData.lang_no}`)
-        //     .then(res => {
-        //         index = res.data.page_no
-        //         this.props.recordClick(recordData, index)
-        //     })
-        //     .catch(err => console.log(err))
-        // }
         }
     componentDidMount () {
         this.pagesRequest(1)

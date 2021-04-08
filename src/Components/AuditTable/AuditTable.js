@@ -28,27 +28,35 @@ const AuditTable = props => {
         return `${year}/${month}/${day} -- ${hour} : ${min} : ${sec}`
     }
     return(
-        <div className="table-responsive-md">
-            <table className={["table table-bordered", style.AuditTable].join(' ')}>
+        <div className="table-responsive-lg">
+            <table className={["table table-bordered ", style.AuditTable].join(' ')}>
                 <thead>
                     <tr>
                         <td>{t("created_by", props.lanTable, props.lanState)}</td>
-                        <td> <DisplayBlock>
-                            {props.content.add_user}-
-                            {selectlang(props.content.add_user_f_name, props.content.add_user_d_name, props.lanNum)}
-                            </DisplayBlock></td>
+                        <td>
+                            <DisplayBlock>
+                                {props.content.add_user}-
+                                {selectlang(props.content.add_user_f_name, props.content.add_user_d_name, props.lanNum)}
+                            </DisplayBlock>
+                        </td>
                         <td>{t("created_at", props.lanTable, props.lanState)}</td>
-                        <td><DisplayBlock>
-                        {handleDate(props.content.add_date)}
-                            </DisplayBlock></td>
+                        <td>
+                            <DisplayBlock>
+                                {handleDate(props.content.add_date)}
+                            </DisplayBlock>
+                            </td>
                         <td>{t("edited_by", props.lanTable, props.lanState)}</td>
-                        <td><DisplayBlock>
-                        {selectlang(props.content.modify_user_f_name, props.content.modify_user_d_name, props.lanNum)}
-                            </DisplayBlock></td>
+                        <td>
+                            <DisplayBlock>
+                                {selectlang(props.content.modify_user_f_name, props.content.modify_user_d_name, props.lanNum)}
+                            </DisplayBlock>
+                        </td>
                         <td>{t("edited_at", props.lanTable, props.lanState)}</td>
-                        <td><DisplayBlock>
-                        {props.content.modify_date ? props.content.modify_date : "-----"}
-                            </DisplayBlock></td>
+                        <td>
+                            <DisplayBlock>
+                                {props.content.modify_date ? handleDate(props.content.modify_date) : "-----"}
+                            </DisplayBlock>
+                        </td>
                     </tr>
                 </thead>
              </table>

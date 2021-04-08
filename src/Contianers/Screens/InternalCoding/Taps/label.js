@@ -443,7 +443,7 @@ class Label extends Component {
                 statusBar={this.state.statusBar}
                 tools={this.state.tools}
                 toolsClicked={this.toolsclickedHandler}
-                auditTable={this.state.auditTable}
+                auditTable={this.state.auditTableauditTable}
                 dropDown={this.props.dropDown}>
                     {tapContent}
                 </Boilerplate>

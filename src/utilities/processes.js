@@ -97,7 +97,7 @@ export const handleSaveRequest = (thisK) => {
                 mode: "d_record",
                 loading: false, 
                 message: selectMessage(res.data.message, thisK.props.lanState),
-                recordIndex: null
+                recordIndex: null,
             })
             timer(thisK)
         })
@@ -107,7 +107,8 @@ export const handleSaveRequest = (thisK) => {
                 mode: "start",
                 loading: false, 
                 message: selectMessage(err.response.data.message, thisK.props.lanState),
-                recordIndex: null
+                recordIndex: null,
+                auditTable: null
             })
             timer(thisK)
         }) 
@@ -133,7 +134,8 @@ export const handleDelete = (thisK) => {
             mode: "start",
             loading: false, 
             message: selectMessage(res.data.message, thisK.props.lanState),
-            recordIndex: null
+            recordIndex: null,
+            auditTable: null
         })
         timer(thisK)
     })
@@ -143,7 +145,8 @@ export const handleDelete = (thisK) => {
                 mode: "start",
                 loading: false, 
                 message: selectMessage(err.response.data.message, thisK.props.lanState),
-                recordIndex: null
+                recordIndex: null,
+                auditTable: null
             })
             timer(thisK)
     })
@@ -169,7 +172,7 @@ export const  handleSearch = (thisK) => {
         }
     }else{
         fields(thisK.state.fields, "open", true)
-        thisK.setState({mode: "search"})
+        thisK.setState({mode: "search", auditTable: null})
     }
 } 
 
