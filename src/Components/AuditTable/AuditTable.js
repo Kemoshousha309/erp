@@ -2,11 +2,12 @@ import React from "react";
 import DisplayBlock from "../UI/DisplayBlock/DisplayBlock";
 import style from "./AuditTable.module.scss";
 import {connect } from "react-redux"
-import { t } from "../../utilities";
+import { t } from "../../utilities/lang";
 
 
 
 const AuditTable = props => {
+    // console.log("AuditTable render")
     const selectlang = (f_name, d_name, langNum) =>{
         let output= null;
         if(parseInt(langNum) === 1) {
@@ -62,9 +63,5 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(AuditTable);
+export default connect(mapStateToProps, null)(AuditTable);

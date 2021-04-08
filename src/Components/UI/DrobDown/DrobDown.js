@@ -5,6 +5,7 @@ import style from "./DrobDown.module.scss";
 import {connect} from "react-redux"
 
 const DropDown = props => {
+    // console.log("DropDown render")
     let transformStyle = {
         transform: "translateX(-5rem)"
     }

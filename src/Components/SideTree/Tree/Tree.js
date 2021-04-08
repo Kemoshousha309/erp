@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import {connect} from "react-redux"
 import style from "./Tree.module.scss";
-import {getRelatedIcon, iconMap, getRelatedRoute, routeMap } from "../../../utilities";
+import {getRelatedIcon, iconMap, getRelatedRoute, routeMap } from "../../../utilities/tree";
 import ParentNode from "./ParentNode/ParentNonde";
 import { treeRequest } from "../../../store";
 import Spinner from "../../UI/Spinner/Spinner";
@@ -14,7 +14,7 @@ class Tree extends Component {
     }
     
     componentDidUpdate(){
-        console.log("Tree Update")
+        // console.log("Tree Update")
     }
     render() {        
         const padding = this.props.sideNavActivity ? {padding: "2rem"} : {padding: "1rem"};

@@ -18,7 +18,7 @@ class Layout extends Component {
         SideTreeMobView: false
     }
     componentDidUpdate(){
-        console.log("Layout Update")
+        // console.log("Layout Update")
     }
     sideNavHandler = () => {
         const current = this.state.sideNavActivity;

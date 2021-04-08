@@ -1,3 +1,4 @@
+// primary color => #3F51B5
 .Nav{
     width: 100%;
     min-height: 5rem;
@@ -6,15 +7,16 @@
     z-index: 0;
     padding: .8rem 1rem;
     justify-content: space-between;
-    background-color: #222831;
+    border-bottom: 1px solid rgb(206, 206, 206);
+    color: black; 
     div{
         align-self: center;
     }
     i{
         align-self: center;
-        font-size: 2rem;
         cursor: pointer;
-        transition: all .3s;    
+        transition: all .3s;   
+        color: black; 
         &:hover{
             color: #4a8ff0;
             transform: translate(-1px, -1px);
@@ -29,13 +31,10 @@
         display: inline-block;
         padding: .1rem .5rem;
         border-radius: 5px;
-        font-size: 2rem;
         margin: 0 1rem;
         font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
         position: relative;
-        i{
-            font-size: 2rem;
-        }
+        background-color: #DFE1F3;
     }
 }
 

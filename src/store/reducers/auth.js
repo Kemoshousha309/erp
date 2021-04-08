@@ -1,4 +1,4 @@
-import { updateState } from "../../utilities"
+import { updateState } from "../../utilities/reducre"
 import * as actionTypes from "../actions/actionTypes"
 
 const initState = {

@@ -1,25 +1,35 @@
 import React from "react";
 import { connect } from "react-redux";
 import Aux from "../../hoc/Aux";
-import { t } from "../../utilities";
+import { t } from "../../utilities/lang";
 import AuditTable from "../AuditTable/AuditTable";
 import Tools from "../Tools/Tools";
 import Spinner from "../UI/Spinner/Spinner";
-import StatusBar from "../UI/StatusBar/StatusBar";
+import StatusBar from "../StatusBar/StatusBar";
 import style from "./Boilerplate.module.scss";
 
 
 const Boilerplate = props => {
+    // console.log("Boilerplate render")
     const auditTable = (
         <div className={style.audit}>
             <AuditTable content={props.auditTable} lanNum={props.lanState} /> 
         </div>
     )
+    
+    let statusBarContent= null
+    let statusBar = null
+    if(props.statusBar){
+         statusBarContent = props.statusBar.message ?
+        t(props.statusBar.message, props.lanTable, props.lanState, "label") :
+        <Spinner color=" #30475e" small={true} />;  
+        statusBar =  (
+            props.statusBar.show ? <StatusBar show={props.statusBar.show}>{statusBarContent}</StatusBar> : null
+        )
+        
+    }
+    
 
-    const statusBarContent = props.statusBar.message ?
-     t(props.statusBar.message, props.lanTable, props.lanState, "label") :
-      <Spinner color=" #30475e" small />;   
-      
     return(
         <Aux>
             <div className={style.Boilerplate}>
@@ -36,7 +46,7 @@ const Boilerplate = props => {
                 </div>
             </div>
             {props.auditTable ? auditTable : null}  
-           <StatusBar show={props.statusBar.show}>{statusBarContent}</StatusBar>
+            {statusBar}
         </div>
     
         </Aux>

@@ -2,10 +2,11 @@ import React from "react";
 import style from "./LanSelect.module.scss"
 import {connect} from "react-redux"
 import { changeLnaguage } from "../../../store";
-import { t } from "../../../utilities";
+import { t } from "../../../utilities/lang";
 import Aux from "../../../hoc/Aux";
 
 const LanSelect = props => {
+    // console.log("LanSelect render")
     let optionOrder = null;
     let value = null
     if(parseInt(props.lanState) === 1){

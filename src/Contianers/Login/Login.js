@@ -5,10 +5,12 @@ import LanSelect from "../../Components/Navigation/LanSelect/LanSelect"
 import { connect } from "react-redux";
 import Spinner from "../../Components/UI/Spinner/Spinner";
 import { authRequest, langRequestFailure, storeLanguagesTable } from "../../store";
-import {t} from "../../utilities"
+import {t} from "../../utilities/lang"
 import Aux from "../../hoc/Aux";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faExclamationCircle} from "@fortawesome/free-solid-svg-icons"
+import { Button, TextField } from "@material-ui/core";
+
 
 class Login extends Component {
     state={
@@ -16,7 +18,7 @@ class Login extends Component {
         password: ""
     }
     componentDidUpdate(){
-        console.log("Login Updated")
+        // console.log("Login Updated")
     }
     onChanageHandler = (event, identifier) => {
         const value = event.target.value;
@@ -79,32 +81,30 @@ class Login extends Component {
                         </div>
                         <form onSubmit={this.onLoginClickHandler}>
                         <p style={{color: "red", fontSize: "1.9rem"}}> {errorMessage ? errorNotify : null}</p>
-                            <div className="form-group">
-                            <label htmlFor="user">{t("user_no",this.props.langTable, this.props.lanState)}</label>
-                                <input 
-                                value={this.state.user_no}
-                                onChange={(event) => this.onChanageHandler(event,"user_no")}
-                                className="form-control" 
-                                id="user" 
-                                placeholder={t("user_no",this.props.langTable, this.props.lanState)}></input>
+                            <div className="mb-4">
+                                 <TextField 
+                                    value={this.state.user_no}
+                                    onChange={(event) => this.onChanageHandler(event,"user_no")}
+                                    variant="standard" fullWidth 
+                                    label={t("user_no", this.props.langTable, this.props.lanState)} />
                             </div>
-                            <div className="form-group mb-4">
-                                <label htmlFor="password">{t("password",this.props.langTable, this.props.lanState)}</label>
-                                <input 
-                                value={this.state.password}
-                                onChange={(event) => this.onChanageHandler( event,"password")}
-                                type="password" 
-                                className="form-control" 
-                                id="password" 
-                                placeholder={t("password",this.props.langTable, this.props.lanState)}></input>
+                            <div className="mb-5">
+                                 <TextField 
+                                    value={this.state.password}
+                                    onChange={(event) => this.onChanageHandler( event,"password")}
+                                    variant="standard" fullWidth 
+                                    label={t("password", this.props.langTable, this.props.lanState)} />
                             </div>
                             <LanSelect style={lagSelectStyle} />
-                            <button type="submit"
+                            <Button 
+                            type="submit"
+                            variant="contained" 
+                            color="primary"
                             style={
                                 parseInt(this.props.lanState) === 1 ?
                                 {left: "2rem"} : {right: "2rem"}
                             }
-                            className="btn btn-secondary">{t("login",this.props.langTable, this.props.lanState )}</button>
+                            >{t("login",this.props.langTable, this.props.lanState )}</Button>
                         </form>
                     </div>
                 </div>
@@ -113,10 +113,10 @@ class Login extends Component {
                 login = <h1>Something went wrong, please check out you network connection and try agian . . .</h1>
             }
         }else{
-            login = <div className={style.center}><Spinner color=" #222831" /></div>;
+            login = <div className={style.center}><Spinner color=" #3F51B5" /></div>;
         }
         if(this.props.authloading){
-            login = <div className={style.center}><Spinner color=" #222831" /></div>;
+            login = <div className={style.center}><Spinner color=" #3F51B5" /></div>;
         }
         
         return(

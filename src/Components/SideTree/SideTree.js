@@ -5,11 +5,10 @@ import logo from "../../assests/logo.png"
 import Tree from "./Tree/Tree";
 import { NavLink } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import {t} from "../../utilities"
+import {t} from "../../utilities/lang"
 
 const SideTree = props => {
-
+    // console.log("SideTree render")
     const classes = [style.SideTree,
         props.sideNavActivity ? style.active : style.inActive,
     ].join(" ");

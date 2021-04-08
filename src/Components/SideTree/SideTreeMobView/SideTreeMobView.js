@@ -7,6 +7,7 @@ import Tree from "../Tree/Tree";
 
 
 const SideTreeMobView = props => {
+    // console.log("SideTreeMobView render")
     let display;
     display = props.SideTreeMobView ? "block" : "none";
     return(

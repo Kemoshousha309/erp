@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { displayPattren } from "../../../../utilities";
+import { displayPattren } from "../../../../utilities/display";
 import { connect } from "react-redux";
 
 class Users extends Component {

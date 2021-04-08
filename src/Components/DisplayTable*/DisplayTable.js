@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux"
-import { t } from "../../utilities";
-import TableHead from "../TableHead/TableHead";
+import { t } from "../../utilities/lang";
+import TableHead from "./TableHead*/TableHead";
 import style from "./DisplayTable.module.scss"
 class DisplayTable extends Component{
     state={
@@ -9,7 +9,7 @@ class DisplayTable extends Component{
     }   
 
     componentDidUpdate(){
-        console.log("DisplayedTabel Updated")
+        // console.log("DisplayedTabel Updated")
     }
     shouldComponentUpdate(nextProps, nextState){ 
         if(this.state.identifiers){
@@ -180,11 +180,6 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(DisplayTable);
+export default connect(mapStateToProps, null)(DisplayTable);
 

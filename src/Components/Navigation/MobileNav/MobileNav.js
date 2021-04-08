@@ -46,7 +46,7 @@ class MobileNav extends Component {
     }) 
     }
     componentDidUpdate(){
-        console.log("MobileNav Updated // optimized")
+        // console.log("MobileNav Updated // optimized")
     }
     shouldComponentUpdate(nextProps, nextState){
         return nextProps.show !== this.props.show

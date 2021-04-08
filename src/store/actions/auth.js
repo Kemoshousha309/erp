@@ -1,5 +1,6 @@
 import axios from "../../axios";
-import { getTreeStructure, storeLocally, isExpire } from "../../utilities";
+import { storeLocally, isExpire } from "../../utilities/reducre";
+import { getTreeStructure } from "../../utilities/tree";
 import * as actionTypes from "./actionTypes"
 
 const authSuccess = (authData) => {
@@ -8,6 +9,7 @@ const authSuccess = (authData) => {
         authData: authData
     }
 }
+
 const authSuccessStart = () => ({type: actionTypes.AUTH_START});
 
 const authFail = (err) => ({type: actionTypes.AUTH_FAIL, error: err});
@@ -19,7 +21,7 @@ export const logout = () => ({type: actionTypes.LOGOUT})
 export const authRequest = (authData, redirect) => {
     return dispatch => {
         dispatch(authSuccessStart())
-        axios.post("login",authData)
+        axios.post("/public/login",authData)
         .then(res => {
             dispatch(authSuccess(res.data))
             storeLocally("authData", res.data)
@@ -65,7 +67,7 @@ const storeTree = (structuredTree) => ({type: actionTypes.STORE_TREE, tree: stru
 export const treeRequest = () => {
     return (dispatch, getState) => {
         const token = getState().auth.authData.token;
-        axios.get("form/getMainTree", {
+        axios.get("forms/mainTree", {
             headers:{
                 Authorization: `Bearer ${token}`
             }

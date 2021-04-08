@@ -1,8 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
-import {t} from "../../utilities"
+import {t} from "../../../utilities/lang"
 
 const TableHead = props => {
+    // console.log("TableHead render")
     const headers = props.headers.map(ele =>{
         const head = t(ele.code , props.lanTable, props.lanState);
                 return (

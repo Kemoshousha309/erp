@@ -1,4 +1,4 @@
-import { storeLocally, updateState } from "../../utilities";
+import { storeLocally, updateState } from "../../utilities/reducre";
 import * as actionTypes from "../actions/actionTypes";
 
 

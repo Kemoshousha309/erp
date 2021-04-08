@@ -4,6 +4,7 @@ import {connect} from "react-redux"
 import Aux from "../../hoc/Aux";
 
 const UserInfo = props => {
+    // console.log("UserInfo render")
     let userId = (
         <Aux>
             <span>User Id :</span> {props.authData.user_id}

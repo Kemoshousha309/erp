@@ -1,0 +1,42 @@
+.Filter {
+    width: 100rem;
+    @media only screen and (max-width: 850px){
+        width: 90rem;
+    }
+    @media only screen and (max-width: 670px){
+        width: 82rem;
+    }
+    @media only screen and (max-width: 670px){
+        width: 80rem;
+    }
+    @media only screen and (max-width: 520px){
+        width: 100%;
+    }
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+    
+    span{
+        @media only screen and (max-width: 670px){
+            margin: auto 2rem !important;
+        }
+        align-self: flex-end;
+        svg{
+            color:  #3F51B5;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all .3s;    
+            &:hover{
+                color: #4a8ff0;
+                transform: translate(-2px, -2px);
+                text-shadow: 0 1px 2px #333;
+            }
+            &:active{
+                transform: translate(0px, 0px);
+                text-shadow: 0 2px 2px #333;
+            }
+        }
+
+    }
+}
+

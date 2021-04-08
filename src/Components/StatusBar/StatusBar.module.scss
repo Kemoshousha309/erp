@@ -11,7 +11,7 @@
     align-items: center;
     width: fit-content;
     height: fit-content;
-    border: 2px solid  #30475e;
+    border: 2px solid  #3F51B5;
     transition: all .45s;
     .content{
         width: fit-content;
@@ -20,7 +20,7 @@
         color: #000;
     }
     .statusColor{
-        background-color:  #30475e;
+        background-color:  #3F51B5;
         width: 100%;
         height: .5rem;
     }
@@ -28,7 +28,7 @@
 
 .success{
     .content{
-        color: green !important;
+        color: #3F51B5 !important;
     }
 
 }
@@ -43,7 +43,7 @@
 
 .neutral{
      .content{
-        color:  #30475e !important;
+        color:  #3F51B5 !important;
      }
     
  }

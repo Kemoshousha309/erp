@@ -6,10 +6,14 @@ import style from './Modal.module.scss';
 class Modal extends Component {
 
     shouldComponentUpdate(nextProps, nextState){ // to prevent continuos updating which improve preformance
-        return nextProps.show !== this.props.show || nextProps.children !== this.props.children
+        if(this.props.loading){ 
+            return nextProps.show !== this.props.show || nextProps.loading !== this.props.loading
+        }else{
+            return nextProps.show !== this.props.show 
+        }
     }
     componentDidUpdate(){
-        console.log("Modal Updated")
+        // console.log("Modal Updated")
     }
 
     render(){

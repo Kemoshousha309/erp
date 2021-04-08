@@ -2,14 +2,15 @@
     position: fixed;
     z-index: 500;
     border-radius: 5px;
-    background-color: #ececec;
+    background-color: white;
     min-width: 50%;
     max-width: fit-content;
     border: 1px solid #ccc;
-    box-shadow: 1px 1px 1px black;
     left: 50%;
-    top: 35%;
-    box-sizing: border-box;
+    top: 40%;
     transition: all 0.3s ease-out;
+    @media only screen and (max-width: 520px){
+        width: 90%;
+    }
 }
 

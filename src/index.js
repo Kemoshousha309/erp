@@ -23,11 +23,11 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode> this gives us some warning to improve our app you  can use it at the end of devolopment
     <Provider store={store} >
       <App /> 
-    </Provider>
-  </React.StrictMode>,
+    </Provider>,
+  // </React.StrictMode>,
   document.getElementById('root')
 );
 

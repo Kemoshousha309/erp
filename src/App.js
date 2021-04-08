@@ -13,11 +13,8 @@ import rtl from 'jss-rtl';
 // Configure JSS
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
-const theme = createMuiTheme({
-  typography: {
-    fontSize:  28,
-  },
-});
+
+
   
 
 class App extends Component  {
@@ -25,12 +22,23 @@ class App extends Component  {
     this.props.onLoadApp()
 }
   render() {
+     
+    let dir = "ltr";
     let appLangState;
     if(parseInt(this.props.lanState) === 1){
+      dir = "rtl"
       appLangState = style.rtl
-    }else if(parseInt(this.props.lanState) === 2){
+    }else{
       appLangState = style.ltr
     }
+
+    const theme = createMuiTheme({
+      direction: dir,
+      typography: {
+      fontSize:  28,
+    },
+    });
+
     const app = (
       <div  className={appLangState}>
         <Switch>
@@ -55,8 +63,6 @@ class App extends Component  {
 const mapStateToProps = state => {
   return {
       lanState: state.lang.lan,
-      langTable: state.lang.langTables,
-      langLoading: state.lang.langLoading
   }
 }
 

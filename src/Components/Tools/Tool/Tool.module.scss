@@ -3,14 +3,9 @@
     @media only screen and (max-width: 500px){
         margin: 1rem;
     }
-    svg{
-        font-size: 3rem;
-    }
+    
     button{
-        font-size: 3rem;
-        &:hover{
-            font-size: 3rem;
-        }
+        font-size: 2.5rem;
         &:focus{
             outline: none;
         }
@@ -27,8 +22,7 @@
 
 .active{
      svg{
-        color:  #30475e;
-        font-size: 3rem;
+        color:  #3F51B5;
         cursor: pointer;
         transition: all .3s;    
         &:hover{

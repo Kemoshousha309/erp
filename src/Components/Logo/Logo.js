@@ -4,6 +4,7 @@ import logo from "../../assests/logo.png";
 import Aux from "../../hoc/Aux"
 
 const Logo = props => {
+    // console.log("Logo render")
     return(
         <Aux>
             <div className={style.Logo}>

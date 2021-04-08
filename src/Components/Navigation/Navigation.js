@@ -12,7 +12,9 @@ import Avatar from '@material-ui/core/Avatar';
 import { Tooltip } from "@material-ui/core";
 import { logout } from "../../store";
 import {connect} from "react-redux"
-import {t} from "../../utilities"
+import {t} from "../../utilities/lang"
+import { date } from "../../utilities/date";
+
 class Navigation extends Component {
     state = {
         dateShow: false,
@@ -21,7 +23,7 @@ class Navigation extends Component {
         userShow: false
     }
     componentDidUpdate(){
-        console.log("Navigation Updated")
+        // console.log("Navigation Updated")
     }
     shouldComponentUpdate(nextProps, nextState){
         return (
@@ -65,10 +67,7 @@ class Navigation extends Component {
     }) 
     }
     render(){
-        const year = new Date().getFullYear();
-        const month = new Date().getMonth();
-        const day =  new Date().getDate();
-        const date = ` ${year} / ${month + 1} / ${day}`;
+        const [d, y] = date()
         return(
             <Aux>
             <nav className={[style.Nav].join(" ")}>
@@ -82,24 +81,21 @@ class Navigation extends Component {
                 </i>
 
                 <div className={style.navitems}>
-                    <Tooltip enterDelay={800} title="placeholder">
                         <div>
                             <span className={style.date}> 
                                 <i>
                                 <FontAwesomeIcon onClick={this.dateShowHandler} icon={faCalendarAlt} />
                                 </i>      
-                                    {year}
+                                    {y}
                                     
                                     <DropDown
                                     show={this.state.dateShow}
                                     close={this.dateShowHandler} 
                                     position={{top:"100"}}
-                                    >{date}</DropDown> 
+                                    >{d}</DropDown> 
                             </span>
                         </div>
-                    </Tooltip>
 
-                    <Tooltip enterDelay={800} title="placeholder">
                         <div>
                             <i> <FontAwesomeIcon onClick={this.notificationShowHandler} icon={faBell} /></i>
                                 <DropDown 
@@ -108,9 +104,7 @@ class Navigation extends Component {
                                     close={this.notificationShowHandler} 
                                 >Some notifictaion</DropDown>
                         </div>
-                    </Tooltip>
 
-                    <Tooltip enterDelay={800} title="placeholder">
                         <div>
                             <i> <FontAwesomeIcon onClick={this.messageShowHandler} icon={faEnvelope} /></i>
                                 <DropDown 
@@ -119,9 +113,7 @@ class Navigation extends Component {
                                     close={this.messageShowHandler} 
                                 >some messages</DropDown>
                         </div>
-                    </Tooltip>
 
-                    <Tooltip enterDelay={800} title="placeholder">
                         <div>
                         <Avatar onClick={this.userShowHandler} alt="user" src={user}></Avatar>
                             <DropDown 
@@ -132,7 +124,6 @@ class Navigation extends Component {
                                 <UserInfo />
                             </DropDown>
                         </div>
-                    </Tooltip>
 
                     <LanSelect />
 

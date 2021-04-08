@@ -1,0 +1,15 @@
+.pagContainer {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 0 0 ; 
+}
+.loadingArea{
+    height: 2rem;
+    display: flex;
+    align-content: flex-start;
+}
+.closeContainer{
+    margin: 0 3rem 1rem 0;
+    display: flex;
+    justify-content: flex-end;
+}

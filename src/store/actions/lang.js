@@ -1,6 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axios";
-import {storeLocally, isExpire} from '../../utilities'
+import {storeLocally, isExpire} from '../../utilities/reducre'
 
 
 export const changeLnaguage = (langValue) => ({type: actionTypes.CHANGE_LANGUAGE, langValue: langValue}) 
@@ -10,7 +10,7 @@ export const langRequestFailure = () => ({type: actionTypes.LANG_REQUEST_FAILURE
 
 export const langRequest = () => {
     return dispatch => {
-        axios.get("label")
+        axios.get("/public/labels")
         .then(res =>{
             storeLocally("labels", res.data);
             dispatch(storeLanguagesTable(res.data))
@@ -18,7 +18,7 @@ export const langRequest = () => {
         .catch(err => {
             dispatch(langRequestFailure())
         })
-        axios.get("message")
+        axios.get("/public/messages")
         .then(res =>{
             storeLocally("messages", res.data);
             dispatch(storeMessages(res.data))

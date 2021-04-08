@@ -12,7 +12,7 @@ class NewsBar extends Component {
         ],
     }
     componentDidUpdate(){
-        console.log("Navigation newBar")
+        // console.log("Navigation newBar")
     }
     render(){
         return(

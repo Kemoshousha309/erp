@@ -2,6 +2,7 @@ import React from "react";
 import style from "./Spinner.module.scss";
 
 const Spinner = props => {
+    // console.log("Spinner render")
     const small = props.small ? style.small : null
     const classes = [style.loader, small].join(' ')
     return (

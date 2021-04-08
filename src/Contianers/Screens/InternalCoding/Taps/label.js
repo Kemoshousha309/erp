@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Boilerplate from '../../../../Components/Boilerplate/Boilerplate';
 import Aux from '../../../../hoc/Aux';
-import {closeRow, displayPattren, fillRow, openFields, validityCheck, decideLanguageName, resetValidation, t} from "../../../../utilities"
+import {closeRow, fillRow, openFields, validityCheck, decideLanguageName, resetValidation} from "../../../../utilities"
+import { displayPattren } from "../../../../utilities/display";
+import { t } from "../../../../utilities/lang";
 import Modal from "../../../../Components/UI/Modal/Modal"
-import DisplayTable from "../../../../Components/DisplayTable/DisplayTable"
+import DisplayTable from "../../../../Components/DisplayTable*/DisplayTable"
 import Spinner from "../../../../Components/UI/Spinner/Spinner";
 import axios from "../../../../axios";
 import {connect} from "react-redux";
@@ -116,8 +118,11 @@ class Label extends Component {
         saveAbility: false
     }
     componentDidUpdate(){
-        console.log("Label Updated")
+        // console.log("Label Updated")
     }
+    // shouldComponentUpdate(nextProps, nextState){ // to prevent continuos updating which improve preformance
+    //     return  false
+    // }
     display = () => {
         this.setState({popUpDisplayLoading: true, modalShow: true})
         axios.get(this.state.tapType)
@@ -127,7 +132,7 @@ class Label extends Component {
         .catch(err => {
             // handle error
             this.setState({popUpDisplayLoading: false, error: err.message})
-            console.log(err)
+            // console.log(err)
         })
     }
     activeMovesHandler = (tools) =>{
@@ -205,7 +210,7 @@ class Label extends Component {
         this.setState({fields: updatedFields, addMode: !currentAddMode, displayMode: false, auditTable: null})
     }
     search = () => {
-        console.log("search()")
+        // console.log("search()")
     }
     nextLeft = () => {
         let index = this.state.displayedIndex - 1;
@@ -235,7 +240,7 @@ class Label extends Component {
     save = () => {
         const fields = {...this.state.fields};
         for(let i in fields){
-            console.log(fields[i].value)
+            // console.log(fields[i].value)
         }
 
     }
@@ -291,7 +296,7 @@ class Label extends Component {
 
         for(let i in fields){
             if(!(fields[i].value.toString() === "" ) ){
-                console.log("adddo")
+                // console.log("adddo")
                 fields[i].valid = validityCheck(event.target.value, fields[i].validationRules);
                 fields[i].touched = true
             }
@@ -304,7 +309,7 @@ class Label extends Component {
             fields["label_code"].valid = true;
         }
         for(let i in fields){
-            console.log(i, fields[i].valid)
+            // console.log(i, fields[i].valid)
             saveValid = fields[i].valid && saveValid;
         }
 
@@ -323,7 +328,7 @@ class Label extends Component {
         .catch(err => {
             // handle error
             this.setState({ error: err.message, statusBar: {show: true, message: "Error, The content is not saved"}})
-            console.log(err)
+            // console.log(err)
             setTimeout(() => {
                 this.setState({statusBar: {show: false, message: null}});
             }, 5000)
@@ -333,7 +338,7 @@ class Label extends Component {
         const languagesClone = {...this.state.languages};
         languagesClone.show = true;
        this.setState({languages: languagesClone});
-       console.log(this.state.languages.languages)
+    //    console.log(this.state.languages.languages)
     }
 
     iconClick = (event, identifier) => {
@@ -381,7 +386,7 @@ class Label extends Component {
         }
         const modeAbility = state.updateMode || state.addMode;
         const validationAbility = state.saveValidation;
-        console.log(validationAbility)
+        // console.log(validationAbility)
         let saveAbility = false;
         if(modeAbility && validationAbility){
             saveAbility = true
@@ -407,7 +412,7 @@ class Label extends Component {
     render(){
         const tapContent = displayPattren(this.state.fields, this.inputChangeHandler, this.iconClick);
         return(
-            <Aux> 
+            <Aux>  
                 <Modal show={this.state.languages.show} clicked={this.closeLangPopperHandler} > 
                 <DisplayTable 
                    show={this.state.languages.show}
@@ -418,7 +423,7 @@ class Label extends Component {
                     rowClick={this.displayRow}
                      />
                 </Modal>
-                <Modal clicked={this.closeModalHandler} show={this.state.modalShow}>
+                <Modal clicked={this.closeModalHandler} show={this.state.modalShow} loading={this.state.popUpDisplayLoading} >
                 {
                     this.state.popUpDisplayLoading ? 
                     <Spinner /> : 
@@ -434,14 +439,14 @@ class Label extends Component {
                      />
                 }
             </Modal>
-            <Boilerplate 
-            statusBar={this.state.statusBar}
-            tools={this.state.tools}
-            toolsClicked={this.toolsclickedHandler}
-            auditTable={this.state.auditTable}
-            dropDown={this.props.dropDown}>
-                {tapContent}
-            </Boilerplate>
+                <Boilerplate 
+                statusBar={this.state.statusBar}
+                tools={this.state.tools}
+                toolsClicked={this.toolsclickedHandler}
+                auditTable={this.state.auditTable}
+                dropDown={this.props.dropDown}>
+                    {tapContent}
+                </Boilerplate>
             </Aux>
         )
     }
