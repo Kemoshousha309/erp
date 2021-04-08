@@ -45,7 +45,7 @@ class Label extends Component{
     }
     add = () => {
         fields(this.state.fields, "open")
-        this.setState({mode: "add"})
+        this.setState({mode: "add", auditTable: null})
     }
     undo = () => {
         switch (this.state.mode) {
