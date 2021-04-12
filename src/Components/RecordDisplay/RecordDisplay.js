@@ -7,7 +7,8 @@ import Spinner from "../UI/Spinner/Spinner"
 import axios from "../../axios"
 import { connect } from "react-redux"
 import { Button } from "@material-ui/core"
-import { extractRcordData, getPk } from "../../utilities/processes"
+import { extractRcordData, fillRecord, getPk } from "../../utilities/processes"
+import { t } from "../../utilities/lang"
 
 
 class RecordDisply extends Component {
@@ -88,7 +89,7 @@ class RecordDisply extends Component {
                 this.props.recordClick(recordData, index, targetRecord)
             })
             .catch(err => console.log(err))
-        }
+    }
     componentDidMount () {
         this.pagesRequest(1)
     }
@@ -111,7 +112,9 @@ class RecordDisply extends Component {
                         color="primary" />
                     </div>
                     <div className={style.closeContainer}>
-                        <Button onClick={this.props.modalClose} color="secondary">close</Button>
+                        <Button onClick={this.props.modalClose} color="secondary">
+                            {t("close", this.props.lanTable, this.props.lanState)}
+                        </Button>
                     </div>
                 </div>
             )
@@ -129,8 +132,6 @@ const mapStateToProps = state => {
         token: state.auth.authData.token
     }
 }
-
-
 
 const isEmpty = (obj) => {
     let empty = true

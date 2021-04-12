@@ -9,7 +9,9 @@
     align-content: flex-start;
 }
 .closeContainer{
-    margin: 0 3rem 1rem 0;
     display: flex;
     justify-content: flex-end;
+    button{
+        margin: 0rem 3rem 1.5rem 3rem !important;
+    }
 }

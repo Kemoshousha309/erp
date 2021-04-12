@@ -55,26 +55,36 @@ export const displayPattren = (fields, changeHandler) => {
             if(item2){
                 content = (
                     <Aux>
-                    <div className="col-md-6">
+                    <div className="col-md-6  px-0">
                         {inputField(item1, changeHandler)}
                     </div>
-                    <div className="col-md-6">
+                    <div className="col-md-6  px-0">
                         {inputField(item2, changeHandler)}
                     </div>
+                     {// consider three column layout
+                     /* <div className="col-md-4 px-0">
+                        {inputField(item1, changeHandler)}
+                    </div>
+                    <div className="col-md-4 px-0">
+                        {inputField(item2, changeHandler)}
+                    </div>
+                    <div className="col-md-4 px-0">
+                        {inputField(item2, changeHandler)}
+                    </div> */}
                 </Aux>
                 )
             }else{
                 content = (
                     <Aux>
-                        <div className="col-md-6">
+                        <div className="col-md-6 px-0">
                             {inputField(item1, changeHandler)}
                         </div>
-                        <div className="col-md-6"></div>
+                        <div className="col-md-6 px-0"></div>
                     </Aux>
                 )
             }
             return (
-                <div key={item1.id} className="row">
+                <div key={item1.id} className="row px-3">
                     { content}
                 </div>
             )

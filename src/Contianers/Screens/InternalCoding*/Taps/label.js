@@ -20,11 +20,11 @@ import {t} from "../../../../utilities/lang"
 class Label extends Component{
     state = {
         fields: label,
-        tools: startMode,
+        tools: null,
         mode: "start",
         recordIndex: null,
         lastIndex: null,
-        message: false,
+        message: null,
         loading: false,
         list: {
             show: false
@@ -32,7 +32,7 @@ class Label extends Component{
         mainFields: ["label_code", "label_desc", "lang_no"],
         tapName: "labels",
         alertOpen: false,
-        auditTable: null
+        searchFields: ["label_code", 'lang_no']
     }
 
     // Tools Handle ****************************************************************
@@ -65,12 +65,28 @@ class Label extends Component{
         }
     }
     save = () => {
-        const [fieldsUpdate, valid] = setValidity(this.state.fields)
-        if(valid){
-            handleSaveRequest(this)            
-        }else{
-            this.setState({fields: fieldsUpdate})
+        // const [fieldsUpdate, valid] = setValidity(this.state.fields)
+        console.log("save")
+        console.log(this.state.fields)
+        // check validity => 
+        const fieldsClone = {...this.state.fields}
+        for(const key in fieldsClone){
+            const f = fieldsClone[key]
+            if(f.validity){ // to escape form name field
+                if(!f.validity.touched){
+                    f.validity.touched = true
+                    f.validity.message = "This field is requierd"
+                }
+            }
         }
+        this.setState({fields: fieldsClone})
+
+
+        // if(valid){
+        //     handleSaveRequest(this)            
+        // }else{
+        //     this.setState({fields: fieldsUpdate})
+        // }
     }
     copy = () => {
         fields(this.state.fields, "open", false)
@@ -110,16 +126,13 @@ class Label extends Component{
         fillRecord(this.state.fields, record)
         this.setState({list: {show: false}, mode: "d_record", recordIndex: i, auditTable: targetRecord})
     }
-    inputChangeHandler = (value, identifier) => {
+    inputChangeHandler = (state, identifier) => {
         const fields = {...this.state.fields};
-        fields[identifier].value = value;
-        if(identifier === "lang_no"){
-            fields["lang_no_name"].value = decideLanguageName(this.props.languages, value);
-            if(decideLanguageName(this.props.languages, value) === ""){
-                fields["lang_no_name"].value = t("not_exist", this.props.lanTable, this.props.lanState, "language");
-            }
-        }
-        this.setState({fields: fields}) 
+        fields[identifier].value = state.value;
+        fields[identifier].validity.touched = state.touched;
+        fields[identifier].validity.valid = state.valid;
+        fields[identifier].validity.message = state.invalidFeedBack;
+        this.setState({fields: fields})
     }
     handleClose = (res) => {
         if(res){
@@ -133,14 +146,16 @@ class Label extends Component{
         add_lan_no_options(this)
         setlastIndex(this)
     }
+
     static getDerivedStateFromProps(props, state){
-        const toolsMode = handleMode(state.mode)
+        const toolsMode = handleMode(state.mode, props.lanState)
         return {
-            tools: toolsMode
+            tools: toolsMode,
         }
     }
     render (){
         // console.log("[label] render")
+        console.log(this.state.fields)
         const content = displayPattren(this.state.fields, this.inputChangeHandler)
         return  (
             <Aux>
@@ -159,7 +174,6 @@ class Label extends Component{
                 dropDown={this.props.dropDown}
                 toolsClicked={this.toolsClickedHandler}
                 tools={this.state.tools}
-                auditTable={this.state.auditTable}
                 >
                     {content}
                 </Boilerplate>
@@ -173,16 +187,12 @@ class Label extends Component{
 } 
 
 const statusBar = thisK => {
-    
    return (
        <Aux>
-        {
-            thisK.state.loading ?
-            <StatusBar show><Spinner small color="3F51B5" /></StatusBar>: null 
-        }
+        { thisK.state.loading ? <Spinner position="statusPosition" small color="3F51B5" />: null }
         {
             thisK.state.message ? 
-            <StatusBar show>{thisK.state.message}</StatusBar>  : null
+            <StatusBar show type={thisK.state.message.type} >{thisK.state.message.content}</StatusBar>  : null
         }
        </Aux>
    )
@@ -202,7 +212,6 @@ const add_lan_no_options = (thisk) =>{
     .catch(err => console.log(err))
 }
     
-
 
 const mapStateToProps = state => {
     return {

@@ -11,6 +11,13 @@ class InputTextField extends Component {
         value: "", 
         lastPropValue: null
     }
+    changeHandler = (e) => {
+        if(this.props.field.id === "lang_no"){
+            const langNameInput = document.getElementById("lang_no_name")
+        langNameInput.value = e.target.value
+        }
+        this.setState({value: e.target.value})
+    } 
     static getDerivedStateFromProps(props, state){
         if(state.lastPropValue !== props.field.value){
             return{
@@ -34,7 +41,7 @@ class InputTextField extends Component {
             disabled={field.writability}
             value={this.state.value}
             variant="outlined" fullWidth 
-            onChange = {(e) => this.setState({value: e.target.value})}
+            onChange = {(this.changeHandler)}
             onBlur ={(e) => this.props.changeHandler(this.state.value, field.id)} 
             id={field.id}  
             className={style.input}
@@ -47,7 +54,8 @@ class InputTextField extends Component {
 const mapStateToProps = state => {
     return {
         lanState: state.lang.lan,
-        lanTable: state.lang.langTables
+        lanTable: state.lang.langTables,
+        languages: state.lang.langInfo
     }
 }
 

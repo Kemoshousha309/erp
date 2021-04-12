@@ -72,10 +72,14 @@ const handleRes = (thisK, res, newIndex) =>{
     if(newIndex > thisK.state.lastIndex){
         index = "last index"
     }
+    const message = {
+        content: t("record_no", thisK.props.lanTable, thisK.props.lanState, index),
+        type: "info"
+    }
     thisK.setState({
         loading: false,
         mode: "d_record",
-        message: t("record_no", thisK.props.lanTable, thisK.props.lanState, index)
+        message: message
     })
     timer(thisK)
 }

@@ -1,13 +1,17 @@
 import React, { Component } from "react";
 import Aux from "../../../hoc/Aux";
-import { getParam } from "../../../utilities";
+import { getParam } from "../../../utilities/utilities";
 import Label from "./Taps/label";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
 import MenuItem from '@material-ui/core/MenuItem';
+import {t} from "../../../utilities/lang"
+import { connect } from "react-redux";
+
+
 
 class InternalCoding extends Component {
     state={
-        tapOptions: ["label", "language", "message", "forms", "modules"],
+        tapOptions: ["label", "language", "message", "form", "module"],
         currentTap: null,
         dropDownChange: false,
     }
@@ -29,12 +33,14 @@ class InternalCoding extends Component {
         }
     }
     componentDidUpdate(){
-        console.log("InternalCoding Updated")
+        // console.log("InternalCoding Updated")
     }
     render(){
         const dropDown = (
             <SelectDrop current={this.state.currentTap} changed={this.onChangeHandler}>
-                {this.state.tapOptions.map(ele => <MenuItem key={ele} value={ele} >{ele}</MenuItem>)}
+                {this.state.tapOptions.map(ele => {
+                    return <MenuItem key={ele} value={ele} >{t(ele, this.props.lanTable, this.props.lanState).toUpperCase()}</MenuItem>
+                })}
             </SelectDrop>
         )
         let currentTap = null;
@@ -62,4 +68,15 @@ class InternalCoding extends Component {
     }
 } 
 
-export default InternalCoding;
+const mapStateToProps = state => {
+    return {
+        lanState: state.lang.lan,
+        lanTable: state.lang.langTables,
+        token: state.auth.authData.token,
+        languages: state.lang.langInfo
+    }
+}
+
+
+export default connect(mapStateToProps, null)(InternalCoding);
+

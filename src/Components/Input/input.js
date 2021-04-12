@@ -3,28 +3,31 @@ import React from "react";
 import { connect } from "react-redux";
 import { Component } from "react";
 import InputSelectField from "./SelectField/InputSelectField";
+import InputField  from "./InputField/InputField";
+
 
 
 
 class Input extends Component {
     selectInputHandler = () => {
         const field = this.props.field
-        switch (field.inputType) {
-            case "text":
+        switch (field.fieldType) {
+            case "input":
                 return <InputTextField 
                 changeHandler={this.props.changeHandler}
                 field={field}/>
-            case "text&select":
+            case "select":
                 return <InputSelectField  
                 changeHandler={this.props.changeHandler}
                 field={field}/>
             default:
-                break;
+                break;  
         }
     }
     render (){
         // console.log("[Input] render")
-        return this.selectInputHandler()
+        // return this.selectInputHandler()
+        return <InputField field={this.props.field} changeHandler={this.props.changeHandler}/>
     }
 } 
 

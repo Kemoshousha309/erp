@@ -11,6 +11,7 @@
 
 }
 
+
 .loader {
   font-size: 10px;
   margin: 80px auto;
@@ -62,4 +63,10 @@
       box-shadow: 0 2.5em 0 0;
     }
   }
+
+.statusPosition{
+  position: absolute;
+  bottom: 4.5rem;
+  right: 50%;
+}
   

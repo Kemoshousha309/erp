@@ -7,6 +7,8 @@ import { Component } from "react";
 import { faAngleDown, faAngleUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Spinner from "../../UI/Spinner/Spinner";
+import { langNameChangeHandler } from "../../../utilities/processes";
+
 
 
 class InputSelectField extends Component {
@@ -41,6 +43,13 @@ class InputSelectField extends Component {
             this.setState({listShow: !currentMode})
         }
     }
+    changeHandler = (e) => {
+        langNameChangeHandler(this.props.field.id, e, this.props.languages)
+        this.setState({value: e.target.value})
+    } 
+    componentDidUpdate () {
+        langNameChangeHandler(this.props.field.id, this.state.value, this.props.languages)
+    }
   render() {
         // console.log(`[InputSelectField] render`, this.state)
         const field = this.props.field
@@ -64,7 +73,7 @@ class InputSelectField extends Component {
                 disabled={field.writability}
                 value={this.state.value}
                 variant="outlined" fullWidth 
-                onChange = {(e) => this.setState({value: e.target.value})}
+                onChange = {this.changeHandler}
                 onBlur ={(e) => this.props.changeHandler(this.state.value, field.id)} 
                 id={field.id}  
                 className={style.input}
@@ -101,7 +110,8 @@ const decideClasses = (thisK) =>{
 const mapStateToProps = state => {
     return {
         lanState: state.lang.lan,
-        lanTable: state.lang.langTables
+        lanTable: state.lang.langTables,
+        languages: state.lang.langInfo
     }
 }
 

@@ -1,4 +1,4 @@
-import { selectMessage, t } from "./lang"
+import { decideLanguageName, selectMessage, t } from "./lang"
 import { startMode, toolsName } from "./tools"
 import axios  from "../axios"
 
@@ -7,20 +7,33 @@ import axios  from "../axios"
 /// fields proscess *****************************************
 // =>>
 
-export const fields = (fields, mode, empty=true) => {
-    for(const field in fields){
-        fields[field].valid = true
-        if(empty){
-            fields[field].value = ""
-        }
-        if(mode === "open"){
-            if(fields[field].readOnly){
-                fields[field].writability = true
-            }else{
-                fields[field].writability = false
+export const fields = (fields, mode, empty=true, specific) => {
+    if(specific){
+        specific.forEach(fName => {
+            if(empty) {
+                fields[fName].value = ""
             }
-        }else if(mode === "close"){
-            fields[field].writability = true
+            if(mode === "open"){
+                fields[fName].writability = false
+            }else{
+                fields[fName].writability = true
+            }
+        })
+    }else{
+        for(const field in fields){
+            fields[field].valid = true
+            if(empty){
+                fields[field].value = ""
+            }
+            if(mode === "open"){
+                if(fields[field].readOnly){
+                    fields[field].writability = true
+                }else{
+                    fields[field].writability = false
+                }
+            }else if(mode === "close"){
+                fields[field].writability = true
+            }
         }
     }
     return fields
@@ -36,15 +49,15 @@ export const fillRecord = (fields, record) => {
 
 
 // mode processes *******************************************************
-export const handleMode = (mode) => {
+export const handleMode = (mode, lang_no) => {
     let activeList = null
     switch (mode) {
         case "start":
-            return startMode
+            return startMode(lang_no)
         case "add":
-            return activate([toolsName.undo.name, toolsName.save.name])
+            return activate([toolsName.undo.name, toolsName.save.name], lang_no)
         case "copy":
-            return activate([toolsName.undo.name, toolsName.save.name])
+            return activate([toolsName.undo.name, toolsName.save.name], lang_no)
         case "d_record":
             activeList = [
                 toolsName.add.name, toolsName.list.name, 
@@ -53,20 +66,20 @@ export const handleMode = (mode) => {
                 toolsName.search.name, toolsName.delete.name, toolsName.copy.name,
                 toolsName.undo.name
             ]
-            return activate(activeList)
+            return activate(activeList, lang_no)
         case "modify":
             activeList = [toolsName.save.name, toolsName.undo.name]
-            return activate(activeList)
+            return activate(activeList, lang_no)
         case "search":
             activeList = [toolsName.search.name, toolsName.undo.name]
-            return activate(activeList)
+            return activate(activeList, lang_no, "search")
         default: 
             break;
     }
 }
 
-const activate = (activeList) => {
-    const modeClone = deepClone(startMode)
+const activate = (activeList, lang_no, mode=null) => {
+    const modeClone = deepClone(startMode(lang_no))
     modeClone.forEach(tool => tool.state = false)
     activeList.forEach(toolName => {
         modeClone.forEach(tool =>{
@@ -75,6 +88,13 @@ const activate = (activeList) => {
             }
         })
     })
+    if(mode){
+        modeClone.forEach(tool => {
+            if(tool.name === mode){
+                tool.onMode = true
+            }
+        })
+    }
     return modeClone
 }
 
@@ -93,22 +113,30 @@ export const handleSaveRequest = (thisK) => {
         })
         .then(res => {
             fields(thisK.state.fields, 'close', false)
+            const message = {
+                content: selectMessage(res.data.message, thisK.props.lanState),
+                type: "success"
+            }
             thisK.setState({
                 mode: "d_record",
                 loading: false, 
-                message: selectMessage(res.data.message, thisK.props.lanState),
+                message: message,
                 recordIndex: null,
             })
             timer(thisK)
         })
         .catch(err => {
             fields(thisK.state.fields, 'close', true)
+            const message = {
+                content: selectMessage(err.response.data.message, thisK.props.lanState),
+                type: "error"
+            }
             thisK.setState({
                 mode: "start",
                 loading: false, 
-                message: selectMessage(err.response.data.message, thisK.props.lanState),
+                message: message,
                 recordIndex: null,
-                auditTable: null
+                
             })
             timer(thisK)
         }) 
@@ -130,23 +158,31 @@ export const handleDelete = (thisK) => {
         })
     .then(res => {
         fields(thisK.state.fields, 'close', true)
+        const message = {
+                content: selectMessage(res.data.message, thisK.props.lanState),
+                type: "success"
+            }
         thisK.setState({
             mode: "start",
             loading: false, 
-            message: selectMessage(res.data.message, thisK.props.lanState),
+            message: message,
             recordIndex: null,
-            auditTable: null
+            
         })
         timer(thisK)
     })
     .catch(err => {
         fields(thisK.state.fields, 'close', true)
+         const message = {
+                content: selectMessage(err.response.data.message, thisK.props.lanState),
+                type: "error"
+            }
             thisK.setState({
                 mode: "start",
                 loading: false, 
-                message: selectMessage(err.response.data.message, thisK.props.lanState),
+                message: message,
                 recordIndex: null,
-                auditTable: null
+                
             })
             timer(thisK)
     })
@@ -161,18 +197,26 @@ export const  handleSearch = (thisK) => {
         const values = getValues(thisK.state.fields)
         const pk = getPk(thisK.state.fields)
         if(values[pk] === "" ){
-            thisK.setState({message: t("you_must_enter", thisK.props.lanTable, thisK.props.lanState, pk)})
+            const message = {
+                content: t("you_must_enter", thisK.props.lanTable, thisK.props.lanState, pk),
+                type: "warning"
+            }
+            thisK.setState({message: message})
             timer(thisK)
         }else if(values.lang_no === ""){
-            thisK.setState({message: t("you_must_enter", thisK.props.lanTable, thisK.props.lanState, "lang_no")})
+            const message = {
+                content: t("you_must_enter", thisK.props.lanTable, thisK.props.lanState, "lang_no"),
+                type: "warning"
+            }
+            thisK.setState({message: message})
             timer(thisK)
         }
         else{
             searchRequest(thisK, pk, values)
         }
     }else{
-        fields(thisK.state.fields, "open", true)
-        thisK.setState({mode: "search", auditTable: null})
+        fields(thisK.state.fields, "open", true, thisK.state.searchFields)
+        thisK.setState({mode: "search"})
     }
 } 
 
@@ -192,9 +236,13 @@ const searchRequest = (thisK, pk, values) => {
         })
         .catch(err => {
             fields(thisK.state.fields, 'open', true)
+            const message = {
+                content: selectMessage(err.response.data.message, thisK.props.lanState),
+                type: "error"
+            }
             thisK.setState({
                 loading: false, 
-                message: selectMessage(err.response.data.message, thisK.props.lanState),
+                message: message,
                 recordIndex: null
             })
             timer(thisK)
@@ -231,25 +279,37 @@ export const getPk = (fields) => {
 }
 export const setValidity = (fields) => {
     const fieldsClone = {...fields}
-    let valid = true
+    let validState = true
     for(const key in fieldsClone){
-        fieldsClone[key].valid = isValid(fieldsClone[key].value, fieldsClone[key].validation)
         if(!fieldsClone[key].readOnly){
-            valid = fieldsClone[key].valid && valid
+            let [valid, message] = isValid(fieldsClone[key].value, fieldsClone[key].validation)
+            fieldsClone[key].validity.valid = valid
+            if(message === "max_length") {
+                fieldsClone[key].value = ""
+            }
+            fieldsClone[key].validity.message = message
+            validState = fieldsClone[key].validity.valid && validState
         }
     }
-    return [fieldsClone, valid]
+    return [fieldsClone, validState]
 }
 
-const isValid = (value, rule) => {
+export const isValid = (value, rule) => {
+    let message = null
     let isValid = true
     if(rule.requiered){
         isValid = (value.toString()).trim() !== "" && isValid; 
+        if((value.toString()).trim() === ""){
+            message = "This field is required"
+        }
     }
     if(rule.length){
         isValid = parseInt( value.length) <=  parseInt(rule.length) && isValid;
+        if(parseInt(value.length) >  parseInt(rule.length) && !message){
+            message = "max_length"
+        }
     }
-    return isValid
+    return [isValid, message]
 }
 
 const deepClone = (l) => {
@@ -272,4 +332,23 @@ export const timer = (thisK) => {
         }   
     }
     lastTimer = timerId
+}
+
+export  const trigerEnterButton = (id, func) => {
+    const input = document.getElementById(id);
+    input.addEventListener("keyup", event => {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            input.blur()
+            func()
+        }
+    });
+}
+
+export  const langNameChangeHandler = (thisK) => {
+    if(thisK.props.field.id === "lang_no"){
+        const langNameInput = document.getElementById("lang_no_name")
+        langNameInput.value = 
+        decideLanguageName(thisK.props.languages, thisK.state.value, thisK.props.lanTable, thisK.props.lanState);
+    }
 }

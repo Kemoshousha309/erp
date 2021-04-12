@@ -30,20 +30,55 @@ export const toolsName = {
     undo: {name: "undo", icon: faUndo}
 }
 
-export const startMode = [
-    {name: toolsName.add.name, state: true},
-    {name:  toolsName.copy.name, state: false},
-    {name: toolsName.search.name, state: true},
-    {name: toolsName.list.name, state: true},
-    {name: toolsName.previous.name, state: false},
-    {name: toolsName.next.name, state: false},
-    {name: toolsName.first.name, state: false},
-    {name: toolsName.last.name, state: false},
-    {name: toolsName.modify.name, state: false},
-    {name:  toolsName.save.name, state: false},
-    {name:  toolsName.delete.name, state: false},
-    {name:  toolsName.undo.name, state: false},
-]
+// export const startMode = [
+//     {name: toolsName.add.name, state: true},
+//     {name:  toolsName.copy.name, state: false},
+//     {name: toolsName.search.name, state: true},
+//     {name: toolsName.list.name, state: true},
+//     {name: toolsName.previous.name, state: false},
+//     {name: toolsName.next.name, state: false},
+//     {name: toolsName.first.name, state: false},
+//     {name: toolsName.last.name, state: false},
+//     {name: toolsName.modify.name, state: false},
+//     {name:  toolsName.save.name, state: false},
+//     {name:  toolsName.delete.name, state: false},
+//     {name:  toolsName.undo.name, state: false},
+// ]
+
+export const startMode = (lang_no) => {
+    let mode = [
+        {name: toolsName.add.name, state: true},
+        {name:  toolsName.copy.name, state: false},
+        {name: toolsName.search.name, state: true, onMode: false},
+        {name: toolsName.list.name, state: true},
+        {name: toolsName.previous.name, state: false},
+        {name: toolsName.next.name, state: false},
+        {name: toolsName.first.name, state: false},
+        {name: toolsName.last.name, state: false},
+        {name: toolsName.modify.name, state: false},
+        {name:  toolsName.save.name, state: true},
+        {name:  toolsName.delete.name, state: false},
+        {name:  toolsName.undo.name, state: false},
+    ]
+    if(parseInt(lang_no) === 1){
+        mode = [ 
+            {name: toolsName.add.name, state: true},
+            {name:  toolsName.copy.name, state: false},
+            {name: toolsName.search.name, state: true},
+            {name: toolsName.list.name, state: true},
+            {name: toolsName.next.name, state: false},
+            {name: toolsName.previous.name, state: false},
+            {name: toolsName.last.name, state: false},
+            {name: toolsName.first.name, state: false},
+            {name: toolsName.modify.name, state: false},
+            {name:  toolsName.save.name, state: false},
+            {name:  toolsName.delete.name, state: false},
+            {name:  toolsName.undo.name, state: false},
+        ]
+    }
+    return mode
+}
+
 
 
 export const getRelatedIcon = (name, lanTable, lanState) => {

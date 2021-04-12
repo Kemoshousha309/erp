@@ -1,40 +1,55 @@
 import React from "react"
+import { connect } from "react-redux"
+import { t } from "../../../utilities/lang"
 import style from "./Page.module.scss"
+
 
 const Page = props => {
     // console.log("page render")
+    const body =displayBody(props.page.pages, props.fields, props.recordClick)
+    const noMatch = <div className={style.noMatch}>{t("no_match", props.lanTable, props.lanState)}</div>
     return (
         <div className={style.container}>
             <table className="table table-bordered text-center  table-hover">
-            <caption>Page number: {props.page.page_no}</caption>
                 <thead >
                     <tr>
                     <th scope="col">#</th>
-                    {displayHead(props.fields)}
+                    {displayHead(props.fields, props)}
                     </tr>
                 </thead>
                 <tbody>
-                {displayBody(props.page.pages, props.fields, props.recordClick)}
+                    {body ? body : noMatch }
                 </tbody>
         </table>
         </div>
     )
 }
 
-export default Page
+const mapStateToProps = state => {
+    return {
+        lanState: state.lang.lan,
+        lanTable: state.lang.langTables,
+        token: state.auth.authData.token,
+        languages: state.lang.langInfo
+    }
+}
 
 
-const displayHead = (fields) => {
+export default connect(mapStateToProps, null)(Page);
+
+
+
+const displayHead = (fields, props) => {
     const head = fields.map((fName, i) => {
         return( 
-            <th key={i} scope="col">{fName}</th>
+            <th key={i} scope="col">{t(fName, props.lanTable, props.lanState).toUpperCase()}</th>
         )
     })
     return head
 }
 
 const displayBody = (page, fields, recordClick) => {
-    let body;
+    let body =  null
     if(page){
         body = page.map((ele, i) => {
             return(
@@ -46,8 +61,6 @@ const displayBody = (page, fields, recordClick) => {
                 </tr>
             )
         })
-    }else{
-        body = <h1>No Matches</h1>
     }
     return body
 }

@@ -11,9 +11,12 @@ import { getRelatedIcon } from "../../../utilities/tools";
 const Tool = props => {
     // console.log("Tool render")
     const [icon, toolTip] = getRelatedIcon(props.type, props.lanTable, props.lanState)
-    let state = props.state ? style.active : style.inactive;
+    let onMode = null
+    if(props.onMode){
+        onMode = style.onMode
+    }
+    let state = props.state ? [style.active, style[props.type], onMode].join(' ') : style.inactive;
     let tool = null;
-
     if(!props.state){
        tool = (
         <button disabled={!props.state} onClick={() => props.clicked(props.type)}>
@@ -35,6 +38,8 @@ const Tool = props => {
         </li>
     )
 }
+
+
 
 const mapStateToProps = state => {
     return {

@@ -1,0 +1,35 @@
+@import "../../../utilities//styleUtility.scss";
+$fontSize: 1.8rem;
+
+.inputField{
+    display: flex;
+    label{
+        padding: 0 1rem !important;  
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: $fontSize;
+    }
+    div{
+        align-self: center;
+    }
+    input{
+        font-size: $fontSize;
+    }
+}
+
+.invalidMessage{
+    font-size: 80%;
+    color: red;
+    display: block !important;
+    padding: .5rem 1rem !important;
+    background-color: rgba(243, 191, 191, 0.507);
+    font-size: 1.5rem;
+}
+.invalidInput{
+    border: 1px solid red !important;
+    &:focus{
+        box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.274);
+    }
+    
+}

@@ -89,7 +89,8 @@ class Login extends Component {
                                     label={t("user_no", this.props.langTable, this.props.lanState)} />
                             </div>
                             <div className="mb-5">
-                                 <TextField 
+                                 <TextField
+                                    type="password"
                                     value={this.state.password}
                                     onChange={(event) => this.onChanageHandler( event,"password")}
                                     variant="standard" fullWidth 

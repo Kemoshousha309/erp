@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Aux from "../../../hoc/Aux";
 import { getParam } from "../../../utilities";
 import Labels from "./Taps/label";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
@@ -32,11 +31,7 @@ class InternalCoding extends Component {
         console.log("InternalCoding Updated")
     }
     render(){
-        const dropDown = (
-            <SelectDrop current={this.state.currentTap} changed={this.onChangeHandler}>
-                {this.state.tapOptions.map(ele => <MenuItem key={ele} value={ele} >{ele}</MenuItem>)}
-            </SelectDrop>
-        )
+       
         let currentTap = null;
         switch(this.state.currentTap){
             case  "language":
@@ -54,11 +49,7 @@ class InternalCoding extends Component {
             default:
                 currentTap = null
         }
-        return(
-            <Aux>
-                {currentTap}
-           </Aux>
-        )
+        return currentTap
     }
 } 
 

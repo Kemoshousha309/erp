@@ -29,11 +29,14 @@ export const selectMessage = (messages, lang_no) => {
         return messages.en
     }
 }
-export const decideLanguageName = (languages, input)=> {
-    let name = "" 
+export const decideLanguageName = (languages, input, langTables, lang_no)=> {
+    let name = t("not_exist", langTables, lang_no)
+    console.log(input)
     languages.forEach(lan => {
         if(parseInt(input) === parseInt(lan.lang_no)){
             name = lan.lang_name
+        }else if(input === ""){
+            name = ""
         }
     })
     return name
