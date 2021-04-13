@@ -1,8 +1,6 @@
-import InputTextField from "./TextField/InputTextField"
 import React from "react";
 import { connect } from "react-redux";
 import { Component } from "react";
-import InputSelectField from "./SelectField/InputSelectField";
 import InputField  from "./InputField/InputField";
 import SelectField from "./SelectField**/SelectField";
 

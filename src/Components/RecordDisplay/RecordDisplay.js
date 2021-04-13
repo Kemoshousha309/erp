@@ -7,7 +7,7 @@ import Spinner from "../UI/Spinner/Spinner"
 import axios from "../../axios"
 import { connect } from "react-redux"
 import { Button } from "@material-ui/core"
-import { extractRcordData, fillRecord, getPk } from "../../utilities/processes"
+import { extractRcordData, getPk } from "../../utilities/processes"
 import { t } from "../../utilities/lang"
 
 

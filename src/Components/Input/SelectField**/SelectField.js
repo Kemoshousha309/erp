@@ -101,7 +101,6 @@ const label = (thisK) => {
 
 
 const checkValiditiy = (thisK) => {
-    const valid = !thisK.props.field.readOnly ? !thisK.props.field.validity.valid : false
     let invalidMessage = null
     let invalidInputStyle = null
     if(thisK.state.touched && !thisK.state.valid) {

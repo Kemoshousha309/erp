@@ -46,7 +46,6 @@ export const label = {
                 },
                 writability: true,
                 value: "",
-                type: "number",
             },
             lang_no_name:{
                 fieldType: "input",

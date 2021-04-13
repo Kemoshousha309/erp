@@ -3,18 +3,15 @@ import Boilerplate from '../../../../Components/Boilerplate/Boilerplate';
 import { displayPattren } from "../../../../utilities/display";
 import {connect} from "react-redux";
 import { label } from '../../../../utilities/fields';
-import { startMode, toolSelectHandler } from '../../../../utilities/tools';
-import { handleMode, fields, fillRecord, setValidity, handleSaveRequest, handleDelete, handleSearch, checkValidity} from "../../../../utilities/processes";
+import { toolSelectHandler } from '../../../../utilities/tools';
+import { handleMode, fields, fillRecord, handleSaveRequest, handleDelete, handleSearch, checkValidity} from "../../../../utilities/processes";
 import Modal from '../../../../Components/UI/Modal/Modal';
 import Aux from '../../../../hoc/Aux';
 import RecordDisply from '../../../../Components/RecordDisplay/RecordDisplay';
-import axios from "../../../../axios"
 import StatusBar from '../../../../Components/StatusBar/StatusBar';
 import Spinner from '../../../../Components/UI/Spinner/Spinner';
 import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
 import AlertDialog from '../../../../Components/AlertDialog/AlertDialog';
-import { decideLanguageName } from '../../../../utilities/lang';
-import {t} from "../../../../utilities/lang"
 
 
 class Label extends Component{
