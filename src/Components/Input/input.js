@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Component } from "react";
 import InputSelectField from "./SelectField/InputSelectField";
 import InputField  from "./InputField/InputField";
+import SelectField from "./SelectField**/SelectField";
 
 
 
@@ -13,21 +14,16 @@ class Input extends Component {
         const field = this.props.field
         switch (field.fieldType) {
             case "input":
-                return <InputTextField 
-                changeHandler={this.props.changeHandler}
-                field={field}/>
+                return <InputField field={this.props.field} changeHandler={this.props.changeHandler}/>
             case "select":
-                return <InputSelectField  
-                changeHandler={this.props.changeHandler}
-                field={field}/>
+                return <SelectField field={this.props.field} changeHandler={this.props.changeHandler} />
             default:
                 break;  
         }
     }
     render (){
         // console.log("[Input] render")
-        // return this.selectInputHandler()
-        return <InputField field={this.props.field} changeHandler={this.props.changeHandler}/>
+        return this.selectInputHandler()
     }
 } 
 

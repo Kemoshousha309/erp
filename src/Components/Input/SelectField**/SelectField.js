@@ -1,20 +1,21 @@
 import React from "react"
 import { connect } from "react-redux"
 import { t } from "../../../utilities/lang"
-import style from "./InputField.module.scss"
+import style from "./SelectField.module.scss"
 import { Component } from "react";
-import {isValid } from "../../../utilities/processes";
+import {isValid, langNameChangeHandler } from "../../../utilities/processes";
 import Aux from "../../../hoc/Aux";
 
 
 
-class InputField extends Component {
+class SelectField extends Component {
     state = {
         value: "", 
         touched: false,
         valid: false,
         invalidFeedBack: null,
-        lastPropValue: null
+        lastPropValue: null,
+        lastouterTouch: null
     }
     changeHandler = (e) => {
         const validationRules = this.props.field.validation
@@ -34,39 +35,54 @@ class InputField extends Component {
             updatedState.value = props.field.value
             updatedState.lastPropValue = props.field.value
         }
-        if(!props.field.readOnly){  
-            if(!props.field.validity.touched && state.touched){
-                updatedState.touched = props.field.validity.touched
-                updatedState.invalidFeedBack = props.field.validity.message
-            }
-        }
+        // if(state.lastouterTouch !== props.field.touched){
+        //     updatedState.touched = props.field.touched
+        //     updatedState.lastouterTouch = props.field.touched
+        // }
         if(!props.field.readOnly){  
             if(!state.touched && props.field.validity.touched){
                 updatedState.touched = props.field.validity.touched
                 updatedState.invalidFeedBack = props.field.validity.message
             }
         }
+        if(!props.field.readOnly){  
+            if(state.touched && !props.field.validity.touched){
+                updatedState.touched = props.field.validity.touched
+                updatedState.invalidFeedBack = props.field.validity.message
+            }
+        }
         return updatedState
     }
+    componentDidUpdate () {
+        langNameChangeHandler(this)
+    }
   render() {
-        // console.log(`[InputSelectField] render`, this.state)
+        console.log(`[selectField] render`, this.state)
         const field = this.props.field
         const placeholder = t(this.props.field.label, this.props.lanTable, this.props.lanState)
         let [invalidMessage, invalidInputStyle] = checkValiditiy(this)
+        let options = null
+        if(field.options) {
+           options = field.options.map(op => {
+                return <option key={op} value={op}>{op}</option>
+            })
+        }
         return (
             <div class={["form-group" ,style.inputField].join(' ')}>
                 <label for={field.id} class="col-sm-4 col-form-label">{label(this)}</label>
                 <div class="col-sm-8">
-                    <input 
-                    value={this.state.value}
+                <select 
                     onChange = {this.changeHandler}
-                    onBlur ={(e) => this.props.changeHandler(this.state, field.id)} 
+                    value={this.state.value}
                     autoComplete="off"
-                    disabled={field.writability}
-                    type={field.type} 
-                    class={["form-control", invalidInputStyle].join(" ")}
                     id={field.id} 
-                    placeholder={placeholder} />
+                    disabled={field.writability}
+                    onBlur ={(e) => this.props.changeHandler(this.state, field.id)} 
+                    class={["form-control", invalidInputStyle].join(" ")}>
+                        <option hidden selected  > {placeholder} </option>
+                         {/* <option style={{display:"none"}}></option> */}
+                        {options}
+                </select>
                     {invalidMessage}
                 </div>
             </div>
@@ -82,6 +98,8 @@ const label = (thisK) => {
         return label
     }
 }
+
+
 const checkValiditiy = (thisK) => {
     const valid = !thisK.props.field.readOnly ? !thisK.props.field.validity.valid : false
     let invalidMessage = null
@@ -109,4 +127,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps, null)(InputField);
+export default connect(mapStateToProps, null)(SelectField);

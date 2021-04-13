@@ -39,7 +39,7 @@ class Layout extends Component {
 
     render(){
         let layout;
-        if(this.props.langLoading){
+        if(this.props.langLoading && this.props.languages){    
             if(this.props.langTable){
                 layout = (
                     <Aux>
@@ -101,7 +101,8 @@ const mapStateToProps = state => {
         lanState: state.lang.lan,
         langTable: state.lang.langTables,
         langLoading: state.lang.langLoading,
-        isAuthed: !(state.auth.authData == null)
+        isAuthed: !(state.auth.authData == null),
+        languages: state.lang.langInfo
     }
   }
   

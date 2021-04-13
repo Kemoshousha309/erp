@@ -4,7 +4,7 @@ import { displayPattren } from "../../../../utilities/display";
 import {connect} from "react-redux";
 import { label } from '../../../../utilities/fields';
 import { startMode, toolSelectHandler } from '../../../../utilities/tools';
-import { handleMode, fields, fillRecord, setValidity, handleSaveRequest, handleDelete, handleSearch} from "../../../../utilities/processes";
+import { handleMode, fields, fillRecord, setValidity, handleSaveRequest, handleDelete, handleSearch, checkValidity} from "../../../../utilities/processes";
 import Modal from '../../../../Components/UI/Modal/Modal';
 import Aux from '../../../../hoc/Aux';
 import RecordDisply from '../../../../Components/RecordDisplay/RecordDisplay';
@@ -65,28 +65,12 @@ class Label extends Component{
         }
     }
     save = () => {
-        // const [fieldsUpdate, valid] = setValidity(this.state.fields)
-        console.log("save")
-        console.log(this.state.fields)
-        // check validity => 
-        const fieldsClone = {...this.state.fields}
-        for(const key in fieldsClone){
-            const f = fieldsClone[key]
-            if(f.validity){ // to escape form name field
-                if(!f.validity.touched){
-                    f.validity.touched = true
-                    f.validity.message = "This field is requierd"
-                }
-            }
+        const[valid, fieldsUpdate] = checkValidity(this) 
+        if(valid){
+            handleSaveRequest(this)            
+        }else{
+            this.setState({fields: fieldsUpdate})
         }
-        this.setState({fields: fieldsClone})
-
-
-        // if(valid){
-        //     handleSaveRequest(this)            
-        // }else{
-        //     this.setState({fields: fieldsUpdate})
-        // }
     }
     copy = () => {
         fields(this.state.fields, "open", false)
@@ -128,10 +112,12 @@ class Label extends Component{
     }
     inputChangeHandler = (state, identifier) => {
         const fields = {...this.state.fields};
-        fields[identifier].value = state.value;
-        fields[identifier].validity.touched = state.touched;
-        fields[identifier].validity.valid = state.valid;
-        fields[identifier].validity.message = state.invalidFeedBack;
+        if(!fields[identifier].readOnly){
+            fields[identifier].value = state.value;
+            fields[identifier].validity.touched = state.touched;
+            fields[identifier].validity.valid = state.valid;
+            fields[identifier].validity.message = state.invalidFeedBack;
+        }
         this.setState({fields: fields})
     }
     handleClose = (res) => {
@@ -198,20 +184,30 @@ const statusBar = thisK => {
    )
 }
 
+// const add_lan_no_options = (thisk) =>{
+//     axios.get("public/language")
+//     .then(res => {
+//         const options = []
+//         res.data.forEach(i => {
+//             options.push(i.lang_no)
+//         })
+//         const fieldsClone = {...thisk.state.fields}
+//         fieldsClone.lang_no.options = options
+//         thisk.setState({fields: fieldsClone})
+//     })
+//     .catch(err => console.log(err))
+// }
 const add_lan_no_options = (thisk) =>{
-    axios.get("public/language")
-    .then(res => {
-        const options = []
-        res.data.forEach(i => {
-            options.push(i.lang_no)
-        })
-        const fieldsClone = {...thisk.state.fields}
-        fieldsClone.lang_no.options = options
-        thisk.setState({fields: fieldsClone})
+    console.log(thisk.props.languages)
+    const options = []
+    thisk.props.languages.forEach(i => {
+        options.push(i.lang_no)
     })
-    .catch(err => console.log(err))
+    const fieldsClone = {...thisk.state.fields}
+    fieldsClone.lang_no.options = options
+    thisk.setState({fields: fieldsClone})
 }
-    
+
 
 const mapStateToProps = state => {
     return {

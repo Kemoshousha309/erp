@@ -55,11 +55,6 @@ export const label = {
                 validation: {
                     requiered: false
                 },
-                validity: {
-                    valid: false,
-                    touched: false,
-                    message: null
-                },
                 writability: true,     
                 readOnly: true,           
                 value: ""

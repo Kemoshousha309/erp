@@ -21,7 +21,11 @@ export const fields = (fields, mode, empty=true, specific) => {
         })
     }else{
         for(const field in fields){
-            fields[field].valid = true
+            if(!fields[field].readOnly){
+                fields[field].validity.valid = false
+                fields[field].validity.touched = false
+                fields[field].validity.message = null
+            }
             if(empty){
                 fields[field].value = ""
             }
@@ -351,4 +355,20 @@ export  const langNameChangeHandler = (thisK) => {
         langNameInput.value = 
         decideLanguageName(thisK.props.languages, thisK.state.value, thisK.props.lanTable, thisK.props.lanState);
     }
+}
+
+export const checkValidity = (thisK) => {
+    const fieldsClone = {...thisK.state.fields}
+    let isValid = true
+    for(const key in fieldsClone){
+        const f = fieldsClone[key]
+        if(!f.readOnly){
+            isValid = f.validity.valid && isValid
+            if(!f.validity.touched){
+                f.validity.touched = true
+                f.validity.message = "This field is requierd"
+            }
+        }
+    }
+    return [isValid, fieldsClone]
 }
