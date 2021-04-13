@@ -56,7 +56,7 @@ export const startMode = (lang_no) => {
         {name: toolsName.first.name, state: false},
         {name: toolsName.last.name, state: false},
         {name: toolsName.modify.name, state: false},
-        {name:  toolsName.save.name, state: true},
+        {name:  toolsName.save.name, state: false},
         {name:  toolsName.delete.name, state: false},
         {name:  toolsName.undo.name, state: false},
     ]
