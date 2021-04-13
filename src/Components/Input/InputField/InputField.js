@@ -11,18 +11,15 @@ import Aux from "../../../hoc/Aux";
 class InputField extends Component {
     state = {
         value: "", 
-        touched: false,
-        valid: false,
+        valid: true,
         invalidFeedBack: null,
-        lastPropValue: null
+        lastPropValue: null,
+        lastPropValid: null,
     }
     changeHandler = (e) => {
         const validationRules = this.props.field.validation
         const stateClone = {...this.state}
         const [valid, message] = isValid(e.target.value, validationRules)
-        if(!this.state.touched){
-            stateClone.touched = true
-        }
         stateClone.valid = valid
         stateClone.invalidFeedBack = message
         stateClone.value = e.target.value
@@ -35,17 +32,13 @@ class InputField extends Component {
             updatedState.lastPropValue = props.field.value
         }
         if(!props.field.readOnly){  
-            if(!props.field.validity.touched && state.touched){
-                updatedState.touched = props.field.validity.touched
-                updatedState.invalidFeedBack = props.field.validity.message
-            }
+            if(state.lastPropValid !== props.field.validity.valid){
+            updatedState.valid = props.field.validity.valid
+            updatedState.invalidFeedBack = props.field.validity.message
+            updatedState.lastPropValid = props.field.validity.valid
         }
-        if(!props.field.readOnly){  
-            if(!state.touched && props.field.validity.touched){
-                updatedState.touched = props.field.validity.touched
-                updatedState.invalidFeedBack = props.field.validity.message
-            }
         }
+ 
         return updatedState
     }
   render() {
@@ -85,7 +78,7 @@ const label = (thisK) => {
 const checkValiditiy = (thisK) => {
     let invalidMessage = null
     let invalidInputStyle = null
-    if(thisK.state.touched && !thisK.state.valid) {
+    if(!thisK.state.valid) { 
         invalidMessage = (
             <div class={style.invalidMessage}>
                 {thisK.state.invalidFeedBack}

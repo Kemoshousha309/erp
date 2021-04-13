@@ -22,8 +22,7 @@ export const fields = (fields, mode, empty=true, specific) => {
     }else{
         for(const field in fields){
             if(!fields[field].readOnly){
-                fields[field].validity.valid = false
-                fields[field].validity.touched = false
+                fields[field].validity.valid = true
                 fields[field].validity.message = null
             }
             if(empty){
@@ -363,11 +362,11 @@ export const checkValidity = (thisK) => {
     for(const key in fieldsClone){
         const f = fieldsClone[key]
         if(!f.readOnly){
-            isValid = f.validity.valid && isValid
-            if(!f.validity.touched){
-                f.validity.touched = true
+            if(f.value === ''){
+                f.validity.valid = false
                 f.validity.message = "This field is requierd"
             }
+            isValid = f.validity.valid && isValid
         }
     }
     return [isValid, fieldsClone]

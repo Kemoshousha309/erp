@@ -15,7 +15,7 @@ class SelectField extends Component {
         valid: false,
         invalidFeedBack: null,
         lastPropValue: null,
-        lastouterTouch: null
+        lastPropValid: null
     }
     changeHandler = (e) => {
         const validationRules = this.props.field.validation
@@ -35,21 +35,12 @@ class SelectField extends Component {
             updatedState.value = props.field.value
             updatedState.lastPropValue = props.field.value
         }
-        // if(state.lastouterTouch !== props.field.touched){
-        //     updatedState.touched = props.field.touched
-        //     updatedState.lastouterTouch = props.field.touched
-        // }
         if(!props.field.readOnly){  
-            if(!state.touched && props.field.validity.touched){
-                updatedState.touched = props.field.validity.touched
-                updatedState.invalidFeedBack = props.field.validity.message
-            }
+            if(state.lastPropValid !== props.field.validity.valid){
+            updatedState.valid = props.field.validity.valid
+            updatedState.invalidFeedBack = props.field.validity.message
+            updatedState.lastPropValid = props.field.validity.valid
         }
-        if(!props.field.readOnly){  
-            if(state.touched && !props.field.validity.touched){
-                updatedState.touched = props.field.validity.touched
-                updatedState.invalidFeedBack = props.field.validity.message
-            }
         }
         return updatedState
     }
@@ -103,7 +94,7 @@ const label = (thisK) => {
 const checkValiditiy = (thisK) => {
     let invalidMessage = null
     let invalidInputStyle = null
-    if(thisK.state.touched && !thisK.state.valid) {
+    if(!thisK.state.valid) {
         invalidMessage = (
             <div class={style.invalidMessage}>
                 {thisK.state.invalidFeedBack}

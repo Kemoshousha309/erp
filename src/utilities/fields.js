@@ -8,7 +8,7 @@ export const label = {
                     length: 30
                 },
                 validity: {
-                    valid: false,
+                    valid: true,
                     touched: false,
                     message: null
                 },
@@ -25,7 +25,7 @@ export const label = {
                     length: 200
                 },
                 validity: {
-                    valid: false,
+                    valid: true,
                     touched: false,
                     message: null
                 },
@@ -40,7 +40,7 @@ export const label = {
                     requiered: true
                 },
                 validity: {
-                    valid: false,
+                    valid: true,
                     touched: false,
                     message: null
                 },

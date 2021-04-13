@@ -111,7 +111,6 @@ class Label extends Component{
         const fields = {...this.state.fields};
         if(!fields[identifier].readOnly){
             fields[identifier].value = state.value;
-            fields[identifier].validity.touched = state.touched;
             fields[identifier].validity.valid = state.valid;
             fields[identifier].validity.message = state.invalidFeedBack;
         }
