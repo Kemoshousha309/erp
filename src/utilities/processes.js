@@ -1,5 +1,5 @@
-import { decideLanguageName, selectMessage, t } from "./lang"
-import { startMode, toolsName } from "./tools"
+import { decideLanguageName, getSelectLangDir, selectMessage } from "./lang"
+import { startMode, toolsNameMap } from "./tools"
 import axios  from "../axios"
 
 
@@ -9,14 +9,16 @@ import axios  from "../axios"
 
 export const fields = (fields, mode, empty=true, specific) => {
     if(specific){
-        specific.forEach(fName => {
+        for(const field in fields){
             if(empty) {
-                fields[fName].value = ""
+                fields[field].value = ""
             }
+        }
+        specific.forEach(fName => {
             if(mode === "open"){
-                fields[fName].writability = false
-            }else{
                 fields[fName].writability = true
+            }else{
+                fields[fName].writability = false
             }
         })
     }else{
@@ -30,12 +32,12 @@ export const fields = (fields, mode, empty=true, specific) => {
             }
             if(mode === "open"){
                 if(fields[field].readOnly){
-                    fields[field].writability = true
-                }else{
                     fields[field].writability = false
+                }else{
+                    fields[field].writability = true
                 }
             }else if(mode === "close"){
-                fields[field].writability = true
+                fields[field].writability = false
             }
         }
     }
@@ -52,15 +54,17 @@ export const fillRecord = (fields, record) => {
 
 
 // mode processes *******************************************************
-export const handleMode = (mode, lang_no) => {
+export const handleMode = (mode, lang_no, langs) => {
     let activeList = null
+    const lang_dir = getSelectLangDir(langs, lang_no)
+    const toolsName = toolsNameMap(lang_dir)
     switch (mode) {
         case "start":
-            return startMode(lang_no)
+            return startMode(lang_dir)
         case "add":
-            return activate([toolsName.undo.name, toolsName.save.name], lang_no)
+            return activate([toolsName.undo.name, toolsName.save.name], null, lang_dir)
         case "copy":
-            return activate([toolsName.undo.name, toolsName.save.name], lang_no)
+            return activate([toolsName.undo.name, toolsName.save.name], null, lang_dir)
         case "d_record":
             activeList = [
                 toolsName.add.name, toolsName.list.name, 
@@ -69,20 +73,20 @@ export const handleMode = (mode, lang_no) => {
                 toolsName.search.name, toolsName.delete.name, toolsName.copy.name,
                 toolsName.undo.name
             ]
-            return activate(activeList, lang_no)
+            return activate(activeList, null, lang_dir)
         case "modify":
             activeList = [toolsName.save.name, toolsName.undo.name]
-            return activate(activeList, lang_no)
+            return activate(activeList, null, lang_dir)
         case "search":
             activeList = [toolsName.search.name, toolsName.undo.name]
-            return activate(activeList, lang_no, "search")
+            return activate(activeList, "search", lang_dir)
         default: 
             break;
     }
 }
 
-const activate = (activeList, lang_no, mode=null) => {
-    const modeClone = deepClone(startMode(lang_no))
+const activate = (activeList, mode=null, lang_dir) => {
+    const modeClone = deepClone(startMode(lang_dir))
     modeClone.forEach(tool => tool.state = false)
     activeList.forEach(toolName => {
         modeClone.forEach(tool =>{
@@ -190,32 +194,33 @@ export const handleDelete = (thisK) => {
             timer(thisK)
     })
 }
-export const  deleteConfirmaton = () => {
-    
-}
+
 
 // Handle search ******************************************************
 export const  handleSearch = (thisK) => {
     if(thisK.state.mode === "search"){
         const values = getValues(thisK.state.fields)
         const pk = getPk(thisK.state.fields)
-        if(values[pk] === "" ){
-            const message = {
-                content: t("you_must_enter", thisK.props.lanTable, thisK.props.lanState, pk),
-                type: "warning"
-            }
-            thisK.setState({message: message})
-            timer(thisK)
-        }else if(values.lang_no === ""){
-            const message = {
-                content: t("you_must_enter", thisK.props.lanTable, thisK.props.lanState, "lang_no"),
-                type: "warning"
-            }
-            thisK.setState({message: message})
-            timer(thisK)
-        }
-        else{
-            searchRequest(thisK, pk, values)
+        // if(values[pk] === "" ){
+        //     const message = {
+        //         content: t("you_must_enter", thisK.props.lanTable, thisK.props.lanState, pk),
+        //         type: "warning"
+        //     }
+        //     thisK.setState({message: message})
+        //     timer(thisK)
+        // }else if(values.lang_no === ""){
+        //     const message = {
+        //         content: t("you_must_enter", thisK.props.lanTable, thisK.props.lanState, "lang_no"),
+        //         type: "warning"
+        //     }
+        //     thisK.setState({message: message})
+        //     timer(thisK)
+        // }
+        const[valid, fieldsUpdate] = checkValidity(thisK) 
+        if(valid){
+            searchRequest(thisK, pk, values)           
+        }else{
+            thisK.setState({fields: fieldsUpdate})
         }
     }else{
         fields(thisK.state.fields, "open", true, thisK.state.searchFields)
@@ -225,32 +230,88 @@ export const  handleSearch = (thisK) => {
 
 const searchRequest = (thisK, pk, values) => {
     thisK.setState({loading: true})
-        axios.get(`/public/${thisK.state.tapName}/${values[pk]}/${values.lang_no}`)
-        .then(res => {
-            const record = extractRcordData(thisK.state.mainFields, res.data)
-            fillRecord(thisK.state.fields, record)
-            fields(thisK.state.fields, 'close', false)
-            thisK.setState({
-                mode: "d_record",
-                loading: false, 
-                recordIndex: null
-            })
-            timer(thisK)
+    axios.get(`/public/${thisK.state.tapName}/${values[pk]}/${values.lang_no}`)
+    .then(res => {
+        const record = extractRcordData(thisK.state.mainFields, res.data)
+        fillRecord(thisK.state.fields, record)
+        fields(thisK.state.fields, 'close', false)
+        thisK.setState({
+            mode: "d_record",
+            loading: false, 
+            recordIndex: null
         })
-        .catch(err => {
-            fields(thisK.state.fields, 'open', true)
-            const message = {
-                content: selectMessage(err.response.data.message, thisK.props.lanState),
-                type: "error"
-            }
-            thisK.setState({
-                loading: false, 
-                message: message,
-                recordIndex: null
-            })
-            timer(thisK)
+        timer(thisK)
+    })
+    .catch(err => {
+        fields(thisK.state.fields, 'open', false, thisK.state.searchFields)
+        const message = {
+            content: selectMessage(err.response.data.message, thisK.props.lanState),
+            type: "error"
+        }
+        thisK.setState({
+            loading: false, 
+            message: message,
+            recordIndex: null
         })
+        timer(thisK)
+    })
 }
+
+// function listners *******************************************
+const getToolState = (tools, name) => {
+    let state = null
+    tools.forEach(t => {
+        if(t.name === name){
+            state = t.state
+        }
+    })
+    return state
+}
+
+const handleListenrClick = (event, tools, name, func) => {
+    const state = getToolState(tools, name)
+    if(state){
+        event.preventDefault()
+        func()
+    }
+}
+
+
+export const addFunctionsListenrs = (thisK) => {
+    document.addEventListener("keydown", (event) => {
+        const dir = getSelectLangDir(thisK.props.languages, thisK.props.lanState)
+        const tools = thisK.state.tools
+        switch (event.key) {
+            case "Delete": handleListenrClick(event, tools, "delete", thisK.delete); break;
+            case "F12": handleListenrClick(event, tools, "delete", thisK.delete); break;
+            case "F2": handleListenrClick(event, tools, "add", thisK.add); break;
+            case "Insert": handleListenrClick(event, tools, "add", thisK.add); break;
+            case "F3": handleListenrClick(event, tools, "copy", thisK.copy); break;
+            case "F5": handleListenrClick(event, tools, "search", thisK.search); break;
+            case "F4": handleListenrClick(event, tools, "list", thisK.list); break;
+            case "F7": handleListenrClick(event, tools, "modify", thisK.modify); break;
+            case "Home": handleListenrClick(event, tools, "first", thisK.first); break;
+            case "End": handleListenrClick(event, tools, "last", thisK.last); break;
+            case "Escape": handleListenrClick(event, tools, "undo", thisK.undo); break;
+            case "F10": handleListenrClick(event, tools, "save", thisK.save); break;
+            case "ArrowRight": 
+                if(parseInt(dir) === 2){
+                    handleListenrClick(event, tools, "next", thisK.next);
+                }else{
+                    handleListenrClick(event, tools, "previous", thisK.previous);
+                }
+                break;
+            case "ArrowLeft": 
+                if(parseInt(dir) === 2){
+                    handleListenrClick(event, tools, "previous", thisK.previous);
+                }else{
+                    handleListenrClick(event, tools, "next", thisK.next);
+                }
+                break;
+            default: break;
+        }
+      });
+} 
 
 
 
@@ -361,7 +422,7 @@ export const checkValidity = (thisK) => {
     let isValid = true
     for(const key in fieldsClone){
         const f = fieldsClone[key]
-        if(!f.readOnly){
+        if(!f.readOnly && f.writability){
             if(f.value === ''){
                 f.validity.valid = false
                 f.validity.message = "This field is requierd"

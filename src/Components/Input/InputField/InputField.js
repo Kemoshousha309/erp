@@ -47,17 +47,17 @@ class InputField extends Component {
         const placeholder = t(this.props.field.label, this.props.lanTable, this.props.lanState)
         let [invalidMessage, invalidInputStyle] = checkValiditiy(this)
         return (
-            <div class={["form-group" ,style.inputField].join(' ')}>
-                <label for={field.id} class="col-sm-4 col-form-label">{label(this)}</label>
-                <div class="col-sm-8">
+            <div className={["form-group" ,style.inputField].join(' ')}>
+                <label htmlFor={field.id} className="col-sm-4 col-form-label">{label(this)}</label>
+                <div className="col-sm-8">
                     <input 
                     value={this.state.value}
                     onChange = {this.changeHandler}
                     onBlur ={(e) => this.props.changeHandler(this.state, field.id)} 
                     autoComplete="off"
-                    disabled={field.writability}
+                    disabled={!field.writability}
                     type={field.type} 
-                    class={["form-control", invalidInputStyle].join(" ")}
+                    className={["form-control", invalidInputStyle].join(" ")}
                     id={field.id} 
                     placeholder={placeholder} />
                     {invalidMessage}
@@ -80,7 +80,7 @@ const checkValiditiy = (thisK) => {
     let invalidInputStyle = null
     if(!thisK.state.valid) { 
         invalidMessage = (
-            <div class={style.invalidMessage}>
+            <div className={style.invalidMessage}>
                 {thisK.state.invalidFeedBack}
             </div>
         )

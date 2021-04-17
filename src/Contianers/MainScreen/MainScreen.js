@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import style from "./MainScreen.module.scss";
 import { Route, Switch } from "react-router";
 import Aux from "../../hoc/Aux";
-import InternalCoding from "../Screens/InternalCoding*/InternalCoding";
+import InternalCoding from "../Screens/InternalCoding/InternalCoding";
 
 
 class MainScreen extends Component  {

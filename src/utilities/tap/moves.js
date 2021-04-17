@@ -47,11 +47,11 @@ const handleUrlMove = (moveType, thisK) =>{
         case "first":
             newIndex = 1
             url = `public/${thisK.state.tapName}/page/${newIndex}`
-            break;
+            return [url, newIndex]
         case "last":
             newIndex = "lastIndex"
             url = `public/${thisK.state.tapName}/lastPage`
-            break;
+            return [url, newIndex]
         default:
             break;
     }
@@ -114,8 +114,6 @@ export const handleMove = (type, thisK) => {
     const [url, newIndex] = handleUrlMove(type, thisK)
     thisK.setState({message: false, loading: true})
     if(!newIndex){
-        // you should get index first
-        console.log('you should get index first')
         handleIndex(thisK, type)
     }else{
         axios.get(url)

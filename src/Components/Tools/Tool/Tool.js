@@ -4,13 +4,15 @@ import style from "./Tool.module.scss";
 import {connect} from "react-redux"
 import Tooltip from "@material-ui/core/Tooltip";
 import { getRelatedIcon } from "../../../utilities/tools";
+import { getSelectLangDir} from "../../../utilities/lang";
 
 
 
 
 const Tool = props => {
-    // console.log("Tool render")
-    const [icon, toolTip] = getRelatedIcon(props.type, props.lanTable, props.lanState)
+    // console.log("Tool render") 
+    const [icon, toolTip] = 
+    getRelatedIcon(props.type, props.lanTable, props.lanState, getSelectLangDir(props.languages, props.lanState))
     let onMode = null
     if(props.onMode){
         onMode = style.onMode
@@ -44,7 +46,8 @@ const Tool = props => {
 const mapStateToProps = state => {
     return {
         lanState: state.lang.lan,
-        lanTable: state.lang.langTables
+        lanTable: state.lang.langTables,
+        languages: state.lang.langInfo
     }
 }
 

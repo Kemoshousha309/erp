@@ -1,29 +1,38 @@
 import React from "react"
+import { Component } from "react"
 import { connect } from "react-redux"
 import { t } from "../../../utilities/lang"
 import style from "./Page.module.scss"
 
 
-const Page = props => {
-    // console.log("page render")
-    const body =displayBody(props.page.pages, props.fields, props.recordClick)
-    const noMatch = <div className={style.noMatch}>{t("no_match", props.lanTable, props.lanState)}</div>
-    return (
-        <div className={style.container}>
-            <table className="table table-bordered text-center  table-hover">
-                <thead >
-                    <tr>
-                    <th scope="col">#</th>
-                    {displayHead(props.fields, props)}
-                    </tr>
-                </thead>
-                <tbody>
-                    {body ? body : noMatch }
-                </tbody>
-        </table>
-        </div>
-    )
-}
+class Page extends Component {
+    componentDidUpdate () {
+        document.getElementById("pageContianer").scrollTo({
+            top: 0, 
+            behavior: "smooth"
+        })
+    }
+    render(){
+        // console.log("page render")
+        const body =displayBody(this.props.page.pages, this.props.fields, this.props.recordClick)
+        const noMatch = <div className={style.noMatch}>{t("no_match", this.props.lanTable, this.props.lanState)}</div>
+        return (
+            <div id="pageContianer" className={style.container}>
+                <table className="table table-bordered text-center  table-hover">
+                    <thead >
+                        <tr>
+                        <th scope="col">#</th>
+                        {displayHead(this.props.fields, this.props)}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {body ? body : noMatch }
+                    </tbody>
+            </table>
+            </div>
+        )
+    }
+} 
 
 const mapStateToProps = state => {
     return {

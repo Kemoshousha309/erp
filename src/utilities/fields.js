@@ -12,7 +12,7 @@ export const label = {
                     touched: false,
                     message: null
                 },
-                writability: true,
+                writability: false,
                 value: "",
                 pk: true
             },
@@ -29,7 +29,7 @@ export const label = {
                     touched: false,
                     message: null
                 },
-                writability: true,
+                writability: false,
                 value: ""
             },
             lang_no:{
@@ -44,7 +44,7 @@ export const label = {
                     touched: false,
                     message: null
                 },
-                writability: true,
+                writability: false,
                 value: "",
             },
             lang_no_name:{
@@ -54,7 +54,7 @@ export const label = {
                 validation: {
                     requiered: false
                 },
-                writability: true,     
+                writability: false,     
                 readOnly: true,           
                 value: ""
             }

@@ -48,30 +48,29 @@ class SelectField extends Component {
         langNameChangeHandler(this)
     }
   render() {
-        console.log(`[selectField] render`, this.state)
+        // console.log(`[selectField] render`, this.state)
         const field = this.props.field
         const placeholder = t(this.props.field.label, this.props.lanTable, this.props.lanState)
         let [invalidMessage, invalidInputStyle] = checkValiditiy(this)
         let options = null
         if(field.options) {
            options = field.options.map(op => {
-                return <option key={op} value={op}>{op}</option>
+                return <option key={op.value} value={op.value}>{op.template}</option>
             })
         }
         return (
-            <div class={["form-group" ,style.inputField].join(' ')}>
-                <label for={field.id} class="col-sm-4 col-form-label">{label(this)}</label>
-                <div class="col-sm-8">
+            <div className={["form-group" ,style.inputField].join(' ')}>
+                <label htmlFor={field.id} className="col-sm-4 col-form-label">{label(this)}</label>
+                <div className="col-sm-8">
                 <select 
                     onChange = {this.changeHandler}
                     value={this.state.value}
                     autoComplete="off"
                     id={field.id} 
-                    disabled={field.writability}
+                    disabled={!field.writability}
                     onBlur ={(e) => this.props.changeHandler(this.state, field.id)} 
-                    class={["form-control", invalidInputStyle].join(" ")}>
-                        <option hidden selected  > {placeholder} </option>
-                         {/* <option style={{display:"none"}}></option> */}
+                    className={["form-control", invalidInputStyle].join(" ")}>
+                        <option hidden selected > {placeholder} </option>
                         {options}
                 </select>
                     {invalidMessage}
@@ -96,7 +95,7 @@ const checkValiditiy = (thisK) => {
     let invalidInputStyle = null
     if(!thisK.state.valid) {
         invalidMessage = (
-            <div class={style.invalidMessage}>
+            <div className={style.invalidMessage}>
                 {thisK.state.invalidFeedBack}
             </div>
         )

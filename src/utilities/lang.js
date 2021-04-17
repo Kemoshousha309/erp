@@ -31,7 +31,6 @@ export const selectMessage = (messages, lang_no) => {
 }
 export const decideLanguageName = (languages, input, langTables, lang_no)=> {
     let name = t("not_exist", langTables, lang_no)
-    console.log(input)
     languages.forEach(lan => {
         if(parseInt(input) === parseInt(lan.lang_no)){
             name = lan.lang_name
@@ -40,4 +39,14 @@ export const decideLanguageName = (languages, input, langTables, lang_no)=> {
         }
     })
     return name
+}
+
+export const getSelectLangDir = (langs, lang_no) => {
+    let lanDirection = null
+    langs.forEach(lang => {
+        if(parseInt(lang.lang_no) === parseInt(lang_no)){
+            lanDirection = lang.lang_dir
+        }   
+    })
+    return lanDirection
 }
