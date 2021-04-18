@@ -1,4 +1,4 @@
-import { timer, extractRcordData, fillRecord, getPk, getValues} from "../processes"
+import { timer, extractRcordData, fillRecord, getPk, getValues} from "./utilities"
 import axios from "../../axios"
 import { t } from "../lang"
 

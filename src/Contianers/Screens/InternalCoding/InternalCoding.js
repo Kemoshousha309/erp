@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Aux from "../../../hoc/Aux";
 import { getParam } from "../../../utilities/utilities";
 import Label from "./Taps/label";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
@@ -43,28 +42,14 @@ class InternalCoding extends Component {
                 })}
             </SelectDrop>
         )
-        let currentTap = null;
         switch(this.state.currentTap){
-            case  "language":
-                currentTap = <h1>language</h1>
-                break
-            case  "label":
-                currentTap = <Label dropDown={dropDown} />
-                break
-            case  "message":
-                currentTap = <h1>Messages</h1>
-                break
-            case  "forms":
-                currentTap = <h1>Forms</h1>
-                break
-            default:
-                currentTap = null
+            case  "language": return <h1>language</h1>
+            case  "label": return <Label dropDown={dropDown} />
+            case  "message": return <h1>Messages</h1>
+            case  "forms": return <h1>Forms</h1>
+            default: return null
         }
-        return(
-            <Aux>
-                {currentTap}
-           </Aux>
-        )
+          
     }
 } 
 

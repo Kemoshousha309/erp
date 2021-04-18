@@ -84,7 +84,7 @@ export const displayPattren = (fields, changeHandler) => {
                 )
             }
             return (
-                <div key={item1.id} className="row px-3">
+                <div key={item1.id}  className="row px-3">
                     { content}
                 </div>
             )

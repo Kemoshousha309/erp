@@ -3,8 +3,7 @@ import { connect } from "react-redux"
 import { t } from "../../../utilities/lang"
 import style from "./InputField.module.scss"
 import { Component } from "react";
-import {isValid } from "../../../utilities/processes";
-import Aux from "../../../hoc/Aux";
+import { changeHandler, label, checkInputValiditiy, reflectOuterState } from "../../../utilities/inputs"
 
 
 
@@ -16,43 +15,22 @@ class InputField extends Component {
         lastPropValue: null,
         lastPropValid: null,
     }
-    changeHandler = (e) => {
-        const validationRules = this.props.field.validation
-        const stateClone = {...this.state}
-        const [valid, message] = isValid(e.target.value, validationRules)
-        stateClone.valid = valid
-        stateClone.invalidFeedBack = message
-        stateClone.value = e.target.value
-        this.setState(stateClone)
-    } 
+    inputChange = (e) => changeHandler(e, this) 
     static getDerivedStateFromProps(props, state){
-        const updatedState = {...state}
-        if(state.lastPropValue !== props.field.value){
-            updatedState.value = props.field.value
-            updatedState.lastPropValue = props.field.value
-        }
-        if(!props.field.readOnly){  
-            if(state.lastPropValid !== props.field.validity.valid){
-            updatedState.valid = props.field.validity.valid
-            updatedState.invalidFeedBack = props.field.validity.message
-            updatedState.lastPropValid = props.field.validity.valid
-        }
-        }
- 
-        return updatedState
+        return reflectOuterState(props, state)
     }
   render() {
         // console.log(`[InputSelectField] render`, this.state)
         const field = this.props.field
         const placeholder = t(this.props.field.label, this.props.lanTable, this.props.lanState)
-        let [invalidMessage, invalidInputStyle] = checkValiditiy(this)
+        let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style)
         return (
             <div className={["form-group" ,style.inputField].join(' ')}>
                 <label htmlFor={field.id} className="col-sm-4 col-form-label">{label(this)}</label>
                 <div className="col-sm-8">
                     <input 
                     value={this.state.value}
-                    onChange = {this.changeHandler}
+                    onChange = {this.inputChange}
                     onBlur ={(e) => this.props.changeHandler(this.state, field.id)} 
                     autoComplete="off"
                     disabled={!field.writability}
@@ -66,31 +44,6 @@ class InputField extends Component {
         )
     }
 }
-
-const label = (thisK) => {
-    const label = t(thisK.props.field.label, thisK.props.lanTable, thisK.props.lanState)
-    if(thisK.props.field.validation.requiered){
-        return <Aux>{label}<span style={{color: "red", fontSize: "2rem"}} > *</span></Aux>
-    }else{
-        return label
-    }
-}
-const checkValiditiy = (thisK) => {
-    let invalidMessage = null
-    let invalidInputStyle = null
-    if(!thisK.state.valid) { 
-        invalidMessage = (
-            <div className={style.invalidMessage}>
-                {thisK.state.invalidFeedBack}
-            </div>
-        )
-        invalidInputStyle = style.invalidInput
-    }
-    return [invalidMessage, invalidInputStyle]
-}
-
-
-
 
 const mapStateToProps = state => {
     return {

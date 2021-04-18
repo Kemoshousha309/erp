@@ -2,183 +2,165 @@ import React, { Component} from 'react';
 import Boilerplate from '../../../../Components/Boilerplate/Boilerplate';
 import { displayPattren } from "../../../../utilities/display";
 import {connect} from "react-redux";
-import { label } from '../../../../utilities/fields';
 import { toolSelectHandler } from '../../../../utilities/tools';
-import { handleMode, fields, fillRecord, handleSaveRequest, handleDelete, handleSearch, checkValidity, addFunctionsListenrs} from "../../../../utilities/processes";
-import Modal from '../../../../Components/UI/Modal/Modal';
-import Aux from '../../../../hoc/Aux';
+import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/delete"
+import {handleSearch} from "../../../../utilities/tap/search"
+import {handleSave} from "../../../../utilities/tap/save"
+import {add_lan_no_options} from '../../../../utilities/tap/utilities'
 import RecordDisply from '../../../../Components/RecordDisplay/RecordDisplay';
 import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
 import AlertDialog from '../../../../Components/AlertDialog/AlertDialog';
-
+import {handleMode} from "../../../../utilities/tap/mode"
+import {functionsListenrs} from "../../../../utilities/tap/listeners"
+import 
+{handleAdd, handleModify, handleList, handleCopy, handleUndo, handleCloseList, handleRecordClick, handleInputChange, handleCloseShortCuts} 
+from "../../../../utilities/tap/handlers"
+import { t } from '../../../../utilities/lang';
+import ShortCutsList from '../../../../Components/ShortCutsList/ShortCutsList';
 
 class Label extends Component{
     state = {
-        fields: label,
+        fields: {
+            label_code:{
+                fieldType: "input",
+                type: "text",
+                label: "label_code",
+                validation: {
+                    requiered: true,
+                    length: 30
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: "",
+                pk: true
+            },
+            label_desc:{
+                fieldType: "input",
+                type: "text",
+                label: "label_desc",
+                validation: {
+                    requiered: true,
+                    length: 200
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: ""
+            },
+            lang_no:{
+                fieldType: "select",
+                type: "number",
+                label: "lang_no",
+                validation: {
+                    requiered: true
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: "",
+            },
+            lang_no_name:{
+                fieldType: "input",
+                type: "text",
+                label: "name",
+                validation: {
+                    requiered: false
+                },
+                writability: false,     
+                readOnly: true,           
+                value: ""
+            }
+},
         tools: null,
         mode: "start",
+        // we handle prevMode in list show only ....
+        prevMode: null,
         recordIndex: null,
         lastIndex: null,
         message: null,
         loading: false,
-        list: {
-            show: false
-        },
+        listShow: false,
         mainFields: ["label_code", "label_desc", "lang_no"],
         tapName: "labels",
-        alertOpen: false,
+        deleteConfirm: false,
         searchFields: ["label_code", 'lang_no'],
+        ShortCutsList: false
     }
 
-    // Tools Handle ****************************************************************
-    toolsClickedHandler = identifier => {
-        toolSelectHandler(identifier, this)
-    }
-    modify = () => {
-        fields(this.state.fields, "open", false)
-        this.setState({mode: "modify"})
-    }
-    add = () => {
-        fields(this.state.fields, "open")
-        this.setState({mode: "add", auditTable: null})
-    }
-    undo = () => {
-        switch (this.state.mode) {
-            case "modify":
-                fields(this.state.fields, "close", false)
-                this.setState({mode: "d_record"})
-                break;
-            case "copy":
-                fields(this.state.fields, "close", false)
-                this.setState({mode: "d_record"})
-                break;
-            default:
-                 // undo to start mode
-                fields(this.state.fields, "close")
-                this.setState({mode: "start", auditTable: null})
-                break;
-        }
-    }
-    save = () => {
-        const[valid, fieldsUpdate] = checkValidity(this) 
-        if(valid){
-            handleSaveRequest(this)            
-        }else{
-            this.setState({fields: fieldsUpdate})
-        }
-    }
-    copy = () => {
-        fields(this.state.fields, "open", false)
-        this.setState({mode: "copy", auditTable: null})
-    }
-    list = () => {
-        this.setState({list: {show: true}})
-    }
-    delete = () => {
-        this.setState({alertOpen: true})
-    }
-    search = () => {
-        handleSearch(this)
-    }
-
-    // Moves ************************************************************************
-    previous = () => {
-       handleMove("previous", this)
-    }
-    next = () => {
-       handleMove("next", this)
-    }
-    first = () => {
-        handleMove("first", this)
-    }
-    last = () => {
-        handleMove("last", this)
-    }
+    // Tools Handle *********************************************
+    toolsClickedHandler = identifier => toolSelectHandler(identifier, this)
+    modify = () => handleModify(this)
+    add = () => handleAdd(this)
+    undo = () => handleUndo(this)
+    save = () => handleSave(this)
+    copy = () => handleCopy(this)
+    list = () => handleList(this)
+    delete = () => handleDelete(this)
+    search = () => handleSearch(this)
+    previous = () => handleMove("previous", this)
+    next = () => handleMove("next", this)
+    first = () =>  handleMove("first", this)
+    last = () => handleMove("last", this)
 
 
-    // List & Record & values Handle ************************************************
-    closeListHandler = () => {
-        const currentState = this.state.list.show
-        this.setState({list: {show: !currentState}})
-    }
-    recordClick = (record, i, targetRecord) =>{
-        fillRecord(this.state.fields, record)
-        this.setState({list: {show: false}, mode: "d_record", recordIndex: i, auditTable: targetRecord})
-    }
-    inputChangeHandler = (state, identifier) => {
-        const fields = {...this.state.fields};
-        if(!fields[identifier].readOnly){
-            fields[identifier].value = state.value;
-            fields[identifier].validity.valid = state.valid;
-            fields[identifier].validity.message = state.invalidFeedBack;
-        }
-        this.setState({fields: fields})
-    }
-    handleClose = (res) => {
-        if(res){
-            handleDelete(this)
-        }
-        const currentState = this.state.alertOpen
-        this.setState({alertOpen: !currentState})
-    }
-    // LifeCycle Hooks ***************************************************************
+    // Handlers ************************************************
+    closeList = () =>  handleCloseList(this)
+    recordClick = (record, i) => handleRecordClick(this, record, i)
+    inputChange = (state, identifier) => handleInputChange(this, state, identifier)
+    deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
+    ShortCutsListCloseHandler = () => handleCloseShortCuts(this)
+
+    // LifeCycle methods *******************************************
     componentDidMount () {
         add_lan_no_options(this)
         setlastIndex(this)
-        addFunctionsListenrs(this)
+        functionsListenrs(this, true)
+    }
+    componentWillUnmount () {
+        functionsListenrs(this, false)
+    }
+    static getDerivedStateFromProps(props, state){
+        return { tools: handleMode(state.mode, props.lanState, props.languages) }
     }
 
-    static getDerivedStateFromProps(props, state){
-        const toolsMode = handleMode(state.mode, props.lanState, props.languages)
-        return {
-            tools: toolsMode,
-        }
-    }
     render (){
         // console.log("[label] render")
-        const content = displayPattren(this.state.fields, this.inputChangeHandler)
+        const content = displayPattren(this.state.fields, this.inputChange)
         return  (
-            <Aux>
-                <Modal show={this.state.list.show} clicked={this.closeListHandler} > 
-                {
-                    this.state.list.show ? 
-                    <RecordDisply 
-                        modalClose={this.closeListHandler} 
-                        tapRequest="labels"
-                        recordClick={this.recordClick} 
-                        TapFields={this.state.fields}
-                        mainFields={this.state.mainFields} /> : null
-                }
-                </Modal>
+            <div id="tap">
+                {this.state.listShow ?
+                <RecordDisply 
+                    modalClose={this.closeList} 
+                    tapRequest="labels"
+                    recordClick={this.recordClick} 
+                    TapFields={this.state.fields}
+                    mainFields={this.state.mainFields} /> : null}
                 <Boilerplate
                 dropDown={this.props.dropDown}
                 toolsClicked={this.toolsClickedHandler}
                 tools={this.state.tools}
                 loading={this.state.loading}
-                message={this.state.message}
-                >
+                message={this.state.message}>
                     {content}
                 </Boilerplate>
-                <AlertDialog open={this.state.alertOpen} handleClose={this.handleClose} >
-                    You are going to delete a record. Are you sure?
+                <AlertDialog open={this.state.deleteConfirm} handleClose={this.deleteConfirmation} >
+                    {t("delete_confirm", this.props.lanTable, this.props.lanState)}
                 </AlertDialog>
-            </Aux>
+                {this.state.ShortCutsList ? <ShortCutsList close={this.ShortCutsListCloseHandler} /> : null}
+            </div>
         )
     }
 } 
-
-
-const add_lan_no_options = (thisk) =>{
-    const options = []
-    thisk.props.languages.forEach(i => {
-        const itemTemp = `${i.lang_no} (${i.lang_name})`
-        options.push({value: i.lang_no, template: itemTemp})
-    })
-    const fieldsClone = {...thisk.state.fields}
-    fieldsClone.lang_no.options = options
-    thisk.setState({fields: fieldsClone})
-}
-
 
 const mapStateToProps = state => {
     return {
@@ -188,7 +170,6 @@ const mapStateToProps = state => {
         languages: state.lang.langInfo
     }
 }
-
 
 export default connect(mapStateToProps, null)(Label);
 

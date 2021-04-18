@@ -7,8 +7,9 @@ import Spinner from "../UI/Spinner/Spinner"
 import axios from "../../axios"
 import { connect } from "react-redux"
 import { Button } from "@material-ui/core"
-import { extractRcordData, getPk } from "../../utilities/processes"
+import { extractRcordData, getPk } from "../../utilities/tap/utilities"
 import { t } from "../../utilities/lang"
+import Modal from "../UI/Modal/Modal"
 
 
 class RecordDisply extends Component {
@@ -18,7 +19,8 @@ class RecordDisply extends Component {
         page_no: 1,
         mode: "d",
         loading: false,
-        firstLoad: true
+        firstLoad: true, 
+        show: true
     }
     static getDerivedStateFromProps(props, state){
         if(state.firstTime){
@@ -121,7 +123,9 @@ class RecordDisply extends Component {
         }else{
             content = <Spinner color="#3F51B5" />
         }
-        return  content
+        return  <Modal show clicked={this.props.modalClose} > {content}</Modal>
+            
+        
     }
 }
 

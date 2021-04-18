@@ -9,7 +9,7 @@ class Modal extends Component {
         if(this.props.loading){ 
             return nextProps.show !== this.props.show || nextProps.loading !== this.props.loading
         }else{
-            return nextProps.show !== this.props.show 
+            return nextProps.show !== this.props.show ||  nextProps.children !== this.props.children
         }
     }
     componentDidUpdate(){

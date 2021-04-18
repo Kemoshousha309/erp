@@ -5,8 +5,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { connect } from 'react-redux';
+import { t } from '../../utilities/lang';
 
-export default function AlertDialog(props) {
+
+function AlertDialog(props) {
   return (
     <div>
       <Dialog
@@ -22,13 +25,25 @@ export default function AlertDialog(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => props.handleClose(true)} color="secondary">
-            yes
+            {t("yes", props.lanTable, props.lanState)}
           </Button>
           <Button onClick={() => props.handleClose(false)} color="primary" autoFocus>
-            no  
+            {t("no", props.lanTable, props.lanState)}  
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 }
+
+const mapStateToProps = state => {
+  return {
+      lanState: state.lang.lan,
+      lanTable: state.lang.langTables,
+      token: state.auth.authData.token,
+      languages: state.lang.langInfo
+  }
+}
+
+export default connect(mapStateToProps, null)(AlertDialog);
+
