@@ -61,8 +61,10 @@ export const handleUndo  = (thisK) => {
 // input change handler ******************************
 export const handleInputChange = (thisK, state, identifier) => {
     const fields = {...thisK.state.fields};
-        if(!fields[identifier].readOnly){
+        if(!fields[identifier].readOnly ){
             fields[identifier].value = state.value;
+        }
+        if(fields[identifier].validity){
             fields[identifier].validity.valid = state.valid;
             fields[identifier].validity.message = state.invalidFeedBack;
         }

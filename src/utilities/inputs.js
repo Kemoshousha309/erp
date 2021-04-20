@@ -16,8 +16,10 @@ export const changeHandler = (e, thisK) => {
 
 export const label = (thisK) => {
     const label = t(thisK.props.field.label, thisK.props.lanTable, thisK.props.lanState)
-    if(thisK.props.field.validation.requiered){
-        return <Aux>{label}<span style={{color: "red", fontSize: "2rem"}} > *</span></Aux>
+    if(thisK.props.field.validation){
+        if(thisK.props.field.validation.requiered){
+            return <Aux>{label}<span style={{color: "red", fontSize: "2rem"}} > *</span></Aux>
+        }
     }else{
         return label
     }
@@ -42,7 +44,7 @@ export const reflectOuterState = (props, state) => {
             updatedState.value = props.field.value
             updatedState.lastPropValue = props.field.value
         }
-        if(!props.field.readOnly){  
+        if(!props.field.readOnly && props.field.validity){  
             if(state.lastPropValid !== props.field.validity.valid){
             updatedState.valid = props.field.validity.valid
             updatedState.invalidFeedBack = props.field.validity.message

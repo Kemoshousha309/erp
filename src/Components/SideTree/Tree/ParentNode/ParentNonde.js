@@ -12,7 +12,6 @@ const ParentNode = props => {
     // console.log("ParentNode render")
     let children= null
     if(props.children){
-
          children = props.children.map(ele => {
             const icon = getRelatedIcon(ele.form_no, iconMap);
             const route = getRelatedRoute(ele.form_no, routeMap)

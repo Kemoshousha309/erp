@@ -1,21 +1,23 @@
 import React from "react"
 import { connect } from "react-redux"
-import { t } from "../../../utilities/lang"
-import style from "./InputField.module.scss"
+import style from "./CheckBoxField.module.scss"
 import { Component } from "react";
-import { changeHandler, label, checkInputValiditiy, reflectOuterState } from "../../../utilities/inputs"
+import {  label, reflectOuterState } from "../../../utilities/inputs"
 
 
 
-class InputField extends Component {
+class CheckBoxField extends Component {
     state = {
-        value: "", 
+        value: false, 
         valid: true,
         invalidFeedBack: null,
         lastPropValue: null,
         lastPropValid: null,
     }
-    inputChange = (e) => changeHandler(e, this) 
+    inputChange = (e) => {
+        const currentValue = this.state.value
+        this.setState({value: !currentValue})
+    }
     static getDerivedStateFromProps(props, state){
         return reflectOuterState(props, state)
     }
@@ -23,23 +25,18 @@ class InputField extends Component {
     render() {
         // console.log(`[InputSelectField] render`, this.state)
         const field = this.props.field
-        const placeholder = t(this.props.field.label, this.props.lanTable, this.props.lanState)
-        let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style)
         return (
-            <div className={["form-group" ,style.inputField].join(' ')}>
+            <div className={["form-group" ,style.checkboxField].join(' ')}>
                 <label htmlFor={field.id} className="col-sm-4 col-form-label">{label(this)}</label>
                 <div className="col-sm-8">
                     <input 
-                    value={this.state.value}
+                    checked={this.state.value}
                     onChange = {this.inputChange}
                     onBlur ={(e) => this.props.changeHandler(this.state, field.id)} 
-                    autoComplete="off"
                     disabled={!field.writability}
                     type={field.type} 
-                    className={["form-control", invalidInputStyle].join(" ")}
-                    id={field.id} 
-                    placeholder={placeholder} />
-                    {invalidMessage}
+                    className={["form-control", style.checkboxInput].join(" ")}
+                    id={field.id} />
                 </div>
             </div>
         )
@@ -55,4 +52,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps, null)(InputField);
+export default connect(mapStateToProps, null)(CheckBoxField);

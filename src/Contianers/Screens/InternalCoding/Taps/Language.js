@@ -6,7 +6,7 @@ import { toolSelectHandler } from '../../../../utilities/tools';
 import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/delete"
 import {handleSearch} from "../../../../utilities/tap/search"
 import {handleSave} from "../../../../utilities/tap/save"
-import {add_lan_no_options} from '../../../../utilities/tap/utilities'
+import {add_lan_dir_options} from '../../../../utilities/tap/utilities'
 import RecordDisply from '../../../../Components/RecordDisplay/RecordDisplay';
 import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
 import AlertDialog from '../../../../Components/AlertDialog/AlertDialog';
@@ -18,44 +18,11 @@ from "../../../../utilities/tap/handlers"
 import { t } from '../../../../utilities/lang';
 import ShortCutsList from '../../../../Components/ShortCutsList/ShortCutsList';
 
-class Label extends Component{
+class Language extends Component{
     state = {
         fields: {
-            label_code:{
-                fieldType: "input",
-                type: "text",
-                label: "label_code",
-                validation: {
-                    requiered: true,
-                    length: 30
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,
-                value: "",
-                pk: true
-            },
-            label_desc:{
-                fieldType: "input",
-                type: "text",
-                label: "label_desc",
-                validation: {
-                    requiered: true,
-                    length: 200
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,
-                value: ""
-            },
             lang_no:{
-                fieldType: "select",
+                fieldType: "input",
                 type: "number",
                 label: "lang_no",
                 validation: {
@@ -69,17 +36,87 @@ class Label extends Component{
                 writability: false,
                 value: "",
             },
-            lang_no_name:{
+            lang_name:{
                 fieldType: "input",
                 type: "text",
                 label: "name",
+                validation: {
+                    requiered: true,
+                    length: 50
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
                 writability: false,     
-                readOnly: true,           
+                value: "" 
+            },
+            lang_dir:{
+                fieldType: "select",
+                type: "number",
+                label: "lang_dir",
+                validation: {
+                    requiered: true
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: "",
+            },
+            report_ext:{
+                fieldType: "input",
+                type: "text",
+                label: "report_ext",
+                validation: {
+                    requiered: true,
+                    length: 10
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
                 value: ""
-            }
+            },
+            lang_ext:{
+                fieldType: "input",
+                type: "text",
+                label: "lang_ext",
+                validation: {
+                    requiered: true,
+                    length: 10
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: ""
+            },
+            lang_dfl:{
+                fieldType: "checkbox",
+                type: "checkbox",
+                label: "lang_dfl",
+                writability: false,
+                value: false
+            },
+            active:{
+                fieldType: "checkbox",
+                type: "checkbox",
+                label: "active",
+                writability: false,
+                value: false
+            },
+            
 },
-        pks: ["label_code", "lang_no"],
-        tapTools: [],
+        pks: ["lang_no"],
+        tapTools: ["delete"], // to be deleted and view the others
         tools: null,
         mode: "start",
         // we handle prevMode in list show only ....
@@ -89,10 +126,10 @@ class Label extends Component{
         message: null,
         loading: false,
         listShow: false,
-        mainFields: ["label_code", "label_desc", "lang_no"],
-        tapName: "labels",
+        mainFields: ["lang_no", "lang_name", "lang_dir"],
+        tapName: "language",
         deleteConfirm: false,
-        searchFields: ["label_code", 'lang_no'],
+        searchFields: ['lang_no'],
         ShortCutsList: false
     }
 
@@ -121,7 +158,8 @@ class Label extends Component{
 
     // LifeCycle methods *******************************************
     componentDidMount () {
-        add_lan_no_options(this)
+        // add_lan_no_options(this)
+        add_lan_dir_options(this)
         setlastIndex(this)
         functionsListenrs(this, true)
     }
@@ -140,7 +178,7 @@ class Label extends Component{
                 {this.state.listShow ?
                 <RecordDisply 
                     modalClose={this.closeList} 
-                    tapRequest="labels"
+                    tapRequest={this.state.tapName}
                     recordClick={this.recordClick} 
                     pks={this.state.pks}
                     mainFields={this.state.mainFields} /> : null}
@@ -170,6 +208,6 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(Label);
+export default connect(mapStateToProps, null)(Language);
 
 

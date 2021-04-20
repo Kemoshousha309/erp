@@ -42,9 +42,9 @@ export const toolsNameMap = (lang_dir) => {
 
 
 
-export const startMode = (langDir) => {
+export const startMode = (langDir, tools) => {
     const toolsName = toolsNameMap(langDir)
-    let mode = [
+    const initTools = [
         {name: toolsName.add.name, state: true},
         {name:  toolsName.copy.name, state: false},
         {name: toolsName.search.name, state: true, onMode: false},
@@ -58,7 +58,14 @@ export const startMode = (langDir) => {
         {name:  toolsName.delete.name, state: false},
         {name:  toolsName.undo.name, state: false},
     ]
-    return mode
+    tools.forEach(tName => {
+        initTools.forEach((t, i) => {
+            if(t.name === tName){
+                initTools.splice(i, 1)
+            }
+        })
+    })
+    return initTools
 }
 
 

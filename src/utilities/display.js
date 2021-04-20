@@ -11,8 +11,8 @@ const doubleItems = (array) =>{
         }else{
             const doubleArr = [array[i] , array[i+1]];
             finalArr.push(doubleArr)
-            const lastItem = finalArr[finalArr.length-1]
-            lastItem.pop()
+            // const lastItem = finalArr[finalArr.length-1]
+            // lastItem.pop()
         }
     }
     return finalArr;

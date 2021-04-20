@@ -1,0 +1,22 @@
+@import "../../../utilities//styleUtility.scss";
+$fontSize: 1.8rem;
+
+.checkboxField {
+    display: flex;
+    label{
+        padding: 0 1rem !important;  
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: $fontSize;
+        display: flex;
+        align-items: center;
+    }
+    div{
+        align-self: center;
+    }
+}
+
+.checkboxInput{
+
+}

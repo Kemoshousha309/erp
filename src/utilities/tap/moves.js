@@ -1,4 +1,4 @@
-import { timer, extractRcordData, fillRecord, getPk, getValues} from "./utilities"
+import { timer, fillRecord, getPkUrl, getValues} from "./utilities"
 import axios from "../../axios"
 import { t } from "../lang"
 
@@ -64,7 +64,7 @@ const handleUrlMove = (moveType, thisK) =>{
 
 const handleRes = (thisK, res, newIndex) =>{
     if(res.data.page){
-        const record = extractRcordData(thisK.state.mainFields, res.data.page)
+        const record = res.data.page
         fillRecord(thisK.state.fields, record)
         thisK.setState({recordIndex: newIndex, mode: "d_record"})
     }
@@ -87,9 +87,9 @@ const handleRes = (thisK, res, newIndex) =>{
 
 const handleIndex = (thisK, moveType) => {
     let index = null
-    const pk = getPk(thisK.state.fields)
     const recordData = getValues(thisK.state.fields)
-    axios.get(`/public/${thisK.state.tapName}/pageNo/${recordData[pk]}/${recordData.lang_no}`)
+    const pkurl = getPkUrl(thisK.state.pks, recordData)
+    axios.get(`/public/${thisK.state.tapName}/pageNo${pkurl}`)
     .then(res => {
         index = res.data.page_no
         const [url, newIndex] = handleUrlMove_(moveType, index, thisK)

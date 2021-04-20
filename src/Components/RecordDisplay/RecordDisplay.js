@@ -7,7 +7,7 @@ import Spinner from "../UI/Spinner/Spinner"
 import axios from "../../axios"
 import { connect } from "react-redux"
 import { Button } from "@material-ui/core"
-import { extractRcordData, getPk } from "../../utilities/tap/utilities"
+import {  getPkUrl } from "../../utilities/tap/utilities"
 import { t } from "../../utilities/lang"
 import Modal from "../UI/Modal/Modal"
 
@@ -60,7 +60,7 @@ class RecordDisply extends Component {
             .then(res => {
             this.setState({pages: res.data, page_no: page_no, mode: modeUpdate, loading: false})
             })
-            .catch(err => console.log(err.data.message))
+            .catch(err => console.log(err.response))
     }
     pagesRequest = (page_no) => {
         const url = `/public/${this.props.tapRequest}/pages/${page_no}` 
@@ -80,15 +80,14 @@ class RecordDisply extends Component {
     }
     recordClick = (e, i) =>{
         const targetRecord = this.state.pages.pages[i]
-        const recordData = extractRcordData(this.props.mainFields, targetRecord)
         let index = null
         this.setState({loading: true})
-            const pk = getPk(this.props.TapFields)
-            axios.get(`/public/${this.props.tapRequest}/pageNo/${recordData[pk]}/${recordData.lang_no}`)
+            const urlPk = getPkUrl(this.props.pks, targetRecord)
+            axios.get(`/public/${this.props.tapRequest}/pageNo${urlPk}`)
             .then(res => {
                 index = res.data.page_no
                 this.setState({loading: false})
-                this.props.recordClick(recordData, index, targetRecord)
+                this.props.recordClick(targetRecord, index)
             })
             .catch(err => console.log(err))
     }

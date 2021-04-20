@@ -3,7 +3,6 @@ import { connect } from "react-redux"
 import { t } from "../../../utilities/lang"
 import style from "./SelectField.module.scss"
 import { Component } from "react";
-import { langNameChangeHandler } from "../../../utilities/tap/utilities";
 import { changeHandler, label, checkInputValiditiy, reflectOuterState } from "../../../utilities/inputs"
 
 
@@ -20,9 +19,7 @@ class SelectField extends Component {
     static getDerivedStateFromProps(props, state){
         return reflectOuterState(props, state)
     }
-    componentDidUpdate () {
-        langNameChangeHandler(this)
-    }
+    
   render() {
         // console.log(`[selectField] render`, this.state)
         const field = this.props.field

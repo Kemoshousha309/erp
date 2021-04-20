@@ -43,20 +43,29 @@ class Layout extends Component {
             if(this.props.langTable){
                 layout = (
                     <Aux>
-                        <Modal show={this.state.moblieNav} clicked={this.mobileNavHandler} >
-                            <MobileNav show={this.state.moblieNav} />
-                        </Modal>
+                        {
+                            this.state.moblieNav ? 
+                            <Modal show={this.state.moblieNav} clicked={this.mobileNavHandler} >
+                            <   MobileNav show={this.state.moblieNav} />
+                            </Modal> : null
+                        }
                         <div className={style.contianer} >
+                        {
+                            this.state.SideTreeMobView ? 
                             <SideTreeMobView 
                             SideTreeMobView={this.state.SideTreeMobView} 
                             clicked={this.SideTreeMobViewHandler}
-                            />
+                            />: null
+                        }
+                        {
+                            !this.state.SideTreeMobView ? 
                             <SideTree 
                             {...this.props}
                             sideNavActivity={this.state.sideNavActivity}
                             sideNavClick={this.sideNavHandler}
                             SideTreeMobViewHandler ={this.SideTreeMobViewHandler}
-                            />
+                            />: null
+                        }
                             <div className={style.right}>
                                 <div className={style.navContianer}>
                                     <Navigation 

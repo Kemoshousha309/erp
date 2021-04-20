@@ -5,6 +5,7 @@ import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
 import MenuItem from '@material-ui/core/MenuItem';
 import {t} from "../../../utilities/lang"
 import { connect } from "react-redux";
+import Language from "./Taps/Language";
 
 
 
@@ -43,7 +44,7 @@ class InternalCoding extends Component {
             </SelectDrop>
         )
         switch(this.state.currentTap){
-            case  "language": return <h1>language</h1>
+            case  "language": return <Language dropDown={dropDown} />
             case  "label": return <Label dropDown={dropDown} />
             case  "message": return <h1>Messages</h1>
             case  "forms": return <h1>Forms</h1>

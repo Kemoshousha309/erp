@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Component } from "react";
 import InputField  from "./InputField/InputField";
 import SelectField from "./SelectField/SelectField";
+import CheckBoxField from "./CheckBoxField/CheckBoxField";
 
 
 
@@ -15,6 +16,8 @@ class Input extends Component {
                 return <InputField field={this.props.field} changeHandler={this.props.changeHandler}/>
             case "select":
                 return <SelectField field={this.props.field} changeHandler={this.props.changeHandler} />
+            case "checkbox":
+                return <CheckBoxField field={this.props.field} changeHandler={this.props.changeHandler} />
             default:
                 break;  
         }

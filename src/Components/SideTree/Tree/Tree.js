@@ -13,9 +13,9 @@ class Tree extends Component {
         this.props.getTree();
     }
     
-    componentDidUpdate(){
-        // console.log("Tree Update")
-    }
+    // componentDidUpdate(){
+    //     console.log("Tree Update")
+    // }
     render() {        
         const padding = this.props.sideNavActivity ? {padding: "2rem"} : {padding: "1rem"};
         let treeContent = this.props.sideNavActivity ? <Spinner color="wheat" /> : null

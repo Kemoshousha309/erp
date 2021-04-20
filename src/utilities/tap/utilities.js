@@ -1,11 +1,14 @@
 import { decideLanguageName } from "../lang"
 
-
 export const fields = (fields, mode, empty=true, specific) => {
     if(specific){
         for(const field in fields){
             if(empty) {
-                fields[field].value = ""
+                if(fields[field].type === "checkbox"){
+                    fields[field].value = false
+                }else{
+                    fields[field].value = ""
+                }
             }
         }
         specific.forEach(fName => {
@@ -17,12 +20,16 @@ export const fields = (fields, mode, empty=true, specific) => {
         })
     }else{
         for(const field in fields){
-            if(!fields[field].readOnly){
+            if(!fields[field].readOnly && fields[field].validity){
                 fields[field].validity.valid = true
                 fields[field].validity.message = null
             }
             if(empty){
-                fields[field].value = ""
+                if(fields[field].type === "checkbox"){
+                    fields[field].value = false
+                }else{
+                    fields[field].value = ""
+                }
             }
             if(mode === "open"){
                 if(fields[field].readOnly){
@@ -40,8 +47,11 @@ export const fields = (fields, mode, empty=true, specific) => {
 
 export const fillRecord = (fields, record) => { 
     for(let i in fields){
-        fields[i].valid = true
-        fields[i].value = record[i] ? record[i] : ""
+        if(record[i] !== undefined){
+            fields[i].value = record[i]
+        }else if (record[i] === false){
+            fields[i].value =  false
+        }
     }
     return fields;
 }
@@ -56,7 +66,17 @@ export const add_lan_no_options = (thisk) =>{
     fieldsClone.lang_no.options = options
     thisk.setState({fields: fieldsClone})
 }
-
+export const add_lan_dir_options = (thisK) => {
+    const options = []
+    thisK.props.languages.forEach(i => {
+        const itemTemp = `${i.lang_dir}`
+        options.push({value: i.lang_dir, template: itemTemp})
+    })
+    const fieldsClone = {...thisK.state.fields}
+    fieldsClone.lang_dir.options = options
+    thisK.setState({fields: fieldsClone})
+    
+}
 
 // proesses utilities ******************************************
 
@@ -83,6 +103,15 @@ export const getPk = (fields) => {
         }
     }
 }
+
+export const getPkUrl = (pks, record) => {
+    let pkUrl = ""
+    pks.forEach(p =>  {
+        pkUrl = pkUrl + `/${record[p]}`
+    })
+    return pkUrl
+}
+
 export const setValidity = (fields) => {
     const fieldsClone = {...fields}
     let validState = true
@@ -153,7 +182,7 @@ export  const trigerEnterButton = (id, func) => {
 
 export  const langNameChangeHandler = (thisK) => {
     if(thisK.props.field.id === "lang_no"){
-        const langNameInput = document.getElementById("lang_no_name")
+        const langNameInput = document.getElementById("lang_name")
         langNameInput.value = 
         decideLanguageName(thisK.props.languages, thisK.state.value, thisK.props.lanTable, thisK.props.lanState);
     }
@@ -164,7 +193,7 @@ export const checkValidity = (thisK) => {
     let isValid = true
     for(const key in fieldsClone){
         const f = fieldsClone[key]
-        if(!f.readOnly && f.writability){
+        if(!f.readOnly && f.writability && f.validity){
             if(f.value === ''){
                 f.validity.valid = false
                 f.validity.message = "This field is requierd"
@@ -174,3 +203,4 @@ export const checkValidity = (thisK) => {
     }
     return [isValid, fieldsClone]
 }
+
