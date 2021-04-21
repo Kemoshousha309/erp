@@ -15,7 +15,7 @@ const ParentNode = props => {
          children = props.children.map(ele => {
             const icon = getRelatedIcon(ele.form_no, iconMap);
             const route = getRelatedRoute(ele.form_no, routeMap)
-            if(ele.children && ele.children.length > 1){
+            if(ele.children && ele.children.length > 0 ){
                 return <ParentNode 
                 history={props.history}
                 route={route}
