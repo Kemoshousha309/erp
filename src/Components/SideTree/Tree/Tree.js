@@ -20,7 +20,6 @@ class Tree extends Component {
         const padding = this.props.sideNavActivity ? {padding: "2rem"} : {padding: "1rem"};
         let treeContent = this.props.sideNavActivity ? <Spinner color="wheat" /> : null
         if(this.props.tree){
-            console.log(this.props.tree)
             const tree = this.props.tree.map(ele => {
                 const icon = getRelatedIcon(ele.form_no, iconMap);
                 const route = getRelatedRoute(ele.form_no, routeMap)

@@ -50,8 +50,12 @@ export default connect(mapStateToProps, null)(Page);
 
 const displayHead = (fields, props) => {
     const head = fields.map((fName, i) => {
+        let output = t(fName, props.lanTable, props.lanState)
+        if(typeof(output) === "string"){
+            output = output.toUpperCase()
+        }
         return( 
-            <th key={i} scope="col">{t(fName, props.lanTable, props.lanState).toUpperCase()}</th>
+            <th key={i} scope="col">{output}</th>
         )
     })
     return head

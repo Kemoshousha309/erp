@@ -21,7 +21,8 @@ export const  handleSearch = (thisK) => {
 const searchRequest = (thisK, values) => {
     thisK.setState({loading: true}) // use get pk url 
     const pkUrl = getPkUrl(thisK.state.pks, values)
-    axios.get(`/public/${thisK.state.tapName}${pkUrl}`)
+    const url = `${thisK.state.urls.search}${pkUrl}`
+    axios.get(url)
     .then(res => {
         fillRecord(thisK.state.fields, res.data)
         fields(thisK.state.fields, 'close', false)

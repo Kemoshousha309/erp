@@ -69,11 +69,18 @@ export const add_lan_no_options = (thisk) =>{
 export const add_lan_dir_options = (thisK) => {
     const options = []
     thisK.props.languages.forEach(i => {
-        const itemTemp = `${i.lang_dir}`
-        options.push({value: i.lang_dir, template: itemTemp})
+        let isPresent = false
+        options.forEach(ele => {
+            if(ele.value === i.lang_dir){isPresent = true}
+        })
+        if(!isPresent){
+            const itemTemp = `${i.lang_dir}`
+            options.push({value: i.lang_dir, template: itemTemp})
+        }
     })
     const fieldsClone = {...thisK.state.fields}
-    fieldsClone.lang_dir.options = options
+    const constoptions_noDub = [...new Set(options)]
+    fieldsClone.lang_dir.options = constoptions_noDub
     thisK.setState({fields: fieldsClone})
     
 }
@@ -180,12 +187,13 @@ export  const trigerEnterButton = (id, func) => {
     });
 }
 
-export  const langNameChangeHandler = (thisK) => {
-    if(thisK.props.field.id === "lang_no"){
-        const langNameInput = document.getElementById("lang_name")
+export  const langNameAutoView = (thisK) => {
+    const langNoInput = document.getElementById("lang_no")
+    langNoInput.addEventListener("change", (e) => {
+        const langNameInput = document.getElementById("lang_no_name")
         langNameInput.value = 
-        decideLanguageName(thisK.props.languages, thisK.state.value, thisK.props.lanTable, thisK.props.lanState);
-    }
+        decideLanguageName(thisK.props.languages, e.target.value, thisK.props.lanTable, thisK.props.lanState);
+    })
 }
 
 export const checkValidity = (thisK) => {

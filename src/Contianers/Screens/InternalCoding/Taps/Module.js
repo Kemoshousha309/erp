@@ -4,7 +4,6 @@ import { toolSelectHandler } from '../../../../utilities/tools';
 import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/delete"
 import {handleSearch} from "../../../../utilities/tap/search"
 import {handleSave} from "../../../../utilities/tap/save"
-import {add_lan_dir_options} from '../../../../utilities/tap/utilities'
 import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
 import {functionsListenrs} from "../../../../utilities/tap/listeners"
 import {
@@ -21,15 +20,16 @@ import {
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 
-class Language extends Component{
+class Module extends Component{
     state = {
         fields: {
-            lang_no:{
+            module_no:{
                 fieldType: "input",
                 type: "number",
-                label: "lang_no",
+                label: "module_no",
                 validation: {
-                    requiered: true
+                    requiered: true,
+                    length: 30
                 },
                 validity: {
                     valid: true,
@@ -38,27 +38,43 @@ class Language extends Component{
                 },
                 writability: false,
                 value: "",
+                pk: true
             },
-            lang_name:{
+            shortcut:{
+                fieldType: "input",
+                type: "text",
+                label: "shortcut",
+                validation: {
+                    requiered: true,
+                    length: 200
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: ""
+            },
+            module_d_name:{
                 fieldType: "input",
                 type: "text",
                 label: "name",
                 validation: {
-                    requiered: true,
-                    length: 50
+                    requiered: true
                 },
                 validity: {
                     valid: true,
                     touched: false,
                     message: null
                 },
-                writability: false,     
-                value: "" 
+                writability: false,
+                value: "",
             },
-            lang_dir:{
-                fieldType: "select",
-                type: "number",
-                label: "lang_dir",
+            module_f_name:{
+                fieldType: "input",
+                type: "text",
+                label: "foreign_name",
                 validation: {
                     requiered: true
                 },
@@ -70,13 +86,13 @@ class Language extends Component{
                 writability: false,
                 value: "",
             },
-            report_ext:{
+            order_no:{
                 fieldType: "input",
-                type: "text",
-                label: "report_ext",
+                type: "number",
+                label: "order_no",
                 validation: {
                     requiered: true,
-                    length: 10
+                    length: 30
                 },
                 validity: {
                     valid: true,
@@ -84,30 +100,8 @@ class Language extends Component{
                     message: null
                 },
                 writability: false,
-                value: ""
-            },
-            lang_ext:{
-                fieldType: "input",
-                type: "text",
-                label: "lang_ext",
-                validation: {
-                    requiered: true,
-                    length: 10
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,
-                value: ""
-            },
-            lang_dfl:{
-                fieldType: "checkbox",
-                type: "checkbox",
-                label: "lang_dfl",
-                writability: false,
-                value: false
+                value: "",
+                pk: true
             },
             active:{
                 fieldType: "checkbox",
@@ -116,10 +110,9 @@ class Language extends Component{
                 writability: false,
                 value: false
             },
-            
 },
-        pks: ["lang_no"],
-        tapTools: ["delete"], // to be deleted and view the others
+        pks: ["module_no"],
+        tapTools: ["delete", "add", "copy"],
         tools: null,
         mode: "start",
         // we handle prevMode in list show only ....
@@ -129,22 +122,22 @@ class Language extends Component{
         message: null,
         loading: false,
         listShow: false,
-        mainFields: ["lang_no", "lang_name", "lang_dir"],
-        tapName: "language",
+        mainFields: ["module_no", "shortcut", "module_d_name"],
+        tapName: "modules",
         deleteConfirm: false,
-        searchFields: ['lang_no'],
+        searchFields: ["module_no"],
         ShortCutsList: false,
         urls: {
-            add: "public/language",
-            modify: "public/language",
-            search: "public/language",
-            pages: "public/language/pages",   
-            page:  "public/language/page",
-            lastPage: "public/language/lastPage",
-            filter: "public/language/filteredPages",
-            pageNo: "public/language/pageNo",
-            delete: "public/language"
-        }
+            add: "modules",
+            modify: "modules",
+            search: "modules",
+            pages: "modules/pages",   
+            page:  "modules/page",
+            lastPage: "modules/lastPage",
+            filter: "modules/filteredPages",
+            pageNo: "modules/pageNo",
+            delete: "modules"
+        },
     }
 
     // Tools Handle *********************************************
@@ -162,7 +155,6 @@ class Language extends Component{
     first = () =>  handleMove("first", this)
     last = () => handleMove("last", this)
 
-
     // Handlers ************************************************
     closeList = () =>  handleCloseList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
@@ -172,13 +164,11 @@ class Language extends Component{
 
     // LifeCycle methods *******************************************
     componentDidMount () {
-        add_lan_dir_options(this)
         setlastIndex(this)
         functionsListenrs(this, true)
     }
     componentWillUnmount () {functionsListenrs(this, false)}
     static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
-
     render (){return displayContent(this)}
 } 
 
@@ -191,6 +181,6 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(Language);
+export default connect(mapStateToProps, null)(Module);
 
 

@@ -45,7 +45,7 @@ class RecordDisply extends Component {
     }
 
     filteredPagesRequest = (page_no) => {
-        const url = `/public/${this.props.tapRequest}/filteredPages/${page_no}` 
+        const url = `${this.props.urls.filter}/${page_no}`
         this.setState({loading: true})
         let modeUpdate = "f"
         if(isEmpty(this.state.values)){
@@ -63,7 +63,7 @@ class RecordDisply extends Component {
             .catch(err => console.log(err.response))
     }
     pagesRequest = (page_no) => {
-        const url = `/public/${this.props.tapRequest}/pages/${page_no}` 
+        const url = `${this.props.urls.pages}/${page_no}` 
         this.setState({loading: true})
             axios.get(url)
             .then(res => {
@@ -83,7 +83,8 @@ class RecordDisply extends Component {
         let index = null
         this.setState({loading: true})
             const urlPk = getPkUrl(this.props.pks, targetRecord)
-            axios.get(`/public/${this.props.tapRequest}/pageNo${urlPk}`)
+            const url = `${this.props.urls.pageNo}${urlPk}`
+            axios.get(url)
             .then(res => {
                 index = res.data.page_no
                 this.setState({loading: false})

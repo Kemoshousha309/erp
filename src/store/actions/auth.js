@@ -66,12 +66,8 @@ const storeTree = (structuredTree) => ({type: actionTypes.STORE_TREE, tree: stru
 
 export const treeRequest = () => {
     return (dispatch, getState) => {
-        const token = getState().auth.authData.token;
-        axios.get("forms/mainTree", {
-            headers:{
-                Authorization: `Bearer ${token}`
-            }
-        }).then(res => {
+        axios.get("forms/mainTree")
+        .then(res => {
             const structuredTree = getTreeStructure(res.data);
             dispatch(storeTree(structuredTree))
          }).catch(err => {

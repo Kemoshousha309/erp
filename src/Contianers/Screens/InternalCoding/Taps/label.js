@@ -1,22 +1,25 @@
-import React, { Component} from 'react';
-import Boilerplate from '../../../../Components/Boilerplate/Boilerplate';
-import { displayPattren } from "../../../../utilities/display";
+import { Component} from 'react';
 import {connect} from "react-redux";
 import { toolSelectHandler } from '../../../../utilities/tools';
 import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/delete"
 import {handleSearch} from "../../../../utilities/tap/search"
 import {handleSave} from "../../../../utilities/tap/save"
-import {add_lan_no_options} from '../../../../utilities/tap/utilities'
-import RecordDisply from '../../../../Components/RecordDisplay/RecordDisplay';
+import {add_lan_no_options, langNameAutoView} from '../../../../utilities/tap/utilities'
 import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
-import AlertDialog from '../../../../Components/AlertDialog/AlertDialog';
-import {handleMode} from "../../../../utilities/tap/mode"
 import {functionsListenrs} from "../../../../utilities/tap/listeners"
-import 
-{handleAdd, handleModify, handleList, handleCopy, handleUndo, handleCloseList, handleRecordClick, handleInputChange, handleCloseShortCuts} 
-from "../../../../utilities/tap/handlers"
-import { t } from '../../../../utilities/lang';
-import ShortCutsList from '../../../../Components/ShortCutsList/ShortCutsList';
+import {
+    handleAdd,
+    handleModify,
+    handleList,
+    handleCopy,
+    handleUndo,
+    handleCloseList,
+    handleRecordClick,
+    handleInputChange,
+    handleCloseShortCuts,
+    handleDrivedState
+} from "../../../../utilities/tap/handlers"
+import { displayContent } from '../../../../utilities/tap/displayContent';
 
 class Label extends Component{
     state = {
@@ -93,7 +96,18 @@ class Label extends Component{
         tapName: "labels",
         deleteConfirm: false,
         searchFields: ["label_code", 'lang_no'],
-        ShortCutsList: false
+        ShortCutsList: false,
+        urls: {
+            add: "public/labels",
+            modify: "public/labels",
+            search: "public/labels",
+            pages: "public/labels/pages",   
+            page:  "public/labels/page",
+            lastPage: "public/labels/lastPage",
+            filter: "public/labels/filteredPages",
+            pageNo: "public/labels/pageNo",
+            delete: "public/labels"
+        }
     }
 
     // Tools Handle *********************************************
@@ -111,7 +125,6 @@ class Label extends Component{
     first = () =>  handleMove("first", this)
     last = () => handleMove("last", this)
 
-
     // Handlers ************************************************
     closeList = () =>  handleCloseList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
@@ -124,41 +137,11 @@ class Label extends Component{
         add_lan_no_options(this)
         setlastIndex(this)
         functionsListenrs(this, true)
+        langNameAutoView(this)
     }
-    componentWillUnmount () {
-        functionsListenrs(this, false)
-    }
-    static getDerivedStateFromProps(props, state){
-        return { tools: handleMode(state.mode, props.lanState, props.languages, state.tapTools) }
-    }
-
-    render (){
-        // console.log("[label] render")
-        const content = displayPattren(this.state.fields, this.inputChange)
-        return  (
-            <div id="tap">
-                {this.state.listShow ?
-                <RecordDisply 
-                    modalClose={this.closeList} 
-                    tapRequest="labels"
-                    recordClick={this.recordClick} 
-                    pks={this.state.pks}
-                    mainFields={this.state.mainFields} /> : null}
-                <Boilerplate
-                dropDown={this.props.dropDown}
-                toolsClicked={this.toolsClickedHandler}
-                tools={this.state.tools}
-                loading={this.state.loading}
-                message={this.state.message}>
-                    {content}
-                </Boilerplate>
-                <AlertDialog open={this.state.deleteConfirm} handleClose={this.deleteConfirmation} >
-                    {t("delete_confirm", this.props.lanTable, this.props.lanState)}
-                </AlertDialog>
-                {this.state.ShortCutsList ? <ShortCutsList close={this.ShortCutsListCloseHandler} /> : null}
-            </div>
-        )
-    }
+    componentWillUnmount () {functionsListenrs(this, false)}
+    static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
+    render (){return displayContent(this)}
 } 
 
 const mapStateToProps = state => {

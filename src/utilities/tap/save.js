@@ -14,12 +14,18 @@ export const handleSave = (thisK) => {
 
 const handleSaveRequest = (thisK) => {
     let method = null
-    thisK.state.mode === "modify" ? method = "put" : method = "post"
+    let url = null
+    if(thisK.state.mode === "modify"){
+        method = "put"
+        url = thisK.state.urls.modify
+    }else{
+        method = "post"
+        url = thisK.state.urls.add
+    }
     thisK.setState({loading: true})
     axios({
         method: method,
-        url: `/public/${thisK.state.tapName}`,
-        headers:{Authorization: `Bearer ${thisK.props.token}`}, 
+        url: url,
         data: getValues(thisK.state.fields)
         })
         .then(res => {
@@ -50,5 +56,6 @@ const handleSaveRequest = (thisK) => {
                 
             })
             timer(thisK)
+            console.log(err.response)
         }) 
 }

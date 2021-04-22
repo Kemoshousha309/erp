@@ -340,19 +340,19 @@ export const routeMap = [
     },
     {
         form_no: 9902,
-        route: "internal-coding?key=message"
+        route: ""
     },
     {
         form_no: 9903,
-        route: "internal-coding?key=forms"
+        route: ""
     },
     {
         form_no: 9904,
-        route: "internal-coding?key=modules"
+        route: ""
     },
     {
         form_no: 9905,
-        route: "internal-coding?key=language"
+        route: ""
     },
 
     {

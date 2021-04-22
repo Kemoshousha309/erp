@@ -92,3 +92,27 @@ export const displayPattren = (fields, changeHandler) => {
         
         return tapContent;
 }
+
+export const displayPattrenTree = (fields, changeHandler) => {
+    const fieldsArr = [];
+    for(let key in fields){
+        const fieldobj = {
+            id: key,
+            ...fields[key]
+        }
+        fieldsArr.push(fieldobj);
+    }
+    const content = fieldsArr.map(f => {
+        return (
+            <div key={f.id} >
+                {inputField(f, changeHandler)}
+            </div>
+        )
+    })
+    return (
+        <div   className="row px-3">
+            <div className="col-sm-8 px-0" >{content}</div>
+            <div className="col-sm-4 px-0" >Tree</div>
+        </div>
+    )    
+}   

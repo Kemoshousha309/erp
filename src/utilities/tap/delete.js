@@ -1,11 +1,10 @@
-import { getPk, getValues, fields, timer } from "./utilities"
+import { getPkUrl, getValues, fields, timer } from "./utilities"
 import { selectMessage } from "../lang"
 import axios from "../../axios"
 
 
 
 // delete ******************************************************
-
 export const handleDelete = (thisK) => {
     thisK.setState({deleteConfirm: true})
 }
@@ -20,13 +19,12 @@ export const handleDeleteConfirmation = (thisK, res) => {
 
 const handleDeleteRequest = (thisK) => {
     const record = getValues(thisK.state.fields)
-    const pk = getPk(thisK.state.fields)
-    const url = `/public/${thisK.state.tapName}/${record[pk]}/${record.lang_no}`
+    const pkUrl = getPkUrl(thisK.state.pks, record)
+    const url = `${thisK.state.urls.delete}${pkUrl}`
     thisK.setState({loading: true})
     axios({
             method: 'delete',
             url: url,
-            headers:{Authorization: `Bearer ${thisK.props.token}`}, 
         })
     .then(res => {
         fields(thisK.state.fields, 'close', true)

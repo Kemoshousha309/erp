@@ -6,13 +6,16 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {t} from "../../../utilities/lang"
 import { connect } from "react-redux";
 import Language from "./Taps/Language";
+import Massage from "./Taps/Massage";
+import Module from "./Taps/Module";
+import Forms from "./Taps/Forms";
 
 
 
 class InternalCoding extends Component {
     state={
         tapOptions: ["label", "language", "message", "form", "module"],
-        currentTap: null,
+        currentTap: "label",
         dropDownChange: false,
     }
 
@@ -46,8 +49,9 @@ class InternalCoding extends Component {
         switch(this.state.currentTap){
             case  "language": return <Language dropDown={dropDown} />
             case  "label": return <Label dropDown={dropDown} />
-            case  "message": return <h1>Messages</h1>
-            case  "forms": return <h1>Forms</h1>
+            case  "message": return <Massage dropDown={dropDown} />
+            case  "form": return <Forms dropDown={dropDown} />
+            case  "module": return <Module dropDown={dropDown} />
             default: return null
         }
           

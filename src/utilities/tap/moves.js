@@ -12,19 +12,19 @@ const handleUrlMove_ = (moveType, index, thisK) => {
     switch (moveType) {
         case "next":
             newIndex =index+1
-            url = `public/${thisK.state.tapName}/page/${newIndex}`
+            url = `${thisK.state.urls.page}/${newIndex}`
             break;
         case "previous":
             newIndex =index-1
-            url = `public/${thisK.state.tapName}/page/${newIndex}`
+            url = `${thisK.state.urls.page}/${newIndex}`
             break;
         case "first":
             newIndex = 1
-            url = `public/${thisK.state.tapName}/page/${newIndex}`
+            url = `${thisK.state.urls.page}/${newIndex}`
             break;
         case "last":
             newIndex = "lastIndex"
-            url = `public/${thisK.state.tapName}/lastPage`
+            url = thisK.state.urls.lastPage
             break;
         default:
             break;
@@ -38,19 +38,19 @@ const handleUrlMove = (moveType, thisK) =>{
     switch (moveType) {
         case "next":
             newIndex = thisK.state.recordIndex+1
-            url = `public/${thisK.state.tapName}/page/${newIndex}`
+            url = `${thisK.state.urls.page}/${newIndex}`
             break;
         case "previous":
             newIndex = thisK.state.recordIndex-1
-            url = `public/${thisK.state.tapName}/page/${newIndex}`
+            url = `${thisK.state.urls.page}/${newIndex}`
             break;
         case "first":
             newIndex = 1
-            url = `public/${thisK.state.tapName}/page/${newIndex}`
+            url = `${thisK.state.urls.page}/${newIndex}`
             return [url, newIndex]
         case "last":
             newIndex = "lastIndex"
-            url = `public/${thisK.state.tapName}/lastPage`
+            url = thisK.state.urls.lastPage
             return [url, newIndex]
         default:
             break;
@@ -89,7 +89,8 @@ const handleIndex = (thisK, moveType) => {
     let index = null
     const recordData = getValues(thisK.state.fields)
     const pkurl = getPkUrl(thisK.state.pks, recordData)
-    axios.get(`/public/${thisK.state.tapName}/pageNo${pkurl}`)
+    const url = `${thisK.state.urls.pageNo}${pkurl}`
+    axios.get(url)
     .then(res => {
         index = res.data.page_no
         const [url, newIndex] = handleUrlMove_(moveType, index, thisK)
@@ -102,7 +103,7 @@ const handleIndex = (thisK, moveType) => {
 }
 
 export const setlastIndex = (thisK) => {
-    axios.get(`public/${thisK.state.tapName}/lastPage`)
+    axios.get(thisK.state.urls.lastPage)
         .then(res => {
             thisK.setState({lastIndex: res.data.pages_count})
         })

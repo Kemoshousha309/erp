@@ -4,7 +4,7 @@ import { toolSelectHandler } from '../../../../utilities/tools';
 import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/delete"
 import {handleSearch} from "../../../../utilities/tap/search"
 import {handleSave} from "../../../../utilities/tap/save"
-import {add_lan_dir_options} from '../../../../utilities/tap/utilities'
+import {add_lan_no_options, langNameAutoView} from '../../../../utilities/tap/utilities'
 import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
 import {functionsListenrs} from "../../../../utilities/tap/listeners"
 import {
@@ -21,11 +21,43 @@ import {
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 
-class Language extends Component{
+class Massage extends Component{
     state = {
         fields: {
-            lang_no:{
+            message_code:{
                 fieldType: "input",
+                type: "text",
+                label: "message_code",
+                validation: {
+                    requiered: true,
+                    length: 60
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,     
+                value: "" 
+            },
+            message_desc:{
+                fieldType: "input",
+                type: "text",
+                label: "message_desc",
+                validation: {
+                    requiered: true,
+                    length: 200
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,     
+                value: "" 
+            },
+            lang_no:{
+                fieldType: "select",
                 type: "number",
                 label: "lang_no",
                 validation: {
@@ -39,86 +71,17 @@ class Language extends Component{
                 writability: false,
                 value: "",
             },
-            lang_name:{
+            lang_no_name:{
                 fieldType: "input",
                 type: "text",
                 label: "name",
-                validation: {
-                    requiered: true,
-                    length: 50
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
                 writability: false,     
-                value: "" 
-            },
-            lang_dir:{
-                fieldType: "select",
-                type: "number",
-                label: "lang_dir",
-                validation: {
-                    requiered: true
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,
-                value: "",
-            },
-            report_ext:{
-                fieldType: "input",
-                type: "text",
-                label: "report_ext",
-                validation: {
-                    requiered: true,
-                    length: 10
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,
+                readOnly: true,           
                 value: ""
-            },
-            lang_ext:{
-                fieldType: "input",
-                type: "text",
-                label: "lang_ext",
-                validation: {
-                    requiered: true,
-                    length: 10
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,
-                value: ""
-            },
-            lang_dfl:{
-                fieldType: "checkbox",
-                type: "checkbox",
-                label: "lang_dfl",
-                writability: false,
-                value: false
-            },
-            active:{
-                fieldType: "checkbox",
-                type: "checkbox",
-                label: "active",
-                writability: false,
-                value: false
             },
             
 },
-        pks: ["lang_no"],
+        pks: ["message_code", "lang_no"],
         tapTools: ["delete"], // to be deleted and view the others
         tools: null,
         mode: "start",
@@ -129,21 +92,21 @@ class Language extends Component{
         message: null,
         loading: false,
         listShow: false,
-        mainFields: ["lang_no", "lang_name", "lang_dir"],
-        tapName: "language",
+        mainFields: ["message_code", "message_desc", "lang_no"],
+        tapName: "messages",
         deleteConfirm: false,
-        searchFields: ['lang_no'],
+        searchFields: ["message_code", "lang_no"],
         ShortCutsList: false,
         urls: {
-            add: "public/language",
-            modify: "public/language",
-            search: "public/language",
-            pages: "public/language/pages",   
-            page:  "public/language/page",
-            lastPage: "public/language/lastPage",
-            filter: "public/language/filteredPages",
-            pageNo: "public/language/pageNo",
-            delete: "public/language"
+            add: "public/messages",
+            modify: "public/messages",
+            search: "public/messages",
+            pages: "public/messages/pages",   
+            page:  "public/messages/page",
+            lastPage: "public/messages/lastPage",
+            filter: "public/messages/filteredPages",
+            pageNo: "public/messages/pageNo",
+            delete: "public/messages"
         }
     }
 
@@ -172,9 +135,10 @@ class Language extends Component{
 
     // LifeCycle methods *******************************************
     componentDidMount () {
-        add_lan_dir_options(this)
+        add_lan_no_options(this)
         setlastIndex(this)
         functionsListenrs(this, true)
+        langNameAutoView(this)
     }
     componentWillUnmount () {functionsListenrs(this, false)}
     static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
@@ -191,6 +155,6 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(Language);
+export default connect(mapStateToProps, null)(Massage);
 
 

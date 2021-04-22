@@ -43,7 +43,7 @@ class SelectField extends Component {
                     disabled={!field.writability}
                     onBlur ={(e) => this.props.changeHandler(this.state, field.id)} 
                     className={["form-control", invalidInputStyle].join(" ")}>
-                        <option hidden selected > {placeholder} </option>
+                        <option hidden defaultValue > {placeholder} </option>
                         {options}
                 </select>
                     {invalidMessage}

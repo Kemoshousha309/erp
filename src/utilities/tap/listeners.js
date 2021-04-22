@@ -13,8 +13,12 @@ const getToolState = (tools, name) => {
 
 const handleListenrClick = (event, tools, name, func) => {
     const state = getToolState(tools, name)
-    const inputs = document.getElementById("tap").querySelectorAll("input, select")
-    inputs.forEach(ele => ele.blur())
+    if(name === "next" || name === "previous"){
+        // no blur
+    }else{
+        const inputs = document.getElementById("tap").querySelectorAll("input, select")
+        inputs.forEach(ele => ele.blur())
+    }
     if(state){
         event.preventDefault()
         func()

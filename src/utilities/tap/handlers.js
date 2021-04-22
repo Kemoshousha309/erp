@@ -1,3 +1,4 @@
+import { handleMode } from "./mode"
 import { fields, fillRecord } from "./utilities"
 
 // modify hanle *******************************
@@ -76,4 +77,9 @@ export const handleInputChange = (thisK, state, identifier) => {
 export const handleCloseShortCuts = (thisK) => {
     const currentState = thisK.state.ShortCutsList
     thisK.setState({ShortCutsList: !currentState})
+}
+
+// drived state Handler ***************************************
+export const handleDrivedState = (props, state) => {
+    return { tools: handleMode(state.mode, props.lanState, props.languages, state.tapTools) }
 }

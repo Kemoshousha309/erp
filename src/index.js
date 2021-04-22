@@ -9,18 +9,25 @@ import { languageReducer } from './store';
 import thunk from "redux-thunk"
 import { Provider } from 'react-redux';
 import { authReducer } from './store/reducers/auth';
-
+import axios from "./axios"
 
 
 
 const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
-
 const rootReducer = combineReducers({
   lang: languageReducer,
   auth: authReducer,
 })
-
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+
+// set axios interceptors
+axios.interceptors.request.use(req => {
+  if(store.getState().auth.authData){
+    const token = store.getState().auth.authData.token
+    req.headers.Authorization = `Bearer ${token}`
+  }
+  return req
+})
 
 ReactDOM.render(
   // <React.StrictMode> this gives us some warning to improve our app you  can use it at the end of devolopment
