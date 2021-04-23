@@ -9,8 +9,8 @@ import { t } from "../lang"
 
 export const displayContent = (thisK) => {
     let content = null
-    if(thisK.state.tree){
-        content = displayPattrenTree(thisK.state.fields, thisK.inputChange, thisK)
+    if(thisK.state.tree === null || thisK.state.tree){
+        content = displayPattrenTree(thisK.state.fields, thisK.inputChange, thisK, thisK.state.tree)
     }else {
         content = displayPattren(thisK.state.fields, thisK.inputChange, thisK)
     }

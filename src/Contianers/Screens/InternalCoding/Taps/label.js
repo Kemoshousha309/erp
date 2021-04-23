@@ -145,7 +145,6 @@ class Label extends Component{
     componentWillUnmount () {functionsListenrs(this, false)}
     static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
     render (){
-        console.log(this.state.fields.lang_no.value)
         return displayContent(this)
     }
 } 

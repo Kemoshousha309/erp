@@ -1,30 +1,23 @@
 import React, { Component } from "react";
 import {connect} from "react-redux"
-import style from "./Tree.module.scss";
-import {getRelatedIcon, iconMap, getRelatedRoute, routeMap } from "../../../utilities/tree";
-import ParentNode from "./ParentNode/ParentNonde";
-import { treeRequest } from "../../../store";
+import style from "./Treeview.module.scss";
+import {getRelatedIcon, iconMap, getRelatedRoute, routeMap } from "../../utilities/tree";
 import { CircularProgress } from "@material-ui/core";
+import TreeNode from "./TreeNode/TreeNode";
 
 
-
-
-class Tree extends Component {
-    componentDidMount() {
-        this.props.getTree();
+class Treeview extends Component {
+    componentDidUpdate () {
     }
-    
-
     render() {        
-        const padding = this.props.sideNavActivity ? {padding: "2rem"} : {padding: "1rem"};
-        let treeContent = this.props.sideNavActivity ?
-         <CircularProgress  className="m-5" /> :  <CircularProgress  className="mt-5" />
+        let treeContent = <CircularProgress  className="m-5" /> 
         if(this.props.tree){
             const tree = this.props.tree.map(ele => {
                 const icon = getRelatedIcon(ele.form_no, iconMap);
                 const route = getRelatedRoute(ele.form_no, routeMap)
                 if(ele.children && ele.children.length > 0){
-                    return <ParentNode 
+                    return <TreeNode 
+                    thisK={this.props.thisK}
                     {...this.props}
                     route={route}
                     lang={this.props.lanState}
@@ -38,7 +31,7 @@ class Tree extends Component {
                 return null
             })
             treeContent = (
-                <ul style={padding} className={style.tree}>
+                <ul className={style.tree}>
                     {tree}
                 </ul>
             )
@@ -55,17 +48,10 @@ const mapStateToProps = state => {
     return {
         lanState: state.lang.lan,
         isAuthed: !(state.auth.authData == null),
-        tree: state.auth.tree
     }
 }
-  
-const mapDispatchToProps = dispatch => {
-    return {
-        getTree: () => dispatch(treeRequest())
-    }
-  }
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(Tree);
+export default connect(mapStateToProps,null)(Treeview);
 
 

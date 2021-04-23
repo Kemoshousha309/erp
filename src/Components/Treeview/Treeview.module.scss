@@ -1,4 +1,4 @@
-@import "../../../utilities/styleUtility.scss";
+@import "../../utilities/styleUtility.scss";
 
 .treeContianer{
     min-height: 20rem;
@@ -6,10 +6,10 @@
 
 
 .tree{
-    color: white;
+    color: black;
     text-align: start;
     list-style: none;
-    max-height: 87vh;
+    max-height: 60vh;
     overflow-y: scroll;
     padding-left: 0rem;
     padding-inline-end: 0px !important;
@@ -43,21 +43,27 @@
     &>li{
         margin: 2rem 1rem !important;
     }
-   
+    
     li{
+        i{
+            font-style: normal;
+        }
         width: fit-content;
         align-self: center;
         font-size: 2rem;
         cursor: pointer;
         transition: all .3s;    
+        svg{
+            color: $primaryColor;
+        }
         &:hover{
             svg{
                 @include wobbleTopRight;
             }
-            text-shadow: 0 1px 2px rgb(204, 204, 204);
+            text-shadow: 0 1px 2px #333;
         }
         &:active{
-            text-shadow: 0 2px 2px rgb(170, 170, 170);
+            text-shadow: 0 2px 2px #333;
         }
     }
 }

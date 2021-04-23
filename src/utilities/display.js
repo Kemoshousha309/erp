@@ -1,6 +1,7 @@
 import Input from "../Components/Input/input";
 import React from "react";
 import Aux from "../hoc/Aux";
+import Treeview from "../Components/Treeview/Treeview";
 
 const doubleItems = (array) =>{
     let finalArr = [];
@@ -11,8 +12,7 @@ const doubleItems = (array) =>{
         }else{
             const doubleArr = [array[i] , array[i+1]];
             finalArr.push(doubleArr)
-            // const lastItem = finalArr[finalArr.length-1]
-            // lastItem.pop()
+
         }
     }
     return finalArr;
@@ -94,7 +94,7 @@ export const displayPattren = (fields, changeHandler, thisK) => {
         return tapContent;
 }
 
-export const displayPattrenTree = (fields, changeHandler, thisK) => {
+export const displayPattrenTree = (fields, changeHandler, thisK, tree) => {
     const fieldsArr = [];
     for(let key in fields){
         const fieldobj = {
@@ -113,7 +113,7 @@ export const displayPattrenTree = (fields, changeHandler, thisK) => {
     return (
         <div   className="row px-3">
             <div className="col-sm-8 px-0" >{content}</div>
-            <div className="col-sm-4 px-0" >Tree</div>
+            <div className="col-sm-4 px-0" ><Treeview thisK={thisK} tree={tree} /></div>
         </div>
     )    
 }   

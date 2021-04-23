@@ -1,4 +1,6 @@
 import axios from "../../axios"
+import { getTreeStructure } from "../tree"
+import { handleSave } from "./save"
 
 
 export const handleAsyncLangNoOpts = (thisK, mode) =>{
@@ -47,3 +49,18 @@ export const add_lan_dir_options = (thisK) => {
     
 }
 
+export const getTree = (thisK) =>{
+    axios.get("forms/mainTree")
+    .then(res => {
+        const structuredTree = getTreeStructure(res.data);
+        thisK.setState({tree: structuredTree})
+        }).catch(err => {
+            //handle Error
+        console.log(err.message)
+    })
+}
+
+export const asyncTreeSave = (thisK) => {
+    thisK.setState({tree: null})
+    handleSave(thisK, getTree)
+} 
