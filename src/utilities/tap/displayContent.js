@@ -10,9 +10,9 @@ import { t } from "../lang"
 export const displayContent = (thisK) => {
     let content = null
     if(thisK.state.tree){
-        content = displayPattrenTree(thisK.state.fields, thisK.inputChange)
+        content = displayPattrenTree(thisK.state.fields, thisK.inputChange, thisK)
     }else {
-        content = displayPattren(thisK.state.fields, thisK.inputChange)
+        content = displayPattren(thisK.state.fields, thisK.inputChange, thisK)
     }
     return  (
         <div id="tap">

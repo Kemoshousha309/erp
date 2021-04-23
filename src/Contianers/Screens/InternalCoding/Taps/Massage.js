@@ -4,7 +4,7 @@ import { toolSelectHandler } from '../../../../utilities/tools';
 import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/delete"
 import {handleSearch} from "../../../../utilities/tap/search"
 import {handleSave} from "../../../../utilities/tap/save"
-import {add_lan_no_options, langNameAutoView} from '../../../../utilities/tap/utilities'
+import {handleAsyncLangNoOpts} from '../../../../utilities/tap/async'
 import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
 import {functionsListenrs} from "../../../../utilities/tap/listeners"
 import {
@@ -57,7 +57,7 @@ class Massage extends Component{
                 value: "" 
             },
             lang_no:{
-                fieldType: "select",
+                fieldType: "asyncSelect",
                 type: "number",
                 label: "lang_no",
                 validation: {
@@ -68,8 +68,10 @@ class Massage extends Component{
                     touched: false,
                     message: null
                 },
+                options : null,
                 writability: false,
                 value: "",
+                pk: true
             },
             lang_no_name:{
                 fieldType: "input",
@@ -133,13 +135,14 @@ class Massage extends Component{
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)
 
+     // async handle
+     async_lang_no_options = (mode) => {handleAsyncLangNoOpts(this, mode)}
+
     // LifeCycle methods *******************************************
     componentDidMount () {
-        add_lan_no_options(this)
         setlastIndex(this)
         functionsListenrs(this, true)
-        langNameAutoView(this)
-    }
+    }   
     componentWillUnmount () {functionsListenrs(this, false)}
     static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
 

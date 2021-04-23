@@ -1,4 +1,5 @@
-import { getPkUrl, getValues, fields, timer } from "./utilities"
+import { timer } from "./utilities"
+import {  getValues, fields, getPkUrl } from "./fields"
 import { selectMessage } from "../lang"
 import axios from "../../axios"
 

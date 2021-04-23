@@ -34,18 +34,19 @@ const gridContent = (fields) => {
 
 
 
-const inputField = (field, changeHandler) => {
+const inputField = (field, changeHandler, thisK) => {
     // console.log("[input func] render")
     return (
         <Input 
             field={field}
-            changeHandler={changeHandler} />
+            changeHandler={changeHandler} 
+            thisK={thisK} />
     )
 }
 
 
 
-export const displayPattren = (fields, changeHandler) => {
+export const displayPattren = (fields, changeHandler, thisK) => {
     // console.log("[displayPattren func] render")
     const doubleArr = gridContent(fields)
         const tapContent = doubleArr.map(ele => {
@@ -56,10 +57,10 @@ export const displayPattren = (fields, changeHandler) => {
                 content = (
                     <Aux>
                     <div className="col-md-6  px-0">
-                        {inputField(item1, changeHandler)}
+                        {inputField(item1, changeHandler, thisK)}
                     </div>
                     <div className="col-md-6  px-0">
-                        {inputField(item2, changeHandler)}
+                        {inputField(item2, changeHandler, thisK)}
                     </div>
                      {// consider three column layout
                      /* <div className="col-md-4 px-0">
@@ -77,7 +78,7 @@ export const displayPattren = (fields, changeHandler) => {
                 content = (
                     <Aux>
                         <div className="col-md-6 px-0">
-                            {inputField(item1, changeHandler)}
+                            {inputField(item1, changeHandler, thisK)}
                         </div>
                         <div className="col-md-6 px-0"></div>
                     </Aux>
@@ -93,7 +94,7 @@ export const displayPattren = (fields, changeHandler) => {
         return tapContent;
 }
 
-export const displayPattrenTree = (fields, changeHandler) => {
+export const displayPattrenTree = (fields, changeHandler, thisK) => {
     const fieldsArr = [];
     for(let key in fields){
         const fieldobj = {
@@ -105,7 +106,7 @@ export const displayPattrenTree = (fields, changeHandler) => {
     const content = fieldsArr.map(f => {
         return (
             <div key={f.id} >
-                {inputField(f, changeHandler)}
+                {inputField(f, changeHandler, thisK)}
             </div>
         )
     })

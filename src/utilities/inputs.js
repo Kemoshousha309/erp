@@ -1,6 +1,6 @@
 import Aux from "../hoc/Aux"
 import { t } from "./lang"
-import { isValid } from "./tap/utilities"
+import { isValid } from "./tap/validation"
 
 
 export const changeHandler = (e, thisK) => {
@@ -42,6 +42,7 @@ export const reflectOuterState = (props, state) => {
     const updatedState = {...state}
         if(state.lastPropValue !== props.field.value){
             updatedState.value = props.field.value
+            updatedState.displayValue = props.field.value
             updatedState.lastPropValue = props.field.value
         }
         if(!props.field.readOnly && props.field.validity){  

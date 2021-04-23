@@ -1,4 +1,4 @@
-import { deepClone } from "./utilities"
+import { deepClone } from "./validation"
 import { getSelectLangDir } from "../lang"
 import { startMode, toolsNameMap } from "../tools"
 

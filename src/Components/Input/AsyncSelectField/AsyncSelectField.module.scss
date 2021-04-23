@@ -1,0 +1,115 @@
+@import "../../../utilities//styleUtility.scss";
+$fontSize: 1.8rem;
+
+.inputField{
+    display: flex;
+    label{
+        padding: 0 1rem !important;  
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: $fontSize;
+        display: flex;
+        align-items: center;
+    }
+    div{
+        align-self: center;
+    }
+    input{
+        font-size: $fontSize;
+    }
+}
+.downAngle{
+    position: absolute;
+    top: 20%;
+    svg{
+        transition: all .5s ;
+        transform: rotate(0deg);
+    }
+}
+.listHidden{
+    display: none;
+}
+.listShow{
+    display: block;
+}
+.angleUp{
+    svg{
+        transform: rotate(180deg);
+    }
+}
+
+
+.arAngle{
+    left: 5%;
+}
+.enAngle{
+    right: 5%;
+}
+
+.droplist{
+    position: absolute;
+    width: 100%;
+    z-index: 20;
+    @media only screen and (max-width: 760px){
+        padding: 0 2rem;
+    }
+    @media only screen and (max-width: 1560px){
+        padding: 0 1.7rem;
+    }
+    @media only screen and (max-width: 1000px){
+        padding: 0 2.5rem;
+    }
+      padding: 0 1.5rem;
+    ul{
+        padding-inline-start: 0px;
+        list-style: none;
+        background-color: white;
+        li{
+            padding: .5rem 1rem;
+            font-size: $fontSize;
+            transition: all .1s;
+            cursor: pointer;
+            &:hover{
+                color: white;
+                background-color: rgb(155, 155, 155);
+            }
+        }   
+    }
+}
+
+.arTrans{
+    transform: translateX(1.5rem);
+    @media only screen and (max-width: 1000px){
+        transform: translateX(1.8rem);
+    }
+    @media only screen and (max-width: 600px){
+        transform: translateX(2rem);
+    }
+}
+
+.enTrans{
+    transform: translateX(-1.5rem);
+    @media only screen and (max-width: 1000px){
+        transform: translateX(-1.8rem);
+    }
+    @media only screen and (max-width: 600px){
+        transform: translateX(-2rem);
+    }
+}
+
+.invalidMessage{
+    font-size: 80%;
+    color: red;
+    display: block !important;
+    padding: .5rem 1rem !important;
+    background-color: rgba(243, 191, 191, 0.507);
+    font-size: 1.5rem;
+}
+.invalidInput{
+    border: 1px solid red !important;
+    &:focus{
+        box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.274);
+    }
+    
+}

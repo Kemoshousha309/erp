@@ -4,7 +4,7 @@ import { toolSelectHandler } from '../../../../utilities/tools';
 import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/delete"
 import {handleSearch} from "../../../../utilities/tap/search"
 import {handleSave} from "../../../../utilities/tap/save"
-import {add_lan_no_options, langNameAutoView} from '../../../../utilities/tap/utilities'
+import {handleAsyncLangNoOpts} from '../../../../utilities/tap/async'
 import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
 import {functionsListenrs} from "../../../../utilities/tap/listeners"
 import {
@@ -58,7 +58,7 @@ class Label extends Component{
                 value: ""
             },
             lang_no:{
-                fieldType: "select",
+                fieldType: "asyncSelect",
                 type: "number",
                 label: "lang_no",
                 validation: {
@@ -69,16 +69,18 @@ class Label extends Component{
                     touched: false,
                     message: null
                 },
+                options : null,
                 writability: false,
                 value: "",
+                pk: true
             },
             lang_no_name:{
                 fieldType: "input",
                 type: "text",
                 label: "name",
                 writability: false,     
-                readOnly: true,           
-                value: ""
+                readOnly: true,       
+                value: ""    
             }
 },
         pks: ["label_code", "lang_no"],
@@ -132,16 +134,20 @@ class Label extends Component{
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)
 
+    // async handle
+    async_lang_no_options = (mode) => {handleAsyncLangNoOpts(this, mode)}
+
     // LifeCycle methods *******************************************
     componentDidMount () {
-        add_lan_no_options(this)
         setlastIndex(this)
         functionsListenrs(this, true)
-        langNameAutoView(this)
     }
     componentWillUnmount () {functionsListenrs(this, false)}
     static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
-    render (){return displayContent(this)}
+    render (){
+        console.log(this.state.fields.lang_no.value)
+        return displayContent(this)
+    }
 } 
 
 const mapStateToProps = state => {

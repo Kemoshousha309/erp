@@ -4,7 +4,7 @@ import { Component } from "react";
 import InputField  from "./InputField/InputField";
 import SelectField from "./SelectField/SelectField";
 import CheckBoxField from "./CheckBoxField/CheckBoxField";
-
+import AsyncSelectField from "./AsyncSelectField/AsyncSelectField"
 
 
 
@@ -13,11 +13,13 @@ class Input extends Component {
         const field = this.props.field
         switch (field.fieldType) {
             case "input":
-                return <InputField field={this.props.field} changeHandler={this.props.changeHandler}/>
+                return <InputField field={this.props.field} changeHandler={this.props.changeHandler} thisK={this.props.thisK}/>
             case "select":
-                return <SelectField field={this.props.field} changeHandler={this.props.changeHandler} />
+                return <SelectField field={this.props.field} changeHandler={this.props.changeHandler} thisK={this.props.thisK} />
             case "checkbox":
-                return <CheckBoxField field={this.props.field} changeHandler={this.props.changeHandler} />
+                return <CheckBoxField field={this.props.field} changeHandler={this.props.changeHandler}  thisK={this.props.thisK}/>
+            case "asyncSelect":
+                return <AsyncSelectField field={this.props.field} changeHandler={this.props.changeHandler} thisK={this.props.thisK} />
             default:
                 break;  
         }
@@ -34,6 +36,5 @@ const mapStateToProps = state => {
         lanTable: state.lang.langTables
     }
 }
-
 
 export default connect(mapStateToProps, null)(Input);

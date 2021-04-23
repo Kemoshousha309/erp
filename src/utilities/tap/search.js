@@ -1,4 +1,6 @@
-import {  getValues, fields, timer, checkValidity, fillRecord, getPkUrl } from "./utilities"
+import { timer } from "./utilities"
+import {  getValues, fields, fillRecord, getPkUrl } from "./fields"
+import { checkValidity } from "./validation"
 import { selectMessage } from "../lang"
 import axios from "../../axios"
 

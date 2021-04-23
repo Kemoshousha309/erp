@@ -1,4 +1,5 @@
-import { timer, fillRecord, getPkUrl, getValues} from "./utilities"
+import { timer } from "./utilities"
+import {  getValues, fillRecord, getPkUrl } from "./fields"
 import axios from "../../axios"
 import { t } from "../lang"
 

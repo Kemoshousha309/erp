@@ -1,9 +1,10 @@
 import { handleMode } from "./mode"
-import { fields, fillRecord } from "./utilities"
+import { fields, fillRecord } from "./fields"
 
 // modify hanle *******************************
 export const handleModify = (thisK) => {
     fields(thisK.state.fields, "open", false)
+    fields(thisK.state.fields, "close", false, thisK.state.pks)
     thisK.setState({mode: "modify"})
 }
 
@@ -62,9 +63,9 @@ export const handleUndo  = (thisK) => {
 // input change handler ******************************
 export const handleInputChange = (thisK, state, identifier) => {
     const fields = {...thisK.state.fields};
-        if(!fields[identifier].readOnly ){
-            fields[identifier].value = state.value;
-        }
+            if(!fields[identifier].readOnly){
+                fields[identifier].value = state.value;
+            }
         if(fields[identifier].validity){
             fields[identifier].validity.valid = state.valid;
             fields[identifier].validity.message = state.invalidFeedBack;

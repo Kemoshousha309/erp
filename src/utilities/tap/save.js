@@ -1,4 +1,6 @@
-import { getValues, fields, timer, checkValidity } from "./utilities"
+import { timer } from "./utilities"
+import {  getValues, fields } from "./fields"
+import { checkValidity } from "./validation"
 import { selectMessage } from "../lang"
 import axios from "../../axios"
 
@@ -43,13 +45,13 @@ const handleSaveRequest = (thisK) => {
             timer(thisK)
         })
         .catch(err => {
-            fields(thisK.state.fields, 'close', true)
+            fields(thisK.state.fields, 'open', false)
             const message = {
                 content: selectMessage(err.response.data.message, thisK.props.lanState),
                 type: "error"
             }
             thisK.setState({
-                mode: "start",
+                mode: "d_record",
                 loading: false, 
                 message: message,
                 recordIndex: null,

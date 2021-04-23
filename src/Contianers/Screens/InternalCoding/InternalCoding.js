@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { getParam } from "../../../utilities/utilities";
 import Label from "./Taps/label";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
 import MenuItem from '@material-ui/core/MenuItem';
@@ -23,18 +22,18 @@ class InternalCoding extends Component {
         this.setState({currentTap: event.target.value, dropDownChange: true})
     }
 
-    static getDerivedStateFromProps(props, state){
-        if(state.dropDownChange){
-            return {
-                dropDownChange: false
-            }
-        }else{
-            return {
-                currentTap: getParam(props.history.location.search),
-                dropDownChange: false
-            }
-        }
-    }
+    // static getDerivedStateFromProps(props, state){
+    //     if(state.dropDownChange){
+    //         return {
+    //             dropDownChange: false
+    //         }
+    //     }else{
+    //         return {
+    //             currentTap: getParam(props.history.location.search),
+    //             dropDownChange: false
+    //         }
+    //     }
+    // }
     componentDidUpdate(){
         // console.log("InternalCoding Updated")
     }
