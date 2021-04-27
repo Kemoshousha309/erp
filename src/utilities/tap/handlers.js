@@ -32,8 +32,33 @@ export const handleCloseFkList = (thisK) =>{
 export const handleRecordClick = (thisK, record, i) => {
     fillRecord(thisK.state.fields, record)
     fields(thisK.state.fields, "close", false)
+    checkNullName(thisK, record)
     thisK.setState({listShow: false, mode: "d_record", recordIndex: i, record: record})
 }
+
+const checkNullName = (thisK, record) => {
+    const fieldsClone = {...thisK.state.fields}
+    if(thisK.state.fks){
+        thisK.state.fks.forEach(fk => {
+            const fkField = fieldsClone[fk]
+            if(fkField.readOnlyField){
+                if(!record[fkField.readOnlyField]){
+                    const propertyName = `${extractName(fkField.readOnlyField)}_d_name`
+                    fieldsClone[fkField.readOnlyField].value = record[propertyName]
+                }
+            }
+        });
+    }
+    return fieldsClone
+}
+
+const extractName = (propName) => {
+    // get the property name after remove d_name or f_name
+    let newName = propName.replace("_d_name", "")
+    newName = newName.replace("_f_name", "")
+    return newName
+}
+
 
 // fk record click handler *********************
 export const handleRecordFkClick  = (thisK, record, i) => {
@@ -41,7 +66,12 @@ export const handleRecordFkClick  = (thisK, record, i) => {
     const fk = thisK.state.fkListShow
     if(fieldsClone[fk].readOnlyField){
         const fieldName = decideName(fieldsClone[fk].fkName, thisK.props.lanState)
-        fieldsClone[fieldsClone[fk].readOnlyField].value = record[fieldName]
+        if(record[fieldName]){
+            fieldsClone[fieldsClone[fk].readOnlyField].value = record[fieldName]
+        }else{
+            console.log(record[`${fieldsClone[fk].fkName}_d_name`])
+            fieldsClone[fieldsClone[fk].readOnlyField].value = record[`${fieldsClone[fk].fkName}_d_name`]
+        }
     }
     fillRecord(thisK.state.fields, record)
     thisK.setState({fkListShow: null, fields: fieldsClone, fkRecord: record})

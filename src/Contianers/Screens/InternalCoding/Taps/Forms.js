@@ -23,6 +23,7 @@ import { displayContent } from '../../../../utilities/tap/displayContent';
 import {getTree , asyncTreeSave} from "../../../../utilities/tap/async" 
 import { changeModuleNoNameprop, handleModuleNoName } from '../../../../utilities/tap/inputsHandlers';
 
+
 class Forms extends Component{
     state = {
         fields: {
@@ -41,7 +42,7 @@ class Forms extends Component{
                 },
                 writability: false,
                 value: "",
-                fkName: "module" 
+                fkName: "module" ,
             },
             module_no_name:{
                 fieldType: "input",

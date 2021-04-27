@@ -69,5 +69,7 @@ export const changeModuleNoNameprop = (props, state) => {
     }
     const fieldsClone = {...state.fields}
     fieldsClone.module_no.readOnlyField = newKey
-    return renameObjKey(fieldsClone, currentKey, newKey)
+    console.log(state.record)
+    const fieldsUpdate = renameObjKey(fieldsClone, currentKey, newKey)
+    return fieldsUpdate
 }
