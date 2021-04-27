@@ -5,10 +5,10 @@ export const t = (code, langTables, lang_no, placeholder) => {
         if(element.label_code  === code  && parseInt(element.lang_no)  === parseInt(lang_no)){
             description = element.label_desc
         }
-        if(element.message_code  === code  && parseInt(element.lang_no)  === parseInt(lang_no)){
-            description = element.message_desc
-        }
         if(placeholder){
+            if(element.message_code  === code  && parseInt(element.lang_no)  === parseInt(lang_no)){
+                description = element.message_desc
+            }
             if(element.label_code  === placeholder  && parseInt(element.lang_no)  === parseInt(lang_no)){
                 holder = element.label_desc
             }
@@ -49,4 +49,12 @@ export const getSelectLangDir = (langs, lang_no) => {
         }   
     })
     return lanDirection
+}
+
+export const decideName = (fieldName ,lang_no) => {
+    let retrunName = `${fieldName}_f_name`
+    if(parseInt(lang_no) === 1){
+        retrunName = `${fieldName}_d_name`
+    }
+    return retrunName
 }

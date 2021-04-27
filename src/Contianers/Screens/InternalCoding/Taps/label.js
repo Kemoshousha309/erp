@@ -17,7 +17,9 @@ import {
     handleRecordClick,
     handleInputChange,
     handleCloseShortCuts,
-    handleDrivedState
+    handleDrivedState,
+    handleCloseFkList,
+    handleRecordFkClick
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 
@@ -39,7 +41,6 @@ class Label extends Component{
                 },
                 writability: false,
                 value: "",
-                pk: true
             },
             label_desc:{
                 fieldType: "input",
@@ -72,7 +73,6 @@ class Label extends Component{
                 options : null,
                 writability: false,
                 value: "",
-                pk: true
             },
             lang_no_name:{
                 fieldType: "input",
@@ -84,6 +84,36 @@ class Label extends Component{
             }
 },
         pks: ["label_code", "lang_no"],
+        urls: {
+            add: "public/labels",
+            modify: "public/labels",
+            search: "public/labels",
+            pages: "public/labels/pages",   
+            page:  "public/labels/page",
+            lastPage: "public/labels/lastPage",
+            filter: "public/labels/filteredPages",
+            pageNo: "public/labels/pageNo",
+            delete: "public/labels"
+        },
+        fks: ["lang_no"],
+        fkListShow: null,
+        fkList: {
+            lang_no: {
+                mainFields: ["lang_no", "lang_name", "lang_dir"],
+                urls: {
+                    add: "public/language",
+                    modify: "public/language",
+                    search: "public/language",
+                    pages: "public/language/pages",   
+                    page:  "public/language/page",
+                    lastPage: "public/language/lastPage",
+                    filter: "public/language/filteredPages",
+                    pageNo: "public/language/pageNo",
+                    delete: "public/language"
+                }
+            },
+
+        },
         tapTools: [],
         tools: null,
         mode: "start",
@@ -99,17 +129,6 @@ class Label extends Component{
         deleteConfirm: false,
         searchFields: ["label_code", 'lang_no'],
         ShortCutsList: false,
-        urls: {
-            add: "public/labels",
-            modify: "public/labels",
-            search: "public/labels",
-            pages: "public/labels/pages",   
-            page:  "public/labels/page",
-            lastPage: "public/labels/lastPage",
-            filter: "public/labels/filteredPages",
-            pageNo: "public/labels/pageNo",
-            delete: "public/labels"
-        }
     }
 
     // Tools Handle *********************************************
@@ -129,14 +148,16 @@ class Label extends Component{
 
     // Handlers ************************************************
     closeList = () =>  handleCloseList(this)
+    closeFkList = () => handleCloseFkList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
+    recordFkClick = (record, i) => handleRecordFkClick(this, record, i)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)
 
     // async handle
     async_lang_no_options = (mode) => {handleAsyncLangNoOpts(this, mode)}
-
+ 
     // LifeCycle methods *******************************************
     componentDidMount () {
         setlastIndex(this)

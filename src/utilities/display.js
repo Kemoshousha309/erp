@@ -22,11 +22,20 @@ const gridContent = (fields) => {
     // console.log("[gridContent func] render")
     const fieldsArr = [];
     for(let key in fields){
-        const fieldobj = {
-            id: key,
-            ...fields[key]
+        let fieldobj;
+        if(fields[key].id){
+            console.log(fields[key].id)
+            fieldobj = {
+                ...fields[key]
+            }
+            fieldsArr.push(fieldobj);
+        }else{
+            fieldobj = {
+                id: key,
+                ...fields[key]
+            }
+            fieldsArr.push(fieldobj);
         }
-        fieldsArr.push(fieldobj);
     }
     const doubleArr = doubleItems(fieldsArr);
     return doubleArr
@@ -97,11 +106,20 @@ export const displayPattren = (fields, changeHandler, thisK) => {
 export const displayPattrenTree = (fields, changeHandler, thisK, tree) => {
     const fieldsArr = [];
     for(let key in fields){
-        const fieldobj = {
-            id: key,
-            ...fields[key]
+        let fieldobj;
+        if(fields[key].id){
+            console.log(fields[key].id)
+            fieldobj = {
+                ...fields[key]
+            }
+            fieldsArr.push(fieldobj);
+        }else{
+            fieldobj = {
+                id: key,
+                ...fields[key]
+            }
+            fieldsArr.push(fieldobj);
         }
-        fieldsArr.push(fieldobj);
     }
     const content = fieldsArr.map(f => {
         return (

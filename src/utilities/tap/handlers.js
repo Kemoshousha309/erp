@@ -1,5 +1,6 @@
 import { handleMode } from "./mode"
 import { fields, fillRecord } from "./fields"
+import { decideName } from "../lang"
 
 // modify hanle *******************************
 export const handleModify = (thisK) => {
@@ -21,10 +22,29 @@ export const handleCloseList = (thisK) => {
     thisK.setState({listShow: !currentState, mode: previousMode})
 }
 
+// close list Handler *******************************
+export const handleCloseFkList = (thisK) =>{
+    thisK.setState({fkListShow: null})
+}
+
+
 // record click Handler ************************
 export const handleRecordClick = (thisK, record, i) => {
     fillRecord(thisK.state.fields, record)
-    thisK.setState({listShow: false, mode: "d_record", recordIndex: i})
+    fields(thisK.state.fields, "close", false)
+    thisK.setState({listShow: false, mode: "d_record", recordIndex: i, record: record})
+}
+
+// fk record click handler *********************
+export const handleRecordFkClick  = (thisK, record, i) => {
+    const fieldsClone = {...thisK.state.fields}
+    const fk = thisK.state.fkListShow
+    if(fieldsClone[fk].readOnlyField){
+        const fieldName = decideName(fieldsClone[fk].fkName, thisK.props.lanState)
+        fieldsClone[fieldsClone[fk].readOnlyField].value = record[fieldName]
+    }
+    fillRecord(thisK.state.fields, record)
+    thisK.setState({fkListShow: null, fields: fieldsClone, fkRecord: record})
 }
 
 

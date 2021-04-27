@@ -80,17 +80,21 @@ class RecordDisply extends Component {
     }
     recordClick = (e, i) =>{
         const targetRecord = this.state.pages.pages[i]
-        let index = null
-        this.setState({loading: true})
-            const urlPk = getPkUrl(this.props.pks, targetRecord)
-            const url = `${this.props.urls.pageNo}${urlPk}`
-            axios.get(url)
-            .then(res => {
-                index = res.data.page_no
-                this.setState({loading: false})
-                this.props.recordClick(targetRecord, index)
-            })
+        if(this.props.fk){
+            this.props.recordClick(targetRecord, null)
+        }else{
+            let index = null
+            this.setState({loading: true})
+                const urlPk = getPkUrl(this.props.pks, targetRecord)
+                const url = `${this.props.urls.pageNo}${urlPk}`
+                axios.get(url)
+                .then(res => {
+                    index = res.data.page_no
+                    this.setState({loading: false})
+                    this.props.recordClick(targetRecord, index)
+                })
             .catch(err => console.log(err))
+        }
     }
     componentDidMount () {
         this.pagesRequest(1)

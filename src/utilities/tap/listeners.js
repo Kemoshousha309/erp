@@ -11,6 +11,18 @@ const getToolState = (tools, name) => {
     return state
 }
 
+const isFk = (fks) => {
+    let fk = null
+    if(fks){
+        fks.forEach(f => {
+            if(f === document.activeElement.id){
+                fk = f
+            }
+        })
+    }
+    return fk
+}
+
 const handleListenrClick = (event, tools, name, func) => {
     const state = getToolState(tools, name)
     if(name === "next" || name === "previous"){
@@ -25,6 +37,19 @@ const handleListenrClick = (event, tools, name, func) => {
     }
 }
 
+const handleF4 = (event, thisK) => {
+    const state = getToolState(thisK.state.tools, "list")
+    const fks = thisK.state.fks
+    const fk = isFk(fks)
+    if(fk){
+        event.preventDefault()
+        thisK.setState({fkListShow: fk})
+    }else if(state){
+        event.preventDefault()
+        thisK.list()
+    }
+}
+
 
 const setListenrs = (event, thisK) => {
     const dir = getSelectLangDir(thisK.props.languages, thisK.props.lanState)
@@ -36,14 +61,13 @@ const setListenrs = (event, thisK) => {
             case "Insert": handleListenrClick(event, tools, "add", thisK.add); break;
             case "F3": handleListenrClick(event, tools, "copy", thisK.copy); break;
             case "F5": handleListenrClick(event, tools, "search", thisK.search); break;
-            case "F4": handleListenrClick(event, tools, "list", thisK.list); break;
             case "F7": handleListenrClick(event, tools, "modify", thisK.modify); break;
             case "Home": handleListenrClick(event, tools, "first", thisK.first); break;
             case "End": handleListenrClick(event, tools, "last", thisK.last); break;
             case "Escape": handleListenrClick(event, tools, "undo", thisK.undo); break;
             case "F10": handleListenrClick(event, tools, "save", thisK.save); break;
             case "ArrowRight": 
-                if(parseInt(dir) === 2){
+            if(parseInt(dir) === 2){
                     handleListenrClick(event, tools, "next", thisK.next);
                 }else{
                     handleListenrClick(event, tools, "previous", thisK.previous);
@@ -59,6 +83,9 @@ const setListenrs = (event, thisK) => {
             case "F8":  // should be f1 
                 event.preventDefault()
                 thisK.ShortCutsListCloseHandler()
+                break;
+            case "F4": 
+                handleF4(event, thisK)
                 break;
             default: break;
         }

@@ -13,12 +13,16 @@ import {
     handleUndo,
     handleCloseList,
     handleRecordClick,
+    handleRecordFkClick,
     handleInputChange,
     handleCloseShortCuts,
-    handleDrivedState
+    handleDrivedState,
+    handleCloseFkList
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import {getTree , asyncTreeSave} from "../../../../utilities/tap/async" 
+import { changeModuleNoNameprop, handleModuleNoName } from '../../../../utilities/tap/inputsHandlers';
+
 class Forms extends Component{
     state = {
         fields: {
@@ -37,7 +41,13 @@ class Forms extends Component{
                 },
                 writability: false,
                 value: "",
-                pk: true
+                fkName: "module" 
+            },
+            module_no_name:{
+                fieldType: "input",
+                label: "name",
+                readOnly: true,
+                value: ""
             },
             form_no:{
                 fieldType: "input",
@@ -54,7 +64,6 @@ class Forms extends Component{
                 },
                 writability: false,
                 value: "",
-                pk: true
             },
             form_d_name:{
                 fieldType: "input",
@@ -101,7 +110,6 @@ class Forms extends Component{
                 },
                 writability: false,
                 value: "",
-                pk: true
             },
             form_order:{
                 fieldType: "input",
@@ -118,7 +126,6 @@ class Forms extends Component{
                 },
                 writability: false,
                 value: "",
-                pk: true
             },
             active:{
                 fieldType: "checkbox",
@@ -134,23 +141,12 @@ class Forms extends Component{
                 writability: false,
                 value: false
             },
-},
+        },
         pks: ["form_no"],
-        tapTools: ["delete", "add", "copy"],
-        tools: null,
-        mode: "start",
-        // we handle prevMode in list show only ....
-        prevMode: null,
-        recordIndex: null,
-        lastIndex: null,
-        message: null,
-        loading: false,
         listShow: false,
+        tapName: "forms",
         mainFields: ["form_no", "module_no","form_d_name"],
-        tapName: "modules",
-        deleteConfirm: false,
         searchFields: ["form_no"],
-        ShortCutsList: false,
         urls: {
             modify: "forms",
             search: "forms",
@@ -161,7 +157,50 @@ class Forms extends Component{
             pageNo: "forms/pageNo",
             delete: "forms"
         },
-        tree: null
+        fks: ["module_no", "parent_form"],
+        fkListShow: null,
+        fkList: {
+            module_no: {
+                mainFields: ["module_no", "shortcut", "module_d_name"],
+                urls: {
+                    add: "modules",
+                    modify: "modules",
+                    search: "modules",
+                    pages: "modules/pages",   
+                    page:  "modules/page",
+                    lastPage: "modules/lastPage",
+                    filter: "modules/filteredPages",
+                    pageNo: "modules/pageNo",
+                    delete: "modules"
+                },
+            },
+            parent_form: {
+                mainFields: ["form_no", "module_no","form_d_name"],
+                urls: {
+                    modify: "forms",
+                    search: "forms",
+                    pages: "forms/pages",   
+                    page:  "forms/page",
+                    lastPage: "forms/lastPage",
+                    filter: "forms/filteredPages",
+                    pageNo: "forms/pageNo",
+                    delete: "forms"
+                },
+            }
+
+        },
+        tapTools: ["delete", "add", "copy"],
+        tools: null,
+        mode: "start",
+        // we handle prevMode in list show only ....
+        prevMode: null,
+        recordIndex: null,
+        lastIndex: null,
+        message: null,
+        loading: false,
+        deleteConfirm: false,
+        ShortCutsList: false,
+        tree: null,
     }
 
     // Tools Handle *********************************************
@@ -181,19 +220,32 @@ class Forms extends Component{
 
     // Handlers ************************************************
     closeList = () =>  handleCloseList(this)
+    closeFkList = () => handleCloseFkList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
+    recordFkClick = (record, i) => handleRecordFkClick(this, record, i)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)
 
+    
     // LifeCycle methods *******************************************
     componentDidMount () {
         getTree(this)
         setlastIndex(this)
         functionsListenrs(this, true)
+
+        // inputs handlers
+        handleModuleNoName(this)
     }
     componentWillUnmount () {functionsListenrs(this, false)}
-    static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
+    static getDerivedStateFromProps(props, state){
+        const fieldsUpdate = changeModuleNoNameprop(props, state)
+        const {tools} =  handleDrivedState (props, state)
+        return {
+            tools: tools,
+            fields: fieldsUpdate
+        }
+    }
     render (){return displayContent(this)}
 } 
 

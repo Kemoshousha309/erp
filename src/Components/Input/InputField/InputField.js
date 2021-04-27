@@ -15,7 +15,7 @@ class InputField extends Component {
         lastPropValue: null,
         lastPropValid: null,
     }
-    inputChange = (e) => changeHandler(e, this) 
+    inputChange = (e) => changeHandler(e, this, this.props.field.changeHandler) 
     static getDerivedStateFromProps(props, state){
         return reflectOuterState(props, state)
     }
@@ -23,6 +23,7 @@ class InputField extends Component {
     render() {
         // console.log(`[InputSelectField] render`, this.state)
         const field = this.props.field
+        // console.log(field)
         const placeholder = t(this.props.field.label, this.props.lanTable, this.props.lanState)
         let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style)
         return (

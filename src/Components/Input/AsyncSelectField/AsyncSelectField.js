@@ -28,16 +28,15 @@ class AsyncSelectField extends Component {
         this.props.changeHandler(this.state, this.props.field.id)
     }
     handleSelect = (event) => {
-        console.log("slect")
         const input = document.getElementById(this.props.field.id)
         input.focus() // to fire blur after update the state
         this.setState({dropList: false, value: event.target.value, displayValue: event.target.innerText})
     }
-    handleClose = (event) => {console.log("close")
+    handleClose = (event) => {
         this.props.thisK.async_lang_no_options(this.state.dropList)
         this.setState({dropList: false})
     }
-    handleFocus = () => {console.log("focus")
+    handleFocus = () => {
         this.props.thisK.async_lang_no_options(this.state.dropList)
         this.setState({dropList: true})
     }

@@ -20,10 +20,10 @@ export const displayContent = (thisK) => {
             <RecordDisplay 
                 urls={thisK.state.urls}
                 modalClose={thisK.closeList} 
-                tapRequest={thisK.state.tapName}
                 recordClick={thisK.recordClick} 
                 pks={thisK.state.pks}
                 mainFields={thisK.state.mainFields} /> : null}
+                {fkList(thisK)}
             <Boilerplate
             dropDown={thisK.props.dropDown}
             toolsClicked={thisK.toolsClickedHandler}
@@ -37,5 +37,22 @@ export const displayContent = (thisK) => {
             </AlertDialog>
             {thisK.state.ShortCutsList ? <ShortCutsList close={thisK.ShortCutsListCloseHandler} /> : null}
         </div>
+    )
+}
+
+
+const fkList = (thisK) => {
+    let fk = null
+    if(thisK.state.fkListShow){
+        fk = thisK.state.fkListShow
+    }
+    return (
+        thisK.state.fkListShow ?
+            <RecordDisplay 
+            urls={thisK.state.fkList[fk].urls}
+            modalClose={thisK.closeFkList}  
+            recordClick={thisK.recordFkClick} 
+            fk
+            mainFields={thisK.state.fkList[fk].mainFields} /> : null
     )
 }

@@ -38,7 +38,6 @@ class Module extends Component{
                 },
                 writability: false,
                 value: "",
-                pk: true
             },
             shortcut:{
                 fieldType: "input",
@@ -101,7 +100,6 @@ class Module extends Component{
                 },
                 writability: false,
                 value: "",
-                pk: true
             },
             active:{
                 fieldType: "checkbox",

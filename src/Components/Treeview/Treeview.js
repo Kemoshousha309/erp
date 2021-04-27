@@ -7,6 +7,7 @@ import TreeNode from "./TreeNode/TreeNode";
 
 
 class Treeview extends Component {
+ 
     componentDidUpdate () {
     }
     render() {        
@@ -36,6 +37,7 @@ class Treeview extends Component {
                 </ul>
             )
         }           
+        
         return (
             <div className={style.treeContianer}>
                 {treeContent}

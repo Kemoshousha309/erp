@@ -17,7 +17,9 @@ import {
     handleRecordClick,
     handleInputChange,
     handleCloseShortCuts,
-    handleDrivedState
+    handleDrivedState,
+    handleCloseFkList,
+    handleRecordFkClick
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 
@@ -71,7 +73,6 @@ class Massage extends Component{
                 options : null,
                 writability: false,
                 value: "",
-                pk: true
             },
             lang_no_name:{
                 fieldType: "input",
@@ -84,6 +85,36 @@ class Massage extends Component{
             
 },
         pks: ["message_code", "lang_no"],
+        urls: {
+            add: "public/messages",
+            modify: "public/messages",
+            search: "public/messages",
+            pages: "public/messages/pages",   
+            page:  "public/messages/page",
+            lastPage: "public/messages/lastPage",
+            filter: "public/messages/filteredPages",
+            pageNo: "public/messages/pageNo",
+            delete: "public/messages"
+        },
+        fks: ["lang_no"],
+        fkListShow: null,
+        fkList: {
+            lang_no: {
+                mainFields: ["lang_no", "lang_name", "lang_dir"],
+                urls: {
+                    add: "public/language",
+                    modify: "public/language",
+                    search: "public/language",
+                    pages: "public/language/pages",   
+                    page:  "public/language/page",
+                    lastPage: "public/language/lastPage",
+                    filter: "public/language/filteredPages",
+                    pageNo: "public/language/pageNo",
+                    delete: "public/language"
+                }
+            },
+
+        },
         tapTools: ["delete"], // to be deleted and view the others
         tools: null,
         mode: "start",
@@ -99,17 +130,6 @@ class Massage extends Component{
         deleteConfirm: false,
         searchFields: ["message_code", "lang_no"],
         ShortCutsList: false,
-        urls: {
-            add: "public/messages",
-            modify: "public/messages",
-            search: "public/messages",
-            pages: "public/messages/pages",   
-            page:  "public/messages/page",
-            lastPage: "public/messages/lastPage",
-            filter: "public/messages/filteredPages",
-            pageNo: "public/messages/pageNo",
-            delete: "public/messages"
-        }
     }
 
     // Tools Handle *********************************************
@@ -129,8 +149,10 @@ class Massage extends Component{
 
 
     // Handlers ************************************************
-    closeList = () =>  handleCloseList(this)
-    recordClick = (record, i) => handleRecordClick(this, record, i)
+    closeList = () =>  handleCloseList(this) 
+     closeFkList = () => handleCloseFkList(this)
+    recordClick = (record, i) => handleRecordClick(this, record, i)      
+    recordFkClick = (record, i) => handleRecordFkClick(this, record, i)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)

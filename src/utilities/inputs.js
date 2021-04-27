@@ -3,7 +3,10 @@ import { t } from "./lang"
 import { isValid } from "./tap/validation"
 
 
-export const changeHandler = (e, thisK) => {
+export const changeHandler = (e, thisK, handler) => {
+    if(handler){
+        handler(e, thisK)
+    }
     const validationRules = thisK.props.field.validation
     const stateClone = {...thisK.state}
     const [valid, message] = isValid(e.target.value, validationRules)
