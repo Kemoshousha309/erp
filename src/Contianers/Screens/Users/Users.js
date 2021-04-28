@@ -1,10 +1,10 @@
 import { Component} from 'react';
 import {connect} from "react-redux";
-import { toolSelectHandler } from '../../../../utilities/tools';
-import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/delete"
-import {handleSearch} from "../../../../utilities/tap/search"
-import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
-import {functionsListenrs} from "../../../../utilities/tap/listeners"
+import { toolSelectHandler } from '../../../utilities/tools';
+import {handleDelete, handleDeleteConfirmation} from "../../../utilities/tap/delete"
+import {handleSearch} from "../../../utilities/tap/search"
+import {handleMove, setlastIndex} from "../../../utilities/tap/moves"
+import {functionsListenrs} from "../../../utilities/tap/listeners"
 import {
     handleAdd,
     handleModify,
@@ -18,14 +18,14 @@ import {
     handleCloseShortCuts,
     handleDrivedState,
     handleCloseFkList
-} from "../../../../utilities/tap/handlers"
-import { displayContent } from '../../../../utilities/tap/displayContent';
-import {getTree , asyncTreeSave} from "../../../../utilities/tap/async" 
-import { changePropName, handleModuleNoName, handleParentNoName } from '../../../../utilities/tap/inputsHandlers';
-import { langChangeActivity } from '../../../../store/actions/lang';
+} from "../../../utilities/tap/handlers"
+import { displayContent } from '../../../utilities/tap/displayContent';
+import {getTree , asyncTreeSave} from "../../../utilities/tap/async" 
+import { changePropName, handleModuleNoName, handleParentNoName } from '../../../utilities/tap/inputsHandlers';
+import { langChangeActivity } from '../../../store/actions/lang';
 
 
-class Forms extends Component{
+class Users extends Component{
     state = {
         fields: {
             module_no:{
@@ -277,6 +277,6 @@ const mapDispatchToProps = dispatch => {
   }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Forms);
+export default connect(mapStateToProps, mapDispatchToProps)(Users);
 
 

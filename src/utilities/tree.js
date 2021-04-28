@@ -336,7 +336,7 @@ export const routeMap = [
     },
     {
         form_no: 9901,
-        route: "internal-coding?key=label"
+        route: "internal-coding"
     },
     {
         form_no: 9902,
@@ -361,15 +361,15 @@ export const routeMap = [
     },
     {
         form_no: 1101,
-        route: ""
+        route: "users-groups"
     },
     {
         form_no: 1102,
-        route: ""
+        route: "users-data"
     },
     {
         form_no: 1110,
-        route: ""
+        route: "screen-previlleges"
     },
     {
         form_no: 12,

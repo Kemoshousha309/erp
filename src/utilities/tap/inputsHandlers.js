@@ -1,7 +1,6 @@
 import { decideName } from "../lang"
 import axios from "../../axios"
 import {t} from "../../utilities/lang"
-import { fields } from "./fields"
 // Handle Name fields ************************
 
 

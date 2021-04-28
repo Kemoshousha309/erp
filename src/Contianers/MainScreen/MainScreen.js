@@ -4,6 +4,7 @@ import style from "./MainScreen.module.scss";
 import { Route, Switch } from "react-router";
 import Aux from "../../hoc/Aux";
 import InternalCoding from "../Screens/InternalCoding/InternalCoding";
+import Users from "../Screens/Users/Users";
 
 
 class MainScreen extends Component  {
@@ -11,9 +12,7 @@ class MainScreen extends Component  {
         // console.log("MainScreen render")
     }
     render(){
-          // this is the container of the screens
-        // here we will manage the router pages here 
-        // identication the language state
+
         let lanState;
         if(parseInt(this.props.lanState) === 2){
             lanState = style.arState;
@@ -21,7 +20,6 @@ class MainScreen extends Component  {
             lanState = style.enState;
         }
         const classes = [style.MainScreen,
-            // props.sideNavActivity ? style.active : style.inactive,
             lanState
         ].join(" ");
 
@@ -33,6 +31,9 @@ class MainScreen extends Component  {
                     <Switch>
                         {/* <Route path={rootPath +"/users-privileges"} exact component={UsersPrivileges} /> */}
                         <Route path={rootPath +"/internal-coding"} exact component={InternalCoding} />
+                        {/* <Route path={rootPath +"/users-groups"} exact component={UsersGroups} /> */}
+                        <Route path={rootPath +"/users-data"} exact component={Users} />
+                        <Route path={rootPath +"/screen-previlleges"} exact component={InternalCoding} />
                     </Switch>
                 </div>
             </Aux>
