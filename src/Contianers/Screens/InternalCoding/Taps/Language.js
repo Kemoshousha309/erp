@@ -20,6 +20,7 @@ import {
     handleDrivedState
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
+import { langChangeActivity } from '../../../../store/actions/lang';
 
 class Language extends Component{
     state = {
@@ -190,7 +191,13 @@ const mapStateToProps = state => {
         languages: state.lang.langInfo
     }
 }
+const mapDispatchToProps = dispatch => {
+    return {
+        changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode))
+    }
+  }
 
-export default connect(mapStateToProps, null)(Language);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Language);
 
 

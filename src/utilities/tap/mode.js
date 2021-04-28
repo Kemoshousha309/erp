@@ -3,18 +3,22 @@ import { getSelectLangDir } from "../lang"
 import { startMode, toolsNameMap } from "../tools"
 
 // mode processes *******************************************************
-export const handleMode = (mode, lang_no, langs, tools) => {
+export const handleMode = (mode, lang_no, langs, tools, changeLangSelectAcivity) => {
     let activeList = null
     const lang_dir = getSelectLangDir(langs, lang_no)
     const toolsName = toolsNameMap(lang_dir)
     switch (mode) {
         case "start":
+            changeLangSelectAcivity(true)
             return startMode(lang_dir, tools)
         case "add":
+            changeLangSelectAcivity(false)
             return activate([toolsName.undo.name, toolsName.save.name], null, lang_dir, tools)
         case "copy":
+            changeLangSelectAcivity(false)
             return activate([toolsName.undo.name, toolsName.save.name], null, lang_dir, tools)
         case "d_record":
+            changeLangSelectAcivity(false)
             activeList = [
                 toolsName.add.name, toolsName.list.name, 
                 toolsName.modify.name, toolsName.first.name, toolsName.last.name,
@@ -24,12 +28,15 @@ export const handleMode = (mode, lang_no, langs, tools) => {
             ]
             return activate(activeList, null, lang_dir, tools)
         case "modify":
+            changeLangSelectAcivity(false)
             activeList = [toolsName.save.name, toolsName.undo.name]
             return activate(activeList, null, lang_dir, tools)
         case "search":
+            changeLangSelectAcivity(false)
             activeList = [toolsName.search.name, toolsName.undo.name]
             return activate(activeList, "search", lang_dir, tools)
         case "list":
+            changeLangSelectAcivity(false)
             activeList = []
             return activate(activeList, null, lang_dir, tools)
         default: 

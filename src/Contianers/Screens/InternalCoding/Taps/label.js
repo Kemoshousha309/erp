@@ -22,6 +22,7 @@ import {
     handleRecordFkClick
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
+import { langChangeActivity } from '../../../../store/actions/lang';
 
 class Label extends Component{
     state = {
@@ -179,6 +180,12 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(Label);
+const mapDispatchToProps = dispatch => {
+    return {
+        changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode))
+    }
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Label);
 
 

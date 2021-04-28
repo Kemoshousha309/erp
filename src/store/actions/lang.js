@@ -7,6 +7,7 @@ export const changeLnaguage = (langValue) => ({type: actionTypes.CHANGE_LANGUAGE
 export const storeLanguagesTable = (langTable) => ({type: actionTypes.GET_LANG_TABLE, langTable: langTable })
 export const storeMessages = (messages) => ({type: actionTypes.STORE_MESSAGES, messages: messages })
 export const langRequestFailure = () => ({type: actionTypes.LANG_REQUEST_FAILURE})
+export const langChangeActivity = (mode) => ({type: actionTypes.LANG_CHANGE_ACTIVITY, mode: mode})
 const langData = (data) => ({type: actionTypes.LANG_INFO, info: data})
 
 export const langRequest = () => {

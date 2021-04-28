@@ -44,7 +44,12 @@ const checkNullName = (thisK, record) => {
             if(fkField.readOnlyField){
                 if(!record[fkField.readOnlyField]){
                     const propertyName = `${extractName(fkField.readOnlyField)}_d_name`
-                    fieldsClone[fkField.readOnlyField].value = record[propertyName]
+                    if(record[propertyName] === null){
+                        fieldsClone[fkField.readOnlyField].value = ""
+                    }else{
+                        fieldsClone[fkField.readOnlyField].value = record[propertyName]
+                    }
+                    
                 }
             }
         });
@@ -132,5 +137,5 @@ export const handleCloseShortCuts = (thisK) => {
 
 // drived state Handler ***************************************
 export const handleDrivedState = (props, state) => {
-    return { tools: handleMode(state.mode, props.lanState, props.languages, state.tapTools) }
+    return { tools: handleMode(state.mode, props.lanState, props.languages, state.tapTools, props.changeLangSelectAcivity) }
 }

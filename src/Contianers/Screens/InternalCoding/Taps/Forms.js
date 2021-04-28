@@ -21,7 +21,8 @@ import {
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import {getTree , asyncTreeSave} from "../../../../utilities/tap/async" 
-import { changeModuleNoNameprop, handleModuleNoName } from '../../../../utilities/tap/inputsHandlers';
+import { changeModuleNoNameprop, changePropName, handleModuleNoName, handleParentNoName } from '../../../../utilities/tap/inputsHandlers';
+import { langChangeActivity } from '../../../../store/actions/lang';
 
 
 class Forms extends Component{
@@ -111,7 +112,15 @@ class Forms extends Component{
                 },
                 writability: false,
                 value: "",
+                fkName: "module" ,
             },
+            parent_form_name:{
+                fieldType: "input",
+                label: "name",
+                readOnly: true,
+                value: ""
+            },
+
             form_order:{
                 fieldType: "input",
                 type: "number",
@@ -237,10 +246,12 @@ class Forms extends Component{
 
         // inputs handlers
         handleModuleNoName(this)
+        handleParentNoName(this)
     }
     componentWillUnmount () {functionsListenrs(this, false)}
     static getDerivedStateFromProps(props, state){
-        const fieldsUpdate = changeModuleNoNameprop(props, state)
+        let fieldsUpdate = changePropName(props, state.fields, 'module_no_name', "module_no", "module_no")
+        fieldsUpdate =  changePropName(props, fieldsUpdate, 'parent_form_name', "parent_form", "parent_form")
         const {tools} =  handleDrivedState (props, state)
         return {
             tools: tools,
@@ -259,6 +270,13 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(Forms);
+const mapDispatchToProps = dispatch => {
+    return {
+        changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode))
+    }
+  }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Forms);
 
 

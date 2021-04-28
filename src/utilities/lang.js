@@ -5,10 +5,10 @@ export const t = (code, langTables, lang_no, placeholder) => {
         if(element.label_code  === code  && parseInt(element.lang_no)  === parseInt(lang_no)){
             description = element.label_desc
         }
+        if(element.message_code  === code  && parseInt(element.lang_no)  === parseInt(lang_no) && !description){
+            description = element.message_desc
+        }
         if(placeholder){
-            if(element.message_code  === code  && parseInt(element.lang_no)  === parseInt(lang_no)){
-                description = element.message_desc
-            }
             if(element.label_code  === placeholder  && parseInt(element.lang_no)  === parseInt(lang_no)){
                 holder = element.label_desc
             }

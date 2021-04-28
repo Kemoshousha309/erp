@@ -6,7 +6,8 @@ const initState = {
     lan: 2,
     langTables: [],
     langLoading: false,
-    langInfo: null
+    langInfo: null,
+    langChangeActive: true
 }
 
 
@@ -62,6 +63,14 @@ const setlangInfo = (state, action) => {
     )
 }
 
+const handleLangChangeAcivity = (state, action) => {
+    return(
+        updateState(state, {
+            ...state,
+            langChangeActive: action.mode
+        })
+    )
+}
 
 
 
@@ -72,6 +81,7 @@ export const languageReducer = (state = initState, action) => {
         case actionTypes.LANG_REQUEST_FAILURE: return langRequestFail(state, action);
         case actionTypes.STORE_MESSAGES: return storeMessageTable(state, action);
         case actionTypes.LANG_INFO: return setlangInfo(state, action);
+        case actionTypes.LANG_CHANGE_ACTIVITY: return handleLangChangeAcivity(state, action);
         default:
             return state
     }

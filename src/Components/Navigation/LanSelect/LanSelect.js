@@ -27,7 +27,7 @@ const LanSelect = props => {
         )
     }
     return(
-        <select className={[style.LanSelect, ].join(" ")} style={props.style} value={value} onChange={(event) => props.onLanguageChange(event.target.value)} >
+        <select disabled={!props.langChangeActive} className={[style.LanSelect, ].join(" ")} style={props.style} value={value} onChange={(event) => props.onLanguageChange(event.target.value)} >
             {optionOrder}
         </select>
     )
@@ -37,6 +37,7 @@ const mapStateToProps = state => {
     return {
         lanState: state.lang.lan,
         langTable: state.lang.langTables,
+        langChangeActive: state.lang.langChangeActive
     }
 }
 

@@ -1,6 +1,7 @@
 import { decideName } from "../lang"
 import axios from "../../axios"
 import {t} from "../../utilities/lang"
+import { fields } from "./fields"
 // Handle Name fields ************************
 
 
@@ -29,6 +30,34 @@ export const handleModuleNoName = (thisK) => {
         }
 }
 
+// parent name
+export const handleParentNoName = (thisK) => {
+    thisK.state.fields.parent_form.changeHandler = (event, field) => {
+        const fieldsClone = {...thisK.state.fields}
+        const parentFormName =  decideName("parent_form", thisK.props.lanState);
+        fieldsClone[parentFormName].value = t("loading", thisK.props.lanTable, thisK.props.lanState)
+        thisK.setState({fields: fieldsClone})
+            axios.get(`forms/page/${event.target.value}`)
+            .then(res =>  {
+                const parentName =  decideName("form", thisK.props.lanState);
+                console.log(res.data.page)
+                if(res.data.page[parentName]){
+                    fieldsClone[parentFormName].value = res.data.page[parentName]
+                    thisK.setState({fields: fieldsClone})
+                }else{
+                    fieldsClone[parentFormName].value = res.data.page.parent_form_d_name
+                    thisK.setState({fields: fieldsClone})
+                }
+            })
+            .catch(err => {
+                fieldsClone[parentFormName].value = t("not_exist", thisK.props.lanTable, thisK.props.lanState)
+                thisK.setState({fields: fieldsClone})
+            })
+        }
+}
+
+
+
 
 const renameObjKey = (obj, oldKey, newKey) => {
     const objArr = [];
@@ -54,22 +83,24 @@ const renameObjKey = (obj, oldKey, newKey) => {
     return newObj
 }
 
-export const changeModuleNoNameprop = (props, state) => {
+
+export const changePropName  = (props, fields, startPropName, propFieldName, gatherdFieldName) =>  {
     let currentKey = null
-    if(state.fields.module_no_name){
-        currentKey = "module_no_name"
-    }else if(state.fields.module_no_d_name){
-        currentKey = "module_no_d_name"
-    }else if(state.fields.module_no_f_name){
-        currentKey = "module_no_f_name"
+    const d_name = `${propFieldName}_d_name`
+    const f_name = `${propFieldName}_f_name`
+    if(fields[startPropName]){
+        currentKey = startPropName
+    }else if(fields[d_name]){
+        currentKey = d_name
+    }else if(fields[f_name]){
+        currentKey = f_name
     }
-    let newKey = "module_no_f_name"
+    let newKey = f_name
     if(parseInt(props.lanState) === 1){
-        newKey = "module_no_d_name"
+        newKey = d_name
     }
-    const fieldsClone = {...state.fields}
-    fieldsClone.module_no.readOnlyField = newKey
-    console.log(state.record)
+    const fieldsClone = {...fields}
+    fieldsClone[gatherdFieldName].readOnlyField = newKey
     const fieldsUpdate = renameObjKey(fieldsClone, currentKey, newKey)
     return fieldsUpdate
 }

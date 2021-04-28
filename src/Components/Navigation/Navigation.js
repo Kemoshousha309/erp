@@ -140,7 +140,7 @@ class Navigation extends Component {
 const mapStateToProps = state => {
     return {
         lanState: state.lang.lan,
-        lanTable: state.lang.langTables
+        lanTable: state.lang.langTables,
     }
 }
 

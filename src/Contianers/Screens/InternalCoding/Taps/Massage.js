@@ -22,6 +22,7 @@ import {
     handleRecordFkClick
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
+import { langChangeActivity } from '../../../../store/actions/lang';
 
 class Massage extends Component{
     state = {
@@ -180,6 +181,13 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, null)(Massage);
+const mapDispatchToProps = dispatch => {
+    return {
+        changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode))
+    }
+  }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Massage);
 
 

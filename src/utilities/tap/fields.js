@@ -46,7 +46,12 @@ export const fields = (fields, mode, empty=true, specific) => {
 export const fillRecord = (fields, record) => { 
     for(let i in fields){
         if(record[i] !== undefined){
-            fields[i].value = record[i]
+            if(record[i] === null){
+                console.log(record[i])
+                fields[i].value =  "holl" 
+            }else{
+                fields[i].value = record[i] 
+            }
         }else if (record[i] === false){
             fields[i].value =  false
         }
