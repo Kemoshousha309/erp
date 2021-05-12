@@ -57,7 +57,7 @@ const checkNullName = (thisK, record) => {
     return fieldsClone
 }
 
-const extractName = (propName) => {
+export const extractName = (propName) => {
     // get the property name after remove d_name or f_name
     let newName = propName.replace("_d_name", "")
     newName = newName.replace("_f_name", "")
@@ -65,20 +65,26 @@ const extractName = (propName) => {
 }
 
 
+
+
 // fk record click handler *********************
 export const handleRecordFkClick  = (thisK, record, i) => {
     const fieldsClone = {...thisK.state.fields}
     const fk = thisK.state.fkListShow
     if(fieldsClone[fk].readOnlyField){
-        const fieldName = decideName(fieldsClone[fk].fkName, thisK.props.lanState)
-        if(record[fieldName]){
+        const fieldName = decideName(fieldsClone[fk].fKTable.SPN, thisK.props.lanState)
+        if(record[fieldName]){  
+            if(!fieldsClone[fk].readOnly && fieldsClone[fk].validity){
+                fieldsClone[fk].validity.valid = true
+                fieldsClone[fk].validity.message = null
+            }
             fieldsClone[fieldsClone[fk].readOnlyField].value = record[fieldName]
         }else{
-            console.log(record[`${fieldsClone[fk].fkName}_d_name`])
-            fieldsClone[fieldsClone[fk].readOnlyField].value = record[`${fieldsClone[fk].fkName}_d_name`]
+            fieldsClone[fieldsClone[fk].readOnlyField].value = record[`${fieldsClone[fk].fKTable.SPN}_d_name`]
         }
-    }
-    fillRecord(thisK.state.fields, record)
+    }   
+    fieldsClone[fk].value = record[fieldsClone[fk].fKTable.PN]
+    document.getElementById(fk).focus()
     thisK.setState({fkListShow: null, fields: fieldsClone, fkRecord: record})
 }
 
@@ -86,6 +92,14 @@ export const handleRecordFkClick  = (thisK, record, i) => {
 // add handle ******************************
 export const handleAdd = (thisK) => {
     fields(thisK.state.fields, "open")
+    if(thisK.state.specialFields){
+        thisK.state.specialFields.forEach(f => {
+            if(f.add){
+                const specific = [f.key]
+                fields(thisK.state.fields, f.add, true, specific)
+            }
+        })
+    }
     thisK.setState({mode: "add"})
 }
 

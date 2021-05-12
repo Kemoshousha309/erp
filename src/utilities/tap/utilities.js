@@ -4,7 +4,7 @@ let lastTimer = null
 export const timer = (thisK) => {
     var timerId = setTimeout(() => {
         thisK.setState({message: false})
-    }, 2000);
+    }, 3000);
 
     if(!(lastTimer === timerId)){
         if(lastTimer){

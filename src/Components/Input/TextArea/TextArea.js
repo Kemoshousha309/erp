@@ -1,13 +1,14 @@
 import React from "react"
 import { connect } from "react-redux"
 import { t } from "../../../utilities/lang"
-import style from "./InputField.module.scss"
+import style from "./TextArea.module.scss"
 import { Component } from "react";
 import { changeHandler, label, checkInputValiditiy, reflectOuterState, handlePassIcon } from "../../../utilities/inputs"
 
 
 
-class InputField extends Component {
+
+class TextArea extends Component {
     state = {
         value: "", 
         valid: true,
@@ -39,7 +40,7 @@ class InputField extends Component {
                 className="col-sm-4 col-form-label">{label(this)}</label>
                 <div className="col-sm-8">
                    <div className="position-relative">
-                    <input 
+                    <textarea 
                         value={this.state.value}
                         onChange = {this.inputChange}
                         onBlur ={this.onBlurHandler} 
@@ -67,4 +68,4 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps, null)(InputField);
+export default connect(mapStateToProps, null)(TextArea);

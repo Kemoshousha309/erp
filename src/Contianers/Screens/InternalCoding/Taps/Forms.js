@@ -21,7 +21,7 @@ import {
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import {getTree , asyncTreeSave} from "../../../../utilities/tap/async" 
-import { changePropName, handleModuleNoName, handleParentNoName } from '../../../../utilities/tap/inputsHandlers';
+import { changePropName, autoNameDisplay } from '../../../../utilities/tap/inputsHandlers';
 import { langChangeActivity } from '../../../../store/actions/lang';
 
 
@@ -43,7 +43,10 @@ class Forms extends Component{
                 },
                 writability: false,
                 value: "",
-                fkName: "module" ,
+                fKTable: {
+                    SPN: "module",
+                    PN: "module_no"
+                },
             },
             module_no_name:{
                 fieldType: "input",
@@ -112,7 +115,10 @@ class Forms extends Component{
                 },
                 writability: false,
                 value: "",
-                fkName: "module" ,
+                fKTable: {
+                    SPN: "parent_form",
+                    PN: "parent_form"
+                }
             },
             parent_form_name:{
                 fieldType: "input",
@@ -245,10 +251,14 @@ class Forms extends Component{
         functionsListenrs(this, true)
 
         // inputs handlers
-        handleModuleNoName(this)
-        handleParentNoName(this)
+        autoNameDisplay(this, "module_no", "modules")
+        autoNameDisplay(this, "parent_form", "forms")
+
     }
-    componentWillUnmount () {functionsListenrs(this, false)}
+    componentWillUnmount () {
+        functionsListenrs(this, false)
+        this.props.changeLangSelectAcivity(true)
+    }
     static getDerivedStateFromProps(props, state){
         let fieldsUpdate = changePropName(props, state.fields, 'module_no_name', "module_no", "module_no")
         fieldsUpdate =  changePropName(props, fieldsUpdate, 'parent_form_name', "parent_form", "parent_form")

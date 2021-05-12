@@ -7,19 +7,21 @@ import { Component } from "react";
 import { t } from "../../../utilities/lang";
 import { connect } from "react-redux";
 import { trigerEnterButton } from "../../../utilities/tap/utilities";
+import { getF } from "../../../utilities/utilities";
 
 class Filter extends Component {
     componentDidMount () {
         this.props.fields.map((f,i) => {
-            const id = `${f}${i}100`
+            const id = `${getF(f, "label", this.props.lanState)}${i}100`
             trigerEnterButton(id, this.props.searchClick)
             return null
         })
     }
+
     render() {
         const colSpan = 12 / this.props.fields.length
         const searchFields = this.props.fields.map((f, i) => {
-            const id = `${f}${i}100`
+            const id = `${getF(f, "label", this.props.lanState)}${i}100`
             let type = "text"
             if(f === "lang_no"){type = "number"}
             return (
@@ -27,10 +29,10 @@ class Filter extends Component {
                     <TextField 
                     type={type}
                     id={id}
-                    onBlur={(e) => this.props.inputValueChangeHandler(e, f)}
+                    onBlur={(e) => this.props.inputValueChangeHandler(e, getF(f, "propName", this.props.lanState))}
                     autoComplete="off"
                     variant="standard" fullWidth 
-                    label={t(f, this.props.lanTable, this.props.lanState)} />
+                    label={t(getF(f, "label", this.props.lanState), this.props.lanTable, this.props.lanState)} />
                 </div>
             )
         })

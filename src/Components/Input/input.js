@@ -5,7 +5,7 @@ import InputField  from "./InputField/InputField";
 import SelectField from "./SelectField/SelectField";
 import CheckBoxField from "./CheckBoxField/CheckBoxField";
 import AsyncSelectField from "./AsyncSelectField/AsyncSelectField"
-
+import TextArea from "./TextArea/TextArea"
 
 
 class Input extends Component {
@@ -20,8 +20,10 @@ class Input extends Component {
                 return <CheckBoxField field={this.props.field} changeHandler={this.props.changeHandler}  thisK={this.props.thisK}/>
             case "asyncSelect":
                 return <AsyncSelectField field={this.props.field} changeHandler={this.props.changeHandler} thisK={this.props.thisK} />
+            case "textarea":
+                return <TextArea field={this.props.field} changeHandler={this.props.changeHandler} thisK={this.props.thisK}/>
             default:
-                break;  
+                return <div></div>  
         }
     }
     render (){

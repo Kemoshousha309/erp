@@ -177,7 +177,10 @@ class Language extends Component{
         setlastIndex(this)
         functionsListenrs(this, true)
     }
-    componentWillUnmount () {functionsListenrs(this, false)}
+    componentWillUnmount () {
+        functionsListenrs(this, false)
+        this.props.changeLangSelectAcivity(true)
+    }
     static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
 
     render (){return displayContent(this)}

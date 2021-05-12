@@ -122,7 +122,7 @@ class Module extends Component{
         loading: false,
         listShow: false,
         mainFields: ["module_no", "shortcut", "module_d_name"],
-        tapName: "modules",
+        tapName: "modules", 
         deleteConfirm: false,
         searchFields: ["module_no"],
         ShortCutsList: false,
@@ -166,7 +166,10 @@ class Module extends Component{
         setlastIndex(this)
         functionsListenrs(this, true)
     }
-    componentWillUnmount () {functionsListenrs(this, false)}
+    componentWillUnmount () {
+        functionsListenrs(this, false)
+        this.props.changeLangSelectAcivity(true)
+    }
     static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
     render (){return displayContent(this)}
 } 

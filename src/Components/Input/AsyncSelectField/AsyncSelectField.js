@@ -9,6 +9,7 @@ import {faAngleDown} from "@fortawesome/free-solid-svg-icons";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import Aux from "../../../hoc/Aux";
 import { CircularProgress } from "@material-ui/core";
+import { isValid } from "../../../utilities/tap/validation";
 
 
 class AsyncSelectField extends Component {
@@ -27,10 +28,20 @@ class AsyncSelectField extends Component {
     handleBlur = (e) => {
         this.props.changeHandler(this.state, this.props.field.id)
     }
+
     handleSelect = (event) => {
         const input = document.getElementById(this.props.field.id)
         input.focus() // to fire blur after update the state
-        this.setState({dropList: false, value: event.target.value, displayValue: event.target.innerText})
+        const validationRules = this.props.field.validation
+        const stateClone = {...this.state}
+        const [valid, message] = isValid(event.target.value, validationRules, this)
+        stateClone.valid = valid
+        stateClone.invalidFeedBack = message
+        stateClone.value = event.target.value
+        stateClone.dropList = false
+        stateClone.displayValue = event.target.innerText
+        this.setState(stateClone)
+        // this.setState({dropList: false, value: event.target.value, displayValue: event.target.innerText})
     }
     handleClose = (event) => {
         this.props.thisK.async_lang_no_options(this.state.dropList)
@@ -63,7 +74,9 @@ class AsyncSelectField extends Component {
         )
         return (
             <div className={["form-group" ,style.inputField].join(' ')}>
-                <label htmlFor={field.id} className="col-sm-4 col-form-label">{label(this)}</label>
+                <label title={t(this.props.field.label, this.props.lanTable, this.props.lanState)} 
+                  htmlFor={field.id} 
+                  className="col-sm-4 col-form-label">{label(this)}</label>
                 <div className="col-sm-8">
                     <input 
                     value={this.state.displayValue}

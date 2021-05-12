@@ -3,6 +3,7 @@ import { connect } from "react-redux"
 import style from "./CheckBoxField.module.scss"
 import { Component } from "react";
 import {  label, reflectOuterState } from "../../../utilities/inputs"
+import { t } from "../../../utilities/lang";
 
 
 
@@ -27,7 +28,10 @@ class CheckBoxField extends Component {
         const field = this.props.field
         return (
             <div className={["form-group" ,style.checkboxField].join(' ')}>
-                <label htmlFor={field.id} className="col-sm-4 col-form-label">{label(this)}</label>
+                <label 
+                title={t(this.props.field.label, this.props.lanTable, this.props.lanState)} 
+                  htmlFor={field.id} 
+                  className="col-sm-4 col-form-label">{label(this)}</label>
                 <div className="col-sm-8">
                     <input 
                     checked={this.state.value}

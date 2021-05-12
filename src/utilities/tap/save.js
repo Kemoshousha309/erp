@@ -1,5 +1,5 @@
 import { timer } from "./utilities"
-import {  getValues, fields } from "./fields"
+import {  getValues, fields, getHeaders } from "./fields"
 import { checkValidity } from "./validation"
 import { selectMessage } from "../lang"
 import axios from "../../axios"
@@ -24,11 +24,13 @@ const handleSaveRequest = (thisK, func) => {
         method = "post"
         url = thisK.state.urls.add
     }
+    console.log(getHeaders(thisK))
     thisK.setState({loading: true})
     axios({
         method: method,
         url: url,
-        data: getValues(thisK.state.fields)
+        data: getValues(thisK.state.fields),
+        headers: getHeaders(thisK)
         })
         .then(res => {
             fields(thisK.state.fields, 'close', false)

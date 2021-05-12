@@ -1,63 +1,75 @@
 import { decideName } from "../lang"
 import axios from "../../axios"
 import {t} from "../../utilities/lang"
-// Handle Name fields ************************
+import { isValid } from "./validation"
 
 
-// module name
-export const handleModuleNoName = (thisK) => {
-    thisK.state.fields.module_no.changeHandler = (event, field) => {
+// Handle Auto name display fields ************************
+export const autoNameDisplay = (thisK, listenField, fkUrl, AFD_N=null) => {
+    // SPN is the prop name of some property in its own table
+    thisK.state.fields[listenField].changeHandler = (event, field) => {
         const fieldsClone = {...thisK.state.fields}
-        const moduleNoName =  decideName("module_no", thisK.props.lanState);
-        fieldsClone[moduleNoName].value = t("loading", thisK.props.lanTable, thisK.props.lanState)
+        // auto field display name is the field that should be changed its key depend on the language to fit the record props
+        let AFD_name = decideName(listenField , thisK.props.lanState);
+        if(AFD_N){
+            AFD_name = AFD_N
+        }
+        fieldsClone[AFD_name].value = t("loading", thisK.props.lanTable, thisK.props.lanState)
         thisK.setState({fields: fieldsClone})
-            axios.get(`modules/page/${event.target.value}`)
-            .then(res =>  {
-                const moduleName =  decideName("module", thisK.props.lanState);
-                if(res.data.page[moduleName]){
-                    fieldsClone[moduleNoName].value = res.data.page[moduleName]
+        axios.get(`${fkUrl}/${event.target.value}`)
+        .then(res=> {
+            // propert. name. in. original. table. => SPN => start property name in the fk tabel
+            const PNIOT = thisK.state.fields[listenField].fKTable.SPN
+            // record property name is the prop name in the record wich i use to access the value form record, depend on SPN
+            const RP_name = decideName(PNIOT, thisK.props.lanState)
+            const RP_d_name = decideName(PNIOT, 1)
+            if(event.target.value !== ""){
+                if(res.data[RP_name]){
+                    fieldsClone[AFD_name].value = res.data[RP_name]
+                    thisK.setState({fields: fieldsClone})
+                }else if(res.data[RP_d_name]){
+                    fieldsClone[AFD_name].value = res.data[RP_d_name]
                     thisK.setState({fields: fieldsClone})
                 }else{
-                    fieldsClone[moduleNoName].value = res.data.page.module_d_name
+                    fieldsClone[AFD_name].value = ""
                     thisK.setState({fields: fieldsClone})
-                }
-            })
-            .catch(err => {
-                fieldsClone[moduleNoName].value = t("not_exist", thisK.props.lanTable, thisK.props.lanState)
+                }   
+            }else{
+                fieldsClone[AFD_name].value = ""
                 thisK.setState({fields: fieldsClone})
-            })
-        }
-}
+            }
 
-// parent name
-export const handleParentNoName = (thisK) => {
-    thisK.state.fields.parent_form.changeHandler = (event, field) => {
-        const fieldsClone = {...thisK.state.fields}
-        const parentFormName =  decideName("parent_form", thisK.props.lanState);
-        fieldsClone[parentFormName].value = t("loading", thisK.props.lanTable, thisK.props.lanState)
-        thisK.setState({fields: fieldsClone})
-            axios.get(`forms/page/${event.target.value}`)
-            .then(res =>  {
-                const parentName =  decideName("form", thisK.props.lanState);
-                console.log(res.data.page)
-                if(res.data.page[parentName]){
-                    fieldsClone[parentFormName].value = res.data.page[parentName]
-                    thisK.setState({fields: fieldsClone})
-                }else{
-                    fieldsClone[parentFormName].value = res.data.page.parent_form_d_name
-                    thisK.setState({fields: fieldsClone})
-                }
-            })
-            .catch(err => {
-                fieldsClone[parentFormName].value = t("not_exist", thisK.props.lanTable, thisK.props.lanState)
-                thisK.setState({fields: fieldsClone})
-            })
-        }
+        })
+        .catch(err => {
+            fieldsClone[AFD_name].value = t("not_exist", thisK.props.lanTable, thisK.props.lanState)
+            thisK.setState({fields: fieldsClone})
+        })
+    }
 }
 
 
+// password confirmation 
+export const checkPassConfirm = (thisK) => {
+    thisK.state.fields.confirm_password.changeHandler = (event, field) => {
+        const passValue = thisK.state.fields.password.value
+        const confimValue = event.target.value
+        const fieldClone = {...field}
+        if(confimValue.length >= passValue.length && passValue !== confimValue){
+            fieldClone.valid = false
+            fieldClone.invalidFeedBack = t("pass_not_identical", thisK.props.lanTable, thisK.props.lanState)
+        }else{
+            const [valid, message] = isValid(event.target.value, field.props.field.validation, thisK)
+            fieldClone.valid = valid
+            fieldClone.invalidFeedBack = message
+        }
+        field.setState(fieldClone)
+        return 'pass_confirm'
+    }
+} 
 
 
+
+// handle change field name to fit the record prop name
 const renameObjKey = (obj, oldKey, newKey) => {
     const objArr = [];
     for(let key in obj){
@@ -82,6 +94,27 @@ const renameObjKey = (obj, oldKey, newKey) => {
     return newObj
 }
 
+// only on field should be active 
+export const onlyActiveField = (fields, firstField, secondField, mode) => {
+    const fieldOne = fields[firstField]
+    const fieldTwo = fields[secondField]
+    if(mode === "modify"){
+        if(fieldOne.value.toString().length >=1){
+            fields[secondField].writability = false
+            fields[secondField].value = ""
+        }else{
+            fields[secondField].writability = true
+        }
+        if(fieldTwo.value.toString().length >= 1){
+            fields[firstField].writability = false
+            fields[firstField].value = ""
+        }else{
+            fields[firstField].writability = true
+        }
+    }
+    return fields
+}
+
 
 export const changePropName  = (props, fields, startPropName, propFieldName, gatherdFieldName) =>  {
     let currentKey = null
@@ -98,8 +131,7 @@ export const changePropName  = (props, fields, startPropName, propFieldName, gat
     if(parseInt(props.lanState) === 1){
         newKey = d_name
     }
-    const fieldsClone = {...fields}
-    fieldsClone[gatherdFieldName].readOnlyField = newKey
-    const fieldsUpdate = renameObjKey(fieldsClone, currentKey, newKey)
+        fields[gatherdFieldName].readOnlyField = newKey
+    const fieldsUpdate = renameObjKey(fields, currentKey, newKey)
     return fieldsUpdate
 }

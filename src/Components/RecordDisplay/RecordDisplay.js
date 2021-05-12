@@ -101,6 +101,7 @@ class RecordDisply extends Component {
     }
     render() {
         let content = null
+        
         if(this.state.pages){
             content = (
                 <div id="R_D">

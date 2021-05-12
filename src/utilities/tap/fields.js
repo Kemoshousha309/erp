@@ -47,8 +47,7 @@ export const fillRecord = (fields, record) => {
     for(let i in fields){
         if(record[i] !== undefined){
             if(record[i] === null){
-                console.log(record[i])
-                fields[i].value =  "holl" 
+                fields[i].value =  "" 
             }else{
                 fields[i].value = record[i] 
             }
@@ -75,6 +74,19 @@ export const getValues = (fields) => {
     }
     return values
 }
+
+export const getHeaders = (thisK) => {
+    const headers = {}
+    if(thisK.state.specialFields){
+        thisK.state.specialFields.forEach(f => {
+            if(f.header && thisK.state.fields[f.key].value !== ""){
+                headers[f.headerName] = thisK.state.fields[f.key].value
+            }
+        })
+    }
+    return headers
+}
+
 
 export const getPk = (fields) => {
     for(const key in  fields){

@@ -2,6 +2,7 @@ import React from "react"
 import { Component } from "react"
 import { connect } from "react-redux"
 import { t } from "../../../utilities/lang"
+import { getF } from "../../../utilities/utilities"
 import style from "./Page.module.scss"
 
 
@@ -14,7 +15,7 @@ class Page extends Component {
     }
     render(){
         // console.log("page render")
-        const body =displayBody(this.props.page.pages, this.props.fields, this.props.recordClick)
+        const body =displayBody(this.props.page.pages, this.props.fields, this.props.recordClick, this.props.lanState)
         const noMatch = <div className={style.noMatch}>{t("no_match", this.props.lanTable, this.props.lanState)}</div>
         return (
             <div id="pageContianer" className={style.container}>
@@ -22,7 +23,7 @@ class Page extends Component {
                     <thead >
                         <tr>
                         <th scope="col">#</th>
-                        {displayHead(this.props.fields, this.props)}
+                        {displayHead(this.props.fields, this.props, this.props.lanState)}
                         </tr>
                     </thead>
                     <tbody>
@@ -48,9 +49,9 @@ export default connect(mapStateToProps, null)(Page);
 
 
 
-const displayHead = (fields, props) => {
+const displayHead = (fields, props, lang_no) => {
     const head = fields.map((fName, i) => {
-        let output = t(fName, props.lanTable, props.lanState)
+        let output = t(getF(fName, "label", lang_no), props.lanTable, props.lanState)
         if(typeof(output) === "string"){
             output = output.toUpperCase()
         }
@@ -61,7 +62,7 @@ const displayHead = (fields, props) => {
     return head
 }
 
-const displayBody = (page, fields, recordClick) => {
+const displayBody = (page, fields, recordClick, lang_no) => {
     let body =  null
     if(page){
         body = page.map((ele, i) => {
@@ -69,7 +70,7 @@ const displayBody = (page, fields, recordClick) => {
                 <tr key={i} onClick={(e) => recordClick(e, i, ele)}>
                     <th scope="row">{i + 1}</th>
                     {fields.map((f, i )=> {
-                        return <td key={i} >{ele[f]}</td>
+                        return <td key={i} >{ele[getF(f, "propName", lang_no)]}</td>
                     })}
                 </tr>
             )

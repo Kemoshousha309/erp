@@ -20,44 +20,21 @@ import {
     handleCloseFkList
 } from "../../../utilities/tap/handlers"
 import { displayContent } from '../../../utilities/tap/displayContent';
-import {getTree , asyncTreeSave} from "../../../utilities/tap/async" 
-import { changePropName, handleModuleNoName, handleParentNoName } from '../../../utilities/tap/inputsHandlers';
+import { autoNameDisplay, changePropName, checkPassConfirm, onlyActiveField } from '../../../utilities/tap/inputsHandlers';
 import { langChangeActivity } from '../../../store/actions/lang';
+import { handleSave } from '../../../utilities/tap/save';
 
 
 class Users extends Component{
     state = {
         fields: {
-            module_no:{
+            user_id:{
                 fieldType: "input",
                 type: "number",
-                label: "module_no",
+                label: "user_no",
                 validation: {
                     requiered: true,
-                    length: 30
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,
-                value: "",
-                fkName: "module" ,
-            },
-            module_no_name:{
-                fieldType: "input",
-                label: "name",
-                readOnly: true,
-                value: ""
-            },
-            form_no:{
-                fieldType: "input",
-                type: "number",
-                label: "form_no",
-                validation: {
-                    requiered: true,
-                    length: 30
+                    size: 2147483647
                 },
                 validity: {
                     valid: true,
@@ -67,12 +44,13 @@ class Users extends Component{
                 writability: false,
                 value: "",
             },
-            form_d_name:{
+            user_d_name:{
                 fieldType: "input",
                 type: "text",
                 label: "name",
                 validation: {
-                    requiered: true
+                    requiered: true,
+                    length: 100
                 },
                 validity: {
                     valid: true,
@@ -82,12 +60,12 @@ class Users extends Component{
                 writability: false,
                 value: "",
             },
-            form_f_name:{
+            user_f_name:{
                 fieldType: "input",
                 type: "text",
                 label: "foreign_name",
                 validation: {
-                    requiered: true
+                    length: 100
                 },
                 validity: {
                     valid: true,
@@ -97,13 +75,14 @@ class Users extends Component{
                 writability: false,
                 value: "",
             },
-            parent_form:{
+            placeholder:{fieldType: "",},
+            direct_mang:{
                 fieldType: "input",
                 type: "number",
-                label: "parent_form",
+                label: "direct_manager",
                 validation: {
                     requiered: true,
-                    length: 30
+                    size: 2147483647
                 },
                 validity: {
                     valid: true,
@@ -112,22 +91,49 @@ class Users extends Component{
                 },
                 writability: false,
                 value: "",
-                fkName: "module" ,
+                fKTable: {
+                    SPN: "user",
+                    PN: "user_id"
+                }
             },
-            parent_form_name:{
+            direct_mang_name:{
                 fieldType: "input",
                 label: "name",
                 readOnly: true,
                 value: ""
             },
-
-            form_order:{
+            group_no:{
                 fieldType: "input",
                 type: "number",
-                label: "form_order",
+                label: "group_no",
+                validation: {
+                    size: 2147483647
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: "",
+                fKTable: {
+                    SPN: "group",
+                    PN: "group_no"
+                }
+            },
+            group_no_name:{
+                fieldType: "input",
+                label: "name",
+                readOnly: true,
+                value: ""
+            },
+            password:{
+                fieldType: "input",
+                type: "password",
+                label: "password",
                 validation: {
                     requiered: true,
-                    length: 30
+                    length: 100
                 },
                 validity: {
                     valid: true,
@@ -137,69 +143,218 @@ class Users extends Component{
                 writability: false,
                 value: "",
             },
-            active:{
+            confirm_password:{
+                fieldType: "input",
+                type: "password",
+                label: "confirm_pass",
+                validation: {
+                    requiered: true,
+                    length: 100
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: "",
+            },
+            copy_priv_from:{
+                fieldType: "input",
+                type: "number",
+                label: "copy_privileges_from_user",
+                validation: {
+                    size: 2147483647
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: "",
+                fKTable: {
+                    SPN: "user",
+                    PN: "user_id"
+                },
+                readOnlyField: 'copy_priv_from_name' 
+            },
+            copy_priv_from_name:{
+                fieldType: "input",
+                label: "name",
+                readOnly: true,
+                value: ""
+            },
+            copy_priv_to:{
+                fieldType: "input",
+                type: "number",
+                label: "copy_privileges_to_group",
+                validation: {
+                    size: 2147483647
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: "",
+                fKTable: {
+                    SPN: "group",
+                    PN: "group_no"
+                },
+                readOnlyField: 'copy_priv_to_name'
+            },
+            copy_priv_to_name:{
+                fieldType: "input",
+                label: "name",
+                readOnly: true,
+                value: ""
+            },
+            inactive:{
                 fieldType: "checkbox",
                 type: "checkbox",
-                label: "active",
+                label: "inactive",
                 writability: false,
                 value: false
             },
-            main:{
-                fieldType: "checkbox",
-                type: "checkbox",
-                label: "main",
+            placeholder2:{fieldType: "",},
+            inactive_user:{
+                fieldType: "input",
+                type: "number",
+                label: "inactive_user",
+                validation: {
+                    size: 2147483647
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
                 writability: false,
-                value: false
+                value: "",
             },
+            inactive_date:{
+                fieldType: "input",
+                type: "date",
+                label: "inactive_date",
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: "2020-11-14", // should be at this form 2111-04-09
+            },
+            inactive_reason:{
+                fieldType: "textarea",
+                type: "textarea",
+                label: "inactive_reason",
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: false,
+                value: "",
+            },  
+
         },
-        pks: ["form_no"],
+        pks: ["user_id"],
         listShow: false,
-        tapName: "forms",
-        mainFields: ["form_no", "module_no","form_d_name"],
-        searchFields: ["form_no"],
+        tapName: "users",
+        mainFields: [
+            {label: "user_no", propName: "user_id"}, 
+            {propName: "direct_mang", label: "direct_manager"},
+            "group_no",
+            {label: "name", propName: "user_d_name"}
+        ],
+        searchFields: ["user_id"],
         urls: {
-            modify: "forms",
-            search: "forms",
-            pages: "forms/pages",   
-            page:  "forms/page",
-            lastPage: "forms/lastPage",
-            filter: "forms/filteredPages",
-            pageNo: "forms/pageNo",
-            delete: "forms"
+            add: "users",
+            modify: "users",
+            search: "users",
+            pages: "users/pages",   
+            page:  "users/page",
+            lastPage: "users/lastPage",
+            filter: "users/filteredPages",
+            pageNo: "users/pageNo",
+            delete: "users"
         },
-        fks: ["module_no", "parent_form"],
+        fks: ["direct_mang", "group_no", "copy_priv_from", "copy_priv_to"],
         fkListShow: null,
         fkList: {
-            module_no: {
-                mainFields: ["module_no", "shortcut", "module_d_name"],
+            direct_mang: {
+                mainFields:  [
+                    {label: "user_no", propName: "user_id"}, 
+                    {propName: "direct_mang", label: "direct_manager"},
+                    "group_no",
+                    {label: "name", propName: "user_d_name"}
+                ],
                 urls: {
-                    add: "modules",
-                    modify: "modules",
-                    search: "modules",
-                    pages: "modules/pages",   
-                    page:  "modules/page",
-                    lastPage: "modules/lastPage",
-                    filter: "modules/filteredPages",
-                    pageNo: "modules/pageNo",
-                    delete: "modules"
-                },
+            modify: "users",
+            search: "users",
+            pages: "users/pages",   
+            page:  "users/page",
+            lastPage: "users/lastPage",
+            filter: "users/filteredPages",
+            pageNo: "users/pageNo",
+            delete: "users"
+        },
             },
-            parent_form: {
-                mainFields: ["form_no", "module_no","form_d_name"],
+            copy_priv_from: {
+                mainFields:  [
+                    {label: "user_no", propName: "user_id"}, 
+                    {propName: "direct_mang", label: "direct_manager"},
+                    "group_no",
+                    {label: "name", propName: "user_d_name"}
+                ],
                 urls: {
-                    modify: "forms",
-                    search: "forms",
-                    pages: "forms/pages",   
-                    page:  "forms/page",
-                    lastPage: "forms/lastPage",
-                    filter: "forms/filteredPages",
-                    pageNo: "forms/pageNo",
-                    delete: "forms"
-                },
+            modify: "users",
+            search: "users",
+            pages: "users/pages",   
+            page:  "users/page",
+            lastPage: "users/lastPage",
+            filter: "users/filteredPages",
+            pageNo: "users/pageNo",
+            delete: "users"
+        },
+            },
+            group_no: {
+                mainFields:  [
+                    "group_no",
+                    {label: "name", propName: "group_d_name"}
+                ],
+                urls: {
+            modify: "usersgroups",
+            search: "usersgroups",
+            pages: "usersgroups/pages",   
+            page:  "usersgroups/page",
+            lastPage: "usersgroups/lastPage",
+            filter: "usersgroups/filteredPages",
+            pageNo: "usersgroups/pageNo",
+            delete: "usersgroups"
+        },
+            },
+            copy_priv_to: {
+                mainFields:  [
+                    "group_no",
+                    {label: "name", propName: "group_d_name"}
+                ],
+                urls: {
+            modify: "usersgroups",
+            search: "usersgroups",
+            pages: "usersgroups/pages",   
+            page:  "usersgroups/page",
+            lastPage: "usersgroups/lastPage",
+            filter: "usersgroups/filteredPages",
+            pageNo: "usersgroups/pageNo",
+            delete: "usersgroups"
+        },
             }
 
         },
-        tapTools: ["delete", "add", "copy"],
+        tapTools: [],
         tools: null,
         mode: "start",
         // we handle prevMode in list show only ....
@@ -210,7 +365,20 @@ class Users extends Component{
         loading: false,
         deleteConfirm: false,
         ShortCutsList: false,
-        tree: null,
+        specialFields: [
+            {
+                key: "copy_priv_to",
+                add: "close",
+                header: true,
+                headerName: "COPY-PRIVILEGES-TO-GROUP"
+            },
+            {
+                key: "copy_priv_from",
+                header: true,
+                headerName: "COPY-FROM-USER-PRIVILEGES"
+            }
+        ],
+        langNo: null
     }
 
     // Tools Handle *********************************************
@@ -218,7 +386,7 @@ class Users extends Component{
     modify = () => handleModify(this)
     add = () => handleAdd(this)
     undo = () => handleUndo(this)
-    save = () => asyncTreeSave(this)
+    save = () => handleSave(this)
     copy = () => handleCopy(this)
     list = () => handleList(this)
     delete = () => handleDelete(this)
@@ -240,22 +408,42 @@ class Users extends Component{
     
     // LifeCycle methods *******************************************
     componentDidMount () {
-        getTree(this)
+        // getTree(this)
         setlastIndex(this)
         functionsListenrs(this, true)
 
-        // inputs handlers
-        handleModuleNoName(this)
-        handleParentNoName(this)
+        // // inputs handlers on Auto display
+        autoNameDisplay(this, 'direct_mang', "users")
+        autoNameDisplay(this, 'group_no', "usersgroups")
+        autoNameDisplay(this, 'copy_priv_from', "users", "copy_priv_from_name")
+        autoNameDisplay(this, 'copy_priv_to', "usersgroups", "copy_priv_to_name")
+        checkPassConfirm(this)
+
+        // special fields hanlde
+        hanldeInactiveFields(this)
     }
-    componentWillUnmount () {functionsListenrs(this, false)}
+    
+    componentWillUnmount () {
+        functionsListenrs(this, false)
+        this.props.changeLangSelectAcivity(true)
+    }
     static getDerivedStateFromProps(props, state){
-        let fieldsUpdate = changePropName(props, state.fields, 'module_no_name', "module_no", "module_no")
-        fieldsUpdate =  changePropName(props, fieldsUpdate, 'parent_form_name', "parent_form", "parent_form")
+        const fieldsClone = {...state.fields}
+        let fieldsUpdate = fieldsClone
+        let lang_no = state.langNo
+        // this is the technique of active only one field without affect other things
+        if(parseInt(props.lanState) !== parseInt(state.langNo)){
+            lang_no = props.lanState
+            fieldsUpdate = changePropName(props, fieldsClone, "group_no_name", "group_no", "group_no")
+            fieldsUpdate =  changePropName(props, fieldsUpdate, 'direct_mang_name', "direct_mang", "direct_mang")
+        }else{
+            fieldsUpdate =  onlyActiveField(fieldsClone, "copy_priv_from", "copy_priv_to", state.mode)
+        }
         const {tools} =  handleDrivedState (props, state)
         return {
             tools: tools,
-            fields: fieldsUpdate
+            fields: fieldsUpdate,
+            langNo: lang_no
         }
     }
     render (){return displayContent(this)}
@@ -267,7 +455,7 @@ const mapStateToProps = state => {
         lanTable: state.lang.langTables,
         token: state.auth.authData.token,
         languages: state.lang.langInfo
-    }
+    }   
 }
 
 const mapDispatchToProps = dispatch => {
@@ -280,3 +468,16 @@ const mapDispatchToProps = dispatch => {
 export default connect(mapStateToProps, mapDispatchToProps)(Users);
 
 
+const hanldeInactiveFields = (thisK) => {
+    const inactiveFlag = document.getElementById("inactive")
+    const inactiveReason = document.getElementById("inactive_reason")
+    const fieldsClone  = {...thisK.state.fields}
+    inactiveFlag.addEventListener("change", (e) => {
+        if(e.target.value){
+            fieldsClone.inactive_reason.writability = true
+        }else{
+            fieldsClone.inactive_reason.writability = false
+        }
+        thisK.setState({fields: fieldsClone})
+    })
+}

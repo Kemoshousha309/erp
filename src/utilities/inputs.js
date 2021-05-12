@@ -1,19 +1,24 @@
 import Aux from "../hoc/Aux"
 import { t } from "./lang"
 import { isValid } from "./tap/validation"
+import {faEye, faEyeSlash} from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
-export const changeHandler = (e, thisK, handler) => {
-    if(handler){
-        handler(e, thisK)
-    }
+export const changeHandler = (e, thisK, handler1, handler2) => {
     const validationRules = thisK.props.field.validation
     const stateClone = {...thisK.state}
-    const [valid, message] = isValid(e.target.value, validationRules)
+    const [valid, message] = isValid(e.target.value, validationRules, thisK)
     stateClone.valid = valid
     stateClone.invalidFeedBack = message
     stateClone.value = e.target.value
     thisK.setState(stateClone)
+    if(handler1){
+        handler1(e, thisK)
+    }
+    if(handler2){
+        handler2(e, thisK)
+    }
 } 
 
 
@@ -22,11 +27,14 @@ export const label = (thisK) => {
     if(thisK.props.field.validation){
         if(thisK.props.field.validation.requiered){
             return <Aux>{label}<span style={{color: "red", fontSize: "2rem"}} > *</span></Aux>
+        }else{
+            return label
         }
     }else{
         return label
     }
 }
+
 export const checkInputValiditiy = (thisK, style) => {
     let invalidMessage = null
     let invalidInputStyle = null
@@ -56,4 +64,53 @@ export const reflectOuterState = (props, state) => {
         }
         }
     return updatedState
+}
+
+
+
+
+export const handlePassIcon = (thisK, style) => {
+    const passIconHandler = (e, id, disabled) => {
+        if(!disabled) {
+         const field = document.getElementById(id)
+         // change the field type
+         const typeAtr = field.getAttribute("type")
+         if(typeAtr === "text"){
+             field.setAttribute("type", "password")
+             thisK.setState({passIconOpen: true})
+            }else{
+                field.setAttribute("type", "text")
+                thisK.setState({passIconOpen: false})
+         }
+         // toggle the icon
+     
+        }
+     }
+     ///*******************************************************8 */
+    let passIcon = null
+    let classes = [style.eyeIcon]
+    if(parseInt(thisK.props.lanState) === 1){
+        classes.push(style.iconAr)
+    }else {
+        classes.push(style.iconEn)
+    }
+    let disabled = false
+    if (!thisK.props.field.writability) {
+        classes.push(style.disableIcon)
+        disabled = true
+    }
+    if(thisK.props.field.type === "password" ) {
+        let icon = faEye
+        if(thisK.state.passIconOpen || disabled){
+            icon = faEyeSlash
+        }
+        passIcon =  <FontAwesomeIcon 
+        className={classes.join(" ")}
+        onClick={(e) => {
+            const id = thisK.props.field.id
+            return  passIconHandler(e, id, disabled)
+        }} 
+        icon={icon} />
+    } 
+    return passIcon
 }

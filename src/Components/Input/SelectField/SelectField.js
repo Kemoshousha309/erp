@@ -33,7 +33,9 @@ class SelectField extends Component {
         }
         return (
             <div className={["form-group" ,style.inputField].join(' ')}>
-                <label htmlFor={field.id} className="col-sm-4 col-form-label">{label(this)}</label>
+                <label title={t(this.props.field.label, this.props.lanTable, this.props.lanState)} 
+                  htmlFor={field.id} 
+                  className="col-sm-4 col-form-label">{label(this)}</label>
                 <div className="col-sm-8">
                 <select 
                     onChange = {this.inputChange}
