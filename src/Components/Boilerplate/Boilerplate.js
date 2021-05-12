@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/wrap";
 import Tools from "../Tools/Tools";
 import Spinner from "../UI/Spinner/Spinner";
 import StatusBar from "../StatusBar/StatusBar";

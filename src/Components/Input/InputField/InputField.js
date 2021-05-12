@@ -45,7 +45,7 @@ class InputField extends Component {
                         onBlur ={this.onBlurHandler} 
                         autoComplete="off"
                         disabled={!field.writability}
-                        type="textarea" 
+                        type={field.type} 
                         className={["form-control", invalidInputStyle].join(" ")}
                         id={field.id} 
                         placeholder={placeholder} />

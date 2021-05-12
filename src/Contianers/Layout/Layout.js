@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Navigation from "../../Components/Navigation/Navigation";
 import SideTree from "../../Components/SideTree/SideTree";
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/wrap";
 import MainScreen from "../MainScreen/MainScreen"
 import Modal from "../../Components/UI/Modal/Modal";
 import MobileNav from "../../Components/Navigation/MobileNav/MobileNav";

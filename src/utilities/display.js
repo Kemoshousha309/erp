@@ -1,6 +1,6 @@
 import Input from "../Components/Input/input";
 import React from "react";
-import Aux from "../hoc/Aux";
+import Aux from "../hoc/wrap";
 import Treeview from "../Components/Treeview/Treeview";
 
 const doubleItems = (array) =>{

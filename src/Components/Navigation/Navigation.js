@@ -3,7 +3,7 @@ import LanSelect from "./LanSelect/LanSelect";
 import style from "./Navigation.module.scss";
 import user from "../../assests/user.jpeg"
 import DropDown from "../UI/DrobDown/DrobDown";
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/wrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faCalendarAlt, faBell, faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import {faBars, faEllipsisH, faSignInAlt} from "@fortawesome/free-solid-svg-icons";

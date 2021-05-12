@@ -1,3 +1,5 @@
+import { formatDate } from "../date"
+
 export const fields = (fields, mode, empty=true, specific) => {
     if(specific){
         for(const field in fields){
@@ -49,7 +51,11 @@ export const fillRecord = (fields, record) => {
             if(record[i] === null){
                 fields[i].value =  "" 
             }else{
-                fields[i].value = record[i] 
+                if(fields[i].type === "dateFormat"){
+                    fields[i].value = formatDate(record[i], 12) 
+                }else{
+                    fields[i].value = record[i] 
+                }
             }
         }else if (record[i] === false){
             fields[i].value =  false

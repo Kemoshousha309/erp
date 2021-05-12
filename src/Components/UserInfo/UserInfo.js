@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./UserInfo.module.scss";
 import {connect} from "react-redux"
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/wrap";
 
 const UserInfo = props => {
     // console.log("UserInfo render")

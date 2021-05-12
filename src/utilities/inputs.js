@@ -1,4 +1,4 @@
-import Aux from "../hoc/Aux"
+import Aux from "../hoc/wrap"
 import { t } from "./lang"
 import { isValid } from "./tap/validation"
 import {faEye, faEyeSlash} from "@fortawesome/free-regular-svg-icons";

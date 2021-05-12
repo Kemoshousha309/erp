@@ -1,5 +1,5 @@
 import React from "react";
-import Aux from "../../../../hoc/Aux";
+import Aux from "../../../../hoc/wrap";
 import style from "./ParentNonde.module.scss"
 import {getRelatedIcon, iconMap, treehandler, getRelatedRoute, routeMap} from "../../../../utilities/tree"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

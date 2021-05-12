@@ -23,6 +23,7 @@ import { displayContent } from '../../../utilities/tap/displayContent';
 import { autoNameDisplay, changePropName, checkPassConfirm, onlyActiveField } from '../../../utilities/tap/inputsHandlers';
 import { langChangeActivity } from '../../../store/actions/lang';
 import { handleSave } from '../../../utilities/tap/save';
+import { formatDate } from '../../../utilities/date';
 
 
 class Users extends Component{
@@ -233,10 +234,11 @@ class Users extends Component{
                 },
                 writability: false,
                 value: "",
+                readOnly: true
             },
             inactive_date:{
                 fieldType: "input",
-                type: "date",
+                type: "dateFormat",
                 label: "inactive_date",
                 validity: {
                     valid: true,
@@ -244,7 +246,8 @@ class Users extends Component{
                     message: null
                 },
                 writability: false,
-                value: "2020-11-14", // should be at this form 2111-04-09
+                readOnly: true,
+                value: "", // should be at this form 2111-04-09
             },
             inactive_reason:{
                 fieldType: "textarea",
@@ -376,6 +379,18 @@ class Users extends Component{
                 key: "copy_priv_from",
                 header: true,
                 headerName: "COPY-FROM-USER-PRIVILEGES"
+            },
+            {
+                key: "inactive_reason",
+                add: "close",
+            },
+            {
+                key: "inactive_user",
+                add: "close",
+            },
+            {
+                key: "inactive_date",
+                add: "close",
             }
         ],
         langNo: null
@@ -469,15 +484,21 @@ export default connect(mapStateToProps, mapDispatchToProps)(Users);
 
 
 const hanldeInactiveFields = (thisK) => {
-    const inactiveFlag = document.getElementById("inactive")
-    const inactiveReason = document.getElementById("inactive_reason")
-    const fieldsClone  = {...thisK.state.fields}
-    inactiveFlag.addEventListener("change", (e) => {
-        if(e.target.value){
+    thisK.state.fields.inactive.changeHandler = (state) => {
+        const fieldsClone = {...thisK.state.fields}
+        const flag = !state.value
+        if(flag){
+            console.log(thisK.state.record)
             fieldsClone.inactive_reason.writability = true
+            fieldsClone.inactive_reason.value = thisK.state.record["inactive_reason"]
+            fieldsClone.inactive_user.value = thisK.state.record["inactive_user"]
+            fieldsClone.inactive_date.value = formatDate( thisK.state.record["inactive_date"])
         }else{
             fieldsClone.inactive_reason.writability = false
+            fieldsClone.inactive_reason.value = ""
+            fieldsClone.inactive_user.value = ""
+            fieldsClone.inactive_date.value = ""
         }
         thisK.setState({fields: fieldsClone})
-    })
+    }
 }

@@ -24,3 +24,15 @@ const scanNameLang = (string) => {
     isFound = string.includes("d_name") || string.includes("f_name")
     return isFound
 } 
+
+// export const addPropertyListener = (targetObject,  propertyName, callBackFunc) => {
+//     const handler = {
+//         set: (target, property, value) => { 
+//             target[property] = value
+//             console.log(`${property} is updated to  => ${value}`)
+//         }
+//     }
+//     const stateProxy = new Proxy(targetObject, handler)
+//     callBackFunc()
+//     return stateProxy
+// }

@@ -3,7 +3,7 @@ import style from "./LanSelect.module.scss"
 import {connect} from "react-redux"
 import { changeLnaguage } from "../../../store";
 import { t } from "../../../utilities/lang";
-import Aux from "../../../hoc/Aux";
+import Aux from "../../../hoc/wrap";
 
 const LanSelect = props => {
     // console.log("LanSelect render")

@@ -15,7 +15,11 @@ class CheckBoxField extends Component {
         lastPropValue: null,
         lastPropValid: null,
     }
-    inputChange = (e) => {
+
+    inputChange = (e, handler) => {
+        if(handler) {
+            handler(this.state)
+        }
         const currentValue = this.state.value
         this.setState({value: !currentValue})
     }
@@ -35,7 +39,7 @@ class CheckBoxField extends Component {
                 <div className="col-sm-8">
                     <input 
                     checked={this.state.value}
-                    onChange = {this.inputChange}
+                    onChange = {(e) => this.inputChange(e, field.changeHandler)}
                     onBlur ={(e) => this.props.changeHandler(this.state, field.id)} 
                     disabled={!field.writability}
                     type={field.type} 

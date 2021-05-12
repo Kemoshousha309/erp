@@ -2,7 +2,7 @@ import React from "react";
 import style from "./TreeNode.module.scss"
 import {getRelatedIcon, iconMap, treehandler, getRelatedRoute, routeMap} from "../../../utilities/tree"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Aux from "../../../hoc/Aux";
+import Aux from "../../../hoc/wrap";
 
 
 

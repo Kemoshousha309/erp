@@ -2,7 +2,7 @@ import React from "react";
 import style from "./SideTreeMobView.module.scss";
 import logo from "../../../assests/logo.png"
 import Backdrop from "../../UI/Backdrop/Backdrop";
-import Aux from "../../../hoc/Aux";
+import Aux from "../../../hoc/wrap";
 import Tree from "../Tree/Tree";
 
 

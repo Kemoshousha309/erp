@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import style from "./MainScreen.module.scss";
 import { Route, Switch } from "react-router";
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/wrap";
 import InternalCoding from "../Screens/InternalCoding/InternalCoding";
 import Users from "../Screens/Users/Users";
 

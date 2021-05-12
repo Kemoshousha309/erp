@@ -59,7 +59,6 @@ const handleSaveRequest = (thisK, func) => {
                 type: "error"
             }
             thisK.setState({
-                mode: "d_record",
                 loading: false, 
                 message: message,
                 recordIndex: null,

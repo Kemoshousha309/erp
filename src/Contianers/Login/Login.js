@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Spinner from "../../Components/UI/Spinner/Spinner";
 import { authRequest, langRequestFailure, storeLanguagesTable } from "../../store";
 import {t} from "../../utilities/lang"
-import Aux from "../../hoc/Aux";
+import Aux from "../../hoc/wrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faExclamationCircle} from "@fortawesome/free-solid-svg-icons"
 import { Button, TextField } from "@material-ui/core";

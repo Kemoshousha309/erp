@@ -1,5 +1,5 @@
 import React from 'react';
-import Aux from '../../../hoc/Aux';
+import Aux from '../../../hoc/wrap';
 import Backdrop from '../Backdrop/Backdrop';
 import style from "./DrobDown.module.scss";
 import {connect} from "react-redux"
