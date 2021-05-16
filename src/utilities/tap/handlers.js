@@ -79,8 +79,13 @@ export const handleRecordFkClick  = (thisK, record, i) => {
                 fieldsClone[fk].validity.message = null
             }
             fieldsClone[fieldsClone[fk].readOnlyField].value = record[fieldName]
+            fieldsClone[fieldsClone[fk].readOnlyField].autoFilledSuccess = true
+        }else if(record[fieldsClone[fk].readOnlyField]){
+            fieldsClone[fieldsClone[fk].readOnlyField].value = record[fieldsClone[fk].readOnlyField]
+            fieldsClone[fieldsClone[fk].readOnlyField].autoFilledSuccess = true
         }else{
             fieldsClone[fieldsClone[fk].readOnlyField].value = record[`${fieldsClone[fk].fKTable.SPN}_d_name`]
+            fieldsClone[fieldsClone[fk].readOnlyField].autoFilledSuccess = true
         }
     }   
     fieldsClone[fk].value = record[fieldsClone[fk].fKTable.PN]

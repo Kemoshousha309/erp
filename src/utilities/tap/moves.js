@@ -67,7 +67,7 @@ const handleRes = (thisK, res, newIndex) =>{
     if(res.data.page){
         const record = res.data.page
         fillRecord(thisK.state.fields, record)
-        thisK.setState({recordIndex: newIndex, mode: "d_record"})
+        thisK.setState({recordIndex: newIndex, record:res.data.page, mode: "d_record"})
     }
     let index = !newIndex ? 1 : newIndex
     if(newIndex > thisK.state.lastIndex){

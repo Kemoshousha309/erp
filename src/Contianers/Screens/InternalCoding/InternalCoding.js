@@ -1,19 +1,22 @@
 import React, { Component } from "react";
-import Label from "./Taps/label";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
 import MenuItem from '@material-ui/core/MenuItem';
 import {t} from "../../../utilities/lang"
 import { connect } from "react-redux";
-import Language from "./Taps/Language";
-import Massage from "./Taps/Massage";
-import Module from "./Taps/Module";
-import Forms from "./Taps/Forms";
+import asyncComponent from "../../../utilities/asyncComponent";
+
+const AsyncLanguage = asyncComponent(() => import("./Taps/Language"))
+const AsyncMassage = asyncComponent(() => import("./Taps/Massage"))
+const AsyncModule = asyncComponent(() => import("./Taps/Module"))
+const AsyncForms = asyncComponent(() => import("./Taps/Forms"))
+const AsyncFlags = asyncComponent(() => import("./Taps/Flags"))
+const AsyncLabel = asyncComponent(() => import("./Taps/label"))
 
 
 
 class InternalCoding extends Component {
     state={
-        tapOptions: ["label", "language", "message", "form", "module"],
+        tapOptions: ["label", "language", "message", "form", "module", "flag"], // these options is static just for now
         currentTap: "label",
         dropDownChange: false,
     }
@@ -46,11 +49,12 @@ class InternalCoding extends Component {
             </SelectDrop>
         )
         switch(this.state.currentTap){
-            case  "language": return <Language dropDown={dropDown} />
-            case  "label": return <Label dropDown={dropDown} />
-            case  "message": return <Massage dropDown={dropDown} />
-            case  "form": return <Forms dropDown={dropDown} />
-            case  "module": return <Module dropDown={dropDown} />
+            case  "language": return <AsyncLanguage dropDown={dropDown} />
+            case  "label": return <AsyncLabel dropDown={dropDown} />
+            case  "message": return <AsyncMassage dropDown={dropDown} />
+            case  "form": return <AsyncForms dropDown={dropDown} />
+            case  "module": return <AsyncModule dropDown={dropDown} />
+            case  "flag": return <AsyncFlags dropDown={dropDown} />
             default: return null
         }
           

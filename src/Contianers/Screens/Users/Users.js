@@ -437,6 +437,7 @@ class Users extends Component{
         // special fields hanlde
         hanldeInactiveFields(this)
     }
+
     
     componentWillUnmount () {
         functionsListenrs(this, false)
@@ -488,16 +489,19 @@ const hanldeInactiveFields = (thisK) => {
         const fieldsClone = {...thisK.state.fields}
         const flag = !state.value
         if(flag){
-            console.log(thisK.state.record)
             fieldsClone.inactive_reason.writability = true
-            fieldsClone.inactive_reason.value = thisK.state.record["inactive_reason"]
-            fieldsClone.inactive_user.value = thisK.state.record["inactive_user"]
-            fieldsClone.inactive_date.value = formatDate( thisK.state.record["inactive_date"])
+            if(thisK.state.mode !== "add"){
+                fieldsClone.inactive_reason.value = thisK.state.record["inactive_reason"]
+                fieldsClone.inactive_user.value = thisK.state.record["inactive_user"]
+                fieldsClone.inactive_date.value = formatDate( thisK.state.record["inactive_date"])
+            }
         }else{
             fieldsClone.inactive_reason.writability = false
-            fieldsClone.inactive_reason.value = ""
-            fieldsClone.inactive_user.value = ""
-            fieldsClone.inactive_date.value = ""
+            if(thisK.state.mode !== "add"){
+                fieldsClone.inactive_reason.value = ""
+                fieldsClone.inactive_user.value = ""
+                fieldsClone.inactive_date.value = ""
+            }
         }
         thisK.setState({fields: fieldsClone})
     }

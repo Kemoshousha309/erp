@@ -6,7 +6,7 @@ import { isValid } from "./validation"
 
 // Handle Auto name display fields ************************
 export const autoNameDisplay = (thisK, listenField, fkUrl, AFD_N=null) => {
-    // SPN is the prop name of some property in its own table
+    // / is the prop name of some property in its own table
     thisK.state.fields[listenField].changeHandler = (event, field) => {
         const fieldsClone = {...thisK.state.fields}
         // auto field display name is the field that should be changed its key depend on the language to fit the record props
@@ -26,22 +26,39 @@ export const autoNameDisplay = (thisK, listenField, fkUrl, AFD_N=null) => {
             if(event.target.value !== ""){
                 if(res.data[RP_name]){
                     fieldsClone[AFD_name].value = res.data[RP_name]
+                    fieldsClone[AFD_name].autoFilledSuccess = true
                     thisK.setState({fields: fieldsClone})
                 }else if(res.data[RP_d_name]){
                     fieldsClone[AFD_name].value = res.data[RP_d_name]
+                    fieldsClone[AFD_name].autoFilledSuccess = true
                     thisK.setState({fields: fieldsClone})
-                }else{
+                }else if(res.data[PNIOT]){
+                    fieldsClone[AFD_name].value = res.data[PNIOT]
+                    fieldsClone[AFD_name].autoFilledSuccess = true
+                    thisK.setState({fields: fieldsClone})
+                }
+                else{
                     fieldsClone[AFD_name].value = ""
+                    fieldsClone[AFD_name].autoFilledSuccess = false
                     thisK.setState({fields: fieldsClone})
                 }   
             }else{
                 fieldsClone[AFD_name].value = ""
+                fieldsClone[AFD_name].autoFilledSuccess = false
                 thisK.setState({fields: fieldsClone})
             }
 
         })
         .catch(err => {
-            fieldsClone[AFD_name].value = t("not_exist", thisK.props.lanTable, thisK.props.lanState)
+            console.log(err)
+            let errorMess = err.response.data.message.ar
+            if(parseInt(thisK.props.lanState) === 2) {
+                errorMess = err.response.data.message.en
+            }
+            fieldsClone[AFD_name].value = errorMess
+            fieldsClone[AFD_name].autoFilledSuccess = false
+            // fieldsClone[AFD_name].value = t("not_exist", thisK.props.lanTable, thisK.props.lanState)
+
             thisK.setState({fields: fieldsClone})
         })
     }
@@ -131,7 +148,9 @@ export const changePropName  = (props, fields, startPropName, propFieldName, gat
     if(parseInt(props.lanState) === 1){
         newKey = d_name
     }
+    if(gatherdFieldName){
         fields[gatherdFieldName].readOnlyField = newKey
+    }
     const fieldsUpdate = renameObjKey(fields, currentKey, newKey)
     return fieldsUpdate
 }

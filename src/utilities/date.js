@@ -29,5 +29,5 @@ export const formatDate = (rawDate, type) => {
     }
     const minutes =  new Date(rawDate).getMinutes();
     const date = ` ${day} / ${month + 1} / ${year}    ${hours}:${minutes}:${seconds} ${time ? time : ""}`;
-    return date    
+    return rawDate ? date : ""
 }

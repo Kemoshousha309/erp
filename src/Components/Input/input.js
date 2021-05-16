@@ -22,8 +22,12 @@ class Input extends Component {
                 return <AsyncSelectField field={this.props.field} changeHandler={this.props.changeHandler} thisK={this.props.thisK} />
             case "textarea":
                 return <TextArea field={this.props.field} changeHandler={this.props.changeHandler} thisK={this.props.thisK}/>
+            case "holder":
+                return  <div style={{height: "4.5rem"}}></div>
+            case "line":
+                return <div style={{ borderBottom: "2px solid rgb(171 174 197)"}} />
             default:
-                return <div></div>  
+                return <div className="d-block" ></div>  
         }
     }
     render (){

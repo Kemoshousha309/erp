@@ -24,8 +24,7 @@ const handleSaveRequest = (thisK, func) => {
         method = "post"
         url = thisK.state.urls.add
     }
-    console.log(getHeaders(thisK))
-    thisK.setState({loading: true})
+        thisK.setState({loading: true})
     axios({
         method: method,
         url: url,
@@ -58,6 +57,9 @@ const handleSaveRequest = (thisK, func) => {
                 content: selectMessage(err.response.data.message, thisK.props.lanState),
                 type: "error"
             }
+            if(err.response.data.error){
+                message.content = err.response.data.error
+            }
             thisK.setState({
                 loading: false, 
                 message: message,
@@ -65,6 +67,6 @@ const handleSaveRequest = (thisK, func) => {
                 
             })
             timer(thisK)
-            console.log(err.response)
         }) 
 }
+

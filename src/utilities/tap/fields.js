@@ -3,7 +3,7 @@ import { formatDate } from "../date"
 export const fields = (fields, mode, empty=true, specific) => {
     if(specific){
         for(const field in fields){
-            if(empty) {
+            if(empty && !fields[field].controlField) {
                 if(fields[field].type === "checkbox"){
                     fields[field].value = false
                 }else{
@@ -24,22 +24,25 @@ export const fields = (fields, mode, empty=true, specific) => {
                 fields[field].validity.valid = true
                 fields[field].validity.message = null
             }
-            if(empty){
-                if(fields[field].type === "checkbox"){
-                    fields[field].value = false
-                }else{
-                    fields[field].value = ""
+            if(!fields[field].controlField){
+                if(empty){
+                    if(fields[field].type === "checkbox"){
+                        fields[field].value = false
+                    }else{
+                        fields[field].value = ""
+                    }
                 }
-            }
-            if(mode === "open"){
-                if(fields[field].readOnly){
+                if(mode === "open"){
+                    if(fields[field].readOnly){
+                        fields[field].writability = false
+                    }else{
+                        fields[field].writability = true
+                    }
+                }else if(mode === "close"){
                     fields[field].writability = false
-                }else{
-                    fields[field].writability = true
                 }
-            }else if(mode === "close"){
-                fields[field].writability = false
             }
+           
         }
     }
     return fields

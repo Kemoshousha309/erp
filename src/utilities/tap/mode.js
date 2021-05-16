@@ -36,12 +36,12 @@ export const handleMode = (mode, lang_no, langs, tools, changeLangSelectAcivity)
             activeList = [toolsName.search.name, toolsName.undo.name]
             return activate(activeList, "search", lang_dir, tools)
         case "list":
-            changeLangSelectAcivity(false)
+            changeLangSelectAcivity(true)
             activeList = []
             return activate(activeList, null, lang_dir, tools)
         default: 
             break;
-    }
+    } 
 }
 
 const activate = (activeList, mode=null, lang_dir, tools) => {

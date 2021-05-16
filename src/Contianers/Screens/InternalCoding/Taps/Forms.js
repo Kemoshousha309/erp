@@ -45,7 +45,8 @@ class Forms extends Component{
                 value: "",
                 fKTable: {
                     SPN: "module",
-                    PN: "module_no"
+                    PN: "module_no",
+                    bothLangs: true
                 },
             },
             module_no_name:{

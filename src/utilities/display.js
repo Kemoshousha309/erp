@@ -24,7 +24,6 @@ const gridContent = (fields) => {
     for(let key in fields){
         let fieldobj;
         if(fields[key].id){
-            console.log(fields[key].id)
             fieldobj = {
                 ...fields[key]
             }
@@ -65,10 +64,10 @@ export const displayPattren = (fields, changeHandler, thisK) => {
             if(item2){
                 content = (
                     <Aux>
-                    <div className="col-md-6  px-0">
+                    <div style={item1.columnStyle} className="col-md-6  px-0">
                         {inputField(item1, changeHandler, thisK)}
                     </div>
-                    <div className="col-md-6  px-0">
+                    <div style={item2.columnStyle} className="col-md-6  px-0">
                         {inputField(item2, changeHandler, thisK)}
                     </div>
                      {// consider three column layout
@@ -86,15 +85,28 @@ export const displayPattren = (fields, changeHandler, thisK) => {
             }else{
                 content = (
                     <Aux>
-                        <div className="col-md-6 px-0">
+                        <div style={item1.columnStyle} className="col-md-6 px-0">
                             {inputField(item1, changeHandler, thisK)}
                         </div>
                         <div className="col-md-6 px-0"></div>
                     </Aux>
                 )
             }
+            let rowStyle = {
+                paddingTop: "1rem",
+            }
+            if(["holder", "line"].includes(item1.fieldType)){
+                rowStyle.paddingTop = "0"
+            }
+            if(item1.rowStyle){
+                rowStyle = {
+                    ...rowStyle,
+                    ...item1.rowStyle
+                }
+            }
+            console.log(rowStyle)
             return (
-                <div key={item1.id}  className="row px-3">
+                <div key={item1.id} style={rowStyle}  className="row px-3 ">
                     { content}
                 </div>
             )
@@ -108,7 +120,6 @@ export const displayPattrenTree = (fields, changeHandler, thisK, tree) => {
     for(let key in fields){
         let fieldobj;
         if(fields[key].id){
-            console.log(fields[key].id)
             fieldobj = {
                 ...fields[key]
             }
