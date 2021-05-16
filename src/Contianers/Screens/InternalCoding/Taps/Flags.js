@@ -47,16 +47,17 @@ class Flags extends Component{
                     SPN: "label_code",
                     PN: "flag_code"
                 },
-                readOnlyField: "label_code",
+                readOnlyField: "label_code_m",
+                readOnlyFieldT: "label_code",
                 controlField: true,
                 rowStyle: {
                     backgroundColor: "#f8f9fa"
                 }
             },
-            label_code:{
+            label_code_m:{
                 fieldType: "input",
                 type: "text",
-                label: "name",
+                label: "label_code",
                 readOnly:true,
                 writability: false,
                 value: "",
@@ -82,6 +83,22 @@ class Flags extends Component{
                     message: null
                 },
                 writability: false,
+                value: "",
+            },
+            label_code:{
+                fieldType: "input",
+                type: "text",
+                label: "label_code",
+                validation: {
+                    requiered: true,
+                    length: 100
+                },
+                validity: {
+                    valid: true,
+                    touched: false,
+                    message: null
+                },
+                writability: true,
                 value: "",
             },
             flag_sr:{
@@ -176,7 +193,7 @@ class Flags extends Component{
             },
 
         },
-        tapTools: ['add', "copy", "delete"],
+        tapTools: [],
         tools: null,
         mode: "start",
         // we handle prevMode in list show only ....
@@ -186,7 +203,7 @@ class Flags extends Component{
         message: null,
         loading: false,
         listShow: false,
-        mainFields: ["flag_value", "label_code", "flag_sr"],
+        mainFields: ["flag_value", "label_code"],
         tapName: "labels",
         deleteConfirm: false,
         searchFields: ["flag_value"],
@@ -226,7 +243,7 @@ class Flags extends Component{
         functionsListenrs(this, true)
         this.setState({mode: "list"})
 
-        autoNameDisplay(this, "flag_code", "public/flagMaster", "label_code")
+        autoNameDisplay(this, "flag_code", "public/flagMaster", "label_code_m")
     }
 
     componentWillUnmount () {
@@ -238,7 +255,7 @@ class Flags extends Component{
         let urls = state.urls
         let fieldsClone = {...state.fields}
         const modes =  ["modify", "search", "d_record", "copy", "add"]
-        if(state.fields.label_code.autoFilledSuccess){
+        if(state.fields.label_code_m.autoFilledSuccess){
             if(!modes.includes(mode)){
                 mode = "start"
             }

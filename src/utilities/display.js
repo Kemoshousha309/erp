@@ -104,7 +104,6 @@ export const displayPattren = (fields, changeHandler, thisK) => {
                     ...item1.rowStyle
                 }
             }
-            console.log(rowStyle)
             return (
                 <div key={item1.id} style={rowStyle}  className="row px-3 ">
                     { content}

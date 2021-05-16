@@ -46,11 +46,11 @@ const ParentNode = props => {
     const rootUrl = "/erp";
     if(props.route){
         itemContent=(
-            <NavLink to={`${rootUrl}/${props.route}`} >
+            <NavLink className="d-flex" to={`${rootUrl}/${props.route}`} >
                     <Tooltip enterDelay={800} title={props.sideNavActivity ? "" : output} arrow placement="right">
                     <i><FontAwesomeIcon onClick={iconClick} icon={props.icon} /> </i>
                     </Tooltip>
-                {props.sideNavActivity ? output : null}
+                {props.sideNavActivity ? <div title={output} className={style.output}> &nbsp;{output}</div> : null}
             </NavLink>
         )
     }else{
@@ -59,7 +59,7 @@ const ParentNode = props => {
                     <Tooltip enterDelay={800} title={props.sideNavActivity ? "" : output} arrow placement="right">
                         <i><FontAwesomeIcon onClick={iconClick} icon={props.icon} /> </i>
                     </Tooltip>
-                {props.sideNavActivity ? output : null}
+                {props.sideNavActivity ? <div title={output} className={style.output}> &nbsp;{output}</div> : null}
             </Aux>
         )
     }
@@ -67,7 +67,7 @@ const ParentNode = props => {
     return(
         <Aux>
              <li className={style.itemNode} onClick={treehandler}>
-                 {itemContent}
+                {itemContent}
             </li>
              <ul className='d-none'>
               {children}
