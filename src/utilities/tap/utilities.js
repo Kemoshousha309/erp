@@ -1,3 +1,5 @@
+import { hash_back, hash } from "../utilities";
+
 
 
 let lastTimer = null
@@ -24,4 +26,19 @@ export  const trigerEnterButton = (id, func) => {
         }
     });
 }
+
+export const toolsPriv = (formPrivs, tools) => {
+    const tools_hash = hash(tools, "name")
+    for(let key in formPrivs) {
+        if(key === "add_priv" && !formPrivs[key]){
+            delete tools_hash["add"];
+            delete tools_hash["copy"];
+        }
+        if(key === "modify_priv" && !formPrivs[key]){delete tools_hash["modify"];}
+        if(key === "view_priv" && !formPrivs[key]){delete tools_hash["list"];}
+        if(key === "delete_priv" && !formPrivs[key]){delete tools_hash["delete"];}
+    }
+    return hash_back(tools_hash);
+}
+
 

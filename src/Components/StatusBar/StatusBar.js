@@ -10,17 +10,19 @@ const StatusBar = props => {
         bottom: "3.5rem",
         right: "50%",
         transform: "translateX(-50%)",
-        width: "fit-content"
+        minWidth: "fit-content",
+        whiteSpace: "nowrap"
     }
     if(parseInt(props.lanState) === 1){
         position.transform = "translateX(50%)"
     }
     return(
-        <Snackbar open={props.show} style={position} autoHideDuration={6000} >
+        <Snackbar open={props.show}  autoHideDuration={6000} >
             <Alert severity={props.type}>
                  {props.children}
             </Alert>
         </Snackbar>      
+
     )
 }
 

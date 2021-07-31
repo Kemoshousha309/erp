@@ -24,6 +24,10 @@ import { autoNameDisplay, changePropName, checkPassConfirm, onlyActiveField } fr
 import { langChangeActivity } from '../../../store/actions/lang';
 import { handleSave } from '../../../utilities/tap/save';
 import { formatDate } from '../../../utilities/date';
+import { getParam } from '../../../utilities/utilities';
+import {  toolsPriv } from '../../../utilities/tap/utilities';
+
+
 
 
 class Users extends Component{
@@ -436,13 +440,15 @@ class Users extends Component{
 
         // special fields hanlde
         hanldeInactiveFields(this)
-    }
 
+    }
+    
     
     componentWillUnmount () {
         functionsListenrs(this, false)
         this.props.changeLangSelectAcivity(true)
     }
+    
     static getDerivedStateFromProps(props, state){
         const fieldsClone = {...state.fields}
         let fieldsUpdate = fieldsClone
@@ -455,14 +461,17 @@ class Users extends Component{
         }else{
             fieldsUpdate =  onlyActiveField(fieldsClone, "copy_priv_from", "copy_priv_to", state.mode)
         }
-        const {tools} =  handleDrivedState (props, state)
+        let {tools} =  handleDrivedState (props, state)
+
         return {
             tools: tools,
             fields: fieldsUpdate,
             langNo: lang_no
         }
     }
-    render (){return displayContent(this)}
+    render (){ 
+        return displayContent(this, this.props.location)
+    }
 } 
 
 const mapStateToProps = state => {
@@ -470,7 +479,9 @@ const mapStateToProps = state => {
         lanState: state.lang.lan,
         lanTable: state.lang.langTables,
         token: state.auth.authData.token,
-        languages: state.lang.langInfo
+        languages: state.lang.langInfo,
+        rawTree_hash: state.auth.authData.raw_tree_hash,
+        forms_privs_hash: state.auth.authData.forms_privs_hash
     }   
 }
 

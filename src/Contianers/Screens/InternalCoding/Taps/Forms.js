@@ -23,7 +23,8 @@ import { displayContent } from '../../../../utilities/tap/displayContent';
 import {getTree , asyncTreeSave} from "../../../../utilities/tap/async" 
 import { changePropName, autoNameDisplay } from '../../../../utilities/tap/inputsHandlers';
 import { langChangeActivity } from '../../../../store/actions/lang';
-
+import { CircularProgress } from '@material-ui/core';
+    
 
 class Forms extends Component{
     state = {
@@ -218,6 +219,7 @@ class Forms extends Component{
         deleteConfirm: false,
         ShortCutsList: false,
         tree: null,
+        treeLoading: <CircularProgress  className="m-5" />
     }
 
     // Tools Handle *********************************************
@@ -239,6 +241,7 @@ class Forms extends Component{
     closeList = () =>  handleCloseList(this)
     closeFkList = () => handleCloseFkList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
+    treeNodeClick = (record) => handleRecordClick(this, record)
     recordFkClick = (record, i) => handleRecordFkClick(this, record, i)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
@@ -269,7 +272,9 @@ class Forms extends Component{
             fields: fieldsUpdate
         }
     }
-    render (){return displayContent(this)}
+    render (){
+        return displayContent(this, this.props.location)
+    }
 } 
 
 const mapStateToProps = state => {
@@ -277,8 +282,10 @@ const mapStateToProps = state => {
         lanState: state.lang.lan,
         lanTable: state.lang.langTables,
         token: state.auth.authData.token,
-        languages: state.lang.langInfo
-    }
+        languages: state.lang.langInfo,
+        rawTree_hash: state.auth.authData.raw_tree_hash,
+        forms_privs_hash: state.auth.authData.forms_privs_hash
+    }   
 }
 
 const mapDispatchToProps = dispatch => {

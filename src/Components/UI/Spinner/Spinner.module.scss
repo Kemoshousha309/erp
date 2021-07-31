@@ -66,7 +66,10 @@
 
 .statusPosition{
   position: absolute;
-  bottom: 4.5rem;
+  bottom: 6rem;
+  @media only screen and (max-width: 550px) {
+    bottom: 1.5rem;
+}
   right: 50%;
 }
   

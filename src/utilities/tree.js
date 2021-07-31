@@ -21,8 +21,8 @@ import {
     faHandshake,
     faFlag,
     faFileInvoice,
-    faFile
-
+    faFile,
+    faFlagCheckered
 } from "@fortawesome/free-solid-svg-icons"
 import {
     faWpforms
@@ -168,7 +168,7 @@ export const getRelatedIcon = (form_no, iconMap) => {
     iconMap.forEach(ele => {
         if(ele.form_no  === form_no){
             relatedIcon = ele.icon
-        }
+        } 
     })
     return relatedIcon;
 }
@@ -336,7 +336,7 @@ export const routeMap = [
     },
     {
         form_no: 9901,
-        route: "internal-coding"
+        route: "internal-coding?no=9901"
     },
     {
         form_no: 9902,
@@ -361,15 +361,15 @@ export const routeMap = [
     },
     {
         form_no: 1101,
-        route: "users-groups"
+        route: "users-groups?no=1101"
     },
     {
         form_no: 1102,
-        route: "users-data"
+        route: "users-data?no=1102"
     },
     {
         form_no: 1110,
-        route: "screen-previlleges"
+        route: "screen-previlleges?no=1110"
     },
     {
         form_no: 12,

@@ -10,9 +10,11 @@ import { CircularProgress } from "@material-ui/core";
 
 
 class Tree extends Component {
-    componentDidMount() {
-        this.props.getTree();
-    }
+
+    // Now we get the tree from authdata not an independent request
+    // componentDidMount() {
+    //     this.props.getTree();
+    // }
     
 
     render() {        
@@ -55,7 +57,7 @@ const mapStateToProps = state => {
     return {
         lanState: state.lang.lan,
         isAuthed: !(state.auth.authData == null),
-        tree: state.auth.tree
+        tree: state.auth.authData.main_tree
     }
 }
   
@@ -63,7 +65,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getTree: () => dispatch(treeRequest())
     }
-  }
+}
 
 
 export default connect(mapStateToProps,mapDispatchToProps)(Tree);

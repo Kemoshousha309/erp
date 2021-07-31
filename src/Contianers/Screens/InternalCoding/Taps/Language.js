@@ -183,7 +183,9 @@ class Language extends Component{
     }
     static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
 
-    render (){return displayContent(this)}
+    render (){
+        return displayContent(this, this.props.location)
+    }
 } 
 
 const mapStateToProps = state => {
@@ -191,8 +193,10 @@ const mapStateToProps = state => {
         lanState: state.lang.lan,
         lanTable: state.lang.langTables,
         token: state.auth.authData.token,
-        languages: state.lang.langInfo
-    }
+        languages: state.lang.langInfo,
+        rawTree_hash: state.auth.authData.raw_tree_hash,
+        forms_privs_hash: state.auth.authData.forms_privs_hash
+    }   
 }
 const mapDispatchToProps = dispatch => {
     return {

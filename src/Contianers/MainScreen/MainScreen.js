@@ -8,6 +8,7 @@ import asyncComponent from "../../utilities/asyncComponent";
 const AsyncUsers = asyncComponent(() => import("../Screens/Users/Users"))
 const AsyncUsersGroups = asyncComponent(() => import("../Screens/UsersGroups/UsersGroups"))
 const AsyncInternalCoding = asyncComponent(() => import( "../Screens/InternalCoding/InternalCoding"))
+const AsyncScreenPrivs = asyncComponent(() => import( "../Screens/ScreenPrivs/ScreenPrivs"))
 
 
 class MainScreen extends Component  {
@@ -35,6 +36,7 @@ class MainScreen extends Component  {
                         <Route path={rootPath +"/internal-coding"} exact component={AsyncInternalCoding} />
                         <Route path={rootPath +"/users-groups"} exact component={AsyncUsersGroups} />
                         <Route path={rootPath +"/users-data"} exact component={AsyncUsers} />
+                        <Route path={rootPath +"/screen-previlleges"} exact component={AsyncScreenPrivs} />
                     </Switch>
                 </div>
             </Aux>

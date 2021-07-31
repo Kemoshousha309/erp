@@ -4,6 +4,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {t} from "../../../utilities/lang"
 import { connect } from "react-redux";
 import asyncComponent from "../../../utilities/asyncComponent";
+import { getParam } from "../../../utilities/utilities";
+import { withRouter } from "react-router";
 
 const AsyncLanguage = asyncComponent(() => import("./Taps/Language"))
 const AsyncMassage = asyncComponent(() => import("./Taps/Massage"))
@@ -41,35 +43,42 @@ class InternalCoding extends Component {
         // console.log("InternalCoding Updated")
     }
     render(){
+        const flags = this.props.flag_details.filter(i => i.flag_code === "internal_coding");
+        const flagLabels = flags.map(i => i.label_code);
+        
+
         const dropDown = (
             <SelectDrop current={this.state.currentTap} changed={this.onChangeHandler}>
-                {this.state.tapOptions.map(ele => {
+                {flagLabels.map(ele => {
                     return <MenuItem key={ele} value={ele} >{t(ele, this.props.lanTable, this.props.lanState).toUpperCase()}</MenuItem>
                 })}
             </SelectDrop>
         )
         switch(this.state.currentTap){
-            case  "language": return <AsyncLanguage dropDown={dropDown} />
-            case  "label": return <AsyncLabel dropDown={dropDown} />
-            case  "message": return <AsyncMassage dropDown={dropDown} />
-            case  "form": return <AsyncForms dropDown={dropDown} />
-            case  "module": return <AsyncModule dropDown={dropDown} />
-            case  "flag": return <AsyncFlags dropDown={dropDown} />
-            default: return null
+            case  "language": return <AsyncLanguage {...this.props} dropDown={dropDown} />
+            case  "label": return <AsyncLabel {...this.props} dropDown={dropDown} />
+            case  "message": return <AsyncMassage {...this.props} dropDown={dropDown} />
+            case  "form": return <AsyncForms {...this.props} dropDown={dropDown} />
+            case  "module": return <AsyncModule {...this.props} dropDown={dropDown} />
+            case  "flag": return <AsyncFlags {...this.props} dropDown={dropDown} />
+            default: return <h1>Not Exist</h1>
         }
           
     }
 } 
+
+
 
 const mapStateToProps = state => {
     return {
         lanState: state.lang.lan,
         lanTable: state.lang.langTables,
         token: state.auth.authData.token,
-        languages: state.lang.langInfo
+        languages: state.lang.langInfo,
+        flag_details: state.auth.authData.flag_detail_main_tree
     }
 }
 
 
-export default connect(mapStateToProps, null)(InternalCoding);
+export default connect(mapStateToProps, null)(withRouter(InternalCoding));
 

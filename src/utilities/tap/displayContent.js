@@ -5,16 +5,18 @@ import RecordDisplay from "../../Components/RecordDisplay/RecordDisplay"
 import ShortCutsList from "../../Components/ShortCutsList/ShortCutsList"
 import { displayPattren, displayPattrenTree } from "./../display"
 import { t } from "../lang"
+import { getParam } from "../utilities"
+import ErrorPage from "../../Components/UI/ErrorPage/ErrorPage"
 
 
-export const displayContent = (thisK) => {
+export const displayContent = (thisK, location, additional) => {
     let content = null
     if(thisK.state.tree === null || thisK.state.tree){
-        content = displayPattrenTree(thisK.state.fields, thisK.inputChange, thisK, thisK.state.tree)
+        content = displayPattrenTree(thisK.state.fields, thisK.inputChange, thisK, thisK.state.tree, additional)
     }else {
-        content = displayPattren(thisK.state.fields, thisK.inputChange, thisK)
+        content = displayPattren(thisK.state.fields, thisK.inputChange, thisK, additional)
     }
-    return  (
+    const tapContent = (
         <div id="tap">
             {thisK.state.listShow ?
             <RecordDisplay 
@@ -38,6 +40,17 @@ export const displayContent = (thisK) => {
             {thisK.state.ShortCutsList ? <ShortCutsList close={thisK.ShortCutsListCloseHandler} /> : null}
         </div>
     )
+
+
+    let form = thisK.props.rawTree_hash[getParam(location.search, "no")]
+    // form = []
+    if(form.length !== 0){
+        return tapContent;
+    }else {
+
+        return <ErrorPage message={t("not_allowed", thisK.props.lanTable, thisK.props.lanState)} />
+    }
+ 
 }
 
 

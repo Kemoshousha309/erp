@@ -77,7 +77,7 @@ const handleLangChangeAcivity = (state, action) => {
 export const languageReducer = (state = initState, action) => {
     switch (action.type) {
         case actionTypes.CHANGE_LANGUAGE: return changeLang(state, action);
-        case actionTypes.GET_LANG_TABLE: return getLangTable(state, action)
+        case actionTypes.GET_LANG_TABLE: return getLangTable(state, action);
         case actionTypes.LANG_REQUEST_FAILURE: return langRequestFail(state, action);
         case actionTypes.STORE_MESSAGES: return storeMessageTable(state, action);
         case actionTypes.LANG_INFO: return setlangInfo(state, action);

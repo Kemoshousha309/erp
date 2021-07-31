@@ -3,6 +3,7 @@ import style from "./TreeNode.module.scss"
 import {getRelatedIcon, iconMap, treehandler, getRelatedRoute, routeMap} from "../../../utilities/tree"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Aux from "../../../hoc/wrap";
+import { t } from "../../../utilities/lang";
 
 
 
@@ -19,6 +20,7 @@ const TreeNode = props => {
                 history={props.history}
                 route={route}
                 lang={props.lang}
+                lanTable={props.lanTable}
                 sideNavClick={props.sideNavClick}
                 sideNavActivity={props.sideNavActivity} 
                 key={ele.form_no}  
@@ -31,19 +33,23 @@ const TreeNode = props => {
                 history={props.history}
                 route={route}
                 lang={props.lang}
+                lanTable={props.lanTable}
                 sideNavClick={props.sideNavClick}
                 sideNavActivity={props.sideNavActivity} 
                 key={ele.form_no} 
                 icon={icon} 
                 config={ele} />
             }
-        })
+        })  
     }
 
-    const output = parseInt(props.lang) === 1 ?  props.config.form_d_name : props.config.form_f_name;    
+    let output = parseInt(props.lang) === 1 ?  props.config.form_d_name : props.config.form_f_name;    
+    if(!props.config.form_d_name){
+        output = t(props.config.label_code, props.lanTable, props.lang)
+    }
     const itemContent= <i><FontAwesomeIcon icon={props.icon} />  {output} </i> 
     const itemClick = (e) => {
-        props.thisK.recordClick(props.config, null)
+        props.thisK.treeNodeClick(props.config)
         treehandler(e)
     }
     return(
@@ -57,6 +63,8 @@ const TreeNode = props => {
         </Aux>
     )
 }
+
+
 
 
 

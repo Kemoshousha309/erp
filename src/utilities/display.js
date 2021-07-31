@@ -54,7 +54,7 @@ const inputField = (field, changeHandler, thisK) => {
 
 
 
-export const displayPattren = (fields, changeHandler, thisK) => {
+export const displayPattren = (fields, changeHandler, thisK, additional) => {
     // console.log("[displayPattren func] render")
     const doubleArr = gridContent(fields)
         const tapContent = doubleArr.map(ele => {
@@ -111,10 +111,10 @@ export const displayPattren = (fields, changeHandler, thisK) => {
             )
         })
         
-        return tapContent;
+        return <Aux>{tapContent} {additional}</Aux>;
 }
 
-export const displayPattrenTree = (fields, changeHandler, thisK, tree) => {
+export const displayPattrenTree = (fields, changeHandler, thisK, tree, additional) => {
     const fieldsArr = [];
     for(let key in fields){
         let fieldobj;
@@ -139,9 +139,13 @@ export const displayPattrenTree = (fields, changeHandler, thisK, tree) => {
         )
     })
     return (
-        <div   className="row px-3">
-            <div className="col-sm-8 px-0" >{content}</div>
-            <div className="col-sm-4 px-0" ><Treeview thisK={thisK} tree={tree} /></div>
+        <div   className="row px-3 mt-4">
+            
+            <div className="col-sm-8 px-0" >
+                {content}
+                {additional}
+            </div>
+            <div className="col-sm-4 px-0 " ><Treeview thisK={thisK} tree={tree} loading={thisK.state.treeLoading} /></div>
         </div>
     )    
 }   

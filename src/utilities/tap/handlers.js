@@ -1,6 +1,8 @@
 import { handleMode } from "./mode"
 import { fields, fillRecord } from "./fields"
 import { decideName } from "../lang"
+import { getParam } from "../utilities"
+import { toolsPriv } from "./utilities"
 
 // modify hanle *******************************
 export const handleModify = (thisK) => {
@@ -123,16 +125,16 @@ export const handleUndo  = (thisK) => {
     switch (thisK.state.mode) {
         case "modify":
             fields(thisK.state.fields, "close", false)
-            thisK.setState({mode: "d_record"})
+            thisK.setState({mode: "d_record", record: null})
             break;
         case "copy":
             fields(thisK.state.fields, "close", false)
-            thisK.setState({mode: "d_record"})
+            thisK.setState({mode: "d_record", record: null})
             break;
         default:
              // undo to start mode
             fields(thisK.state.fields, "close")
-            thisK.setState({mode: "start"})
+            thisK.setState({mode: "start", record: null})
             break;
     }
 }
@@ -160,5 +162,9 @@ export const handleCloseShortCuts = (thisK) => {
 
 // drived state Handler ***************************************
 export const handleDrivedState = (props, state) => {
-    return { tools: handleMode(state.mode, props.lanState, props.languages, state.tapTools, props.changeLangSelectAcivity) }
+    let tools = handleMode(state.mode, props.lanState, props.languages, state.tapTools, props.changeLangSelectAcivity)
+    const formPrivs = props.forms_privs_hash[getParam(props.location.search, "no")];
+    tools = toolsPriv(formPrivs, tools)
+    
+    return { tools: tools }
 }

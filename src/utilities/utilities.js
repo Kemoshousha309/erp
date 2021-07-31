@@ -1,8 +1,9 @@
+import { param } from "jquery";
 import { decideName } from "./lang";
 import { extractName } from "./tap/handlers";
 
-export const getParam = (searchParam) => {
-    const string = searchParam.replace("?key=", "");
+export const getParam = (searchParam, paramName) => {
+    const string = searchParam.replace(`?${paramName}=`, "");
     return string
 }
 
@@ -25,3 +26,31 @@ const scanNameLang = (string) => {
     return isFound
 } 
 
+export const hash = (array, key1, key2) => {
+    const obj = {}
+    if(key2){
+        array.forEach(i => {
+            const key = i[key1] + i[key2]
+            obj[key] = i
+        });
+    }else {
+        array.forEach(i => {
+            obj[i[key1]] = i
+        });
+    }
+    return obj
+}
+
+export const hash_back = (hash_table) => {
+    const arr = []
+    for(let key in hash_table){
+        arr.push(hash_table[key])
+    }
+    return arr
+}
+
+export const split_arr = arr => {
+    const arr1 = arr.slice(0, arr.length/2);
+    const arr2 = arr.slice(arr.length/2, arr.length);
+    return [arr1, arr2]
+}

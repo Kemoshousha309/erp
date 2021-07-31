@@ -1,0 +1,43 @@
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 1rem;
+}
+
+.hint {
+    display: flex;
+    flex-wrap: wrap;
+    min-height: fit-content;
+
+    span {
+        font-size: 2.5rem;
+        color: #309165;
+        width: 100%;
+        margin: 10px 15px;
+        display: flex; 
+        justify-content: flex-end;
+    }
+
+    p {
+        color: #6f6f6f;
+        // border-bottom: 2px solid #309165;
+        text-align: center;
+    }
+    
+    animation: form_animation;
+    animation-duration: .5s;
+
+}
+
+@keyframes form_animation {
+    from {
+        transform: translateY(-10rem);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+}

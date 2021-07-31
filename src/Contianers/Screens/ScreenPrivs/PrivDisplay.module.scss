@@ -1,0 +1,50 @@
+.container {
+    margin: 50px 16px 0 16px;
+} 
+.userInfo {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    @media only screen and (max-width: 450px) {
+        div{
+            margin: 10px;
+        }
+    }
+
+}
+
+.userName, .userId {
+    color: #6f6f6f;
+}
+.avatar {
+    width: 80px;
+    height: 80px;
+}
+
+.table_container{
+    span{
+        display: block;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+    table{
+        width: fit-content;
+        margin: 0 auto;
+    }
+
+    animation: form_animation;
+    animation-duration: .5s;
+}
+
+@keyframes form_animation {
+    from {
+        transform: translateY(-10rem);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0rem);
+        opacity: 1;
+    }
+  }

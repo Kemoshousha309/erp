@@ -11,7 +11,8 @@ class Treeview extends Component {
     componentDidUpdate () {
     }
     render() {        
-        let treeContent = <CircularProgress  className="m-5" /> 
+        
+        let treeContent = this.props.loading 
         if(this.props.tree){
             const tree = this.props.tree.map(ele => {
                 const icon = getRelatedIcon(ele.form_no, iconMap);
@@ -22,6 +23,7 @@ class Treeview extends Component {
                     {...this.props}
                     route={route}
                     lang={this.props.lanState}
+                    lanTable={this.props.lanTable}
                      sideNavClick={this.props.sideNavClick}
                      sideNavActivity={this.props.sideNavActivity} 
                      key={ele.form_no} 
@@ -49,6 +51,7 @@ class Treeview extends Component {
 const mapStateToProps = state => {
     return {
         lanState: state.lang.lan,
+        lanTable: state.lang.langTables,
         isAuthed: !(state.auth.authData == null),
     }
 }

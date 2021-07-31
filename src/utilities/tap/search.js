@@ -31,7 +31,8 @@ const searchRequest = (thisK, values) => {
         thisK.setState({
             mode: "d_record",
             loading: false, 
-            recordIndex: null
+            recordIndex: null,  
+            record: res.data
         })
         timer(thisK)
     })
