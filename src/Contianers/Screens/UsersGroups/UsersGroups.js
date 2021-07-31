@@ -20,7 +20,6 @@ import {
 import { displayContent } from '../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../store/actions/lang';
 import { handleSave } from '../../../utilities/tap/save';
-import { getParam } from '../../../utilities/utilities';
 
 
 

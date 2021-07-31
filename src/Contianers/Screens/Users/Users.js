@@ -24,9 +24,6 @@ import { autoNameDisplay, changePropName, checkPassConfirm, onlyActiveField } fr
 import { langChangeActivity } from '../../../store/actions/lang';
 import { handleSave } from '../../../utilities/tap/save';
 import { formatDate } from '../../../utilities/date';
-import { getParam } from '../../../utilities/utilities';
-import {  toolsPriv } from '../../../utilities/tap/utilities';
-
 
 
 

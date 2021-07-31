@@ -8,7 +8,7 @@ const ErrorPage = props => {
     return (
         <div className={style.container}>
             <h1>{props.message.toUpperCase()}  <FontAwesomeIcon icon={faExclamationCircle} /> </h1>
-            <img src={warning} className="img-fluid" />
+            <img src={warning} className="img-fluid" alt="warning" />
         </div>
     )
 };

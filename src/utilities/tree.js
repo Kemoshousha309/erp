@@ -21,8 +21,7 @@ import {
     faHandshake,
     faFlag,
     faFileInvoice,
-    faFile,
-    faFlagCheckered
+    faFile
 } from "@fortawesome/free-solid-svg-icons"
 import {
     faWpforms

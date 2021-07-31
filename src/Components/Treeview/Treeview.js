@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import {connect} from "react-redux"
 import style from "./Treeview.module.scss";
 import {getRelatedIcon, iconMap, getRelatedRoute, routeMap } from "../../utilities/tree";
-import { CircularProgress } from "@material-ui/core";
 import TreeNode from "./TreeNode/TreeNode";
 
 

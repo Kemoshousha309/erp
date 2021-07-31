@@ -1,4 +1,3 @@
-import { param } from "jquery";
 import { decideName } from "./lang";
 import { extractName } from "./tap/handlers";
 

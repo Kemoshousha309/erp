@@ -25,7 +25,6 @@ import Hint from '../../../Components/UI/Hint/Hint';
 import { selectMessage, t } from '../../../utilities/lang';
 import { fields } from '../../../utilities/tap/fields';
 import { timer } from '../../../utilities/tap/utilities';
-import { ContactsOutlined } from '@material-ui/icons';
 
 
 
@@ -205,7 +204,7 @@ class ScreenPrivs extends Component{
     setFormPriv = (formPriv) => {
         if(!this.state.formPriv){
             this.setState({formPriv: formPriv})
-        }else if(this.state.formPriv.form_no != formPriv.form_no){
+        }else if(this.state.formPriv.form_no !== formPriv.form_no){
             this.setState({formPriv: formPriv})
         }
     }

@@ -4,7 +4,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import {t} from "../../../utilities/lang"
 import { connect } from "react-redux";
 import asyncComponent from "../../../utilities/asyncComponent";
-import { getParam } from "../../../utilities/utilities";
 import { withRouter } from "react-router";
 
 const AsyncLanguage = asyncComponent(() => import("./Taps/Language"))
