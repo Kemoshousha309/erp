@@ -77,7 +77,7 @@ class UsersGroups extends Component{
             admin_group:{
                 fieldType: "checkbox",
                 type: "checkbox",
-                label: "active",
+                label: "management",
                 writability: false,
                 value: false
             },

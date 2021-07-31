@@ -94,11 +94,14 @@ class ScreenPrivs extends Component{
     undo = () => handleUndo(this)
     save = () => {
         // handle the priv save here (special)
+        let url = "formprivileges"
+        if(this.state.formPriv.flag_value){
+            url = "flagPriv"
+        }
         this.setState({loading: true})
-        console.log(this.state.formPriv)
         axios({
             method: "put",
-            url: "formprivileges",
+            url: url,
             data: this.state.formPriv,
             })  
             .then(res => {
