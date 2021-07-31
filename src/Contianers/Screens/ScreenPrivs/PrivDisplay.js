@@ -99,7 +99,7 @@ const PrivDisplay = (thisK) => {
                         {
                             priv_arr1.map(i => 
                                 <td>
-                                    <input type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i)} checked={thisK.state.formPriv[i.prop]}>
+                                    <input type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i.prop)} checked={thisK.state.formPriv[i.prop]}>
                                     </input>
                                 </td>)
                         }
@@ -119,7 +119,7 @@ const PrivDisplay = (thisK) => {
                         {
                             priv_arr2.map(i => 
                                 <td>
-                                    <input type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i)} checked={thisK.state.formPriv[i.prop]}>
+                                    <input type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i.prop)} checked={thisK.state.formPriv[i.prop]}>
                                     </input>
                                 </td>)
                         }
@@ -149,7 +149,7 @@ const PrivDisplay = (thisK) => {
                         {
                             priv_arr.map(i => 
                                 <td>
-                                    <input type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i)} checked={thisK.state.formPriv[i.prop]}>
+                                    <input type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i.prop)} checked={thisK.state.formPriv[i.prop]}>
                                     </input>
                                 </td>)
                         }
