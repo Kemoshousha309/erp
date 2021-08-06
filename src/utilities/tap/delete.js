@@ -2,6 +2,9 @@ import { timer } from "./utilities"
 import {  getValues, fields, getPkUrl } from "./fields"
 import { selectMessage } from "../lang"
 import axios from "../../axios"
+import { logout } from "../../store"
+import {store} from "../../index"
+
 
 
 
@@ -43,6 +46,10 @@ const handleDeleteRequest = (thisK) => {
         timer(thisK)
     })
     .catch(err => {
+          // update the previlliges
+          if(err.response.status === 401){
+            store.dispatch(logout())
+        }
         fields(thisK.state.fields, 'close', true)
          const message = {
                 content: selectMessage(err.response.data.message, thisK.props.lanState),

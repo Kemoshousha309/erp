@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
 })
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
+export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 // set axios interceptors
 axios.interceptors.request.use(req => {

@@ -3,6 +3,8 @@ import {  getValues, fields, getHeaders } from "./fields"
 import { checkValidity } from "./validation"
 import { selectMessage } from "../lang"
 import axios from "../../axios"
+import { logout } from "../../store"
+import {store} from "../../index"
 
 // save processes ***************************************************
 export const handleSave = (thisK, func) => {
@@ -49,6 +51,10 @@ const handleSaveRequest = (thisK, func) => {
             timer(thisK)
         })
         .catch(err => {
+            // update the previlliges
+            if(err.response.status === 401){
+                store.dispatch(logout())
+            }
             fields(thisK.state.fields, 'open', false)
             if(func){
                  func(thisK)

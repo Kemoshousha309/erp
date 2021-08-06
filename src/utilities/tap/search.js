@@ -3,6 +3,9 @@ import {  getValues, fields, fillRecord, getPkUrl } from "./fields"
 import { checkValidity } from "./validation"
 import { selectMessage } from "../lang"
 import axios from "../../axios"
+import { logout } from "../../store"
+import {store} from "../../index"
+
 
 // Handle search ******************************************************
 export const  handleSearch = (thisK) => {
@@ -37,6 +40,10 @@ const searchRequest = (thisK, values) => {
         timer(thisK)
     })
     .catch(err => {
+          // update the previlliges
+          if(err.response.status === 401){
+            store.dispatch(logout())
+        }
         fields(thisK.state.fields, 'open', false, thisK.state.searchFields)
         const message = {
             content: selectMessage(err.response.data.message, thisK.props.lanState),

@@ -35,10 +35,19 @@ export const toolsPriv = (formPrivs, tools) => {
             delete tools_hash["copy"];
         }
         if(key === "modify_priv" && !formPrivs[key]){delete tools_hash["modify"];}
-        if(key === "view_priv" && !formPrivs[key]){delete tools_hash["list"];}
+        if(key === "view_priv" && !formPrivs[key]){
+            delete tools_hash["list"];
+            delete tools_hash["previous"];
+            delete tools_hash["next"];
+            delete tools_hash["first"];
+            delete tools_hash["last"];
+            delete tools_hash["search"];
+            
+        }
         if(key === "delete_priv" && !formPrivs[key]){delete tools_hash["delete"];}
     }
     return hash_back(tools_hash);
 }
 
 
+    

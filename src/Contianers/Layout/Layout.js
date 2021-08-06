@@ -10,6 +10,7 @@ import Spinner from "../../Components/UI/Spinner/Spinner";
 import style from './Layout.module.scss';
 import SideTreeMobView from "../../Components/SideTree/SideTreeMobView/SideTreeMobView";
 import { checkAuthLocalStorage } from "../../store";
+import LogoutPage from "../../Components/UI/LogoutPage/LogoutPage";
 
 class Layout extends Component {
     state={
@@ -90,17 +91,8 @@ class Layout extends Component {
             layout = <div className={style.center}><Spinner color=" #222831" /></div>;
         }
         if(!this.props.isAuthed){
-            layout = (
-                <Aux>
-                    <h1 className="m-5">You are not logged in, please login to continue</h1>
-                    <button
-                     onClick={()=> this.props.history.push("/login")} 
-                     style={{fontSize: "2rem"}}
-                     className="btn btn-outline-primary m-5" >Login</button>
-                </Aux>
-            )
+            layout = <LogoutPage {...this.props} />
         }
-        
         return layout;
     }
 }

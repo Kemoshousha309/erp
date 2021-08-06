@@ -25,6 +25,7 @@ import Hint from '../../../Components/UI/Hint/Hint';
 import { selectMessage, t } from '../../../utilities/lang';
 import { fields } from '../../../utilities/tap/fields';
 import { timer } from '../../../utilities/tap/utilities';
+import { deepClone } from '../../../utilities/tap/validation';
 
 
 
@@ -49,7 +50,7 @@ class ScreenPrivs extends Component{
             }
         },
         pks: ["user_id"],
-        tapTools: ["delete", "add", "copy", "modify"],
+        tapTools: ["delete", "add", "copy"],
         tools: null,
         mode: "start",
         // we handle prevMode in list show only ....
@@ -99,12 +100,22 @@ class ScreenPrivs extends Component{
             url = "flagPriv"
         }
         this.setState({loading: true})
+        const formPriv = this.state.formPriv
         axios({
             method: "put",
             url: url,
-            data: this.state.formPriv,
+            data: formPriv,
             })  
             .then(res => {
+                const user_formPrivs_clone = deepClone(this.state.user_formPrivs);
+                if(res.status === 200){
+                    const form_no = formPriv.form_no
+                    user_formPrivs_clone.forEach((i, n) => {
+                        if(i.form_no === form_no){
+                            user_formPrivs_clone[n] = formPriv
+                        }
+                    })
+                }
                 fields(this.state.fields, 'close', false)
                 const message = {
                     content: selectMessage(res.data.message, this.props.lanState),
@@ -115,6 +126,7 @@ class ScreenPrivs extends Component{
                     loading: false, 
                     message: message,
                     recordIndex: null,
+                    user_formPrivs: user_formPrivs_clone
                 })
                 timer(this)
             })
@@ -173,13 +185,16 @@ class ScreenPrivs extends Component{
     static getDerivedStateFromProps(props, state){
         let {tools} =  handleDrivedState (props, state)
         const tools_clone = [...tools];
-        if(state.formPriv){
-            tools_clone.forEach(i => {
-                if(i.name === "save"){
+        tools_clone.forEach(i => {
+            if(i.name === "modify"){
+                if(state.formPriv){
                     i.state = true
+                }else {
+                    i.state = false
                 }
-            })
-        }
+            }
+        })
+
         // get the state form the store when user is selected
         let tree = null
         let treeLoading = <Hint message={t("select_user", props.lanTable, props.lanState)}/>
@@ -189,17 +204,23 @@ class ScreenPrivs extends Component{
             }else{
                 treeLoading = <Hint message={t("select_not_logged_user", props.lanTable, props.lanState)} />
                 tools_clone.forEach(i => {
-                    if(i.name === "save"){
+                    if(i.name === "modify"){
                         i.state = false
                     }
                 })
             }
         }
 
+        let recordClone = {...state.record}
+        if(state.mode === "start"){
+            recordClone = null
+        }
+
         return {
             tools: tools_clone,
             tree: tree,
-            treeLoading: treeLoading
+            treeLoading: treeLoading,
+            record: recordClone
         }
     }
 

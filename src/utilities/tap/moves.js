@@ -2,6 +2,8 @@ import { timer } from "./utilities"
 import {  getValues, fillRecord, getPkUrl } from "./fields"
 import axios from "../../axios"
 import { t } from "../lang"
+import { logout } from "../../store"
+import {store} from "../../index"
 
 
 // moves processes ***********************************************
@@ -97,9 +99,21 @@ const handleIndex = (thisK, moveType) => {
         const [url, newIndex] = handleUrlMove_(moveType, index, thisK)
         axios.get(url)
         .then(res => handleRes(thisK, res, newIndex))
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err)
+             // update the previlliges
+          if(err.response.status === 401){
+            store.dispatch(logout())
+        }
+        })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+        console.log(err)
+         // update the previlliges
+         if(err.response.status === 401){
+            store.dispatch(logout())
+        }
+    })
     return index
 }
 
@@ -108,7 +122,9 @@ export const setlastIndex = (thisK) => {
         .then(res => {
             thisK.setState({lastIndex: res.data.pages_count})
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err)
+        })
 }
 
 
@@ -126,6 +142,12 @@ export const handleMove = (type, thisK) => {
                 handleRes(thisK, res, newIndex)
             }
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log(err)
+             // update the previlliges
+          if(err.response.status === 401){
+            store.dispatch(logout())
+        }
+        })
     }
 }

@@ -12,6 +12,16 @@ const PrivDisplay = (thisK) => {
     const formPrivs = thisK.state.user_formPrivs
     const user= thisK.state.record
     const currentForm=thisK.state.currentForm
+    const mode = thisK.state.mode
+
+    // accessibility to modify 
+    let TableStyle = {opacity: ".5"};
+    let disabled = true;
+    if(mode === "modify"){
+        TableStyle = {opacity: "1"};
+        disabled = false;
+    }
+    
     
     let userInfo = null
     if(user) {
@@ -86,7 +96,7 @@ const PrivDisplay = (thisK) => {
             privTable = (
                 <div id="form_priv" className={style.table_container}>
                     <span>{form_name}</span>
-                   <table className="table table-bordered table-dark text-center w-100">
+                   <table style={TableStyle} className="table table-bordered table-dark text-center w-100">
                     <thead>
                         <tr>
                             {
@@ -99,14 +109,14 @@ const PrivDisplay = (thisK) => {
                         {
                             priv_arr1.map(i => 
                                 <td>
-                                    <input type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i.prop)} checked={thisK.state.formPriv[i.prop]}>
+                                    <input disabled={disabled} type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i.prop)} checked={thisK.state.formPriv[i.prop]}>
                                     </input>
                                 </td>)
                         }
                         </tr>
                     </tbody>
                     </table>
-                    <table className="table table-bordered table-dark text-center w-100 mt-4">
+                    <table style={TableStyle} className="table table-bordered table-dark text-center w-100 mt-4">
                     <thead>
                         <tr>
                             {
@@ -119,7 +129,7 @@ const PrivDisplay = (thisK) => {
                         {
                             priv_arr2.map(i => 
                                 <td>
-                                    <input type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i.prop)} checked={thisK.state.formPriv[i.prop]}>
+                                    <input disabled={disabled} type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i.prop)} checked={thisK.state.formPriv[i.prop]}>
                                     </input>
                                 </td>)
                         }
@@ -136,7 +146,7 @@ const PrivDisplay = (thisK) => {
             privTable = (
                 <div id="form_priv" className={style.table_container}>
                     <span>{form_name}</span>
-                   <table className={classes}>
+                   <table style={TableStyle} className={classes}>
                     <thead>
                         <tr>
                             {
@@ -149,7 +159,7 @@ const PrivDisplay = (thisK) => {
                         {
                             priv_arr.map(i => 
                                 <td>
-                                    <input type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i.prop)} checked={thisK.state.formPriv[i.prop]}>
+                                    <input disabled={disabled} type="checkbox" onChange={(e) => thisK.privChangeHandler(e, i.prop)} checked={thisK.state.formPriv[i.prop]}>
                                     </input>
                                 </td>)
                         }

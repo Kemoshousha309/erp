@@ -125,16 +125,16 @@ export const handleUndo  = (thisK) => {
     switch (thisK.state.mode) {
         case "modify":
             fields(thisK.state.fields, "close", false)
-            thisK.setState({mode: "d_record", record: null})
+            thisK.setState({mode: "d_record"})
             break;
         case "copy":
             fields(thisK.state.fields, "close", false)
-            thisK.setState({mode: "d_record", record: null})
+            thisK.setState({mode: "d_record"})
             break;
         default:
              // undo to start mode
             fields(thisK.state.fields, "close")
-            thisK.setState({mode: "start", record: null})
+            thisK.setState({mode: "start"})
             break;
     }
 }

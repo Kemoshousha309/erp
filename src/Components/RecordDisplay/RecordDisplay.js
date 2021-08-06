@@ -10,6 +10,10 @@ import { Button } from "@material-ui/core"
 import {  getPkUrl } from "../../utilities/tap/fields"
 import { t } from "../../utilities/lang"
 import Modal from "../UI/Modal/Modal"
+import {store} from "../../index";
+import { logout } from "../../store"
+
+
 
 
 class RecordDisply extends Component {
@@ -69,7 +73,13 @@ class RecordDisply extends Component {
             .then(res => {
                 this.setState({pages: res.data, page_no: page_no, loading: false})
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                console.log(err)
+                // update the previlliges
+                if(err.response.status === 401){
+                    store.dispatch(logout())
+                }
+            })
     }
     paginationHandler = (page_no) => {
         if(this.state.mode === "d"){

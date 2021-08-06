@@ -6,6 +6,7 @@ import { hash } from "../../utilities/utilities";
 import * as actionTypes from "./actionTypes";
 
 
+
 const authSuccess = (authData) => {
     return {
         type: actionTypes.AUTH_SUCCESS,
