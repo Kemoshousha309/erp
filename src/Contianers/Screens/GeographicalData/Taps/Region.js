@@ -4,7 +4,6 @@ import { toolSelectHandler } from '../../../../utilities/tools';
 import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/delete"
 import {handleSearch} from "../../../../utilities/tap/search"
 import {handleSave} from "../../../../utilities/tap/save"
-import {add_lan_dir_options} from '../../../../utilities/tap/async'
 import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
 import {functionsListenrs} from "../../../../utilities/tap/listeners"
 import {
