@@ -382,4 +382,8 @@ export const routeMap = [
         form_no: 131,
         route: ""
     },
+    {
+        form_no: 1301,
+        route: "geographical-data?no=1301"
+    },
 ]

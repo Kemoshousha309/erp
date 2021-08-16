@@ -36,6 +36,7 @@ export const handleRecordClick = (thisK, record, i) => {
     fields(thisK.state.fields, "close", false)
     checkNullName(thisK, record)
     thisK.setState({listShow: false, mode: "d_record", recordIndex: i, record: record})
+
 }
 
 const checkNullName = (thisK, record) => {
@@ -70,7 +71,7 @@ export const extractName = (propName) => {
 
 
 // fk record click handler *********************
-export const handleRecordFkClick  = (thisK, record, i) => {
+export const handleRecordFkClick  = (thisK, record, i, fillFields) => {
     const fieldsClone = {...thisK.state.fields}
     const fk = thisK.state.fkListShow
     if(fieldsClone[fk].readOnlyField){
@@ -94,8 +95,17 @@ export const handleRecordFkClick  = (thisK, record, i) => {
             fieldsClone[fieldsClone[fk].readOnlyField].autoFilledSuccess = true
         }
     }   
-    fieldsClone[fk].value = record[fieldsClone[fk].fKTable.PN]
+
+    if(fieldsClone[fk].fKTable){
+        fieldsClone[fk].value = record[fieldsClone[fk].fKTable.PN]
+    }
     document.getElementById(fk).focus()
+    if(fillFields){
+        fillFields.forEach(i => {
+            fieldsClone[i.stateName].value = record[i.recordName] 
+        })
+    }
+
     thisK.setState({fkListShow: null, fields: fieldsClone, fkRecord: record})
 }
 
