@@ -18,11 +18,7 @@ export const autoNameDisplay = (thisK, listenField, fkUrl, AFD_N=null, rejectedR
         fieldsClone[AFD_name].value = t("loading", thisK.props.lanTable, thisK.props.lanState)
         
         thisK.setState({fields: fieldsClone})
-        
-        let autoDisplayRecordsClone = {}
-        if(thisK.state.autoDisplayRecords){
-            autoDisplayRecordsClone = {...thisK.state.autoDisplayRecords}
-        }
+ 
         
 
         axios.get(`${fkUrl}/${event.target.value}`)

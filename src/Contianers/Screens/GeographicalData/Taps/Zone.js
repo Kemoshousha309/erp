@@ -23,7 +23,6 @@ import {
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
 import { autoNameDisplay, changePropName } from '../../../../utilities/tap/inputsHandlers';
-import { fillRecord } from '../../../../utilities/tap/fields';
 
 
 
