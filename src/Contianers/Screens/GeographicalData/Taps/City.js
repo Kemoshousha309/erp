@@ -22,6 +22,7 @@ import {
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
+import { autoNameDisplay, changePropName } from '../../../../utilities/tap/inputsHandlers';
 
 
 
@@ -105,6 +106,10 @@ class Country extends Component{
                 },
                 writability: false,
                 value: "",
+                fKTable: {
+                    SPN: "province",
+                    PN: "province_no",
+                },
                 fillFields: [
                     {
                         recordName: "province_no",   
@@ -120,167 +125,38 @@ class Country extends Component{
                     }
                 ]
             },
-            province_no_d_name :{
+            province_no_name :{
                 fieldType: "input",
-                type: "text",
                 label: "name",
-                validation: {
-                    requiered: true,
-                    length: 50
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,     
-                value: "" 
+                readOnly: true,
+                value: ""
             },
-            province_no_f_name:{
-                fieldType: "input",
-                type: "text",
-                label: "foreign_name",
-                validation: {
-                    requiered: true,
-                    length: 50
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,     
-                value: "" 
-            },
-            placeHolder:{
-                fieldType: "placeholder",
-            },
+
             country_no:{
                 fieldType: "input",
-                type: "number",
                 label: "country_no",
-                validation: {
-                    requiered: true
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,
-                value: "",
-                fillFields: [
-                    {
-                        recordName: "country_no",   
-                        stateName:  "country_no"
-                    },
-                    {
-                        recordName: "country_d_name",
-                        stateName:  "country_no_d_name"
-                    },
-                    {
-                        recordName: "country_f_name",
-                        stateName:  "country_no_f_name"
-                    }
-                ]
+                readOnly: true,
+                value: ""
             },
-            country_no_d_name:{
+            country_no_name:{
                 fieldType: "input",
-                type: "text",
                 label: "name",
-                validation: {
-                    requiered: true,
-                    length: 50
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,     
-                value: "" 
-            },
-            country_no_f_name:{
-                fieldType: "input",
-                type: "text",
-                label: "foreign_name",
-                validation: {
-                    requiered: true,
-                    length: 50
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,     
-                value: "" 
-            },
-            placeHolder1:{
-                fieldType: "placeholder",
+                readOnly: true,
+                value: ""
             },
             region_no:{
                 fieldType: "input",
-                type: "number",
                 label: "region_no",
-                validation: {
-                    requiered: true
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,
-                value: "",
-                fillFields: [
-                    {
-                        recordName: "region_no",
-                        stateName:  "region_no"
-                    },
-                    {
-                        recordName: "region_d_name",
-                        stateName:  "region_no_d_name"
-                    },
-                    {
-                        recordName: "region_f_name",
-                        stateName:  "region_no_f_name"
-                    }
-                ]
+                readOnly: true,
+                value: ""
             },
-            region_no_d_name:{
+            region_no_name:{
                 fieldType: "input",
-                type: "text",
                 label: "name",
-                validation: {
-                    requiered: true,
-                    length: 50
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,     
-                value: "" 
+                readOnly: true,
+                value: ""
             },
-            region_no_f_name:{
-                fieldType: "input",
-                type: "text",
-                label: "foreign_name",
-                validation: {
-                    requiered: true,
-                    length: 50
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,     
-                value: "" 
-            },
-            
+           
 },
         pks: ["city_no"],
         tapTools: [], // to be deleted and view the others
@@ -388,12 +264,25 @@ class Country extends Component{
     componentDidMount () {
         setlastIndex(this)
         functionsListenrs(this, true)
+
+        autoNameDisplay(this, 'region_no', "region", null, ["shortcut"])
+        autoNameDisplay(this, "country_no", "country", null, ["shortcut"])
+        autoNameDisplay(this, "province_no", "province", null, ["shortcut"])
     }
     componentWillUnmount () {
         functionsListenrs(this, false)
         this.props.changeLangSelectAcivity(true)
     }
-    static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
+    static getDerivedStateFromProps(props, state){
+        let fieldsUpdate = changePropName(props, state.fields, "region_no_name", "region_no")
+        fieldsUpdate = changePropName(props, fieldsUpdate, "country_no_name", "country_no")
+        fieldsUpdate = changePropName(props, fieldsUpdate, "province_no_name", "province_no")
+        const {tools} =  handleDrivedState (props, state)
+        return {
+            tools: tools,
+            fields: fieldsUpdate
+        }
+    }
 
     render (){
         return displayContent(this, this.props.location)

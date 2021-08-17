@@ -22,6 +22,8 @@ import {
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
+import { autoNameDisplay, changePropName } from '../../../../utilities/tap/inputsHandlers';
+
 
 
 
@@ -110,38 +112,22 @@ class Country extends Component{
                     SPN: "region",
                     PN: "region_no",
                 },
+                fillFields: [
+                    {
+                        recordName: "region_d_name",
+                        stateName:  "region_no_d_name"
+                    },
+                    {
+                        recordName: "region_f_name",
+                        stateName:  "region_no_f_name"
+                    }
+                ]
             },
-            region_no_d_name:{
+            region_no_name:{
                 fieldType: "input",
-                type: "text",
                 label: "name",
-                validation: {
-                    requiered: true,
-                    length: 50
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,     
-                value: "" 
-            },
-            region_no_f_name:{
-                fieldType: "input",
-                type: "text",
-                label: "foreign_name",
-                validation: {
-                    requiered: true,
-                    length: 50
-                },
-                validity: {
-                    valid: true,
-                    touched: false,
-                    message: null
-                },
-                writability: false,     
-                value: "" 
+                readOnly: true,
+                value: ""
             },
             
 },
@@ -213,17 +199,7 @@ class Country extends Component{
     closeFkList = () => handleCloseFkList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
     recordFkClick = (record, i) => {
-        const fillFields = [
-            {
-                recordName: "region_d_name",
-                stateName:  "region_no_d_name"
-            },
-            {
-                recordName: "region_f_name",
-                stateName:  "region_no_f_name"
-            }
-        ]
-        handleRecordFkClick(this, record, i, fillFields)
+        handleRecordFkClick(this, record, i,  this.state.fields[this.state.fkListShow].fillFields)
     }
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
@@ -234,15 +210,21 @@ class Country extends Component{
         setlastIndex(this)
         functionsListenrs(this, true)
 
-       
+        autoNameDisplay(this, 'region_no', "region", null, ["shortcut"])
 
     }
     componentWillUnmount () {
         functionsListenrs(this, false)
         this.props.changeLangSelectAcivity(true)
     }
-    static getDerivedStateFromProps(props, state){return handleDrivedState (props, state)}
-
+    static getDerivedStateFromProps(props, state){
+        let fieldsUpdate = changePropName(props, state.fields, "region_no_name", "region_no")
+        const {tools} =  handleDrivedState (props, state)
+        return {
+            tools: tools,
+            fields: fieldsUpdate
+        }
+    }
     render (){
         return displayContent(this, this.props.location)
     }

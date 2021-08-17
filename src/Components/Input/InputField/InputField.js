@@ -31,6 +31,13 @@ class InputField extends Component {
         const placeholder = t(this.props.field.label, this.props.lanTable, this.props.lanState)
         let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style)
         const passIcon = handlePassIcon(this, style) 
+
+        // style 
+        const classes = ["form-control", invalidInputStyle];
+        if(!field.writability) {
+            classes.push(style.disabled)
+        }
+        
         return (
             <div className={["form-group" ,style.inputField].join(' ')}>
                 <label 
@@ -46,7 +53,7 @@ class InputField extends Component {
                         autoComplete="off"
                         disabled={!field.writability}
                         type={field.type} 
-                        className={["form-control", invalidInputStyle].join(" ")}
+                        className={classes.join(" ")}
                         id={field.id} 
                         placeholder={placeholder} />
                         {passIcon}

@@ -49,21 +49,25 @@ export const fields = (fields, mode, empty=true, specific) => {
 }
 
 export const fillRecord = (fields, record) => { 
-    for(let i in fields){
-        if(record[i] !== undefined){
-            if(record[i] === null){
-                fields[i].value =  "" 
-            }else{
-                if(fields[i].type === "dateFormat"){
-                    fields[i].value = formatDate(record[i], 12) 
-                }else{
-                    fields[i].value = record[i] 
+   if(record){
+        if(Object.keys(record).length > 0){
+            for(let i in fields){
+                if(record[i] !== undefined){
+                    if(record[i] === null){
+                        fields[i].value =  "" 
+                    }else{
+                        if(fields[i].type === "dateFormat"){
+                            fields[i].value = formatDate(record[i], 12) 
+                        }else{
+                            fields[i].value = record[i] 
+                        }
+                    }
+                }else if (record[i] === false){
+                    fields[i].value =  false
                 }
             }
-        }else if (record[i] === false){
-            fields[i].value =  false
         }
-    }
+   }
     return fields;
 }
 

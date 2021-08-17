@@ -30,6 +30,7 @@ class CheckBoxField extends Component {
     render() {
         // console.log(`[InputSelectField] render`, this.state)
         const field = this.props.field
+        
         return (
             <div className={["form-group" ,style.checkboxField].join(' ')}>
                 <label 

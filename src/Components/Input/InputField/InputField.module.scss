@@ -16,7 +16,8 @@ $fontSize: 1.8rem;
     }
     input{
         font-size: $fontSize;
-    }
+        font-family: 'Roboto', sans-serif;
+        }
 }
 
 .invalidMessage{
@@ -64,4 +65,8 @@ $fontSize: 1.8rem;
     @media only screen and (max-width: 400px){
         right: 12%;
     }
+}
+
+.disabled {
+    opacity: .5 !important;
 }

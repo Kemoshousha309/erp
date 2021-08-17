@@ -2,20 +2,29 @@ import { decideName } from "../lang"
 import axios from "../../axios"
 import {t} from "../../utilities/lang"
 import { isValid } from "./validation"
+import { fillRecord } from "./fields"
 
 
 // Handle Auto name display fields ************************
-export const autoNameDisplay = (thisK, listenField, fkUrl, AFD_N=null) => {
+export const autoNameDisplay = (thisK, listenField, fkUrl, AFD_N=null, rejectedRecordProps) => {
     // / is the prop name of some property in its own table
     thisK.state.fields[listenField].changeHandler = (event, field) => {
-        const fieldsClone = {...thisK.state.fields}
+        let fieldsClone = {...thisK.state.fields}
         // auto field display name is the field that should be changed its key depend on the language to fit the record props
         let AFD_name = decideName(listenField , thisK.props.lanState);
         if(AFD_N){
             AFD_name = AFD_N
         }
         fieldsClone[AFD_name].value = t("loading", thisK.props.lanTable, thisK.props.lanState)
+        
         thisK.setState({fields: fieldsClone})
+        
+        let autoDisplayRecordsClone = {}
+        if(thisK.state.autoDisplayRecords){
+            autoDisplayRecordsClone = {...thisK.state.autoDisplayRecords}
+        }
+        
+
         axios.get(`${fkUrl}/${event.target.value}`)
         .then(res=> {
             // propert. name. in. original. table. => SPN => start property name in the fk tabel
@@ -23,29 +32,33 @@ export const autoNameDisplay = (thisK, listenField, fkUrl, AFD_N=null) => {
             // record property name is the prop name in the record wich i use to access the value form record, depend on SPN
             const RP_name = decideName(PNIOT, thisK.props.lanState)
             const RP_d_name = decideName(PNIOT, 1)
+
             if(event.target.value !== ""){
                 if(res.data[RP_name]){
                     fieldsClone[AFD_name].value = res.data[RP_name]
                     fieldsClone[AFD_name].autoFilledSuccess = true
-                    thisK.setState({fields: fieldsClone})
+                    updateStateWithRecord(thisK, fieldsClone, res.data, listenField, rejectedRecordProps)
                 }else if(res.data[RP_d_name]){
                     fieldsClone[AFD_name].value = res.data[RP_d_name]
                     fieldsClone[AFD_name].autoFilledSuccess = true
-                    thisK.setState({fields: fieldsClone})
+                    updateStateWithRecord(thisK, fieldsClone, res.data, listenField, rejectedRecordProps)
+
                 }else if(res.data[PNIOT]){
                     fieldsClone[AFD_name].value = res.data[PNIOT]
                     fieldsClone[AFD_name].autoFilledSuccess = true
-                    thisK.setState({fields: fieldsClone})
+                    updateStateWithRecord(thisK, fieldsClone, res.data, listenField, rejectedRecordProps)
                 }
                 else{
                     fieldsClone[AFD_name].value = ""
                     fieldsClone[AFD_name].autoFilledSuccess = false
-                    thisK.setState({fields: fieldsClone})
+                    updateStateWithRecord(thisK, fieldsClone, res.data, listenField, rejectedRecordProps)
                 }   
             }else{
                 fieldsClone[AFD_name].value = ""
                 fieldsClone[AFD_name].autoFilledSuccess = false
-                thisK.setState({fields: fieldsClone})
+
+                // empty fields
+                emptyFields(thisK, fieldsClone, listenField)
             }
 
         })
@@ -57,12 +70,50 @@ export const autoNameDisplay = (thisK, listenField, fkUrl, AFD_N=null) => {
             }
             fieldsClone[AFD_name].value = errorMess
             fieldsClone[AFD_name].autoFilledSuccess = false
-            // fieldsClone[AFD_name].value = t("not_exist", thisK.props.lanTable, thisK.props.lanState)
 
-            thisK.setState({fields: fieldsClone})
+          // empty fields
+          emptyFields(thisK, fieldsClone, listenField)
         })
     }
 }
+
+const updateStateWithRecord = (thisK, fieldsClone, record, listenField, rejectedRecordProps) => {
+    // prepare auto display fields
+    let autoDisplayRecordsClone = {}
+    if(thisK.state.autoDisplayRecords){
+        autoDisplayRecordsClone = {...thisK.state.autoDisplayRecords}
+    }
+    // regected record props is an array contain props that we want to delete from record because they have the same name in our state fields and this cause proplems when fillRecord (make auto dispay to fields that shouldn't be filled)
+    rejectedRecordProps.forEach(i => {
+        if(record[i]){
+            delete record[i];
+        }
+    })
+    fieldsClone = fillRecord(fieldsClone, record)
+    autoDisplayRecordsClone[listenField] = record
+    thisK.setState({fields: fieldsClone, autoDisplayRecords: autoDisplayRecordsClone})
+}
+
+const emptyFields = (thisK, fieldsClone, listenField) => {
+    let autoDisplayRecordsClone = {}
+    if(thisK.state.autoDisplayRecords){
+        autoDisplayRecordsClone = {...thisK.state.autoDisplayRecords}
+    }
+    let currentDisplay = null
+    if(thisK.state.autoDisplayRecords){
+        currentDisplay = {...thisK.state.autoDisplayRecords[listenField]}
+        for(let key in currentDisplay) {
+            if(key !== listenField){
+                currentDisplay[key] = ""
+            }
+        }
+    }
+    autoDisplayRecordsClone[listenField] = currentDisplay
+    fieldsClone = fillRecord(fieldsClone, currentDisplay)
+    thisK.setState({fields: fieldsClone, autoDisplayRecords: autoDisplayRecordsClone})
+}
+
+
 
 
 // password confirmation 

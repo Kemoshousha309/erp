@@ -98,11 +98,15 @@ export const handleRecordFkClick  = (thisK, record, i, fillFields) => {
 
     if(fieldsClone[fk].fKTable){
         fieldsClone[fk].value = record[fieldsClone[fk].fKTable.PN]
+        fieldsClone[fk].validity.valid = true
+        fieldsClone[fk].validity.message = null        
     }
     document.getElementById(fk).focus()
     if(fillFields){
         fillFields.forEach(i => {
-            fieldsClone[i.stateName].value = record[i.recordName] 
+            if(fieldsClone[i.stateName]){
+                fieldsClone[i.stateName].value = record[i.recordName] 
+            }
         })
     }
 
