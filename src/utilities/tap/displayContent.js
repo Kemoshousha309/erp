@@ -17,7 +17,7 @@ export const displayContent = (thisK, location, additional) => {
         content = displayPattren(thisK.state.fields, thisK.inputChange, thisK, additional)
     }
     const tapContent = (
-        <div id="tap">
+        <div id="tap" style={{height: "100%"}}>
             {thisK.state.listShow ?
             <RecordDisplay 
                 urls={thisK.state.urls}
@@ -52,7 +52,7 @@ export const displayContent = (thisK, location, additional) => {
     }
  
 }
-
+    
 
 const fkList = (thisK) => {
     let fk = null

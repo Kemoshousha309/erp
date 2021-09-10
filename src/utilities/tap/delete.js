@@ -46,22 +46,25 @@ const handleDeleteRequest = (thisK) => {
         timer(thisK)
     })
     .catch(err => {
-          // update the previlliges
-          if(err.response.status === 401){
+        // update the previlliges
+        let message = null
+        if(err.response){
+            if(err.response.status === 401){
             store.dispatch(logout())
+            }
+            message = {
+                   content: selectMessage(err.response.data.message, thisK.props.lanState),
+                   type: "error"
+               }
         }
         fields(thisK.state.fields, 'close', true)
-         const message = {
-                content: selectMessage(err.response.data.message, thisK.props.lanState),
-                type: "error"
-            }
-            thisK.setState({
-                mode: "start",
-                loading: false, 
-                message: message,
-                recordIndex: null,
-                
-            })
-            timer(thisK)
+        thisK.setState({
+            mode: "start",
+            loading: false, 
+            message: message,
+            recordIndex: null,
+            
+        })
+        timer(thisK)
     })
 }

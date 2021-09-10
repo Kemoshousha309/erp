@@ -2,21 +2,12 @@ import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import React from "react";
 import { connect } from "react-redux";
+import style from "./StatusBar.module.scss";
 
 
 const StatusBar = props => {
-    const position = {
-        position: "absolute",
-        bottom: "3.5rem",
-        right: "50%",
-        transform: "translateX(-50%)",
-        width: "fit-content",
-    }
-    if(parseInt(props.lanState) === 1){
-        position.transform = "translateX(50%)"
-    }
     return(
-            <Snackbar open={props.show} style={{position: "absolute"}}  autoHideDuration={6000} >
+            <Snackbar open={props.show} className={style.StatusBar} autoHideDuration={6000} >
                 <Alert severity={props.type}>
                     {props.children}
                 </Alert>

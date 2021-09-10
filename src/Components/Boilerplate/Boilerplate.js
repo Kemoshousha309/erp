@@ -11,7 +11,7 @@ const Boilerplate = props => {
     // console.log("Boilerplate render")
     const statusBar = (
         <Aux>
-        { props.loading ? <Spinner position="statusPosition" small color="3F51B5" />: null }
+        { props.loading ? <Spinner  small color="3F51B5" />: null }
         {
             props.message ? 
             <StatusBar show type={props.message.type} >{props.message.content}</StatusBar>  : null
@@ -38,9 +38,11 @@ const Boilerplate = props => {
                         </div>
                     </div>
                 </div>
-                {statusBar}
             </div>
-    
+            <div className={style.statusBar}>
+            {statusBar}
+                
+            </div>
         </Aux>
         
     )

@@ -111,7 +111,7 @@ export const displayPattren = (fields, changeHandler, thisK, additional) => {
             )
         })
         
-        return <Aux>{tapContent} {additional}</Aux>;
+        return <form>{tapContent} {additional}</form>;
 }
 
 export const displayPattrenTree = (fields, changeHandler, thisK, tree, additional) => {
@@ -140,10 +140,11 @@ export const displayPattrenTree = (fields, changeHandler, thisK, tree, additiona
     })
     return (
         <div   className="row px-3 mt-4">
-            
             <div className="col-sm-8 px-0" >
+                <form>
                 {content}
                 {additional}
+                </form>
             </div>
             <div className="col-sm-4 px-0 " ><Treeview thisK={thisK} tree={tree} loading={thisK.state.treeLoading} /></div>
         </div>

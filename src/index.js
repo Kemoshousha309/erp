@@ -9,7 +9,8 @@ import { languageReducer } from './store';
 import thunk from "redux-thunk"
 import { Provider } from 'react-redux';
 import { authReducer } from './store/reducers/auth';
-import axios from "./axios"
+import axios from "./axios";
+import * as actionTypes from "./store/actions/actionTypes"
 
 
 
@@ -30,6 +31,24 @@ axios.interceptors.request.use(req => {
   }
   return req
 })
+
+
+axios.interceptors.response.use(
+  res => res,
+  err => {
+    if (err.response) {
+      throw err
+    } else if (err.request) {
+      store.dispatch({type: actionTypes.NETWORK_ERROR})
+      throw err
+    } else {
+      throw err
+    }
+  }
+);
+
+
+
 
 ReactDOM.render(
   // <React.StrictMode> this gives us some warning to improve our app you  can use it at the end of devolopment

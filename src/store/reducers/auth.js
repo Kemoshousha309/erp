@@ -5,7 +5,8 @@ const initState = {
     autherror: null,
     authData: null,
     authloading: false,
-    tree: null
+    tree: null,
+    network_error: null
 }
 
 const authSuccess = (state, action) => {
@@ -56,6 +57,22 @@ const logout = (state, action) => {
 }
 
 
+const set_network_error = (state, action) => {
+    return (
+        updateState(state, {
+           network_error: "network error"
+        })
+    )
+}   
+
+const close_network_error = (state, action) => {
+    return (
+        updateState(state, {
+           network_error: null
+        })
+    )
+} 
+
 export const authReducer = (state=initState, action) => {
     switch(action.type){
         case actionTypes.AUTH_START: return authStart(state, action);
@@ -63,6 +80,9 @@ export const authReducer = (state=initState, action) => {
         case actionTypes.AUTH_FAIL: return authFail(state, action);
         case actionTypes.STORE_TREE: return storeTree(state, action);
         case actionTypes.LOGOUT: return logout(state, action);
+        case actionTypes.NETWORK_ERROR: return set_network_error(state, action);
+        case actionTypes.CLOSE_NETWORK_ERROR: return close_network_error(state, action);
+        
         default:
             return state
     }

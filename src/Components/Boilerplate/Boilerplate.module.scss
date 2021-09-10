@@ -1,8 +1,7 @@
 .Boilerplate{
     position: relative;
-    min-height: 94vh;
-    padding-bottom: 2rem;
     box-sizing: border-box;
+    height: 75vh;
 }
 
 .header{
@@ -29,22 +28,10 @@
 
 .container{
     position: relative;
-    height:   74vh;
-    @media only screen and (max-width: 880px){
-        height:   68vh;
-    }
-    @media only screen and (max-width: 670px){
-        height:   70vh;
-    }
-    @media only screen and (max-width: 500px){
-        height:   63vh;
-    }
-    @media only screen and (max-width: 400px){
-        height:   63vh;
-    }
     overflow-y: scroll;
     overflow-x: hidden;
-    
+    height: 100%;
+
 
     /* width */
     &::-webkit-scrollbar {
@@ -70,11 +57,14 @@
   
   
     box-sizing: border-box;
-    // background-color: #dddddd;
-    // background-color: #E5E7F5;
     background-color: #DFE1F3;
-    // padding: 1rem;
-    margin: 1rem 1rem 8rem 1rem;
-    border-radius: 10px;
+    margin: 1rem 1rem 2rem 1rem;
 }
 
+.statusBar {
+    position: absolute;
+    bottom: 1rem;
+    right: 50%;
+    transform: translateX(50%);
+    width: fit-content;
+}

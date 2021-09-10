@@ -7,6 +7,7 @@ import { logout } from "../../store"
 import {store} from "../../index"
 
 
+
 // Handle search ******************************************************
 export const  handleSearch = (thisK) => {
     if(thisK.state.mode === "search"){
@@ -40,14 +41,17 @@ const searchRequest = (thisK, values) => {
         timer(thisK)
     })
     .catch(err => {
-          // update the previlliges
-          if(err.response.status === 401){
-            store.dispatch(logout())
-        }
-        fields(thisK.state.fields, 'open', false, thisK.state.searchFields)
-        const message = {
-            content: selectMessage(err.response.data.message, thisK.props.lanState),
-            type: "error"
+        let message = null
+        if(err.response){
+            // update the previlliges
+            if(err.response.status === 401){
+              store.dispatch(logout())
+            }
+            fields(thisK.state.fields, 'open', false, thisK.state.searchFields)
+            message = {
+                content: selectMessage(err.response.data.message, thisK.props.lanState),
+                type: "error"
+            }
         }
         thisK.setState({
             loading: false, 

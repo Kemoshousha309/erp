@@ -39,6 +39,7 @@ class Language extends Component{
                 },
                 writability: false,
                 value: "",
+                autoIncrement: "/public/language/nextPK"
             },
             lang_name:{
                 fieldType: "input",

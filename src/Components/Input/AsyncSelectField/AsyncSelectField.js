@@ -72,6 +72,11 @@ class AsyncSelectField extends Component {
                 <Backdrop show opacity={0} click={this.handleClose} />
             </Aux>
         )
+        // style 
+        const classes = ["form-control", invalidInputStyle];
+        if(!field.writability) {
+            classes.push(style.disabled)
+        }
         return (
             <div className={["form-group" ,style.inputField].join(' ')}>
                 <label title={t(this.props.field.label, this.props.lanTable, this.props.lanState)} 
@@ -83,7 +88,7 @@ class AsyncSelectField extends Component {
                     onBlur ={this.handleBlur} 
                     autoComplete="off"
                     disabled={!field.writability}
-                    className={["form-control", invalidInputStyle].join(" ")}
+                    className={classes.join(" ")}
                     id={field.id} 
                     onFocus={this.handleFocus}
                     onClick={this.handleFocus}

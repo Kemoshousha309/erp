@@ -37,7 +37,7 @@ class InputField extends Component {
         if(!field.writability) {
             classes.push(style.disabled)
         }
-        
+
         return (
             <div className={["form-group" ,style.inputField].join(' ')}>
                 <label 
@@ -55,7 +55,8 @@ class InputField extends Component {
                         type={field.type} 
                         className={classes.join(" ")}
                         id={field.id} 
-                        placeholder={placeholder} />
+                        placeholder={placeholder}>
+                        </input>
                         {passIcon}
                    </div>
                     {invalidMessage}

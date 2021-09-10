@@ -4,6 +4,14 @@ import { isValid } from "./tap/validation"
 import {faEye, faEyeSlash} from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+const getBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = error => reject(error);
+    });
+} 
 
 export const changeHandler = (e, thisK, handler1, handler2) => {
     const validationRules = thisK.props.field.validation
@@ -11,7 +19,19 @@ export const changeHandler = (e, thisK, handler1, handler2) => {
     const [valid, message] = isValid(e.target.value, validationRules, thisK)
     stateClone.valid = valid
     stateClone.invalidFeedBack = message
-    stateClone.value = e.target.value
+    if(thisK.props.field.type === "file"){
+        const file = e.target.files[0];
+        if(file) {
+            getBase64(file).then(data => {
+                stateClone.value = data
+                thisK.setState(stateClone)
+            })
+        }else {
+            stateClone.value = ""
+        }
+    }else{
+        stateClone.value = e.target.value
+    }
     thisK.setState(stateClone)
     if(handler1){
         handler1(e, thisK)
@@ -114,3 +134,4 @@ export const handlePassIcon = (thisK, style) => {
     } 
     return passIcon
 }
+

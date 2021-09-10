@@ -15,7 +15,6 @@ import { logout } from "../../store"
 
 
 
-
 class RecordDisply extends Component {
     state = {
         firstTime: true,
@@ -24,7 +23,8 @@ class RecordDisply extends Component {
         mode: "d",
         loading: false,
         firstLoad: true, 
-        show: true
+        show: true,
+        networkError: false,
     }
     static getDerivedStateFromProps(props, state){
         if(state.firstTime){
@@ -75,10 +75,15 @@ class RecordDisply extends Component {
             })
             .catch(err => {
                 console.log(err)
-                // update the previlliges
-                if(err.response.status === 401){
-                    store.dispatch(logout())
+                if(err.response){
+                    // update the previlliges
+                    if(err.response.status === 401){
+                        store.dispatch(logout())
+                    }
+                }else{
+                    this.setState({networkError: true})
                 }
+                
             })
     }
     paginationHandler = (page_no) => {
@@ -138,7 +143,13 @@ class RecordDisply extends Component {
         }else{
             content = <Spinner color="#3F51B5" />
         }
-        return  <Modal show clicked={this.props.modalClose} > {content}</Modal>
+
+        let returned = <Modal show clicked={this.props.modalClose} > {content}</Modal>
+        if(this.state.networkError){
+            returned = null
+        }
+
+        return  returned
             
         
     }

@@ -17,12 +17,13 @@ import {
     handleInputChange,
     handleCloseShortCuts,
     handleDrivedState,
-    handleRecordFkClick,
-    handleCloseFkList
+    handleCloseFkList,
+    fkRecordClickHandler
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
-import { autoNameDisplay, changePropName } from '../../../../utilities/tap/inputsHandlers';
+import { autoDisplay, changePropName } from '../../../../utilities/tap/inputsHandlers';
+
 
 
 
@@ -44,6 +45,7 @@ class Country extends Component{
                 },
                 writability: false,
                 value: "",
+                autoIncrement: "country/nextPK"
             },
             country_d_name:{
                 fieldType: "input",
@@ -113,6 +115,10 @@ class Country extends Component{
                     PN: "region_no",
                 },
                 fillFields: [
+                    {
+                        recordName: "region_no",
+                        stateName: "region_no"
+                    },  
                     {
                         recordName: "region_d_name",
                         stateName:  "region_no_d_name"
@@ -198,9 +204,7 @@ class Country extends Component{
     closeList = () =>  handleCloseList(this)
     closeFkList = () => handleCloseFkList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
-    recordFkClick = (record, i) => {
-        handleRecordFkClick(this, record, i,  this.state.fields[this.state.fkListShow].fillFields)
-    }
+    recordFkClick = (record, i) => fkRecordClickHandler(this, record)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)
@@ -210,8 +214,12 @@ class Country extends Component{
         setlastIndex(this)
         functionsListenrs(this, true)
 
-        autoNameDisplay(this, 'region_no', "region", null, ["shortcut"])
-
+        autoDisplay(this, "region_no", "region", {
+            main: {
+                d: { recordProp: "region_d_name", stateProp: "region_no_d_name" },
+                f: { recordProp: "region_f_name", stateProp: "region_no_f_name" },
+            }
+        })
     }
     componentWillUnmount () {
         functionsListenrs(this, false)

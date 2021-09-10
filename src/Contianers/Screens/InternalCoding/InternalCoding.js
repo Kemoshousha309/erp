@@ -26,21 +26,6 @@ class InternalCoding extends Component {
         this.setState({currentTap: event.target.value, dropDownChange: true})
     }
 
-    // static getDerivedStateFromProps(props, state){
-    //     if(state.dropDownChange){
-    //         return {
-    //             dropDownChange: false
-    //         }
-    //     }else{
-    //         return {
-    //             currentTap: getParam(props.history.location.search),
-    //             dropDownChange: false
-    //         }
-    //     }
-    // }
-    componentDidUpdate(){
-        // console.log("InternalCoding Updated")
-    }
     render(){
         const flags = this.props.flag_details.filter(i => i.flag_code === "internal_coding");
         const flagLabels = flags.map(i => i.label_code);

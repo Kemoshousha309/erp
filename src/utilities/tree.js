@@ -232,7 +232,10 @@ export const getRelatedRoute = (form_no, routeMap) => {
 }
 
 
-export const treehandler = (event) => {
+export const treehandler = (event, sideNavActivity) => {
+    if(sideNavActivity){
+        sideNavActivity()
+    }
     let Element = null;
     event.nativeEvent.path.forEach(ele => {
         if(ele.tagName === "LI"){
@@ -339,7 +342,7 @@ export const routeMap = [
     },
     {
         form_no: 9902,
-        route: ""
+        route: "system-commands?no=9902"
     },
     {
         form_no: 9903,
@@ -385,5 +388,9 @@ export const routeMap = [
     {
         form_no: 1301,
         route: "geographical-data?no=1301"
+    },
+    {
+        form_no: 1302,
+        route: "companies-barnches?no=1302"
     },
 ]

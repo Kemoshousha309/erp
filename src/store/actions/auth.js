@@ -22,6 +22,8 @@ export const logout = () => ({type: actionTypes.LOGOUT})
 
 
 
+
+
 export const authRequest = (authData, redirect) => {
     return dispatch => {
         dispatch(authSuccessStart())

@@ -17,12 +17,12 @@ import {
     handleInputChange,
     handleCloseShortCuts,
     handleDrivedState,
-    handleRecordFkClick,
-    handleCloseFkList
+    handleCloseFkList,
+    fkRecordClickHandler
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
-import { autoNameDisplay, changePropName } from '../../../../utilities/tap/inputsHandlers';
+import { autoDisplay, changePropName } from '../../../../utilities/tap/inputsHandlers';
 
 
 
@@ -43,6 +43,7 @@ class Zone extends Component{
                 },
                 writability: false,
                 value: "",
+                autoIncrement: "zone/nextPK"
             },
             zone_d_name :{
                 fieldType: "input",
@@ -304,9 +305,7 @@ class Zone extends Component{
     closeList = () =>  handleCloseList(this)
     closeFkList = () => handleCloseFkList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
-    recordFkClick = (record, i) => {
-        handleRecordFkClick(this, record, i, this.state.fields[this.state.fkListShow].fillFields)
-    }
+    recordFkClick = (record, i) => fkRecordClickHandler(this, record)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)
@@ -316,10 +315,39 @@ class Zone extends Component{
         setlastIndex(this)
         functionsListenrs(this, true)
 
-        autoNameDisplay(this, 'region_no', "region", null, ["shortcut"])
-        autoNameDisplay(this, "country_no", "country", null, ["shortcut"])
-        autoNameDisplay(this, "province_no", "province", null, ["shortcut"])
-        autoNameDisplay(this, "city_no", "city", null, ["shortcut"])
+        autoDisplay(this, "city_no", "city", {
+            main: {
+                d: { recordProp: "city_d_name", stateProp: "city_no_d_name" },
+                f: { recordProp: "city_f_name", stateProp: "city_no_f_name" },
+            },
+            others: [
+                {
+                    d: { recordProp: "province_no_d_name", stateProp: "province_no_d_name" },
+                    f: { recordProp: "province_no_f_name", stateProp: "province_no_f_name" },
+                },
+                {
+                    d: { recordProp: "province_no", stateProp: "province_no" },
+                    f: { recordProp: "province_no", stateProp: "province_no" },
+                },
+                {
+                    d: { recordProp: "country_no_d_name", stateProp: "country_no_d_name" },
+                    f: { recordProp: "country_no_f_name", stateProp: "country_no_f_name" },
+                },
+                {
+                    d: { recordProp: "country_no", stateProp: "country_no" },
+                    f: { recordProp: "country_no", stateProp: "country_no" },
+                },
+                {
+                    d: { recordProp: "region_no_d_name", stateProp: "region_no_d_name" },
+                    f: { recordProp: "region_no_f_name", stateProp: "region_no_f_name" },
+                },
+                {
+                    d: { recordProp: "region_no", stateProp: "region_no" },
+                    f: { recordProp: "region_no", stateProp: "region_no" },
+                },
+            ]
+        })
+
     }
     componentWillUnmount () {
         functionsListenrs(this, false)

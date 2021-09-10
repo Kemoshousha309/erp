@@ -6,6 +6,8 @@ import SelectField from "./SelectField/SelectField";
 import CheckBoxField from "./CheckBoxField/CheckBoxField";
 import AsyncSelectField from "./AsyncSelectField/AsyncSelectField"
 import TextArea from "./TextArea/TextArea"
+import FileField from "./FileField/FileField";
+
 
 
 class Input extends Component {
@@ -22,6 +24,8 @@ class Input extends Component {
                 return <AsyncSelectField field={this.props.field} changeHandler={this.props.changeHandler} thisK={this.props.thisK} />
             case "textarea":
                 return <TextArea field={this.props.field} changeHandler={this.props.changeHandler} thisK={this.props.thisK}/>
+            case "file":
+                return <FileField field={this.props.field} changeHandler={this.props.changeHandler} thisK={this.props.thisK}/>
             case "holder":
                 return  <div style={{height: "4.5rem"}}></div>
             case "line":

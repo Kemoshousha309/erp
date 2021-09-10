@@ -51,20 +51,23 @@ const handleSaveRequest = (thisK, func) => {
             timer(thisK)
         })
         .catch(err => {
-            // update the previlliges
-            if(err.response.status === 401){
-                store.dispatch(logout())
-            }
             fields(thisK.state.fields, 'open', false)
             if(func){
-                 func(thisK)
+                func(thisK)
             }
-            const message = {
-                content: selectMessage(err.response.data.message, thisK.props.lanState),
-                type: "error"
-            }
-            if(err.response.data.error){
-                message.content = err.response.data.error
+            let message = null
+            if(err.response){
+                // update the previlliges
+                if(err.response.status === 401){
+                    store.dispatch(logout())
+                }
+                message = {
+                    content: selectMessage(err.response.data.message, thisK.props.lanState),
+                    type: "error"
+                }
+                if(err.response.data.error){
+                    message.content = err.response.data.error
+                }
             }
             thisK.setState({
                 loading: false, 

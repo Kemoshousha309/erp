@@ -108,7 +108,6 @@ const handleIndex = (thisK, moveType) => {
         })
     })
     .catch(err => {
-        console.log(err)
          // update the previlliges
          if(err.response.status === 401){
             store.dispatch(logout())
@@ -123,7 +122,6 @@ export const setlastIndex = (thisK) => {
             thisK.setState({lastIndex: res.data.pages_count})
         })
         .catch(err => {
-            console.log(err)
         })
 }
 
@@ -143,11 +141,14 @@ export const handleMove = (type, thisK) => {
             }
         })
         .catch(err => {
-            console.log(err)
-             // update the previlliges
-          if(err.response.status === 401){
-            store.dispatch(logout())
-        }
+            // update the previlliges
+            if(err.response){
+                if(err.response.status === 401){
+                    store.dispatch(logout())
+                }
+            }else{
+                thisK.setState({message: false, loading: false})
+            }
         })
     }
 }

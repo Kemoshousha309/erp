@@ -12,3 +12,9 @@ export const AUTH_FAIL = "AUTH_FAIL";
 export const STORE_TREE = "STORE_TREE";
 
 
+export const NETWORK_ERROR = "NETWORK_ERROR";
+export const CLOSE_NETWORK_ERROR = "CLOSE_NETWORK_ERROR";
+
+
+
+

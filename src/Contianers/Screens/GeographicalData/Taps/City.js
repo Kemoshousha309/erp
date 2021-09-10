@@ -17,16 +17,16 @@ import {
     handleInputChange,
     handleCloseShortCuts,
     handleDrivedState,
-    handleRecordFkClick,
-    handleCloseFkList
+    handleCloseFkList,
+    fkRecordClickHandler
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
-import { autoNameDisplay, changePropName } from '../../../../utilities/tap/inputsHandlers';
+import { autoDisplay, changePropName } from '../../../../utilities/tap/inputsHandlers';
 
 
 
-class Country extends Component{
+class City extends Component{
     state = {
         fields: {
             city_no:{
@@ -43,6 +43,7 @@ class Country extends Component{
                 },
                 writability: false,
                 value: "",
+                autoIncrement: "city/nextPK"
             },
             city_d_name :{
                 fieldType: "input",
@@ -111,6 +112,7 @@ class Country extends Component{
                     PN: "province_no",
                 },
                 fillFields: [
+
                     {
                         recordName: "province_no",   
                         stateName:  "province_no"
@@ -122,7 +124,32 @@ class Country extends Component{
                     {
                         recordName: "province_f_name",
                         stateName:  "province_no_f_name"
-                    }
+                    },
+                    {
+                        recordName: "country_no",   
+                        stateName:  "country_no"
+                    },
+                    {
+                        recordName: "country_no_d_name",
+                        stateName:  "country_no_d_name"
+                    },
+                    {
+                        recordName: "country_no_f_name",
+                        stateName:  "country_no_f_name"
+                    },
+                    {
+                        recordName: "region_no",   
+                        stateName:  "region_no"
+                    },
+                    {
+                        recordName: "region_no_d_name",
+                        stateName:  "region_no_d_name"
+                    },
+                    {
+                        recordName: "region_no_f_name",
+                        stateName:  "region_no_f_name"
+                    },
+                    
                 ]
             },
             province_no_name :{
@@ -169,11 +196,11 @@ class Country extends Component{
         message: null,
         loading: false,
         listShow: false,
-        mainFields: ["city_no", "city_d_name", "shortcut"],
         tapName: "city",
         deleteConfirm: false,
         searchFields: ['city_no'],
         ShortCutsList: false,
+        mainFields: ["city_no", "city_d_name", "shortcut"],
         urls: {
             add: "city",
             modify: "city",
@@ -253,9 +280,7 @@ class Country extends Component{
     closeList = () =>  handleCloseList(this)
     closeFkList = () => handleCloseFkList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
-    recordFkClick = (record, i) => {
-        handleRecordFkClick(this, record, i, this.state.fields[this.state.fkListShow].fillFields)
-    }
+    recordFkClick = (record, i) => fkRecordClickHandler(this, record)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)
@@ -265,9 +290,32 @@ class Country extends Component{
         setlastIndex(this)
         functionsListenrs(this, true)
 
-        autoNameDisplay(this, 'region_no', "region", null, ["shortcut"])
-        autoNameDisplay(this, "country_no", "country", null, ["shortcut"])
-        autoNameDisplay(this, "province_no", "province", null, ["shortcut"])
+        autoDisplay(this, "province_no", "province", {
+            main: {
+                d: { recordProp: "province_d_name", stateProp: "province_no_d_name" },
+                f: { recordProp: "province_f_name", stateProp: "province_no_f_name" },
+            },
+            others: [
+               
+                {
+                    d: { recordProp: "country_no_d_name", stateProp: "country_no_d_name" },
+                    f: { recordProp: "country_no_f_name", stateProp: "country_no_f_name" },
+                },
+                {
+                    d: { recordProp: "country_no", stateProp: "country_no" },
+                    f: { recordProp: "country_no", stateProp: "country_no" },
+                },
+                {
+                    d: { recordProp: "region_no_d_name", stateProp: "region_no_d_name" },
+                    f: { recordProp: "region_no_f_name", stateProp: "region_no_f_name" },
+                },
+                {
+                    d: { recordProp: "region_no", stateProp: "region_no" },
+                    f: { recordProp: "region_no", stateProp: "region_no" },
+                },
+            ]
+        })
+
     }
     componentWillUnmount () {
         functionsListenrs(this, false)
@@ -297,7 +345,7 @@ const mapStateToProps = state => {
         languages: state.lang.langInfo,
         rawTree_hash: state.auth.authData.raw_tree_hash,
         forms_privs_hash: state.auth.authData.forms_privs_hash
-    }   
+    }           
 }
 const mapDispatchToProps = dispatch => {
     return {
@@ -306,6 +354,6 @@ const mapDispatchToProps = dispatch => {
   }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Country);
+export default connect(mapStateToProps, mapDispatchToProps)(City);
 
 

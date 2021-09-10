@@ -19,11 +19,11 @@ import {
     handleCloseShortCuts,
     handleDrivedState,
     handleCloseFkList,
-    handleRecordFkClick
+    fkRecordClickHandler
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
-import { autoNameDisplay } from '../../../../utilities/tap/inputsHandlers';
+import { autoDisplay } from '../../../../utilities/tap/inputsHandlers';
 import { fields } from '../../../../utilities/tap/fields';
 
 class Flags extends Component{
@@ -52,7 +52,11 @@ class Flags extends Component{
                 controlField: true,
                 rowStyle: {
                     backgroundColor: "#f8f9fa"
-                }
+                },
+                fillFields: [
+                    { recordName: "label_code", stateName: "label_code_m" },
+                    { recordName: "flag_code", stateName: "flag_code" },
+                ]
             },
             label_code_m:{
                 fieldType: "input",
@@ -65,8 +69,6 @@ class Flags extends Component{
                 controlField: true,
                 backgroundColor: "green"
             },
-            // holder3:{fieldType: "line"},
-            // holder4:{fieldType: "line"},    
             holder1:{fieldType: "holder"},
             holder2:{fieldType: "holder"},
             flag_value:{
@@ -117,22 +119,6 @@ class Flags extends Component{
                 writability: false,
                 value: "",
             },
-            // lang_no:{
-            //     fieldType: "asyncSelect",
-            //     type: "number",
-            //     label: "lang_no",
-            //     validation: {
-            //         requiered: true
-            //     },
-            //     validity: {
-            //         valid: true,
-            //         touched: false,
-            //         message: null
-            //     },
-            //     options : null,
-            //     writability: false,
-            //     value: "",
-            // },
             flag_priv:{
                 fieldType: "checkbox",
                 type: "checkbox",
@@ -163,20 +149,6 @@ class Flags extends Component{
         fks: [ "flag_code"],
         fkListShow: null,
         fkList: {
-            // lang_no: {
-            //     mainFields: ["lang_no", "lang_name", "lang_dir"],
-            //     urls: {
-            //         add: "public/language",
-            //         modify: "public/language",
-            //         search: "public/language",
-            //         pages: "public/language/pages",   
-            //         page:  "public/language/page",
-            //         lastPage: "public/language/lastPage",
-            //         filter: "public/language/filteredPages",
-            //         pageNo: "public/language/pageNo",
-            //         delete: "public/language"
-            //     }
-            // },
             flag_code: {
                 mainFields: ["flag_code", "label_code"],
                 urls: {
@@ -229,7 +201,7 @@ class Flags extends Component{
     closeList = () =>  handleCloseList(this)
     closeFkList = () => handleCloseFkList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
-    recordFkClick = (record, i) => handleRecordFkClick(this, record, i)
+    recordFkClick = (record, i) => fkRecordClickHandler(this, record)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)
@@ -243,7 +215,12 @@ class Flags extends Component{
         functionsListenrs(this, true)
         this.setState({mode: "list"})
 
-        autoNameDisplay(this, "flag_code", "public/flagMaster", "label_code_m")
+        autoDisplay(this, "flag_code", "public/flagMaster", {
+            main: {
+                d: { recordProp: "label_code", stateProp: "label_code_m" },
+                f: { recordProp: "label_code", stateProp: "label_code_m" },
+            }
+        })
     }
 
     componentWillUnmount () {

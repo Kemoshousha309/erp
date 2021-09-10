@@ -13,14 +13,14 @@ import {
     handleUndo,
     handleCloseList,
     handleRecordClick,
-    handleRecordFkClick,
     handleInputChange,
     handleCloseShortCuts,
     handleDrivedState,
-    handleCloseFkList
+    handleCloseFkList,
+    fkRecordClickHandler
 } from "../../../utilities/tap/handlers"
 import { displayContent } from '../../../utilities/tap/displayContent';
-import { autoNameDisplay, changePropName, checkPassConfirm, onlyActiveField } from '../../../utilities/tap/inputsHandlers';
+import { autoDisplay, changePropName, checkPassConfirm, onlyActiveField } from '../../../utilities/tap/inputsHandlers';
 import { langChangeActivity } from '../../../store/actions/lang';
 import { handleSave } from '../../../utilities/tap/save';
 import { formatDate } from '../../../utilities/date';
@@ -93,10 +93,11 @@ class Users extends Component{
                 },
                 writability: false,
                 value: "",
-                fKTable: {
-                    SPN: "user",
-                    PN: "user_id"
-                }
+                fillFields: [
+                    { recordName: "user_d_name", stateName: "direct_mang_d_name" },
+                    { recordName: "user_f_name", stateName: "direct_mang_f_name" },
+                    { recordName: "user_id", stateName: "direct_mang" },
+                  ]
             },
             direct_mang_name:{
                 fieldType: "input",
@@ -118,10 +119,11 @@ class Users extends Component{
                 },
                 writability: false,
                 value: "",
-                fKTable: {
-                    SPN: "group",
-                    PN: "group_no"
-                }
+                fillFields: [
+                    { recordName: "group_d_name", stateName: "group_no_d_name" },
+                    { recordName: "group_f_name", stateName: "group_no_f_name" },
+                    { recordName: "group_no", stateName: "group_no" },
+                  ]
             },
             group_no_name:{
                 fieldType: "input",
@@ -175,11 +177,12 @@ class Users extends Component{
                 },
                 writability: false,
                 value: "",
-                fKTable: {
-                    SPN: "user",
-                    PN: "user_id"
-                },
-                readOnlyField: 'copy_priv_from_name' 
+                readOnlyField: 'copy_priv_from_name', 
+                fillFields: [
+                    { recordName: "user_d_name", stateName: "copy_priv_from_name" },
+                    { recordName: "user_f_name", stateName: "copy_priv_from_name" },
+                    { recordName: "user_id", stateName: "copy_priv_from" },
+                  ]
             },
             copy_priv_from_name:{
                 fieldType: "input",
@@ -201,11 +204,12 @@ class Users extends Component{
                 },
                 writability: false,
                 value: "",
-                fKTable: {
-                    SPN: "group",
-                    PN: "group_no"
-                },
-                readOnlyField: 'copy_priv_to_name'
+                readOnlyField: 'copy_priv_to_name',
+                fillFields: [
+                    { recordName: "group_d_name", stateName: "copy_priv_to_name" },
+                    { recordName: "group_f_name", stateName: "copy_priv_to_name" },
+                    { recordName: "group_no", stateName: "copy_priv_to" },
+                  ]
             },
             copy_priv_to_name:{
                 fieldType: "input",
@@ -396,6 +400,7 @@ class Users extends Component{
         ],
         langNo: null
     }
+    
 
     // Tools Handle *********************************************
     toolsClickedHandler = identifier => toolSelectHandler(identifier, this)
@@ -416,7 +421,7 @@ class Users extends Component{
     closeList = () =>  handleCloseList(this)
     closeFkList = () => handleCloseFkList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
-    recordFkClick = (record, i) => handleRecordFkClick(this, record, i)
+    recordFkClick = (record, i) => fkRecordClickHandler(this, record) 
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)
@@ -429,10 +434,30 @@ class Users extends Component{
         functionsListenrs(this, true)
 
         // // inputs handlers on Auto display
-        autoNameDisplay(this, 'direct_mang', "users")
-        autoNameDisplay(this, 'group_no', "usersgroups")
-        autoNameDisplay(this, 'copy_priv_from', "users", "copy_priv_from_name")
-        autoNameDisplay(this, 'copy_priv_to', "usersgroups", "copy_priv_to_name")
+        autoDisplay(this, "direct_mang", "users", {
+            main: {
+                d: { recordProp: "user_d_name", stateProp: "direct_mang_d_name" },
+                f: { recordProp: "user_f_name", stateProp: "direct_mang_f_name" },
+            }
+        })
+        autoDisplay(this, 'group_no', "usersgroups", {
+            main: {
+                d: { recordProp: "group_d_name", stateProp: "group_no_d_name" },
+                f: { recordProp: "group_f_name", stateProp: "group_no_f_name" },
+            }
+        })
+        autoDisplay(this, "copy_priv_from", "users", {
+            main: {
+                d: { recordProp: "user_d_name", stateProp: "copy_priv_from_name" },
+                f: { recordProp: "user_f_name", stateProp: "copy_priv_from_name" },
+            }
+        })
+        autoDisplay(this, "copy_priv_to", "usersgroups", {
+            main: {
+                d: { recordProp: "group_d_name", stateProp: "copy_priv_to_name" },
+                f: { recordProp: "group_f_name", stateProp: "copy_priv_to_name" },
+            }
+        })
         checkPassConfirm(this)
 
         // special fields hanlde

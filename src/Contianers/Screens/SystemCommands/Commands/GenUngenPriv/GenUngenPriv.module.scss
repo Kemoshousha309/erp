@@ -1,0 +1,21 @@
+.head {
+
+    .subCommand {
+        display: flex;
+        align-items: center;
+        .note{
+            // font-weight: 300;
+            // opacity: .6;
+        }
+        .radioGroup{
+            transform: translateY(5px);
+        }
+    }
+
+}
+
+.radioGroup{
+    display: flex;
+    flex-direction: row !important;
+    margin: 0 4rem;
+}

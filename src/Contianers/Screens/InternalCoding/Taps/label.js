@@ -19,10 +19,11 @@ import {
     handleCloseShortCuts,
     handleDrivedState,
     handleCloseFkList,
-    handleRecordFkClick
+    fkRecordClickHandler
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
+
 
 class Label extends Component{
     state = {
@@ -74,6 +75,10 @@ class Label extends Component{
                 options : null,
                 writability: false,
                 value: "",
+                fillFields: [
+                    { recordName: "lang_no", stateName: "lang_no" },
+                    { recordName: "lang_name", stateName: "lang_no_name" },
+                ]
             },
             lang_no_name:{
                 fieldType: "input",
@@ -151,7 +156,7 @@ class Label extends Component{
     closeList = () =>  handleCloseList(this)
     closeFkList = () => handleCloseFkList(this)
     recordClick = (record, i) => handleRecordClick(this, record, i)
-    recordFkClick = (record, i) => handleRecordFkClick(this, record, i)
+    recordFkClick = (record, i) => fkRecordClickHandler(this, record)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)

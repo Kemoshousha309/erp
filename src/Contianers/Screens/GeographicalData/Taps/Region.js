@@ -13,13 +13,14 @@ import {
     handleCopy,
     handleUndo,
     handleCloseList,
-    handleRecordClick,
     handleInputChange,
     handleCloseShortCuts,
-    handleDrivedState
+    handleDrivedState,
+    fkRecordClickHandler
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
+
 
 class Region extends Component{
     state = {
@@ -38,6 +39,7 @@ class Region extends Component{
                 },
                 writability: false,
                 value: "",
+                autoIncrement: "region/nextPK"
             },
             region_d_name:{
                 fieldType: "input",
@@ -136,7 +138,7 @@ class Region extends Component{
 
     // Handlers ************************************************
     closeList = () =>  handleCloseList(this)
-    recordClick = (record, i) => handleRecordClick(this, record, i)
+    recordFkClick = (record, i) => fkRecordClickHandler(this, record)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)
     ShortCutsListCloseHandler = () => handleCloseShortCuts(this)

@@ -1,22 +1,30 @@
-
+$desktop_larg: 1200px;
+$desktop_small: 1000px;
+$taplet_larg: 800px;
+$taplet_small: 600px;
+$phone_larg: 400px;
+$phone_small: 300px;
 html{
     font-size: 62.5%;
     margin: 0;
     padding: 0;
-      @media only screen and (max-width: 1700px){
-          font-size: 60%;
-      }
-      @media only screen and (max-width: 1440px){
-        font-size: 55%;
-      }
-      @media only screen and (max-width: 1024px){
-          font-size: 50%;
-      }
-      @media only screen and (max-width: 768px){
-          font-size: 45%;
-      }
-      @media only screen and (max-width: 600px){
-        font-size: 40%;
+    @media only screen and (max-width: $desktop_larg) {
+      font-size: 58.5%;
+    }
+    @media only screen and (max-width: $desktop_small) {
+      font-size: 54.5%;
+    }
+    @media only screen and (max-width: $taplet_larg) {
+      font-size: 50.5%;
+    }
+    @media only screen and (max-width: $taplet_small) {
+      font-size: 46.5%;
+    }
+    @media only screen and (max-width: $phone_larg) {
+      font-size: 42.5%;
+    }
+    @media only screen and (max-width: $phone_small) {
+      font-size: 38.5%;
     }
   }
   body {

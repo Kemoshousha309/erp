@@ -66,7 +66,7 @@ const ParentNode = props => {
 
     return(
         <Aux>
-             <li className={style.itemNode} onClick={treehandler}>
+             <li className={style.itemNode} onClick={(e) => treehandler(e,iconClick)}>
                 {itemContent}
             </li>
              <ul className='d-none'>

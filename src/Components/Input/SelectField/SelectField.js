@@ -31,6 +31,11 @@ class SelectField extends Component {
                 return <option key={op.value} value={op.value}>{op.template}</option>
             })
         }
+         // style 
+        const classes = ["form-control", invalidInputStyle];
+        if(!field.writability) {
+            classes.push(style.disabled)
+        }
         return (
             <div className={["form-group" ,style.inputField].join(' ')}>
                 <label title={t(this.props.field.label, this.props.lanTable, this.props.lanState)} 
@@ -44,7 +49,7 @@ class SelectField extends Component {
                     id={field.id} 
                     disabled={!field.writability}
                     onBlur ={(e) => this.props.changeHandler(this.state, field.id)} 
-                    className={["form-control", invalidInputStyle].join(" ")}>
+                    className={classes.join(" ")}>
                         <option hidden defaultValue > {placeholder} </option>
                         {options}
                 </select>

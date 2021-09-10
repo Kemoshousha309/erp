@@ -16,12 +16,21 @@ export const getF = (f, mode=null, lang_no) => {
             return parseInt(lang_no) === 1 ? "name" : "foreign_name"
         }
     }
+    if(typeof(outPut) === "object"){
+        if(parseInt(lang_no) === 1){
+            return outPut.d
+        }else{
+            return outPut.f
+        }
+    }
     return outPut
 }
 
 const scanNameLang = (string) => {
     let isFound = false
-    isFound = string.includes("d_name") || string.includes("f_name")
+    if(typeof(string) === "string"){
+        isFound = string.includes("d_name") || string.includes("f_name")
+    }
     return isFound
 } 
 

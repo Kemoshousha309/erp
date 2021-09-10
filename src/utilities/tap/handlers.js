@@ -1,8 +1,8 @@
 import { handleMode } from "./mode"
 import { fields, fillRecord } from "./fields"
-import { decideName } from "../lang"
 import { getParam } from "../utilities"
 import { toolsPriv } from "./utilities"
+import axois from "../../axios"
 
 // modify hanle *******************************
 export const handleModify = (thisK) => {
@@ -68,49 +68,30 @@ export const extractName = (propName) => {
 }
 
 
+// FK RECORD CLICK HANDLER *********************
+export const fkRecordClickHandler = (thisK, record) => {
+    const {
+        state:{
+            fields,
+            fkListShow
+        },
+    } = thisK
+    const fillFields = thisK.state.fields[fkListShow].fillFields
 
-
-// fk record click handler *********************
-export const handleRecordFkClick  = (thisK, record, i, fillFields) => {
-    const fieldsClone = {...thisK.state.fields}
-    const fk = thisK.state.fkListShow
-    if(fieldsClone[fk].readOnlyField){
-        const fieldName = decideName(fieldsClone[fk].fKTable.SPN, thisK.props.lanState)
-        if(record[fieldName]){  
-            if(!fieldsClone[fk].readOnly && fieldsClone[fk].validity){
-                fieldsClone[fk].validity.valid = true
-                fieldsClone[fk].validity.message = null
-            }
-            fieldsClone[fieldsClone[fk].readOnlyField].value = record[fieldName]
-            fieldsClone[fieldsClone[fk].readOnlyField].autoFilledSuccess = true
-        }else if(record[fieldsClone[fk].readOnlyField]){
-            fieldsClone[fieldsClone[fk].readOnlyField].value = record[fieldsClone[fk].readOnlyField]
-            fieldsClone[fieldsClone[fk].readOnlyField].autoFilledSuccess = true
-        }else if(record[fieldsClone[fk].readOnlyFieldT]){
-            fieldsClone[fieldsClone[fk].readOnlyField].value = record[fieldsClone[fk].readOnlyFieldT]
-            fieldsClone[fieldsClone[fk].readOnlyField].autoFilledSuccess = true
-        }
-        else{
-            fieldsClone[fieldsClone[fk].readOnlyField].value = record[`${fieldsClone[fk].fKTable.SPN}_d_name`]
-            fieldsClone[fieldsClone[fk].readOnlyField].autoFilledSuccess = true
-        }
-    }   
-
-    if(fieldsClone[fk].fKTable){
-        fieldsClone[fk].value = record[fieldsClone[fk].fKTable.PN]
-        fieldsClone[fk].validity.valid = true
-        fieldsClone[fk].validity.message = null        
-    }
-    document.getElementById(fk).focus()
+    document.getElementById(fkListShow).focus()
     if(fillFields){
         fillFields.forEach(i => {
-            if(fieldsClone[i.stateName]){
-                fieldsClone[i.stateName].value = record[i.recordName] 
+            if(fields[i.stateName]){
+                fields[i.stateName].value = record[i.recordName] 
+                fields[i.stateName].autoFilledSuccess = true
+                if(fields[i.stateName].validity){
+                    fields[i.stateName].validity.valid = true
+                    fields[i.stateName].validity.message = null
+                }
             }
         })
     }
-
-    thisK.setState({fkListShow: null, fields: fieldsClone, fkRecord: record})
+    thisK.setState({fkListShow: null, fields: fields, fkRecord: record})
 }
 
 
@@ -125,13 +106,37 @@ export const handleAdd = (thisK) => {
             }
         })
     }
-    thisK.setState({mode: "add"})
+    // apply auto increment primary key 
+    const pkPropName = thisK.state.pks[0];
+    let fieldsClone = {...thisK.state.fields}
+    if(thisK.state.fields[pkPropName].autoIncrement){
+        axois.get(`${thisK.state.fields[pkPropName].autoIncrement}`)
+        .then(res => {
+            fieldsClone[pkPropName].value = res.data.next_PK
+            thisK.setState({fields: fieldsClone})
+        })
+        .catch(err => console.log(err))
+    }
+    thisK.setState({mode: "add", fields: fieldsClone})
 }
-
+ 
 // copy handle ******************************
 export const handleCopy = (thisK) => {
     fields(thisK.state.fields, "open", false)
     thisK.setState({mode: "copy"})
+
+     // apply auto increment primary key 
+     const pkPropName = thisK.state.pks[0];
+     let fieldsClone = {...thisK.state.fields}
+     if(thisK.state.fields[pkPropName].autoIncrement){
+         axois.get(`${thisK.state.fields[pkPropName].autoIncrement}`)
+         .then(res => {
+             fieldsClone[pkPropName].value = res.data.next_PK
+             thisK.setState({fields: fieldsClone})
+         })
+         .catch(err => console.log(err))
+     }
+     thisK.setState({mode: "add", fields: fieldsClone})
 }
 
 // undo handle ******************************

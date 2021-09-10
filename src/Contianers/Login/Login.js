@@ -41,7 +41,7 @@ class Login extends Component {
     render() {
         
         const lagSelectStyle={
-            margin: "0",
+            margin: "0 0 60px 0",
             width: "100%"
         }
         let errorMessage = null
@@ -79,7 +79,7 @@ class Login extends Component {
                       
                         <img className={style.companyLogo} src={companyLogo} alt="customer logo" ></img>
                         </div>
-                        <form onSubmit={this.onLoginClickHandler}>
+                        <form  onSubmit={this.onLoginClickHandler}>
                         <p style={{color: "red", fontSize: "1.9rem"}}> {errorMessage ? errorNotify : null}</p>
                             <div className="mb-4">
                                  <TextField 
@@ -114,10 +114,10 @@ class Login extends Component {
                 login = <h1>Something went wrong, please check out you network connection and try agian . . .</h1>
             }
         }else{
-            login = <div className={style.center}><Spinner color=" #3F51B5" /></div>;
+            login = <div className={style.spinner}><Spinner margin="0" color=" #3F51B5" /></div>;
         }
         if(this.props.authloading){
-            login = <div className={style.center}><Spinner color=" #3F51B5" /></div>;
+            login = <div className={style.spinner}><Spinner margin="0" color=" #3F51B5" /></div>;
         }
         
         return(
