@@ -64,7 +64,7 @@ class Companies extends Component{
                 type: "text",
                 label: "foreign_name",
                 validation: {
-                    requiered: true
+                    requiered: false
                 },
                 validity: {
                     valid: true,
@@ -79,7 +79,7 @@ class Companies extends Component{
                 type: "email",
                 label: "mail",
                 validation: {
-                    requiered: true
+                    requiered: false
                 },
                 validity: {
                     valid: true,
@@ -94,7 +94,7 @@ class Companies extends Component{
                 type: "text",
                 label: "website",
                 validation: {
-                    requiered: true
+                    requiered: false
                 },
                 validity: {
                     valid: true,
@@ -109,7 +109,7 @@ class Companies extends Component{
                 type: "text",
                 label: "shortcut",
                 validation: {
-                    requiered: true
+                    requiered: true 
                 },
                 validity: {
                     valid: true,
@@ -124,7 +124,7 @@ class Companies extends Component{
                 type: "text",
                 label: "foreign_shortcut",
                 validation: {
-                    requiered: true
+                    requiered: false
                 },
                 validity: {
                     valid: true,
@@ -140,7 +140,7 @@ class Companies extends Component{
                 type: "number",
                 label: "group_no",
                 validation: {
-                    requiered: true
+                    requiered: false
                 },
                 validity: {
                     valid: true,
@@ -179,7 +179,7 @@ class Companies extends Component{
                 type: "number",
                 label: "country_no",
                 validation: {
-                    requiered: true
+                    requiered: false
                 },
                 validity: {
                     valid: true,

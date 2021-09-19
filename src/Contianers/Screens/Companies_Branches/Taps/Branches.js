@@ -402,11 +402,11 @@ class Branches extends Component{
         message: null,
         loading: false,
         listShow: false,
-        mainFields: ["branch_no", "branch_d_name", {propName: {d: "shortcut_d", f: "shortcut_f"}, label: "shortcut"}],
         tapName: "branches",
         deleteConfirm: false,   
         searchFields: ['branch_no'],
         ShortCutsList: false,
+        mainFields: ["branch_no", "branch_d_name", {propName: {d: "shortcut_d", f: "shortcut_f"}, label: "shortcut"}],
         urls: {
             add: "branches",
             modify: "branches",

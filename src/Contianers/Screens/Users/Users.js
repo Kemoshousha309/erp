@@ -271,13 +271,13 @@ class Users extends Component{
         pks: ["user_id"],
         listShow: false,
         tapName: "users",
+        searchFields: ["user_id"],
         mainFields: [
             {label: "user_no", propName: "user_id"}, 
             {propName: "direct_mang", label: "direct_manager"},
             "group_no",
             {label: "name", propName: "user_d_name"}
         ],
-        searchFields: ["user_id"],
         urls: {
             add: "users",
             modify: "users",

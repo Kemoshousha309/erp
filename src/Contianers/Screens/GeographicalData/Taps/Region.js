@@ -16,7 +16,8 @@ import {
     handleInputChange,
     handleCloseShortCuts,
     handleDrivedState,
-    fkRecordClickHandler
+    fkRecordClickHandler,
+    handleRecordClick
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
@@ -138,6 +139,7 @@ class Region extends Component{
 
     // Handlers ************************************************
     closeList = () =>  handleCloseList(this)
+    recordClick = (record, i) => handleRecordClick(this, record, i)
     recordFkClick = (record, i) => fkRecordClickHandler(this, record)
     inputChange = (state, identifier) => handleInputChange(this, state, identifier)
     deleteConfirmation = (res) => handleDeleteConfirmation(this, res)

@@ -370,6 +370,10 @@ export const routeMap = [
         route: "users-data?no=1102"
     },
     {
+        form_no: 1109,
+        route: "input-previlleges?no=1109"
+    },
+    {
         form_no: 1110,
         route: "screen-previlleges?no=1110"
     },

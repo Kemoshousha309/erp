@@ -11,6 +11,7 @@ const AsyncInternalCoding = asyncComponent(() => import( "../Screens/InternalCod
 const AsyncGeographicalData = asyncComponent(() => import( "../Screens/GeographicalData/GeographicalData"))
 const AsyncCompanies_Branches = asyncComponent(() => import( "../Screens/Companies_Branches/Companies_Branches"))
 const AsyncScreenPrivs = asyncComponent(() => import( "../Screens/ScreenPrivs/ScreenPrivs"))
+const AsyncInputPrivs = asyncComponent(() => import( "../Screens/InputPrivs/InputPrivs"))
 const AsyncSystemCommands = asyncComponent(() => import( "../Screens/SystemCommands/SystemCommands.js"))
 
 
@@ -42,6 +43,7 @@ class MainScreen extends Component  {
                         <Route path={rootPath +"/users-groups"} exact component={AsyncUsersGroups} />
                         <Route path={rootPath +"/users-data"} exact component={AsyncUsers} />
                         <Route path={rootPath +"/screen-previlleges"} exact component={AsyncScreenPrivs} />
+                        <Route path={rootPath +"/input-previlleges"} exact component={AsyncInputPrivs} />
                         <Route path={rootPath +"/system-commands"} exact component={AsyncSystemCommands} />
                     </Switch>
                 </div>
