@@ -41,6 +41,7 @@ const handleDeleteRequest = (thisK) => {
             loading: false, 
             message: message,
             recordIndex: null,
+            record: null
             
         })
         timer(thisK)

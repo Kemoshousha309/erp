@@ -1,5 +1,5 @@
 @import "../../../utilities//styleUtility.scss";
-$fontSize: 1.8rem;
+$fontSize: 1.5rem;
 
 .FileField{
     display: flex;
@@ -9,14 +9,14 @@ $fontSize: 1.8rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: $fontSize;
+        font-size:  var(--BoilerplateFont);
         vertical-align: middle;
     }
     div{
         align-self: center;
     }
     input{
-        font-size: $fontSize;
+        font-size:  var(--BoilerplateFont);
         font-family: 'Roboto', sans-serif;
         width: 0;
         opacity: 0;

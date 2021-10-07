@@ -9,7 +9,6 @@ import TextArea from "./TextArea/TextArea"
 import FileField from "./FileField/FileField";
 
 
-
 class Input extends Component {
     selectInputHandler = () => {
         const field = this.props.field

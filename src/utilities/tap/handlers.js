@@ -31,7 +31,10 @@ export const handleCloseFkList = (thisK) =>{
 
 
 // record click Handler ************************
-export const handleRecordClick = (thisK, record, i) => {
+export const handleRecordClick = (thisK, record, i, func) => {
+    if(func){
+        func.call(thisK, record, i)
+    }
     fillRecord(thisK.state.fields, record)
     fields(thisK.state.fields, "close", false)
     checkNullName(thisK, record)
@@ -117,7 +120,7 @@ export const handleAdd = (thisK) => {
         })
         .catch(err => console.log(err))
     }
-    thisK.setState({mode: "add", fields: fieldsClone})
+    thisK.setState({mode: "add", fields: fieldsClone, record: null})
 }
  
 // copy handle ******************************
@@ -139,24 +142,6 @@ export const handleCopy = (thisK) => {
      thisK.setState({mode: "add", fields: fieldsClone})
 }
 
-// undo handle ******************************
-export const handleUndo  = (thisK) => {
-    switch (thisK.state.mode) {
-        case "modify":
-            fields(thisK.state.fields, "close", false)
-            thisK.setState({mode: "d_record"})
-            break;
-        case "copy":
-            fields(thisK.state.fields, "close", false)
-            thisK.setState({mode: "d_record"})
-            break;
-        default:
-             // undo to start mode
-            fields(thisK.state.fields, "close")
-            thisK.setState({mode: "start"})
-            break;
-    }
-}
 
 
 // input change handler ******************************

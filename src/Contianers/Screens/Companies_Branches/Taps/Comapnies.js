@@ -11,7 +11,6 @@ import {
     handleModify,
     handleList,
     handleCopy,
-    handleUndo,
     handleCloseList,
     handleRecordClick,
     handleInputChange,
@@ -23,6 +22,7 @@ import {
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
 import { autoDisplay, changePropName } from '../../../../utilities/tap/inputsHandlers';
+import { handleUndo } from '../../../../utilities/tap/undo';
 
 
 class Companies extends Component{

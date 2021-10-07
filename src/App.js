@@ -39,7 +39,7 @@ class App extends Component {
     const theme = createMuiTheme({
       direction: dir,
       typography: {
-        fontSize: 28,
+        fontSize: 22,
       },
     });
 

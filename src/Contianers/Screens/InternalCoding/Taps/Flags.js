@@ -12,7 +12,6 @@ import {
     handleModify,
     handleList,
     handleCopy,
-    handleUndo,
     handleCloseList,
     handleRecordClick,
     handleInputChange,
@@ -25,6 +24,7 @@ import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
 import { autoDisplay } from '../../../../utilities/tap/inputsHandlers';
 import { fields } from '../../../../utilities/tap/fields';
+import { handleUndo } from '../../../../utilities/tap/undo';
 
 class Flags extends Component{
     state = {

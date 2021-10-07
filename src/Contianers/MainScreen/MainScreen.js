@@ -13,6 +13,7 @@ const AsyncCompanies_Branches = asyncComponent(() => import( "../Screens/Compani
 const AsyncScreenPrivs = asyncComponent(() => import( "../Screens/ScreenPrivs/ScreenPrivs"))
 const AsyncInputPrivs = asyncComponent(() => import( "../Screens/InputPrivs/InputPrivs"))
 const AsyncSystemCommands = asyncComponent(() => import( "../Screens/SystemCommands/SystemCommands.js"))
+const AsyncCurrency = asyncComponent(() => import( "../Screens/Currency/Currency"))
 
 
 class MainScreen extends Component  {
@@ -45,6 +46,7 @@ class MainScreen extends Component  {
                         <Route path={rootPath +"/screen-previlleges"} exact component={AsyncScreenPrivs} />
                         <Route path={rootPath +"/input-previlleges"} exact component={AsyncInputPrivs} />
                         <Route path={rootPath +"/system-commands"} exact component={AsyncSystemCommands} />
+                        <Route path={rootPath +"/currency"} exact component={AsyncCurrency} />
                     </Switch>
                 </div>
             </Aux>

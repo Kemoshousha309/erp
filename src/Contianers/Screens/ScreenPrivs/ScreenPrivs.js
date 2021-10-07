@@ -10,7 +10,6 @@ import {
     handleModify,
     handleList,
     handleCopy,
-    handleUndo,
     handleCloseList,
     handleRecordClick,
     handleInputChange,
@@ -26,6 +25,7 @@ import { selectMessage, t } from '../../../utilities/lang';
 import { fields } from '../../../utilities/tap/fields';
 import { timer } from '../../../utilities/tap/utilities';
 import { deepClone } from '../../../utilities/tap/validation';
+import { handleUndo } from '../../../utilities/tap/undo';
 
 
 

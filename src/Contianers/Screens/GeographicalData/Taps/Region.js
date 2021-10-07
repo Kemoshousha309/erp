@@ -11,7 +11,6 @@ import {
     handleModify,
     handleList,
     handleCopy,
-    handleUndo,
     handleCloseList,
     handleInputChange,
     handleCloseShortCuts,
@@ -21,6 +20,7 @@ import {
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
+import { handleUndo } from '../../../../utilities/tap/undo';
 
 
 class Region extends Component{

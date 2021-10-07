@@ -27,6 +27,7 @@ export const displayContent = (thisK, location, additional) => {
                 mainFields={thisK.state.mainFields} /> : null}
                 {fkList(thisK)}
             <Boilerplate
+            gridType={thisK.state.gridType}
             dropDown={thisK.props.dropDown}
             toolsClicked={thisK.toolsClickedHandler}
             tools={thisK.state.tools}
@@ -43,13 +44,11 @@ export const displayContent = (thisK, location, additional) => {
 
 
     let form = thisK.props.rawTree_hash[getParam(location.search, "no")]
-    // form = []
-    if(form.length !== 0){
+    if(form){
         return tapContent;
     }else {
-
         return <ErrorPage message={t("not_allowed", thisK.props.lanTable, thisK.props.lanState)} />
-    }
+    }   
  
 }
     

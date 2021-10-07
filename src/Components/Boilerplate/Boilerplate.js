@@ -9,31 +9,40 @@ import style from "./Boilerplate.module.scss";
 
 const Boilerplate = props => {
     // console.log("Boilerplate render")
+    const {loading, message, lanState, toolsClicked, dropDown, tools, children, gridType } = props 
+
     const statusBar = (
         <Aux>
-        { props.loading ? <Spinner  small color="3F51B5" />: null }
+        { loading ? <Spinner  small color="3F51B5" />: null }
         {
-            props.message ? 
-            <StatusBar show type={props.message.type} >{props.message.content}</StatusBar>  : null
+            message ? 
+            <StatusBar show type={message.type} >{message.content}</StatusBar>  : null
         }
        </Aux>
     )
     
+    const root = document.querySelector(':root')
+    if(gridType === 3){
+        root.style.setProperty("--BoilerplateFont", "1.5rem")
+    }else {
+        root.style.setProperty("--BoilerplateFont", "1.8rem")
+    }
+    
     let transform  = style.headerLtr
-    if(parseInt(props.lanState) === 2){
+    if(parseInt(lanState) === 2){
         transform = style.haederRtl
     }
     return(
         <Aux>
             <div className={style.Boilerplate}>
                 <div className={[style.header, transform].join(" ")}>
-                    {props.dropDown}
-                    <Tools clicked={props.toolsClicked} tools={props.tools} />
+                    {dropDown}
+                    <Tools clicked={toolsClicked} tools={tools} />
                 </div>
                 <div  className={style.container}>
                     <div className={style.tap}>
                         <div className={style.content}>
-                            {props.children}
+                            {children}
                             <span></span>
                         </div>
                     </div>

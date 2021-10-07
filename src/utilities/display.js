@@ -1,24 +1,23 @@
 import Input from "../Components/Input/input";
-import React from "react";
-import Aux from "../hoc/wrap";
 import Treeview from "../Components/Treeview/Treeview";
 
-const doubleItems = (array) =>{
-    let finalArr = [];
-    for(let i = 0; i < array.length; i=i+2){
-        if(array.length % 2 === 0){
-            const doubleArr = [array[i] , array[i+1]];
-            finalArr.push(doubleArr)
-        }else{
-            const doubleArr = [array[i] , array[i+1]];
-            finalArr.push(doubleArr)
 
+const formatItems = (array, format) => {
+    let finalArr = [];
+    for(let i = 0; i < array.length; i=i+format){
+        const tribleArr = [];
+        for(let n=0; n < format; n++){
+            const item = array[i+n]
+            if(item){
+                tribleArr.push(item)
+            }
         }
+        finalArr.push(tribleArr)
     }
     return finalArr;
 }
 
-const gridContent = (fields) => {
+const gridContent = (fields, grid) => {
     // console.log("[gridContent func] render")
     const fieldsArr = [];
     for(let key in fields){
@@ -36,8 +35,8 @@ const gridContent = (fields) => {
             fieldsArr.push(fieldobj);
         }
     }
-    const doubleArr = doubleItems(fieldsArr);
-    return doubleArr
+    const Arr = formatItems(fieldsArr, grid);
+    return Arr
 }
 
 
@@ -53,65 +52,56 @@ const inputField = (field, changeHandler, thisK) => {
 }
 
 
+const displayGrid = (fields, gridType, changeHandler, thisK) => {
+    let colSpan;
+    switch (gridType) {
+        case 2: 
+        colSpan = 6; break;
+        case 3: colSpan = 4; break;
+        default: break;
+    }
 
-export const displayPattren = (fields, changeHandler, thisK, additional) => {
-    // console.log("[displayPattren func] render")
-    const doubleArr = gridContent(fields)
-        const tapContent = doubleArr.map(ele => {
-            const item1 =ele[0];
-            const item2 = ele[1];
-            let content = null;
-            if(item2){
-                content = (
-                    <Aux>
-                    <div style={item1.columnStyle} className="col-md-6  px-0">
-                        {inputField(item1, changeHandler, thisK)}
-                    </div>
-                    <div style={item2.columnStyle} className="col-md-6  px-0">
-                        {inputField(item2, changeHandler, thisK)}
-                    </div>
-                     {// consider three column layout
-                     /* <div className="col-md-4 px-0">
-                        {inputField(item1, changeHandler)}
-                    </div>
-                    <div className="col-md-4 px-0">
-                        {inputField(item2, changeHandler)}
-                    </div>
-                    <div className="col-md-4 px-0">
-                        {inputField(item2, changeHandler)}
-                    </div> */}
-                </Aux>
-                )
-            }else{
-                content = (
-                    <Aux>
-                        <div style={item1.columnStyle} className="col-md-6 px-0">
-                            {inputField(item1, changeHandler, thisK)}
-                        </div>
-                        <div className="col-md-6 px-0"></div>
-                    </Aux>
-                )
-            }
-            let rowStyle = {
-                paddingTop: "1rem",
-            }
-            if(["holder", "line"].includes(item1.fieldType)){
+    const gridArr = gridContent(fields, gridType)
+    
+    const content = gridArr.map((row, i)=> {
+        let rowStyle = { paddingTop: "1rem" }
+
+        const rowContent = row.map(col => {
+            if(["holder", "line"].includes(col.fieldType)){
                 rowStyle.paddingTop = "0"
             }
-            if(item1.rowStyle){
+            if(col.rowStyle){
                 rowStyle = {
                     ...rowStyle,
-                    ...item1.rowStyle
+                    ...col.rowStyle
                 }
             }
-            return (
-                <div key={item1.id} style={rowStyle}  className="row px-3 ">
-                    { content}
+            return(
+                <div style={col.columnStyle} className={`col-md-${colSpan}  px-0`}>
+                    {inputField(col, changeHandler, thisK)}
                 </div>
             )
         })
         
-        return <form>{tapContent} {additional}</form>;
+        return (
+            <div key={i} style={rowStyle}  className="row px-3 ">
+                { rowContent }
+            </div>
+        )
+    })
+
+    return content
+
+}
+
+
+export const displayPattren = (fields, changeHandler, thisK, additional) => {
+    // console.log("[displayPattren func] render")
+    let tapContent = displayGrid(fields, 2, changeHandler, thisK)
+    if(thisK.state.gridType){
+     tapContent = displayGrid(fields, thisK.state.gridType, changeHandler, thisK)
+    }
+    return <form>{tapContent} {additional}</form>;
 }
 
 export const displayPattrenTree = (fields, changeHandler, thisK, tree, additional) => {

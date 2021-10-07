@@ -1,5 +1,5 @@
 @import "../../../utilities//styleUtility.scss";
-$fontSize: 1.8rem;
+$fontSize: 1.5rem;
 
 .inputField{
     display: flex;
@@ -8,7 +8,7 @@ $fontSize: 1.8rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: $fontSize;
+        font-size:  var(--BoilerplateFont);
         display: flex;
         align-items: center;
     }
@@ -16,7 +16,7 @@ $fontSize: 1.8rem;
         align-self: center;
     }
     input{
-        font-size: $fontSize;
+        font-size:  var(--BoilerplateFont);
     }
 }
 .downAngle{
@@ -67,7 +67,7 @@ $fontSize: 1.8rem;
         background-color: white;
         li{
             padding: .5rem 1rem;
-            font-size: $fontSize;
+            font-size:  var(--BoilerplateFont);
             transition: all .1s;
             cursor: pointer;
             &:hover{

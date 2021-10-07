@@ -4,7 +4,7 @@ import { t } from "../../../../../utilities/lang";
 const InputPrivsTable = (thisK, content, inputsControl) => {
   const {
     state: { input_privs, mode },
-    props: { lanState, lanTable },
+    props: { lanState, lanTable, logged_user_id },
     privChangeHandler
   } = thisK;
   const { header, propsName } = content;
@@ -37,12 +37,13 @@ const InputPrivsTable = (thisK, content, inputsControl) => {
                       if (typeof i[propName] === "boolean") {
                         let disabled = false
                         let cursor = "pointer"
-                        const [control, mess, newCursor] = inputsControl(disabled, i, propName, cursor, lanState, lanTable)
+                        let [control, mess, newCursor] = inputsControl(disabled, i, propName, cursor, lanState, lanTable, logged_user_id)
                         disabled = control
                         cursor = newCursor
                         if(mode !== "modify"){
                           disabled = true
                           cursor = null
+                          mess = null
                         }
                         return (
                           <td>

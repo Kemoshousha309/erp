@@ -1,0 +1,36 @@
+.container {
+  width: 100%;
+  padding: 2rem;
+  font-size: 1.5rem;
+  .nav {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #3f51b5;
+    padding-top: 0.5rem;
+    ul {
+      display: flex;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      li {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        color: white;
+        margin: 0 1rem;
+        padding: 0.5rem 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .active {
+        background-color: white;
+        color: #3f51b5;
+      }
+    }
+  }
+  .content {
+    background-color: white;
+    min-height: 5rem;
+    padding: 0 1rem;
+
+  }
+}

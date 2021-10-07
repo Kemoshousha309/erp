@@ -62,3 +62,16 @@ export const split_arr = arr => {
     const arr2 = arr.slice(arr.length/2, arr.length);
     return [arr1, arr2]
 }
+
+
+export const check_exist = (props, obj) => {
+    let contain = true;
+        props.forEach(i => {
+        if(obj[i]){
+          contain = true && contain
+        }else{
+          contain = false && contain
+        }
+      })      
+      return contain
+} 

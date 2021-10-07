@@ -397,4 +397,8 @@ export const routeMap = [
         form_no: 1302,
         route: "companies-barnches?no=1302"
     },
+    {
+        form_no: 1304,
+        route: "currency?no=1304"
+    },
 ]

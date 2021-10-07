@@ -1,21 +1,21 @@
 @import "../../../utilities//styleUtility.scss";
-$fontSize: 1.8rem;
 
 .inputField{
     display: flex;
+    align-items: center;
     label{
         padding: 0 2rem !important;  
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: $fontSize;
+        font-size: var(--BoilerplateFont);
         vertical-align: middle;
     }
     div{
         align-self: center;
     }
     input{
-        font-size: $fontSize;
+        font-size: var(--BoilerplateFont);
         font-family: 'Roboto', sans-serif;
         }
 }

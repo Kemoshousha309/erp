@@ -13,7 +13,6 @@ import {
   handleModify,
   handleList,
   handleCopy,
-  handleUndo,
   handleCloseList,
   handleRecordClick,
   handleInputChange,
@@ -30,6 +29,7 @@ import {
 } from "../../../../utilities/tap/inputsHandlers";
 import { langChangeActivity } from "../../../../store/actions/lang";
 import { CircularProgress } from "@material-ui/core";
+import { handleUndo } from '../../../../utilities/tap/undo';
 
 
 class Forms extends Component {

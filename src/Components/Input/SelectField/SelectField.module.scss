@@ -1,5 +1,5 @@
 @import "../../../utilities//styleUtility.scss";
-$fontSize: 1.8rem;
+$fontSize: 1.5rem;
 
 .inputField{
     display: flex;
@@ -8,7 +8,7 @@ $fontSize: 1.8rem;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-size: $fontSize;
+        font-size:  var(--BoilerplateFont);
         display: flex;
         align-items: center;
     }
@@ -16,7 +16,7 @@ $fontSize: 1.8rem;
         align-self: center;
     }
     select{
-        font-size: $fontSize;
+        font-size:  var(--BoilerplateFont);
     }
 }
 

@@ -10,7 +10,6 @@ import {
     handleModify,
     handleList,
     handleCopy,
-    handleUndo,
     handleCloseList,
     handleRecordClick,
     handleInputChange,
@@ -24,6 +23,7 @@ import { autoDisplay, changePropName, checkPassConfirm, onlyActiveField } from '
 import { langChangeActivity } from '../../../store/actions/lang';
 import { handleSave } from '../../../utilities/tap/save';
 import { formatDate } from '../../../utilities/date';
+import { handleUndo } from '../../../utilities/tap/undo';
 
 
 
@@ -77,7 +77,6 @@ class Users extends Component{
                 writability: false,
                 value: "",
             },
-            placeholder:{fieldType: "",},
             direct_mang:{
                 fieldType: "input",
                 type: "number",
@@ -97,7 +96,7 @@ class Users extends Component{
                     { recordName: "user_d_name", stateName: "direct_mang_d_name" },
                     { recordName: "user_f_name", stateName: "direct_mang_f_name" },
                     { recordName: "user_id", stateName: "direct_mang" },
-                  ]
+                ]
             },
             direct_mang_name:{
                 fieldType: "input",
@@ -105,6 +104,7 @@ class Users extends Component{
                 readOnly: true,
                 value: ""
             },
+            placeholder:{fieldType: "",},
             group_no:{
                 fieldType: "input",
                 type: "number",
@@ -268,6 +268,7 @@ class Users extends Component{
             },  
 
         },
+        gridType: 3,
         pks: ["user_id"],
         listShow: false,
         tapName: "users",

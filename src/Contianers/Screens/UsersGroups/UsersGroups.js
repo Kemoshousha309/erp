@@ -13,7 +13,6 @@ import {
   handleModify,
   handleList,
   handleCopy,
-  handleUndo,
   handleCloseList,
   handleRecordClick,
   handleInputChange,
@@ -23,6 +22,8 @@ import {
 import { displayContent } from "../../../utilities/tap/displayContent";
 import { langChangeActivity } from "../../../store/actions/lang";
 import { handleSave } from "../../../utilities/tap/save";
+import { handleUndo } from "../../../utilities/tap/undo";
+
 
 class UsersGroups extends Component {
   state = {

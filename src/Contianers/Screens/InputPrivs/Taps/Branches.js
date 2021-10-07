@@ -7,7 +7,6 @@ import { setlastIndex } from "../../../../utilities/tap/moves";
 import { functionsListenrs } from "../../../../utilities/tap/listeners";
 import {
   handleModify,
-  handleUndo,
   handleInputChange,
   handleCloseShortCuts,
   handleDrivedState,
@@ -23,6 +22,12 @@ import { store } from "../../../..";
 import { logout } from "../../../../store";
 import { timer } from "../../../../utilities/tap/utilities";
 import InputPrivsTable from "./InputPrivsTable/InputPrivsTable";
+import {
+  autoDisplay,
+  changePropName,
+} from "../../../../utilities/tap/inputsHandlers";
+import { handleUndo } from '../../../../utilities/tap/undo';
+
 
 class Branches extends Component {
   state = {
@@ -42,7 +47,17 @@ class Branches extends Component {
         writability: true,
         controlField: true,
         value: "",
-        fillFields: [{ recordName: "branch_no", stateName: "from_branch_no" }],
+        fillFields: [
+          { recordName: "branch_no", stateName: "from_branch_no" },
+          { recordName: "branch_f_name", stateName: "from_branch_no_f_name" },
+          { recordName: "branch_d_name", stateName: "from_branch_no_d_name" },
+        ],
+      },
+      from_branch_no_name: {
+        fieldType: "input",
+        label: "name",
+        readOnly: true,
+        value: "",
       },
       to_branch_no: {
         fieldType: "input",
@@ -59,7 +74,17 @@ class Branches extends Component {
         writability: true,
         controlField: true,
         value: "",
-        fillFields: [{ recordName: "branch_no", stateName: "to_branch_no" }],
+        fillFields: [
+          { recordName: "branch_no", stateName: "to_branch_no" },
+          { recordName: "branch_f_name", stateName: "to_branch_no_f_name" },
+          { recordName: "branch_d_name", stateName: "to_branch_no_d_name" },
+        ],
+      },
+      to_branch_no_name: {
+        fieldType: "input",
+        label: "name",
+        readOnly: true,
+        value: "",
       },
       from_user_id: {
         fieldType: "input",
@@ -76,7 +101,17 @@ class Branches extends Component {
         writability: true,
         controlField: true,
         value: "",
-        fillFields: [{ recordName: "user_id", stateName: "from_user_id" }],
+        fillFields: [
+          { recordName: "user_id", stateName: "from_user_id" },
+          { recordName: "user_f_name", stateName: "from_user_id_f_name" },
+          { recordName: "user_d_name", stateName: "from_user_id_d_name" },
+        ],
+      },
+      from_user_id_name: {
+        fieldType: "input",
+        label: "name",
+        readOnly: true,
+        value: "",
       },
       to_user_id: {
         fieldType: "input",
@@ -93,7 +128,17 @@ class Branches extends Component {
         writability: true,
         controlField: true,
         value: "",
-        fillFields: [{ recordName: "user_id", stateName: "to_user_id" }],
+        fillFields: [
+          { recordName: "user_id", stateName: "to_user_id" },
+          { recordName: "user_f_name", stateName: "to_user_id_f_name" },
+          { recordName: "user_d_name", stateName: "to_user_id_d_name" },
+        ],
+      },
+      to_user_id_name: {
+        fieldType: "input",
+        label: "name",
+        readOnly: true,
+        value: "",
       },
       group_no: {
         fieldType: "input",
@@ -110,7 +155,17 @@ class Branches extends Component {
         writability: true,
         controlField: true,
         value: "",
-        fillFields: [{ recordName: "group_no", stateName: "group_no" }],
+        fillFields: [
+          { recordName: "group_no", stateName: "group_no" },
+          { recordName: "group_f_name", stateName: "group_no_f_name" },
+          { recordName: "group_d_name", stateName: "group_no_d_name" },
+        ],
+      },
+      group_no_name: {
+        fieldType: "input",
+        label: "name",
+        readOnly: true,
+        value: "",
       },
     },
     pks: [],
@@ -269,8 +324,39 @@ class Branches extends Component {
 
   // LifeCycle methods *******************************************
   componentDidMount() {
+    // changeLangSelectAcivity(true)
     setlastIndex(this);
     functionsListenrs(this, true);
+    autoDisplay(this, "from_branch_no", "branches", {
+      main: {
+        d: { recordProp: "branch_d_name", stateProp: "from_branch_no_d_name" },
+        f: { recordProp: "branch_f_name", stateProp: "from_branch_no_f_name" },
+      },
+    });
+    autoDisplay(this, "to_branch_no", "branches", {
+      main: {
+        d: { recordProp: "branch_d_name", stateProp: "to_branch_no_d_name" },
+        f: { recordProp: "branch_f_name", stateProp: "to_branch_no_f_name" },
+      },
+    });
+    autoDisplay(this, "from_user_id", "users", {
+      main: {
+        d: { recordProp: "user_d_name", stateProp: "from_user_id_d_name" },
+        f: { recordProp: "user_f_name", stateProp: "from_user_id_f_name" },
+      },
+    });
+    autoDisplay(this, "to_user_id", "users", {
+      main: {
+        d: { recordProp: "user_d_name", stateProp: "to_user_id_d_name" },
+        f: { recordProp: "user_f_name", stateProp: "to_user_id_f_name" },
+      },
+    });
+    autoDisplay(this, "group_no", "usersgroups", {
+      main: {
+        d: { recordProp: "group_d_name", stateProp: "group_no_d_name" },
+        f: { recordProp: "group_f_name", stateProp: "group_no_f_name" },
+      },
+    });
   }
   componentWillUnmount() {
     functionsListenrs(this, false);
@@ -398,6 +484,36 @@ class Branches extends Component {
   };
 
   static getDerivedStateFromProps(props, state) {
+    let fieldsUpdate = changePropName(
+      props,
+      state.fields,
+      "from_branch_no_name",
+      "from_branch_no"
+    );
+    fieldsUpdate = changePropName(
+      props,
+      fieldsUpdate,
+      "to_branch_no_name",
+      "to_branch_no"
+    );
+    fieldsUpdate = changePropName(
+      props,
+      fieldsUpdate,
+      "from_user_id_name",
+      "from_user_id"
+    );
+    fieldsUpdate = changePropName(
+      props,
+      fieldsUpdate,
+      "to_user_id_name",
+      "to_user_id"
+    );
+    fieldsUpdate = changePropName(
+      props,
+      fieldsUpdate,
+      "group_no_name",
+      "group_no"
+    );
     let { mode, input_privs } = state;
     if (mode === "start") {
       input_privs = null;
@@ -406,6 +522,7 @@ class Branches extends Component {
     return {
       tools: tools,
       input_privs: input_privs,
+      fields: fieldsUpdate,
     };
   }
   render() {
@@ -452,6 +569,7 @@ const mapStateToProps = (state) => {
     languages: state.lang.langInfo,
     rawTree_hash: state.auth.authData.raw_tree_hash,
     forms_privs_hash: state.auth.authData.forms_privs_hash,
+    logged_user_id: state.auth.authData.user_id
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -470,17 +588,20 @@ const pickProps = (propsList, obj) => {
   return newObj;
 };
 
-const inputsControl = (disabled, i, propName, cursor, lanState, lanTable) => {
+const inputsControl = (disabled, i, propName, cursor, lanState, lanTable, logged_user_id) => {
   let message = null;
   let newCursor = cursor;
   if (!i[`can_change_${propName}`]) {
     disabled = true;
-    message =  t("donot_have_privileges", lanTable, lanState, "");
-    
+    message = t("donot_have_privileges", lanTable, lanState, " ");
   }
   if (i.admin_group) {
     disabled = true;
     message = t("group_admin_cannot_change_privs", lanTable, lanState);
+  }
+  if(i.user_id === logged_user_id){
+    disabled = true;
+    message = t("you_logged_user", lanTable, lanState);;
   }
   if (message) {
     newCursor = "help";
