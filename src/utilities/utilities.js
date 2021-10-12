@@ -1,5 +1,6 @@
 import { decideName } from "./lang";
-import { extractName } from "./tap/handlers";
+import { extractName } from "./tap/functions/list";
+
 
 export const getParam = (searchParam, paramName) => {
     const string = searchParam.replace(`?${paramName}=`, "");

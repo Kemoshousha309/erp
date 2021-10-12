@@ -1,26 +1,12 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import { toolSelectHandler } from "../../../../utilities/tools";
-import {
-  handleDelete,
-  handleDeleteConfirmation,
-} from "../../../../utilities/tap/delete";
-import { handleSearch } from "../../../../utilities/tap/search";
-import { handleMove, setlastIndex } from "../../../../utilities/tap/moves";
+import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/functions/delete"
+import {handleSearch} from "../../../../utilities/tap/functions/search"
+import {handleMove, setlastIndex} from "../../../../utilities/tap/functions/moves"
+import { handleUndo } from '../../../../utilities/tap/functions/undo';
 import { functionsListenrs } from "../../../../utilities/tap/listeners";
-import {
-  handleAdd,
-  handleModify,
-  handleList,
-  handleCopy,
-  handleCloseList,
-  handleRecordClick,
-  handleInputChange,
-  handleCloseShortCuts,
-  handleDrivedState,
-  handleCloseFkList,
-  fkRecordClickHandler,
-} from "../../../../utilities/tap/handlers";
+import { handleCloseShortCuts, handleDrivedState, handleInputChange } from "../../../../utilities/tap/handlers";
 import { displayContent } from "../../../../utilities/tap/displayContent";
 import { getTree, asyncTreeSave } from "../../../../utilities/tap/async";
 import {
@@ -29,7 +15,10 @@ import {
 } from "../../../../utilities/tap/inputsHandlers";
 import { langChangeActivity } from "../../../../store/actions/lang";
 import { CircularProgress } from "@material-ui/core";
-import { handleUndo } from '../../../../utilities/tap/undo';
+import { handleAdd } from "../../../../utilities/tap/functions/add";
+import { handleModify } from "../../../../utilities/tap/functions/modify";
+import { fkRecordClickHandler, handleCloseFkList, handleCloseList, handleList, handleRecordClick } from "../../../../utilities/tap/functions/list";
+import { handleCopy } from "../../../../utilities/tap/functions/copy";
 
 
 class Forms extends Component {

@@ -15,6 +15,7 @@ import {connect} from "react-redux"
 import {t} from "../../utilities/lang"
 import { date } from "../../utilities/date";
 
+
 class Navigation extends Component {
     state = {
         dateShow: false,
@@ -95,6 +96,7 @@ class Navigation extends Component {
                                     >{d}</DropDown> 
                             </span>
                         </div>
+
 
                         <div>
                             <i> <FontAwesomeIcon onClick={this.notificationShowHandler} icon={faBell} /></i>

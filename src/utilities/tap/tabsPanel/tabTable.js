@@ -1,21 +1,21 @@
 import {
+  CircularProgress,
   createMuiTheme,
-  Input,
   TextField,
-  ThemeProvider,
 } from "@material-ui/core";
-import { t } from "../../lang";
+import { decideName, t } from "../../lang";
 import { faPlusCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import style from "./style.module.scss";
-import { Pagination } from "@material-ui/lab";
-import axios from "../../../axios";
-import { detialFieldValidity, isValid } from "../validation";
+import { detialFieldValidity } from "../validation";
+import { addHandler, inputChangeHandler, removeHandler } from "./handlers";
+import { formatDate } from "../../date";
+
 
 export function tabTable() {
   const {
     state: {
-      details: { tabs, current_tab },
+      details: { tabs, current_tab, loading },
       mode,
       record,
     },
@@ -42,7 +42,9 @@ export function tabTable() {
     );
   }
 
-  let output = null; // handle later on ....
+  let output = null; 
+
+  output = loading ? <div className={style.loaderContainer}><CircularProgress /></div> : null
 
   if (details_exist || mode === "add") {
     output = (
@@ -68,12 +70,12 @@ function addIcon(viewOnly, mode) {
   if (!viewOnly) {
     if (["add", "modify"].includes(mode)) {
       return (
-        <div
+        <button
           className={style.addIcon}
           onClick={(e) => addHandler.call(this, e)}
         >
           <FontAwesomeIcon icon={faPlusCircle} />
-        </div>
+        </button>
       );
     } else {
       return <div></div>;
@@ -88,12 +90,12 @@ function removeIcon(viewOnly, mode, index) {
     if (["add", "modify"].includes(mode)) {
       return (
         <td>
-          <div
+          <button
             className={style.removeIcon}
-            onClick={() => removeHandler.call(this, index)}
+            onClick={(e) => removeHandler.call(this, index, e)}
           >
             <FontAwesomeIcon icon={faTrashAlt} />
-          </div>
+          </button>
         </td>
       );
     } else {
@@ -128,188 +130,74 @@ function tableBody(tab, theme) {
   const { headers, viewOnly, recordDetailPropName } = tabs[current_tab];
   const {
     state: { mode, record },
+    props: {lanState}
   } = this;
   let pages = [];
   if (record) {
     if (record[recordDetailPropName]) {
-      pages = record[recordDetailPropName].pages
-        ? record[recordDetailPropName].pages
-        : [];
+      pages = record[recordDetailPropName]
     }
   }
 
+  let hashIndex = 1;
   return (
     <tbody>
       {pages.map((page, index) => {
         if (page.action === "delete") {
           return null;
+        }else{
+          const returnedValue = (
+            <tr key={index}>
+              <th scope="row" style={{ verticalAlign: "middle" }}>
+                {hashIndex}
+              </th>
+              {headers.map((i, ix) => {
+                let { propName, disabled, type, validationRules, changeOnLang } = i;
+                const [valid, message] = detialFieldValidity(page, propName);
+                if (page.action === "add") {
+                  disabled = false;
+                }
+                if(changeOnLang){
+                  propName = decideName(propName, lanState)
+                }
+                let value = page[propName] === null ? "-" : page[propName]
+                if(type === "date"){
+                  value = formatDate(value, 12)
+                }
+                let output = <td key={ix}>{value}</td>;
+                if (["modify", "add"].includes(mode) && !viewOnly) {
+                  output = (
+                    <td key={ix}>
+                        <TextField
+                          error={!valid}
+                          helperText={message}
+                          type={type}
+                          autoComplete="off"
+                          disabled={disabled}
+                          id={propName}
+                          value={value}
+                          onChange={(event) =>
+                            inputChangeHandler.call(
+                              this,
+                              event,
+                              index,
+                              page[propName],
+                              validationRules
+                            )
+                          }
+                        />
+                    </td>
+                  );
+                }
+                return output;
+              })}
+              {removeIcon.call(this, viewOnly, mode, index)}
+            </tr>
+          )
+          hashIndex ++
+          return returnedValue
         }
-        return (
-          <tr key={index}>
-            <th scope="row" style={{ verticalAlign: "middle" }}>
-              {index + 1}
-            </th>
-            {headers.map((i, ix) => {
-              let { propName, disabled, type, validationRules } = i;
-              const [valid, message] = detialFieldValidity(page, propName);
-              if (page.action === "add") {
-                disabled = false;
-              }
-              let output = (
-                <td key={ix}>
-                  {page[propName] === null ? "-" : page[propName]}
-                </td>
-              );
-              if (["modify", "add"].includes(mode) && !viewOnly) {
-                output = (
-                  <td key={ix}>
-                    <ThemeProvider theme={theme}>
-                      <TextField
-                        error={!valid}
-                        helperText={message}
-                        type={type}
-                        autoComplete="off"
-                        disabled={disabled}
-                        id={propName}
-                        value={page[propName] === null ? "-" : page[propName]}
-                        onChange={(event) =>
-                          inputChangeHandler.call(
-                            this,
-                            event,
-                            index,
-                            page[propName],
-                            validationRules
-                          )
-                        }
-                      />
-                    </ThemeProvider>
-                  </td>
-                );
-              }
-              return output;
-            })}
-            {removeIcon.call(this, viewOnly, mode, index)}
-          </tr>
-        );
       })}
     </tbody>
   );
-}
-
-// HANDLERS
-function inputChangeHandler(event, index, serverValue, validationRules) {
-  const {
-    target: { value, id },
-  } = event;
-  const {
-    details: { tabs, current_tab },
-    record,
-    mode,
-  } = this.state;
-
-  const row = record[tabs[current_tab].recordDetailPropName].pages[index];
-  const [valid, message] = isValid(value, validationRules, this);
-  row[`${id}#validity`] = {
-    valid: valid,
-    message: message,
-  };
-  if (!row.serverValue && !row.frontRow) {
-    row.serverValue = serverValue;
-  }
-  row[id] = value;
-  if (mode === "modify" && !row.action) {
-    row.action = "update";
-  }
-  this.setState({ record: record });
-}
-
-function pagHandler(event, value, tabId, master) {
-  const { details, record } = this.state;
-  const {
-    recordDetailPropName,
-    pageURL: { temp },
-  } = details.tabs[tabId];
-  const url = `${temp}/${master}/${value}`;
-  this.setState({ loading: true });
-  axios
-    .get(url)
-    .then((res) => {
-      record[recordDetailPropName] = res.data;
-      this.setState({ details: details, loading: false, record: record });
-    })
-    .catch((err) => console.log(err));
-}
-
-function paginator(theme) {
-  const { record, mode, fields } = this.state;
-  if (["d_record", "modify"].includes(mode)) {
-    const { current_tab, tabs } = this.state.details;
-    const { pageURL, recordDetailPropName } = tabs[current_tab];
-    const recordDetail = record[recordDetailPropName];
-    const master = fields[pageURL.master].value;
-    let page_no = 1;
-    let pages_count = 1;
-    if (recordDetail.pages) {
-      page_no = recordDetail.page_no;
-      pages_count = recordDetail.pages_count;
-    }
-    return (
-      <div className={style.pagContainer}>
-        <ThemeProvider theme={theme}>
-          <Pagination
-            onChange={(e, v) =>
-              pagHandler.call(this, e, v, current_tab, master)
-            }
-            count={pages_count}
-            page={page_no}
-            color="primary"
-          />
-        </ThemeProvider>
-      </div>
-    );
-  }
-}
-
-function addHandler() {
-  let {
-    record,
-    details: { current_tab, tabs },
-  } = this.state;
-  const row = {
-    action: "add",
-    frontRow: true,
-  };
-  tabs[current_tab].headers.forEach((i) => {
-    let propName;
-    typeof i === "object" ? (propName = i.propName) : (propName = i);
-    row[propName] = "";
-  });
-  if (!record) {
-    record = {};
-    record[tabs[current_tab].recordDetailPropName] = {};
-    record[tabs[current_tab].recordDetailPropName].pages = [row];
-  } else if (!record[tabs[current_tab].recordDetailPropName].pages) {
-    record[tabs[current_tab].recordDetailPropName].pages = [row];
-  } else {
-    record[tabs[current_tab].recordDetailPropName].pages.unshift(row);
-  }
-  document.getElementById("tableContainer").scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
-  this.setState({ record: record });
-}
-
-function removeHandler(index) {
-  const {
-    record,
-    details: { current_tab, tabs },
-  } = this.state;
-  const row = record[tabs[current_tab].recordDetailPropName].pages[index];
-  if (row.action) {
-    row.prevAction = row.action;
-  }
-  row.action = "delete";
-  // record[tabs[current_tab].recordDetailPropName].pages.splice(index, 1);
-  this.setState({ record: record });
 }

@@ -116,3 +116,17 @@ export const getPkUrl = (pks, record) => {
     })
     return pkUrl
 }
+
+export const setReadOnlyFields = (fieldnames, fields) => {
+    fieldnames.forEach(i => {
+        fields[i].writability = false
+    })
+    return fields
+}
+
+
+export function fieldListner(fieldName, handler) {
+    const {fields} = this.state;
+    // handle Args => event or value in case of checkbox, field this keyword, screen this keyword
+    fields[fieldName].changeHandler = (e, fieldThisK) => handler(e, fieldThisK, this)
+}

@@ -31,3 +31,9 @@ export const formatDate = (rawDate, type) => {
     const date = ` ${day} / ${month + 1} / ${year}    ${hours}:${minutes}:${seconds} ${time ? time : ""}`;
     return rawDate ? date : ""
 }
+
+
+// "2014-09-08T08:02:17-05:00" (ISO 8601, no fractional seconds)
+// "Sunday, February 14th 2010, 3:25:50 pm"
+// "Sun, 3PM"
+// "Today is Sunday"

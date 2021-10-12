@@ -66,7 +66,7 @@ const displayGrid = (fields, gridType, changeHandler, thisK) => {
     const content = gridArr.map((row, i)=> {
         let rowStyle = { paddingTop: "1rem" }
 
-        const rowContent = row.map(col => {
+        const rowContent = row.map((col, index) => {
             if(["holder", "line"].includes(col.fieldType)){
                 rowStyle.paddingTop = "0"
             }
@@ -77,7 +77,7 @@ const displayGrid = (fields, gridType, changeHandler, thisK) => {
                 }
             }
             return(
-                <div style={col.columnStyle} className={`col-md-${colSpan}  px-0`}>
+                <div style={col.columnStyle} key={index} className={`col-md-${colSpan}  px-0`}>
                     {inputField(col, changeHandler, thisK)}
                 </div>
             )

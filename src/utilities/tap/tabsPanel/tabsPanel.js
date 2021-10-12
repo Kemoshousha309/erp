@@ -1,7 +1,4 @@
-import { Input } from "@material-ui/core";
-import { t } from "../../lang";
 import TabPanel from "../../../Components/UI/TabPanel/TabPanel";
-import { hash } from "../../utilities";
 import { tabTable } from "./tabTable";
 import axios from "../../../axios"
 
@@ -40,20 +37,22 @@ function changeHandler(value) {
 
 
 export function getDetails (record, i){
-  const {details: {tabs}} = this.state
+  const {details: {tabs}, details} = this.state
   const detailsPagesURLs = Object.keys(tabs).map(key => {
     tabs[key].pageURL.id = key
     return tabs[key].pageURL
   });
   detailsPagesURLs.forEach(pageURL => {
-    const {master, temp, id} = pageURL;
-    const url = `${temp}/${record[master]}/1`
-    console.log(record)
+    const {master, temp, id} = pageURL
+    const url = `${temp}/${record[master]}`
+    this.setState({details: {...details, loading: true}})
     axios.get(url)
     .then((res) => {
-      record[tabs[id].recordDetailPropName] = res.data;
-      this.setState({record: record})
+      record[tabs[id].recordDetailPropName] = res.data[tabs[id].recordDetailPropName];
+      this.setState({record: record, details: {...details, loading: false}})
     })
     .catch(err => console.log(err))
   })
 }
+
+

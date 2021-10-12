@@ -1,21 +1,11 @@
 import { Component} from 'react';
 import {connect} from "react-redux";
 import { toolSelectHandler } from '../../../utilities/tools';
-import {handleDelete, handleDeleteConfirmation} from "../../../utilities/tap/delete"
-import {handleSearch} from "../../../utilities/tap/search"
-import {handleMove, setlastIndex} from "../../../utilities/tap/moves"
+import {handleDelete, handleDeleteConfirmation} from "../../../utilities/tap/functions/delete"
+import {handleSearch} from "../../../utilities/tap/functions/search"
+import {handleMove, setlastIndex} from "../../../utilities/tap/functions/moves"
+import { handleUndo } from '../../../utilities/tap/functions/undo';
 import {functionsListenrs} from "../../../utilities/tap/listeners"
-import {
-    handleAdd,
-    handleModify,
-    handleList,
-    handleCopy,
-    handleCloseList,
-    handleRecordClick,
-    handleInputChange,
-    handleCloseShortCuts,
-    handleDrivedState
-} from "../../../utilities/tap/handlers"
 import { displayContent } from '../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../store/actions/lang';
 import axios from '../../../axios';
@@ -25,7 +15,11 @@ import { selectMessage, t } from '../../../utilities/lang';
 import { fields } from '../../../utilities/tap/fields';
 import { timer } from '../../../utilities/tap/utilities';
 import { deepClone } from '../../../utilities/tap/validation';
-import { handleUndo } from '../../../utilities/tap/undo';
+import { handleCloseList, handleList, handleRecordClick } from '../../../utilities/tap/functions/list';
+import { handleAdd } from '../../../utilities/tap/functions/add';
+import { handleModify } from '../../../utilities/tap/functions/modify';
+import { handleCopy } from '../../../utilities/tap/functions/copy';
+import { handleCloseShortCuts, handleDrivedState, handleInputChange } from '../../../utilities/tap/handlers';
 
 
 

@@ -1,6 +1,17 @@
 @import "../../styleUtility.scss";
 
+
+.loaderContainer {
+  width: 100%;
+  height: 15rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .container {
+    tbody{
+      font-family: 'Roboto', sans-serif;
+        }
     .tableContainer {
       max-height: 24rem;
       overflow-y: scroll;
@@ -24,6 +35,12 @@
       &::-webkit-scrollbar-thumb:hover {
         background: #555;
     }
+  }
+  button {
+    &:focus{
+      outline: none;
+  }
+  border: none;
   }
   .header {
     padding: 0rem 1rem;

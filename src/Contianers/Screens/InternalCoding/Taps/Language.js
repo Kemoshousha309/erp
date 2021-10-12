@@ -1,26 +1,23 @@
 import { Component} from 'react';
 import {connect} from "react-redux";
 import { toolSelectHandler } from '../../../../utilities/tools';
-import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/delete"
-import {handleSearch} from "../../../../utilities/tap/search"
-import {handleSave} from "../../../../utilities/tap/save"
+import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/functions/delete"
+import {handleSearch} from "../../../../utilities/tap/functions/search"
+import {handleSave} from "../../../../utilities/tap/functions/save"
+import {handleMove, setlastIndex} from "../../../../utilities/tap/functions/moves"
 import {add_lan_dir_options} from '../../../../utilities/tap/async'
-import {handleMove, setlastIndex} from "../../../../utilities/tap/moves"
 import {functionsListenrs} from "../../../../utilities/tap/listeners"
 import {
-    handleAdd,
-    handleModify,
-    handleList,
-    handleCopy,
-    handleCloseList,
-    handleRecordClick,
-    handleInputChange,
     handleCloseShortCuts,
-    handleDrivedState
+    handleDrivedState, handleInputChange
 } from "../../../../utilities/tap/handlers"
 import { displayContent } from '../../../../utilities/tap/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
-import { handleUndo } from '../../../../utilities/tap/undo';
+import { handleUndo } from '../../../../utilities/tap/functions/undo';
+import { handleAdd } from '../../../../utilities/tap/functions/add';
+import { handleCopy } from '../../../../utilities/tap/functions/copy';
+import { handleCloseList, handleList, handleRecordClick } from '../../../../utilities/tap/functions/list';
+import { handleModify } from '../../../../utilities/tap/functions/modify';
 
 class Language extends Component{
     state = {

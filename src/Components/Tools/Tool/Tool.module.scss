@@ -13,13 +13,13 @@ $transformMove: .4rem;
         &:focus{
             outline: none;
         }
+        border: none;
         &:disabled{
             cursor: not-allowed;
             svg, path{
                 cursor: not-allowed;
             }
         }
-        border: none;
         background-color: rgba(255, 255, 255, 0);
     }
 }

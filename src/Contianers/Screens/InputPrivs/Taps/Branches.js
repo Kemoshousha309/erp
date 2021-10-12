@@ -1,18 +1,9 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import { toolSelectHandler } from "../../../../utilities/tools";
-import { handleDeleteConfirmation } from "../../../../utilities/tap/delete";
-
-import { setlastIndex } from "../../../../utilities/tap/moves";
+import {handleDeleteConfirmation} from "../../../../utilities/tap/functions/delete"
+import {setlastIndex} from "../../../../utilities/tap/functions/moves"
 import { functionsListenrs } from "../../../../utilities/tap/listeners";
-import {
-  handleModify,
-  handleInputChange,
-  handleCloseShortCuts,
-  handleDrivedState,
-  handleCloseFkList,
-  fkRecordClickHandler,
-} from "../../../../utilities/tap/handlers";
 import { displayContent } from "../../../../utilities/tap/displayContent";
 import { langChangeActivity } from "../../../../store/actions/lang";
 import { Button } from "@material-ui/core";
@@ -26,7 +17,10 @@ import {
   autoDisplay,
   changePropName,
 } from "../../../../utilities/tap/inputsHandlers";
-import { handleUndo } from '../../../../utilities/tap/undo';
+import { handleUndo } from '../../../../utilities/tap/functions/undo';
+import { fkRecordClickHandler, handleCloseFkList } from '../../../../utilities/tap/functions/list';
+import { handleModify } from '../../../../utilities/tap/functions/modify';
+import { handleCloseShortCuts, handleDrivedState, handleInputChange } from '../../../../utilities/tap/handlers';
 
 
 class Branches extends Component {

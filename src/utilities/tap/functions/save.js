@@ -1,11 +1,11 @@
-import { getDtailsPropnams, timer } from "./utilities";
-import { getValues, fields, getHeaders } from "./fields";
-import { checkDetailsValidity, checkValidity } from "./validation";
-import { selectMessage } from "../lang";
-import axios from "../../axios";
-import { logout } from "../../store";
-import { store } from "../../index";
-import { getDetails } from "./tabsPanel/tabsPanel";
+import { getDtailsPropnams, timer } from "../utilities";
+import { getValues, fields, getHeaders } from "../fields";
+import { checkDetailsValidity, checkValidity } from "../validation";
+import { selectMessage } from "../../lang";
+import axios from "../../../axios"
+import { logout } from "../../../store";
+import { store } from "../../../index";
+import { getDetails } from "../tabsPanel/tabsPanel";
 
 // save processes ***************************************************
 export const handleSave = (thisK, func) => {
@@ -115,7 +115,6 @@ function handleDetailsScreensSaveRequest() {
     ...detailsValues,
     ...fieldsValues
   }
-  console.log(body)
   this.setState({ loading: true });
   axios({
     method: method,
@@ -173,10 +172,9 @@ function trackDetailsChange() {
   properties.forEach(prop => {
     if(prop){
       const {recordDetailPropName, headers} = prop
-      detailsToSave[recordDetailPropName] = {};
-      detailsToSave[recordDetailPropName].pages = []
+      detailsToSave[recordDetailPropName] = [];
       if(record){
-        const pages = record[recordDetailPropName].pages;
+        const pages = record[recordDetailPropName];
         if(pages){
           pages.forEach(page => {
             if(page.action){
@@ -186,9 +184,9 @@ function trackDetailsChange() {
               })
               updatedPage.action = page.action
               if(page.action !== "delete"){
-                detailsToSave[recordDetailPropName].pages.push(updatedPage)
+                detailsToSave[recordDetailPropName].push(updatedPage)
               }else if(page.action === "delete" && !page.frontRow){
-                detailsToSave[recordDetailPropName].pages.push(updatedPage)
+                detailsToSave[recordDetailPropName].push(updatedPage)
               }
             }
           })
