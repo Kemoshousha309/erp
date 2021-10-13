@@ -94,7 +94,7 @@ export function handleDetailsScreensSave() {
 }
 
 function handleDetailsScreensSaveRequest() {
-  const { mode, urls, fields: masterfields, record } = this.state
+  const { mode, urls, fields: masterfields, record, details: {tabs} } = this.state
   let method = null;
   let url = null;
   if (mode === "modify") {
@@ -127,13 +127,27 @@ function handleDetailsScreensSaveRequest() {
         content: selectMessage(res.data.message, this.props.lanState),
         type: "success",
       };
-      getDetails.call(this, record)
       this.setState({
         mode: "d_record",
         loading: false,
         message: message,
         recordIndex: null,
       });
+      if(mode === "add"){
+        // prepare a record for getDetails function as in add mode the record is null
+        const detailsPagesURLs = Object.keys(tabs).map(key => {
+          tabs[key].pageURL.id = key
+          return tabs[key].pageURL
+        });
+        const preparedRecord = {}
+        detailsPagesURLs.forEach(pageURL => {
+          const {master} = pageURL
+          preparedRecord[master] = masterfields[master].value 
+        })
+        getDetails.call(this, preparedRecord)
+      }else{
+        getDetails.call(this, record)
+      }
       timer(this);
     })
     .catch((err) => {

@@ -125,7 +125,7 @@ export function checkDetailsValidity() {
   if (record) {
     properties.forEach((prop) => {
       if (prop) {
-        const pages = record[prop.recordDetailPropName].pages;
+        const pages = record[prop.recordDetailPropName];
         const headers = prop.headers;
         if(pages){
             pages.forEach((page) => {

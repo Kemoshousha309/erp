@@ -106,7 +106,6 @@ class Currency extends Component {
         type: "number",
         label: "fraction_no",
         validation: {
-          requiered: true,
           int: true,
         },
         validity: {
@@ -120,7 +119,7 @@ class Currency extends Component {
       fraction_d_name: {
         fieldType: "input",
         type: "text",
-        label: "name",
+        label: "fraction_name",
         validation: {
           requiered: true,
           length: 20,
@@ -136,7 +135,7 @@ class Currency extends Component {
       fraction_f_name: {
         fieldType: "input",
         type: "text",
-        label: "foreign_name",
+        label: "fraction_foreign_name",
         validation: {
           requiered: false,
           length: 20,
@@ -302,7 +301,7 @@ class Currency extends Component {
 
   // Tools Handle *********************************************
   toolsClickedHandler = (identifier) => toolSelectHandler(identifier, this);
-  modify = () => handleModify(this);
+  modify = () => handleModify(this, {local_currency_update: true});
   add = () => handleAdd(this);
   copy = () => handleCopy(this);
   list = () => handleList(this);
@@ -334,6 +333,7 @@ class Currency extends Component {
     this.props.changeLangSelectAcivity(true);
   }
 
+  
   static getDerivedStateFromProps(props, state) {
     // open local currency field when the local currency field is open
     const {
@@ -353,7 +353,6 @@ class Currency extends Component {
         }
       }
     } 
-
     const { tools } = handleDrivedState(props, state);
     return {
       tools: tools,
@@ -361,6 +360,11 @@ class Currency extends Component {
     };
   }
   render() {
+    const {mode, fields, local_currency_update} = this.state;
+    if(mode === "modify" && local_currency_update){
+      rateValidtaion(fields.local_currency.value, null, this)
+      this.setState({local_currency_update: false})
+    }
     const tabs = TabsHandler.call(this);
     return displayContent(this, this.props.location, tabs);
   }

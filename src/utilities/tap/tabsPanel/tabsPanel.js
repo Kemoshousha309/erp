@@ -45,6 +45,7 @@ export function getDetails (record, i){
   detailsPagesURLs.forEach(pageURL => {
     const {master, temp, id} = pageURL
     const url = `${temp}/${record[master]}`
+    console.log(url)
     this.setState({details: {...details, loading: true}})
     axios.get(url)
     .then((res) => {
