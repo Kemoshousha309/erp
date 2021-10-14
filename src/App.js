@@ -2,7 +2,7 @@ import style from "./App.module.scss";
 import Layout from "./Contianers/Layout/Layout";
 import { connect } from "react-redux";
 import { Component } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import Login from "./Contianers/Login/Login";
 import { checkLabelesLocalStorage } from "./store";
 import { Redirect } from "react-router";
@@ -61,11 +61,11 @@ class App extends Component {
       </div>
     );
     return (
-      <BrowserRouter>
+      <HashRouter>
         <ThemeProvider theme={theme}>
           <StylesProvider jss={jss}>{app}</StylesProvider>
         </ThemeProvider>
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }

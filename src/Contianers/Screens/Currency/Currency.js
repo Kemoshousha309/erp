@@ -50,6 +50,7 @@ class Currency extends Component {
           touched: false,
           message: null,
         },
+        capitalize: true,
         writability: false,
         value: "",
       },
@@ -121,7 +122,6 @@ class Currency extends Component {
         type: "text",
         label: "fraction_name",
         validation: {
-          requiered: true,
           length: 20,
         },
         validity: {
@@ -333,7 +333,7 @@ class Currency extends Component {
     this.props.changeLangSelectAcivity(true);
   }
 
-  
+
   static getDerivedStateFromProps(props, state) {
     // open local currency field when the local currency field is open
     const {
