@@ -272,6 +272,10 @@ export const routeMap = [
         route: ""
     },
     {
+        form_no: 2102,
+        route: "financial-coding?no=2102"
+    },
+    {
         form_no: 22,
         route: ""
     },
@@ -402,3 +406,5 @@ export const routeMap = [
         route: "currency?no=1304"
     },
 ]
+
+

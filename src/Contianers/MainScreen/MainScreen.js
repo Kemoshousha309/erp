@@ -8,6 +8,7 @@ import asyncComponent from "../../utilities/asyncComponent";
 const AsyncUsers = asyncComponent(() => import("../Screens/Users/Users"))
 const AsyncUsersGroups = asyncComponent(() => import("../Screens/UsersGroups/UsersGroups"))
 const AsyncInternalCoding = asyncComponent(() => import( "../Screens/InternalCoding/InternalCoding"))
+const AsyncFinancialCoding = asyncComponent(() => import( "../Screens/FinancialCoding/FinancialCoding"))
 const AsyncGeographicalData = asyncComponent(() => import( "../Screens/GeographicalData/GeographicalData"))
 const AsyncCompanies_Branches = asyncComponent(() => import( "../Screens/Companies_Branches/Companies_Branches"))
 const AsyncScreenPrivs = asyncComponent(() => import( "../Screens/ScreenPrivs/ScreenPrivs"))
@@ -47,6 +48,7 @@ class MainScreen extends Component  {
                         <Route path={rootPath +"/input-previlleges"} exact component={AsyncInputPrivs} />
                         <Route path={rootPath +"/system-commands"} exact component={AsyncSystemCommands} />
                         <Route path={rootPath +"/currency"} exact component={AsyncCurrency} />
+                        <Route path={rootPath +"/financial-coding"} exact component={AsyncFinancialCoding} />
                     </Switch>
                 </div>
             </Aux>

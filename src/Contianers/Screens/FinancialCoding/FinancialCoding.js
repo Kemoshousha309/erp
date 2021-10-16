@@ -6,15 +6,13 @@ import { connect } from "react-redux";
 import asyncComponent from "../../../utilities/asyncComponent";
 import { withRouter } from "react-router";
 
-const AsyncCompaniesGroups = asyncComponent(() =>
-  import("./Taps/CompaniesGroups")
-);
-const AsyncComapnies = asyncComponent(() => import("./Taps/Comapnies"));
-const AsyncBranches = asyncComponent(() => import("./Taps/Branches"));
+const AsyncAccountsGroup = asyncComponent(() => import("./Taps/AccountsGroup"));
+const AsyncCostCenterGroup = asyncComponent(() => import("./Taps/CostCenterGroup"));
 
-class Companies_Branches extends Component {
+
+class InternalCoding extends Component {
   state = {
-    currentTap: "company_groups",
+    currentTap: "accounts_group",
     dropDownChange: false,
   };
 
@@ -23,32 +21,34 @@ class Companies_Branches extends Component {
   };
 
   render() {
-    const flags = this.props.flag_details.filter(
-      (i) => i.flag_code === "companies_and_branches"
+      const {
+        props: {flag_details, lanState, lanTable},
+        state: {currentTap}
+      } = this
+    const flags = flag_details.filter(
+      (i) => i.flag_code === "financial_coding"
     );
     const flagLabels = flags.map((i) => i.label_code);
 
     const dropDown = (
       <SelectDrop
-        current={this.state.currentTap}
+        current={currentTap}
         changed={this.onChangeHandler}
       >
         {flagLabels.map((ele) => {
           return (
             <MenuItem key={ele} value={ele}>
-              {t(ele, this.props.lanTable, this.props.lanState).toUpperCase()}
+              {t(ele, lanTable, lanState).toUpperCase()}
             </MenuItem>
           );
         })}
       </SelectDrop>
     );
-    switch (this.state.currentTap) {
-      case "company_groups":
-        return <AsyncCompaniesGroups {...this.props} dropDown={dropDown} />;
-      case "companys":
-        return <AsyncComapnies {...this.props} dropDown={dropDown} />;
-      case "branches":
-        return <AsyncBranches {...this.props} dropDown={dropDown} />;
+    switch (currentTap) {
+      case "accounts_group":
+        return <AsyncAccountsGroup {...this.props} dropDown={dropDown} />;  
+      case "cost_center_group":
+        return <AsyncCostCenterGroup {...this.props} dropDown={dropDown} />;  
       default:
         return <h1>Not Exist</h1>;
     }
@@ -65,4 +65,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(withRouter(Companies_Branches));
+export default connect(mapStateToProps, null)(withRouter(InternalCoding));
