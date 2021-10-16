@@ -42,6 +42,7 @@ export function preHanler(type) {
     fields,
   } = this.state;
 
+  
   axios
     .get(preUrl)
     .then((res) => {
