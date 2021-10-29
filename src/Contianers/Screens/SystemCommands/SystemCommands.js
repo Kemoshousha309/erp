@@ -12,15 +12,8 @@ import { store } from "../../..";
 import ReloadServerCache from "./Commands/ReloadServerCache/ReloadServerCache";
 import GenUngenPriv from "./Commands/GenUngenPriv/GenUngenPriv";
 import { TextField } from "@material-ui/core";
-
-const arCommands = {
-  ReloadServerCache: "اعادة تحميل البيانتات المخزنة فى الخادم",
-  GenUngenPriv: "انشاء الصلاحيات الغير منشأه",
-};
-const enCommands = {
-  ReloadServerCache: "Reload Server Cache",
-  GenUngenPriv: "Generate Ungenerated Privileges",
-};
+import ReloadClientCache from "./Commands/ReloadClientCache/ReloadClientCache";
+import { clearlangData } from "../../../store/actions/lang";
 
 class SystemCommands extends Component {
   state = {
@@ -28,10 +21,13 @@ class SystemCommands extends Component {
     message: null,
     genUngenPriv: "false",
     displayedCommands: [],
-    allCommands: ["ReloadServerCache", "GenUngenPriv"]
+    allCommands: ["ReloadServerCache", "GenUngenPriv", "ReloadClientCache"]
   };
   reloadServerCache = () => {
     request(this, "/systemcommands/server/reloadServerCache", "post");
+  };
+   reloadClientCache = () => {
+    this.props.clearBrowserData()
   };
   genUngenPrivRadioHandler = (e) => {
     this.setState({ genUngenPriv: e.target.value });
@@ -44,14 +40,18 @@ class SystemCommands extends Component {
     );
   };
   filterCommands = (e) => {
-    const input = (e.target.value).toLowerCase()
     const {
-      props: {lanState},
+      props: {lanState, lanTable},
     } = this;
-    let commands = enCommands;
-    if(parseInt(lanState) === 1){
-      commands = arCommands
+    const input = (e.target.value).toLowerCase()
+    const commands = {
+      ReloadServerCache: "reload_server_cash",
+      ReloadClientCache: "reload_client_cache",
+      GenUngenPriv: "generate_ungenerated_priv",
     }
+    Object.keys(commands).forEach(key => {
+      commands[key] = t(commands[key], lanTable, lanState);
+    })
     const displayedCommands = [];
     for(const key in commands){
       const item = commands[key].toLowerCase();
@@ -74,6 +74,7 @@ class SystemCommands extends Component {
       genUngenPrivRadioHandler,
       genUngenPrivExcuteHandler,
       filterCommands,
+      reloadClientCache
     } = this;
 
     const statusBar = (
@@ -98,6 +99,9 @@ class SystemCommands extends Component {
           value={genUngenPriv}
         />
       ),
+      ReloadClientCache: (
+        <ReloadClientCache reloadClientCache={reloadClientCache} />
+      )
     };
 
     return (
@@ -110,7 +114,7 @@ class SystemCommands extends Component {
               autoComplete="off"
               variant="standard"
               fullWidth
-              label="Find Command"
+              label={t("find_command", lanTable, lanState)}
               onChange={filterCommands}
             />
           </div>
@@ -129,7 +133,14 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(SystemCommands);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearBrowserData: () => dispatch(clearlangData()),
+  };
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SystemCommands);
 
 // this function is related only to this commpont and would be unexpect in other components....
 const request = (thisK, url, method) => {

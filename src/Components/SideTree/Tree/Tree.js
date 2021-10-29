@@ -22,6 +22,7 @@ class Tree extends Component {
         let treeContent = this.props.sideNavActivity ?
          <CircularProgress  className="m-5" /> :  <CircularProgress  className="mt-5" />
         if(this.props.tree){
+            
             const tree = this.props.tree.map(ele => {
                 const icon = getRelatedIcon(ele.form_no, iconMap);
                 const route = getRelatedRoute(ele.form_no, routeMap)

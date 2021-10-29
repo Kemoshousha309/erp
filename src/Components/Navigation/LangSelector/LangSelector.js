@@ -1,16 +1,17 @@
-import style from "./CurrencySelector.module.scss";
+import style from "./LangSelector.module.scss";
 import { connect } from "react-redux";
 import { PureComponent } from "react";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import Aux from "../../../hoc/wrap";
 import { changeLnaguage } from "../../../store";
 import Icon from "../../UI/Icon"
+import { t } from "../../../utilities/lang";
 
 
 
 // use this component as lang Selector later 
 
-class CurrencySelector extends PureComponent {
+class LangSelector extends PureComponent {
   state = {
     show: false,
     value: 1
@@ -23,17 +24,25 @@ class CurrencySelector extends PureComponent {
       target: { id },
     } = e;
     this.setState({
-      value: id,
+      value: parseInt(id),
     });
     // update lang_no in redux state
-
+    this.props.onLanguageChange(parseInt(id))
     this.close();
   };
 
 
+  selectorClickHandler = (e) => {
+    this.close()
+  }
+
+  componentDidMount() {
+    this.setState({value: this.props.lanState})
+  }
   render() {
     const {
       state: { show, value },
+      props: {lanState, langTable}
     } = this;
 
     let openStyle = style.hide;
@@ -44,13 +53,13 @@ class CurrencySelector extends PureComponent {
     }
 
     let content = <p>loading ...</p>;
-    const langs = ["engliss", "Arabic"]
+    const langs = [1, 2]
       content = (
         <Aux>
-          <Backdrop clicked={this.close} open={show} color="transparent" />
+          <Backdrop show={show} click={this.close} opacity="0" />
           <div className={style.Select}>
-            <button onClick={this.close} value={value}>
-              {mapSymbol(value)}
+            <button onClick={this.selectorClickHandler} value={value}>
+              {mapSymbol(value, "short", lanState, langTable)}
               <Icon
                 className={arrowStyle}
                 size={10}
@@ -62,7 +71,7 @@ class CurrencySelector extends PureComponent {
               {langs.map((i) => {
                 return (
                   <li key={i} onClick={this.updateValue} id={i}>
-                    {mapSymbol(i, this.updateValue)} {i}
+                    {mapSymbol(i, "long", lanState, langTable)}
                   </li>
                 );
               })}
@@ -75,20 +84,14 @@ class CurrencySelector extends PureComponent {
   }
 }
 
-export const mapSymbol = (c, updateValue) => {
-  switch (c) {
-    case "GBP":
-      return <span id={c}>&#163;</span>;
-    case "AUD":
-      return <span id={c}>&#36;</span>;
-    case "YEN":
-      return <span id={c}>&#165;</span>;
-    case "RUB":
-      return <span id={c}>&#8381;</span>;
-    case "JPY":
-      return <span id={c}>&#165;</span>;
+export const mapSymbol = (c, type, lanState, langTable) => {
+  switch (parseInt(c)) {
+    case 1:
+      return <span id={c}>{type === "short" ? "Ar" :  t("arabic", langTable, lanState) }</span>;
+    case 2:
+      return <span id={c}>{type === "short" ? "En" :  t("english", langTable, lanState)  }</span>;
     default:
-      return <span id={c}>&#36;</span>;
+      break
   }
 };
 
@@ -107,4 +110,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(CurrencySelector);
+export default connect(mapStateToProps, mapDispatchToProps)(LangSelector);

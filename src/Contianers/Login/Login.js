@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import style from "./Login.module.scss";
 import companyLogo from "../../assests/campanyLogoPlaceholder.png";
-import LanSelect from "../../Components/Navigation/LanSelect/LanSelect"
 import { connect } from "react-redux";
 import Spinner from "../../Components/UI/Spinner/Spinner";
 import { authRequest, langRequestFailure, storeLanguagesTable } from "../../store";
@@ -10,7 +9,7 @@ import Aux from "../../hoc/wrap";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import { faExclamationCircle} from "@fortawesome/free-solid-svg-icons"
 import { Button, TextField } from "@material-ui/core";
-
+import LanSelect from "../../Components/Navigation/LanSelect/LanSelect";
 
 class Login extends Component {
     state={

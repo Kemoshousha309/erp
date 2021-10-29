@@ -9,6 +9,7 @@ export const storeMessages = (messages) => ({type: actionTypes.STORE_MESSAGES, m
 export const langRequestFailure = () => ({type: actionTypes.LANG_REQUEST_FAILURE})
 export const langChangeActivity = (mode) => ({type: actionTypes.LANG_CHANGE_ACTIVITY, mode: mode})
 const langData = (data) => ({type: actionTypes.LANG_INFO, info: data})
+export const clearlangData = () => ({type: actionTypes.CLEAR_LANG_DATA})
 
 export const langRequest = () => {
     return dispatch => {

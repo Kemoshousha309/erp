@@ -1,28 +1,55 @@
 import { Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import style from "./StatusBar.module.scss";
 
+class StatusBar extends Component {
+  state = {
+    state: null,
+  };
 
-const StatusBar = props => {
-    return(
-            <Snackbar open={props.show} className={style.StatusBar} autoHideDuration={6000} >
-                <Alert severity={props.type}>
-                    {props.children}
-                </Alert>
-            </Snackbar>      
-
-    )
-}
-
-const mapStateToProps = state => {
-    return {
-        lanState: state.lang.lan,
-        lanTable: state.lang.langTables,
-        token: state.auth.authData.token,
-        languages: state.lang.langInfo
+  onMouseOverHandler = () => {
+    let { content, state } = this.state;
+    let { type, children } = this.props;
+    if (state !== "MOUSE_OVER") {
+      content = !content ? { type, children } : content;
+      this.setState({ state: "MOUSE_OVER", content: content });
     }
+  };
+
+  onMouseOutHandler = () => {
+    this.setState({ state: "MOUSE_OUT" });
+    setTimeout(() => {
+      const { state } = this.state;
+      if (state === "MOUSE_OUT") {
+        this.setState({ content: null, state: null });
+      }
+    }, 3000);
+  };
+
+  render() {
+    let { show, type, children } = this.props;
+    const { content, state } = this.state;
+    if(["MOUSE_OUT", "MOUSE_OVER"].includes(state)){
+      show = true
+    }
+    if (content) {
+      type = content.type;
+      children = content.children;
+    }
+
+    return show ? (
+      <Snackbar
+        open={show}
+        onMouseOver={this.onMouseOverHandler}
+        onMouseLeave={this.onMouseOutHandler}
+        className={style.StatusBar}
+      >
+        <Alert severity={type}>{children}</Alert>
+      </Snackbar>
+    ) : null;
+  }
 }
 
-export default connect(mapStateToProps, null)(StatusBar);
+export default connect(null, null)(StatusBar);

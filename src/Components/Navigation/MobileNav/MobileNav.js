@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import LanSelect from "../../Navigation/LanSelect/LanSelect";
 import style from "./MobileNav.module.scss";
 import user from "../../../assests/user.jpeg";
 import DropDown from "../../UI/DrobDown/DrobDown";
+import LangSelector from "../LangSelector/LangSelector";
 
 class MobileNav extends Component {
+    // movile Nav is that pop up nav in mobile screen but need more work
     state = {
         dateShow: false,
         notificationShow: false,
@@ -87,7 +88,7 @@ class MobileNav extends Component {
                     </ul>
                 </div>
                 <span> <i className="fa fa-calendar-alt"></i><span> {date}</span></span>
-                <LanSelect />
+                <LangSelector />
             </div>
 
         )
