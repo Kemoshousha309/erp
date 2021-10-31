@@ -1,6 +1,6 @@
 import axios from "../../axios";
-import { storeLocally, isExpire } from "../../utilities/reducre";
-import { deepClone } from "../../utilities/tap/validation";
+import { deepClone } from "../../Contianers/ScreenConstructor/screen/validation";
+import { isExpire, storeLocally } from "../../utilities/reducre";
 import { getTreeStructure } from "../../utilities/tree";
 import { hash } from "../../utilities/utilities";
 import * as actionTypes from "./actionTypes";

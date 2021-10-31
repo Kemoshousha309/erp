@@ -1,11 +1,13 @@
+import { extractName } from "../Contianers/ScreenConstructor/screen/functions/list";
 import { decideName } from "./lang";
-import { extractName } from "./tap/functions/list";
+
 
 
 export const getParam = (searchParam, paramName) => {
     const string = searchParam.replace(`?${paramName}=`, "");
     return string
 }
+
 
 export const getF = (f, mode=null, lang_no) => {
     const outPut =  typeof(f) === "object" ? f[mode] : f

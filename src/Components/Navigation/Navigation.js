@@ -68,7 +68,7 @@ class Navigation extends PureComponent {
   };
 
   render() {
-    const { listIconClicked, lanTable, lanState, location, SideTreeMobViewHandler } = this.props;
+    const { listIconClicked, lanTable, lanState, location, SideTreeMobViewHandler, logout } = this.props;
     const { dateShow, notificationShow, messageShow, userShow } = this.state;
     const [d, y] = date();
     return (
@@ -162,7 +162,7 @@ class Navigation extends PureComponent {
             <Tooltip enterDelay={800} title={t("logout", lanTable, lanState)}>
               <div>
                 {" "}
-                <i>
+                <i >
                   {" "}
                   <FontAwesomeIcon onClick={logout} icon={faSignInAlt} />
                 </i>

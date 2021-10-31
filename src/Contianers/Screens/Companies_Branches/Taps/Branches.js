@@ -1,14 +1,15 @@
 import { connect } from "react-redux";
-import { setlastIndex } from "../../../../utilities/tap/functions/moves";
-import { functionsListenrs } from "../../../../utilities/tap/listeners";
-import { displayContent } from "../../../../utilities/tap/displayContent";
-import { langChangeActivity } from "../../../../store/actions/lang";
+import { setlastIndex } from "../../../ScreenConstructor/screen/functions/moves";
+import { functionsListenrs } from "../../../ScreenConstructor/screen/listeners";
+import ScreenConstructor from "../../../ScreenConstructor/ScreenConstructor";
 import {
   autoDisplay,
-  changePropName,
-} from "../../../../utilities/tap/inputsHandlers";
-import { handleDrivedState } from "../../../../utilities/tap/handlers";
-import ScreenConstructor from "../../../ScreenConstructor/ScreenConstructor";
+  changePropName
+} from "../../../ScreenConstructor/screen/inputsHandlers"
+import { handleDrivedState } from "../../../ScreenConstructor/screen/handlers";
+import { displayContent } from "../../../ScreenConstructor/screen/displayContent";
+import { langChangeActivity } from "../../../../store/actions/lang";
+
 
 class Branches extends ScreenConstructor {
   constructor() {

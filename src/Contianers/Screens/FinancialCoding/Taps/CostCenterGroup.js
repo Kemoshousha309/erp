@@ -1,150 +1,89 @@
-import { Component} from 'react';
-import {connect} from "react-redux";
-import { toolSelectHandler } from '../../../../utilities/tools';
-import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/functions/delete"
-import {handleSearch} from "../../../../utilities/tap/functions/search"
-import {handleSave} from "../../../../utilities/tap/functions/save"
-import {handleMove, setlastIndex} from "../../../../utilities/tap/functions/moves"
-import { handleUndo } from '../../../../utilities/tap/functions/undo';
-import {functionsListenrs} from "../../../../utilities/tap/listeners"
-import { displayContent } from '../../../../utilities/tap/displayContent';
-import {  handleCloseList, handleList, handleRecordClick } from '../../../../utilities/tap/functions/list';
-import { handleAdd } from '../../../../utilities/tap/functions/add';
-import { handleModify } from '../../../../utilities/tap/functions/modify';
-import { handleCopy } from '../../../../utilities/tap/functions/copy';
-import { handleCloseShortCuts, handleDrivedState, handleInputChange } from '../../../../utilities/tap/handlers';
-import { langChangeActivity } from '../../../../store/actions/lang';
+import { connect } from "react-redux";
+import ScreenConstructor from "../../../ScreenConstructor/ScreenConstructor";
+import { displayContent } from "../../../ScreenConstructor/screen/displayContent";
+import { langChangeActivity } from "../../../../store/actions/lang";
 
 
-
-class CostCenterGroup extends Component {
-  state = {
-    fields: {
-      group_no: {
-        fieldType: "input",
-        type: "number",
-        label: "group_no",
-        validation: {
-          requiered: true,
-          size: 2147483647,
+class CostCenterGroup extends ScreenConstructor {
+  constructor() {
+    super();
+    this.state = {
+      ...this.state,
+      fields: {
+        group_no: {
+          fieldType: "input",
+          type: "number",
+          label: "group_no",
+          validation: {
+            requiered: true,
+            size: 2147483647,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: false,
+          value: "",
         },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
+        group_d_name: {
+          fieldType: "input",
+          type: "text",
+          label: "name",
+          validation: {
+            requiered: true,
+            length: 100,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: false,
+          value: "",
         },
-        writability: false,
-        value: "",
+        group_f_name: {
+          fieldType: "input",
+          type: "text",
+          label: "foreign_name",
+          validation: {
+            length: 100,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: false,
+          value: "",
+        },
       },
-      group_d_name: {
-        fieldType: "input",
-        type: "text",
-        label: "name",
-        validation: {
-          requiered: true,
-          length: 100,
-        },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
-        },
-        writability: false,
-        value: "",
+      pks: ["group_no"],
+      tapTools: [], // to be deleted and view the others
+      tapName: "costcentergroup",
+      searchFields: ["group_no"],
+      mainFields: ["group_no", { label: "name", propName: "group_d_name" }],
+      urls: {
+        add: "costcentergroup",
+        modify: "costcentergroup",
+        search: "costcentergroup",
+        pages: "costcentergroup/pages",
+        page: "costcentergroup/page",
+        lastPage: "costcentergroup/lastPage",
+        filter: "costcentergroup/filteredPages",
+        pageNo: "costcentergroup/pageNo",
+        delete: "costcentergroup",
+        preAdd: "costcentergroup/preAdd",
+        preModify: "costcentergroup/preModify",
       },
-      group_f_name: {
-        fieldType: "input",
-        type: "text",
-        label: "foreign_name",
-        validation: {
-          length: 100,
-        },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
-        },
-        writability: false,
-        value: "",
+      preAdd: {
+        state: true,
+        content: null,
       },
-    },
-    pks: ["group_no"],
-    tapTools: [], // to be deleted and view the others
-    tools: null,
-    mode: "start",
-    prevMode: null,
-    recordIndex: null,
-    lastIndex: null,
-    message: null,
-    loading: false,
-    listShow: false,
-    tapName: "costcentergroup",
-    deleteConfirm: false,
-    searchFields: ["group_no"],
-    ShortCutsList: false,
-    mainFields: [
-      "group_no",
-      { label: "name", propName: "group_d_name" },
-    ],
-    urls: {
-      add: "costcentergroup",
-      modify: "costcentergroup",
-      search: "costcentergroup",
-      pages: "costcentergroup/pages",
-      page: "costcentergroup/page",
-      lastPage: "costcentergroup/lastPage",
-      filter: "costcentergroup/filteredPages",
-      pageNo: "costcentergroup/pageNo",
-      delete: "costcentergroup",
-      preAdd: "costcentergroup/preAdd",
-      preModify: "costcentergroup/preModify",
-    },
-    preAdd: {
-      state: true,
-      content: null
-    },
-    preModify: {
-      state: true,
-      content: null
-    }
-  };
-
-  // Tools Handle *********************************************
-  toolsClickedHandler = (identifier) => toolSelectHandler(identifier, this);
-  modify = () => handleModify(this);
-  add = () => handleAdd(this);
-  undo = () => handleUndo(this);
-  save = () => handleSave(this);
-  copy = () => handleCopy(this);
-  list = () => handleList(this);
-  delete = () => handleDelete(this);
-  search = () => handleSearch(this);
-  previous = () => handleMove("previous", this);
-  next = () => handleMove("next", this);
-  first = () => handleMove("first", this);
-  last = () => handleMove("last", this);
-
-  // Handlers ************************************************
-  closeList = () => handleCloseList(this);
-  recordClick = (record, i) => handleRecordClick(this, record, i);
-  inputChange = (state, identifier) =>
-    handleInputChange(this, state, identifier);
-  deleteConfirmation = (res) => handleDeleteConfirmation(this, res);
-  ShortCutsListCloseHandler = () => handleCloseShortCuts(this);
-
-  // LifeCycle methods *******************************************
-  componentDidMount() {
-    setlastIndex(this);
-    functionsListenrs(this, true);
-  }
-  componentWillUnmount() {
-    functionsListenrs(this, false);
-    this.props.changeLangSelectAcivity(true);
-  }
-  static getDerivedStateFromProps(props, state) {
-    const { tools } = handleDrivedState(props, state);
-    return {
-      tools: tools,
+      preModify: {
+        state: true,
+        content: null,
+      },
     };
   }
   render() {

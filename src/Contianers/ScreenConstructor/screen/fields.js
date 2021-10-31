@@ -1,4 +1,5 @@
-import { formatDate } from "../date";
+import { formatDate } from "../../../utilities/date";
+
 
 export const fields = (fields, mode, empty = true, specific) => {
   if (specific) {

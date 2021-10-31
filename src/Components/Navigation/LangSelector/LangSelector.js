@@ -8,9 +8,6 @@ import Icon from "../../UI/Icon"
 import { t } from "../../../utilities/lang";
 
 
-
-// use this component as lang Selector later 
-
 class LangSelector extends PureComponent {
   state = {
     show: false,
@@ -42,7 +39,7 @@ class LangSelector extends PureComponent {
   render() {
     const {
       state: { show, value },
-      props: {lanState, langTable}
+      props: {lanState, langTable, langChangeActive}
     } = this;
 
     let openStyle = style.hide;
@@ -52,13 +49,18 @@ class LangSelector extends PureComponent {
       arrowStyle = style.up;
     }
 
+    let disabled = {}
+    if(!langChangeActive){
+      disabled = {cursor: "initial"}
+    }
+
     let content = <p>loading ...</p>;
     const langs = [1, 2]
       content = (
         <Aux>
           <Backdrop show={show} click={this.close} opacity="0" />
           <div className={style.Select}>
-            <button onClick={this.selectorClickHandler} value={value}>
+            <button disabled={!langChangeActive} style={disabled}  onClick={this.selectorClickHandler} value={value}>
               {mapSymbol(value, "short", lanState, langTable)}
               <Icon
                 className={arrowStyle}

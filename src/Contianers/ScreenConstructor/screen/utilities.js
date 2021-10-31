@@ -1,4 +1,5 @@
-import { hash_back, hash } from "../utilities";
+import { hash, hash_back } from "../../../utilities/utilities";
+
 
 let lastTimer = null;
 export const timer = (thisK) => {

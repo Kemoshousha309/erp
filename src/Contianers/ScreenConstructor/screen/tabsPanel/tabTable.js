@@ -3,13 +3,15 @@ import {
   createMuiTheme,
   TextField,
 } from "@material-ui/core";
-import { decideName, t } from "../../lang";
+
 import { faPlusCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import style from "./style.module.scss";
 import { detialFieldValidity } from "../validation";
 import { addHandler, inputChangeHandler, removeHandler } from "./handlers";
-import { formatDate } from "../../date";
+import { formatDate } from "../../../../utilities/date";
+import { decideName, t } from "../../../../utilities/lang";
+
 
 
 export function tabTable() {

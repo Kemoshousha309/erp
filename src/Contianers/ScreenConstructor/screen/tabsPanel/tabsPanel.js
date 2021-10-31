@@ -1,6 +1,6 @@
-import TabPanel from "../../../Components/UI/TabPanel/TabPanel";
+import TabPanel from "../../../../Components/UI/TabPanel/TabPanel";
 import { tabTable } from "./tabTable";
-import axios from "../../../axios"
+import axios from "../../../../axios"
 
 
 export function TabsHandler() {

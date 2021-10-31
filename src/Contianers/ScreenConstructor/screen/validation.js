@@ -1,5 +1,6 @@
-import { t } from "../lang";
+import { t } from "../../../utilities/lang";
 import { getDtailsPropnams } from "./utilities";
+
 
 export const setValidity = (fields) => {
   const fieldsClone = { ...fields };

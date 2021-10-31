@@ -1,6 +1,6 @@
+import { getParam } from "../../../utilities/utilities";
+import { toolsPriv } from "./utilities";
 import { handleMode } from "./mode"
-import { getParam } from "../utilities"
-import { toolsPriv } from "./utilities"
 
 
 // input change handler ******************************

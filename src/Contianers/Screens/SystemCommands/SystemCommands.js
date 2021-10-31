@@ -6,7 +6,6 @@ import axios from "../../../axios";
 import Aux from "../../../hoc/wrap";
 import Spinner from "../../../Components/UI/Spinner/Spinner";
 import StatusBar from "../../../Components/StatusBar/StatusBar";
-import { timer } from "../../../utilities/tap/utilities";
 import { logout } from "../../../store";
 import { store } from "../../..";
 import ReloadServerCache from "./Commands/ReloadServerCache/ReloadServerCache";
@@ -14,6 +13,7 @@ import GenUngenPriv from "./Commands/GenUngenPriv/GenUngenPriv";
 import { TextField } from "@material-ui/core";
 import ReloadClientCache from "./Commands/ReloadClientCache/ReloadClientCache";
 import { clearlangData } from "../../../store/actions/lang";
+import { timer } from "../../ScreenConstructor/screen/utilities";
 
 class SystemCommands extends Component {
   state = {

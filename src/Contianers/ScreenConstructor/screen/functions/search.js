@@ -1,10 +1,11 @@
-import { timer } from "../utilities"
-import {  getValues, fields, fillRecord, getPkUrl } from "../fields"
-import { checkValidity } from "../validation"
-import { selectMessage } from "../../lang"
-import axios from "../../../axios"
-import { logout } from "../../../store"
-import {store} from "../../../index"
+import { timer } from "../utilities";
+import { getValues, fields, getPkUrl, fillRecord } from "../fields";
+import axios from "../../../../axios"
+import { logout } from "../../../../store";
+import { store } from "../../../../index";
+import { selectMessage } from "../../../../utilities/lang";
+import { checkValidity } from "../validation";
+
 
 
 

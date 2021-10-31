@@ -3,27 +3,27 @@ import { toolSelectHandler } from "../../utilities/tools";
 import {
   handleDelete,
   handleDeleteConfirmation,
-} from "../../utilities/tap/functions/delete";
-import { handleSearch } from "../../utilities/tap/functions/search";
-import { handleSave } from "../../utilities/tap/functions/save";
-import { handleMove, setlastIndex } from "../../utilities/tap/functions/moves";
-import { functionsListenrs } from "../../utilities/tap/listeners";
+} from "./screen/functions/delete";
+import { handleSearch } from "./screen/functions/search";
+import { handleSave } from "./screen/functions/save";
+import { handleMove, setlastIndex } from "./screen/functions/moves";
+import { functionsListenrs } from "./screen/listeners";
 import {
   fkRecordClickHandler,
   handleCloseFkList,
   handleCloseList,
   handleList,
   handleRecordClick,
-} from "../../utilities/tap/functions/list";
-import { handleAdd } from "../../utilities/tap/functions/add";
-import { handleModify } from "../../utilities/tap/functions/modify";
-import { handleCopy } from "../../utilities/tap/functions/copy";
+} from "./screen/functions/list";
+import { handleAdd } from "./screen/functions/add";
+import { handleModify } from "./screen/functions/modify";
+import { handleCopy } from "./screen/functions/copy";
 import {
   handleCloseShortCuts,
   handleDrivedState,
   handleInputChange,
-} from "../../utilities/tap/handlers";
-import { handleUndo } from "../../utilities/tap/functions/undo";
+} from "./screen/handlers";
+import { handleUndo } from "./screen/functions/undo";
 
 
 
@@ -42,6 +42,10 @@ class ScreenConstructor extends React.Component {
       listShow: false,
       deleteConfirm: false,
       ShortCutsList: false,
+      record: null,
+      tapTools: [],
+      searchFields: [],
+      mainFields: [],
     };
   }
 

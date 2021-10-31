@@ -1,5 +1,5 @@
-import axios from "../../axios"
-import { getTreeStructure } from "../tree"
+import axios from "../../../axios"
+import { getTreeStructure } from "../../../utilities/tree"
 import { handleSave } from "./functions/save"
 
 

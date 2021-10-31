@@ -1,9 +1,9 @@
 import { timer } from "../utilities";
 import { getValues, fields, getPkUrl } from "../fields";
-import { selectMessage } from "../../lang";
-import axios from "../../../axios"
-import { logout } from "../../../store";
-import { store } from "../../../index";
+import axios from "../../../../axios"
+import { logout } from "../../../../store";
+import { store } from "../../../../index";
+import { selectMessage } from "../../../../utilities/lang";
 
 // delete ******************************************************
 export const handleDelete = (thisK) => {

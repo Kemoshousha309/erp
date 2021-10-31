@@ -1,5 +1,5 @@
-import { getSelectLangDir } from "../lang";
 import $ from "jquery";
+import { getSelectLangDir } from "../../../utilities/lang";
 
 // function listners *******************************************
 const getToolState = (tools, name) => {

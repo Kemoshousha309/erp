@@ -1,12 +1,12 @@
 import React from "react"
-import AlertDialog from "../../Components/AlertDialog/AlertDialog"
-import Boilerplate from "../../Components/Boilerplate/Boilerplate"
-import RecordDisplay from "../../Components/RecordDisplay/RecordDisplay"
-import ShortCutsList from "../../Components/ShortCutsList/ShortCutsList"
-import { displayPattren, displayPattrenTree } from "./../display"
-import { t } from "../lang"
-import { getParam } from "../utilities"
-import ErrorPage from "../../Components/UI/ErrorPage/ErrorPage"
+import AlertDialog from "../../../Components/AlertDialog/AlertDialog"
+import Boilerplate from "../../../Components/Boilerplate/Boilerplate"
+import RecordDisplay from "../../../Components/RecordDisplay/RecordDisplay"
+import ShortCutsList from "../../../Components/ShortCutsList/ShortCutsList"
+import { displayPattren, displayPattrenTree } from "../../../utilities/display"
+import ErrorPage from "../../../Components/UI/ErrorPage/ErrorPage"
+import { t } from "../../../utilities/lang"
+import { getParam } from "../../../utilities/utilities"
 
 
 export const displayContent = (thisK, location, additional) => {

@@ -1,252 +1,216 @@
-import { Component } from "react";
 import { connect } from "react-redux";
-import { toolSelectHandler } from "../../../../utilities/tools";
-import {handleDelete, handleDeleteConfirmation} from "../../../../utilities/tap/functions/delete"
-import {handleSearch} from "../../../../utilities/tap/functions/search"
-import {handleMove, setlastIndex} from "../../../../utilities/tap/functions/moves"
-import { handleUndo } from '../../../../utilities/tap/functions/undo';
-import { functionsListenrs } from "../../../../utilities/tap/listeners";
-import { handleCloseShortCuts, handleDrivedState, handleInputChange } from "../../../../utilities/tap/handlers";
-import { displayContent } from "../../../../utilities/tap/displayContent";
-import { getTree, asyncTreeSave } from "../../../../utilities/tap/async";
+import { setlastIndex } from "../../../ScreenConstructor/screen/functions/moves";
+import { functionsListenrs } from "../../../ScreenConstructor/screen/listeners";
+import ScreenConstructor from "../../../ScreenConstructor/ScreenConstructor";
 import {
-  changePropName,
-  autoDisplay,
-} from "../../../../utilities/tap/inputsHandlers";
+  autoDisplay, changePropName,
+} from "../../../ScreenConstructor/screen/inputsHandlers"
+import { handleDrivedState } from "../../../ScreenConstructor/screen/handlers";
+import { displayContent } from "../../../ScreenConstructor/screen/displayContent";
 import { langChangeActivity } from "../../../../store/actions/lang";
 import { CircularProgress } from "@material-ui/core";
-import { handleAdd } from "../../../../utilities/tap/functions/add";
-import { handleModify } from "../../../../utilities/tap/functions/modify";
-import { fkRecordClickHandler, handleCloseFkList, handleCloseList, handleList, handleRecordClick } from "../../../../utilities/tap/functions/list";
-import { handleCopy } from "../../../../utilities/tap/functions/copy";
+import { handleRecordClick } from "../../../ScreenConstructor/screen/functions/list";
+import { getTree } from "../../../ScreenConstructor/screen/async";
 
 
-class Forms extends Component {
-  state = {
-    fields: {
-      module_no: {
-        fieldType: "input",
-        type: "number",
-        label: "module_no",
-        validation: {
-          requiered: true,
-          length: 30,
+class Forms extends ScreenConstructor {
+  constructor() {
+    super();
+    this.state = {
+      ...this.state,
+      fields: {
+        module_no: {
+          fieldType: "input",
+          type: "number",
+          label: "module_no",
+          validation: {
+            requiered: true,
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: false,
+          value: "",
+          fKTable: {
+            bothLangs: true,
+          },
+          fillFields: [
+            { recordName: "module_d_name", stateName: "module_no_d_name" },
+            { recordName: "module_f_name", stateName: "module_no_f_name" },
+            { recordName: "module_no", stateName: "module_no" },
+          ],
         },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
+        module_no_name: {
+          fieldType: "input",
+          label: "name",
+          readOnly: true,
+          value: "",
         },
-        writability: false,
-        value: "",
-        fKTable: {
-          bothLangs: true,
+        form_no: {
+          fieldType: "input",
+          type: "number",
+          label: "form_no",
+          validation: {
+            requiered: true,
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: false,
+          value: "",
         },
-        fillFields: [
-          { recordName: "module_d_name", stateName: "module_no_d_name" },
-          { recordName: "module_f_name", stateName: "module_no_f_name" },
-          { recordName: "module_no", stateName: "module_no" },
-        ]
-      },
-      module_no_name: {
-        fieldType: "input",
-        label: "name",
-        readOnly: true,
-        value: "",
-      },
-      form_no: {
-        fieldType: "input",
-        type: "number",
-        label: "form_no",
-        validation: {
-          requiered: true,
-          length: 30,
+        form_d_name: {
+          fieldType: "input",
+          type: "text",
+          label: "name",
+          validation: {
+            requiered: true,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: false,
+          value: "",
         },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
+        form_f_name: {
+          fieldType: "input",
+          type: "text",
+          label: "foreign_name",
+          validation: {
+            requiered: true,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: false,
+          value: "",
         },
-        writability: false,
-        value: "",
-      },
-      form_d_name: {
-        fieldType: "input",
-        type: "text",
-        label: "name",
-        validation: {
-          requiered: true,
+        parent_form: {
+          fieldType: "input",
+          type: "number",
+          label: "parent_form",
+          validation: {
+            requiered: true,
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: false,
+          value: "",
+          fillFields: [
+            {
+              recordName: "parent_form_d_name",
+              stateName: "parent_form_d_name",
+            },
+            {
+              recordName: "parent_form_f_name",
+              stateName: "parent_form_f_name",
+            },
+            { recordName: "parent_form", stateName: "parent_form" },
+          ],
         },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
+        parent_form_name: {
+          fieldType: "input",
+          label: "name",
+          readOnly: true,
+          value: "",
         },
-        writability: false,
-        value: "",
-      },
-      form_f_name: {
-        fieldType: "input",
-        type: "text",
-        label: "foreign_name",
-        validation: {
-          requiered: true,
-        },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
-        },
-        writability: false,
-        value: "",
-      },
-      parent_form: {
-        fieldType: "input",
-        type: "number",
-        label: "parent_form",
-        validation: {
-          requiered: true,
-          length: 30,
-        },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
-        },
-        writability: false,
-        value: "",
-        fillFields: [
-          { recordName: "parent_form_d_name", stateName: "parent_form_d_name" },
-          { recordName: "parent_form_f_name", stateName: "parent_form_f_name" },
-          { recordName: "parent_form", stateName: "parent_form" },
-        ]
-      },
-      parent_form_name: {
-        fieldType: "input",
-        label: "name",
-        readOnly: true,
-        value: "",
-      },
 
-      form_order: {
-        fieldType: "input",
-        type: "number",
-        label: "form_order",
-        validation: {
-          requiered: true,
-          length: 30,
+        form_order: {
+          fieldType: "input",
+          type: "number",
+          label: "form_order",
+          validation: {
+            requiered: true,
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: false,
+          value: "",
         },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
+        active: {
+          fieldType: "checkbox",
+          type: "checkbox",
+          label: "active",
+          writability: false,
+          value: false,
         },
-        writability: false,
-        value: "",
-      },
-      active: {
-        fieldType: "checkbox",
-        type: "checkbox",
-        label: "active",
-        writability: false,
-        value: false,
-      },
-      main: {
-        fieldType: "checkbox",
-        type: "checkbox",
-        label: "main",
-        writability: false,
-        value: false,
-      },
-    },
-    pks: ["form_no"],
-    listShow: false,
-    tapName: "forms",
-    mainFields: ["form_no", "module_no", "form_d_name"],
-    searchFields: ["form_no"],
-    urls: {
-      modify: "forms",
-      search: "forms",
-      pages: "forms/pages",
-      page: "forms/page",
-      lastPage: "forms/lastPage",
-      filter: "forms/filteredPages",
-      pageNo: "forms/pageNo",
-      delete: "forms",
-    },
-    fks: ["module_no", "parent_form"],
-    fkListShow: null,
-    fkList: {
-      module_no: {
-        mainFields: ["module_no", "shortcut", "module_d_name"],
-        urls: {
-          add: "modules",
-          modify: "modules",
-          search: "modules",
-          pages: "modules/pages",
-          page: "modules/page",
-          lastPage: "modules/lastPage",
-          filter: "modules/filteredPages",
-          pageNo: "modules/pageNo",
-          delete: "modules",
+        main: {
+          fieldType: "checkbox",
+          type: "checkbox",
+          label: "main",
+          writability: false,
+          value: false,
         },
       },
-      parent_form: {
-        mainFields: ["form_no", "module_no", "form_d_name"],
-        urls: {
-          modify: "forms",
-          search: "forms",
-          pages: "forms/pages",
-          page: "forms/page",
-          lastPage: "forms/lastPage",
-          filter: "forms/filteredPages",
-          pageNo: "forms/pageNo",
-          delete: "forms",
+      pks: ["form_no"],
+      listShow: false,
+      tapName: "forms",
+      mainFields: ["form_no", "module_no", "form_d_name"],
+      searchFields: ["form_no"],
+      urls: {
+        modify: "forms",
+        search: "forms",
+        pages: "forms/pages",
+        page: "forms/page",
+        lastPage: "forms/lastPage",
+        filter: "forms/filteredPages",
+        pageNo: "forms/pageNo",
+        delete: "forms",
+      },
+      fks: ["module_no", "parent_form"],
+      fkList: {
+        module_no: {
+          mainFields: ["module_no", "shortcut", "module_d_name"],
+          urls: {
+            add: "modules",
+            modify: "modules",
+            search: "modules",
+            pages: "modules/pages",
+            page: "modules/page",
+            lastPage: "modules/lastPage",
+            filter: "modules/filteredPages",
+            pageNo: "modules/pageNo",
+            delete: "modules",
+          },
+        },
+        parent_form: {
+          mainFields: ["form_no", "module_no", "form_d_name"],
+          urls: {
+            modify: "forms",
+            search: "forms",
+            pages: "forms/pages",
+            page: "forms/page",
+            lastPage: "forms/lastPage",
+            filter: "forms/filteredPages",
+            pageNo: "forms/pageNo",
+            delete: "forms",
+          },
         },
       },
-    },
-    tapTools: ["delete", "add", "copy"],
-    tools: null,
-    mode: "start",
-    // we handle prevMode in list show only ....
-    prevMode: null,
-    recordIndex: null,
-    lastIndex: null,
-    message: null,
-    loading: false,
-    deleteConfirm: false,
-    ShortCutsList: false,
-    tree: null,
-    treeLoading: <CircularProgress className="m-5" />,
-  };
-
-  // Tools Handle *********************************************
-  toolsClickedHandler = (identifier) => toolSelectHandler(identifier, this);
-  modify = () => handleModify(this);
-  add = () => handleAdd(this);
-  undo = () => handleUndo(this);
-  save = () => asyncTreeSave(this);
-  copy = () => handleCopy(this);
-  list = () => handleList(this);
-  delete = () => handleDelete(this);
-  search = () => handleSearch(this);
-  previous = () => handleMove("previous", this);
-  next = () => handleMove("next", this);
-  first = () => handleMove("first", this);
-  last = () => handleMove("last", this);
-
-  // Handlers ************************************************
-  closeList = () => handleCloseList(this);
-  closeFkList = () => handleCloseFkList(this);
-  recordClick = (record, i) => handleRecordClick(this, record, i);
+      tapTools: ["delete", "add", "copy"],
+      tree: null,
+      treeLoading: <CircularProgress className="m-5" />,
+    };
+  }
   treeNodeClick = (record) => handleRecordClick(this, record);
-  recordFkClick = (record, i) => fkRecordClickHandler(this, record)
-  inputChange = (state, identifier) =>
-    handleInputChange(this, state, identifier);
-  deleteConfirmation = (res) => handleDeleteConfirmation(this, res);
-  ShortCutsListCloseHandler = () => handleCloseShortCuts(this);
-
-  // LifeCycle methods *******************************************
   componentDidMount() {
     getTree(this);
     setlastIndex(this);
@@ -255,22 +219,25 @@ class Forms extends Component {
     // inputs handlers
     autoDisplay(this, "parent_form", "forms", {
       main: {
-          d: { recordProp: "parent_form_d_name", stateProp: "parent_form_d_name" },
-          f: { recordProp: "parent_form_f_name", stateProp: "parent_form_f_name" },
-      }
+        d: {
+          recordProp: "parent_form_d_name",
+          stateProp: "parent_form_d_name",
+        },
+        f: {
+          recordProp: "parent_form_f_name",
+          stateProp: "parent_form_f_name",
+        },
+      },
     });
 
     autoDisplay(this, "module_no", "modules", {
-        main: {
-            d: { recordProp: "module_d_name", stateProp: "module_no_d_name" },
-            f: { recordProp: "module_f_name", stateProp: "module_no_f_name" },
-        }
+      main: {
+        d: { recordProp: "module_d_name", stateProp: "module_no_d_name" },
+        f: { recordProp: "module_f_name", stateProp: "module_no_f_name" },
+      },
     });
   }
-  componentWillUnmount() {
-    functionsListenrs(this, false);
-    this.props.changeLangSelectAcivity(true);
-  }
+
   static getDerivedStateFromProps(props, state) {
     let fieldsUpdate = changePropName(
       props,

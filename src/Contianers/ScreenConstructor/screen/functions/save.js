@@ -1,11 +1,11 @@
 import { getDtailsPropnams, timer } from "../utilities";
 import { getValues, fields, getHeaders } from "../fields";
 import { checkDetailsValidity, checkValidity } from "../validation";
-import { selectMessage } from "../../lang";
-import axios from "../../../axios"
-import { logout } from "../../../store";
-import { store } from "../../../index";
+import axios from "../../../../axios"
+import { logout } from "../../../../store";
+import { store } from "../../../../index";
 import { getDetails } from "../tabsPanel/tabsPanel";
+import { selectMessage } from "../../../../utilities/lang";
 
 // save processes ***************************************************
 export const handleSave = (thisK, func) => {

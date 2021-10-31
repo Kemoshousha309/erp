@@ -7,11 +7,11 @@ import Spinner from "../UI/Spinner/Spinner"
 import axios from "../../axios"
 import { connect } from "react-redux"
 import { Button } from "@material-ui/core"
-import {  getPkUrl } from "../../utilities/tap/fields"
 import { t } from "../../utilities/lang"
 import Modal from "../UI/Modal/Modal"
 import {store} from "../../index";
 import { logout } from "../../store"
+import { getPkUrl } from "../../Contianers/ScreenConstructor/screen/fields"
 
 
 

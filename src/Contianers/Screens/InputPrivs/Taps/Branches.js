@@ -1,322 +1,297 @@
-import { Component } from "react";
 import { connect } from "react-redux";
-import { toolSelectHandler } from "../../../../utilities/tools";
-import {handleDeleteConfirmation} from "../../../../utilities/tap/functions/delete"
-import {setlastIndex} from "../../../../utilities/tap/functions/moves"
-import { functionsListenrs } from "../../../../utilities/tap/listeners";
-import { displayContent } from "../../../../utilities/tap/displayContent";
-import { langChangeActivity } from "../../../../store/actions/lang";
 import { Button } from "@material-ui/core";
-import { selectMessage, t } from "../../../../utilities/lang";
 import axios from "../../../../axios";
 import { store } from "../../../..";
 import { logout } from "../../../../store";
-import { timer } from "../../../../utilities/tap/utilities";
 import InputPrivsTable from "./InputPrivsTable/InputPrivsTable";
+import { setlastIndex } from "../../../ScreenConstructor/screen/functions/moves";
+import { functionsListenrs } from "../../../ScreenConstructor/screen/listeners";
+import ScreenConstructor from "../../../ScreenConstructor/ScreenConstructor";
 import {
   autoDisplay,
-  changePropName,
-} from "../../../../utilities/tap/inputsHandlers";
-import { handleUndo } from '../../../../utilities/tap/functions/undo';
-import { fkRecordClickHandler, handleCloseFkList } from '../../../../utilities/tap/functions/list';
-import { handleModify } from '../../../../utilities/tap/functions/modify';
-import { handleCloseShortCuts, handleDrivedState, handleInputChange } from '../../../../utilities/tap/handlers';
+  changePropName
+} from "../../../ScreenConstructor/screen/inputsHandlers"
+import { handleDrivedState } from "../../../ScreenConstructor/screen/handlers";
+import { displayContent } from "../../../ScreenConstructor/screen/displayContent";
+import { langChangeActivity } from "../../../../store/actions/lang";
+import { selectMessage, t } from "../../../../utilities/lang";
+import { timer } from "../../../ScreenConstructor/screen/utilities";
 
 
-class Branches extends Component {
-  state = {
-    fields: {
-      from_branch_no: {
-        fieldType: "input",
-        type: "number",
-        label: "from_branch_no",
-        validation: {
-          length: 30,
+class Branches extends ScreenConstructor {
+  constructor() {
+    super();
+    this.state = {
+      ...this.state,
+      fields: {
+        from_branch_no: {
+          fieldType: "input",
+          type: "number",
+          label: "from_branch_no",
+          validation: {
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: true,
+          controlField: true,
+          value: "",
+          fillFields: [
+            { recordName: "branch_no", stateName: "from_branch_no" },
+            { recordName: "branch_f_name", stateName: "from_branch_no_f_name" },
+            { recordName: "branch_d_name", stateName: "from_branch_no_d_name" },
+          ],
         },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
+        from_branch_no_name: {
+          fieldType: "input",
+          label: "name",
+          readOnly: true,
+          value: "",
         },
-        writability: true,
-        controlField: true,
-        value: "",
-        fillFields: [
-          { recordName: "branch_no", stateName: "from_branch_no" },
-          { recordName: "branch_f_name", stateName: "from_branch_no_f_name" },
-          { recordName: "branch_d_name", stateName: "from_branch_no_d_name" },
-        ],
-      },
-      from_branch_no_name: {
-        fieldType: "input",
-        label: "name",
-        readOnly: true,
-        value: "",
-      },
-      to_branch_no: {
-        fieldType: "input",
-        type: "number",
-        label: "to",
-        validation: {
-          length: 30,
+        to_branch_no: {
+          fieldType: "input",
+          type: "number",
+          label: "to",
+          validation: {
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: true,
+          controlField: true,
+          value: "",
+          fillFields: [
+            { recordName: "branch_no", stateName: "to_branch_no" },
+            { recordName: "branch_f_name", stateName: "to_branch_no_f_name" },
+            { recordName: "branch_d_name", stateName: "to_branch_no_d_name" },
+          ],
         },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
+        to_branch_no_name: {
+          fieldType: "input",
+          label: "name",
+          readOnly: true,
+          value: "",
         },
-        writability: true,
-        controlField: true,
-        value: "",
-        fillFields: [
-          { recordName: "branch_no", stateName: "to_branch_no" },
-          { recordName: "branch_f_name", stateName: "to_branch_no_f_name" },
-          { recordName: "branch_d_name", stateName: "to_branch_no_d_name" },
-        ],
-      },
-      to_branch_no_name: {
-        fieldType: "input",
-        label: "name",
-        readOnly: true,
-        value: "",
-      },
-      from_user_id: {
-        fieldType: "input",
-        type: "number",
-        label: "from_user_id",
-        validation: {
-          length: 30,
+        from_user_id: {
+          fieldType: "input",
+          type: "number",
+          label: "from_user_id",
+          validation: {
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: true,
+          controlField: true,
+          value: "",
+          fillFields: [
+            { recordName: "user_id", stateName: "from_user_id" },
+            { recordName: "user_f_name", stateName: "from_user_id_f_name" },
+            { recordName: "user_d_name", stateName: "from_user_id_d_name" },
+          ],
         },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
+        from_user_id_name: {
+          fieldType: "input",
+          label: "name",
+          readOnly: true,
+          value: "",
         },
-        writability: true,
-        controlField: true,
-        value: "",
-        fillFields: [
-          { recordName: "user_id", stateName: "from_user_id" },
-          { recordName: "user_f_name", stateName: "from_user_id_f_name" },
-          { recordName: "user_d_name", stateName: "from_user_id_d_name" },
-        ],
-      },
-      from_user_id_name: {
-        fieldType: "input",
-        label: "name",
-        readOnly: true,
-        value: "",
-      },
-      to_user_id: {
-        fieldType: "input",
-        type: "number",
-        label: "to",
-        validation: {
-          length: 30,
+        to_user_id: {
+          fieldType: "input",
+          type: "number",
+          label: "to",
+          validation: {
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: true,
+          controlField: true,
+          value: "",
+          fillFields: [
+            { recordName: "user_id", stateName: "to_user_id" },
+            { recordName: "user_f_name", stateName: "to_user_id_f_name" },
+            { recordName: "user_d_name", stateName: "to_user_id_d_name" },
+          ],
         },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
+        to_user_id_name: {
+          fieldType: "input",
+          label: "name",
+          readOnly: true,
+          value: "",
         },
-        writability: true,
-        controlField: true,
-        value: "",
-        fillFields: [
-          { recordName: "user_id", stateName: "to_user_id" },
-          { recordName: "user_f_name", stateName: "to_user_id_f_name" },
-          { recordName: "user_d_name", stateName: "to_user_id_d_name" },
-        ],
-      },
-      to_user_id_name: {
-        fieldType: "input",
-        label: "name",
-        readOnly: true,
-        value: "",
-      },
-      group_no: {
-        fieldType: "input",
-        type: "number",
-        label: "group_no",
-        validation: {
-          length: 30,
+        group_no: {
+          fieldType: "input",
+          type: "number",
+          label: "group_no",
+          validation: {
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          writability: true,
+          controlField: true,
+          value: "",
+          fillFields: [
+            { recordName: "group_no", stateName: "group_no" },
+            { recordName: "group_f_name", stateName: "group_no_f_name" },
+            { recordName: "group_d_name", stateName: "group_no_d_name" },
+          ],
         },
-        validity: {
-          valid: true,
-          touched: false,
-          message: null,
-        },
-        writability: true,
-        controlField: true,
-        value: "",
-        fillFields: [
-          { recordName: "group_no", stateName: "group_no" },
-          { recordName: "group_f_name", stateName: "group_no_f_name" },
-          { recordName: "group_d_name", stateName: "group_no_d_name" },
-        ],
-      },
-      group_no_name: {
-        fieldType: "input",
-        label: "name",
-        readOnly: true,
-        value: "",
-      },
-    },
-    pks: [],
-    urls: {
-      add: "public/labels",
-      modify: "public/labels",
-      search: "public/labels",
-      pages: "public/labels/pages",
-      page: "public/labels/page",
-      lastPage: "public/labels/lastPage",
-      filter: "public/labels/filteredPages",
-      pageNo: "public/labels/pageNo",
-      delete: "public/labels",
-    },
-    fks: [
-      "from_branch_no",
-      "to_branch_no",
-      "from_user_id",
-      "to_user_id",
-      "group_no",
-    ],
-    fkListShow: null,
-    fkList: {
-      from_branch_no: {
-        mainFields: [
-          "branch_no",
-          "branch_d_name",
-          { propName: { d: "shortcut_d", f: "shortcut_f" }, label: "shortcut" },
-        ],
-        urls: {
-          add: "branches",
-          modify: "branches",
-          search: "branches",
-          pages: "branches/pages",
-          page: "branches/page",
-          lastPage: "branches/lastPage",
-          filter: "branches/filteredPages",
-          pageNo: "branches/pageNo",
-          delete: "branches",
+        group_no_name: {
+          fieldType: "input",
+          label: "name",
+          readOnly: true,
+          value: "",
         },
       },
-      to_branch_no: {
-        mainFields: [
-          "branch_no",
-          "branch_d_name",
-          { propName: { d: "shortcut_d", f: "shortcut_f" }, label: "shortcut" },
-        ],
-        urls: {
-          add: "branches",
-          modify: "branches",
-          search: "branches",
-          pages: "branches/pages",
-          page: "branches/page",
-          lastPage: "branches/lastPage",
-          filter: "branches/filteredPages",
-          pageNo: "branches/pageNo",
-          delete: "branches",
+      pks: [],
+      urls: {
+        add: "public/labels",
+        modify: "public/labels",
+        search: "public/labels",
+        pages: "public/labels/pages",
+        page: "public/labels/page",
+        lastPage: "public/labels/lastPage",
+        filter: "public/labels/filteredPages",
+        pageNo: "public/labels/pageNo",
+        delete: "public/labels",
+      },
+      fks: [
+        "from_branch_no",
+        "to_branch_no",
+        "from_user_id",
+        "to_user_id",
+        "group_no",
+      ],
+      fkList: {
+        from_branch_no: {
+          mainFields: [
+            "branch_no",
+            "branch_d_name",
+            {
+              propName: { d: "shortcut_d", f: "shortcut_f" },
+              label: "shortcut",
+            },
+          ],
+          urls: {
+            add: "branches",
+            modify: "branches",
+            search: "branches",
+            pages: "branches/pages",
+            page: "branches/page",
+            lastPage: "branches/lastPage",
+            filter: "branches/filteredPages",
+            pageNo: "branches/pageNo",
+            delete: "branches",
+          },
+        },
+        to_branch_no: {
+          mainFields: [
+            "branch_no",
+            "branch_d_name",
+            {
+              propName: { d: "shortcut_d", f: "shortcut_f" },
+              label: "shortcut",
+            },
+          ],
+          urls: {
+            add: "branches",
+            modify: "branches",
+            search: "branches",
+            pages: "branches/pages",
+            page: "branches/page",
+            lastPage: "branches/lastPage",
+            filter: "branches/filteredPages",
+            pageNo: "branches/pageNo",
+            delete: "branches",
+          },
+        },
+        from_user_id: {
+          mainFields: [
+            { label: "user_no", propName: "user_id" },
+            { propName: "direct_mang", label: "direct_manager" },
+            "group_no",
+            { label: "name", propName: "user_d_name" },
+          ],
+          urls: {
+            add: "users",
+            modify: "users",
+            search: "users",
+            pages: "users/pages",
+            page: "users/page",
+            lastPage: "users/lastPage",
+            filter: "users/filteredPages",
+            pageNo: "users/pageNo",
+            delete: "users",
+          },
+        },
+        to_user_id: {
+          mainFields: [
+            { label: "user_no", propName: "user_id" },
+            { propName: "direct_mang", label: "direct_manager" },
+            "group_no",
+            { label: "name", propName: "user_d_name" },
+          ],
+          urls: {
+            add: "users",
+            modify: "users",
+            search: "users",
+            pages: "users/pages",
+            page: "users/page",
+            lastPage: "users/lastPage",
+            filter: "users/filteredPages",
+            pageNo: "users/pageNo",
+            delete: "users",
+          },
+        },
+        group_no: {
+          mainFields: [
+            "group_no",
+            { label: "name", propName: "group_d_name" },
+            "admin_group",
+          ],
+          urls: {
+            add: "usersgroups",
+            modify: "usersgroups",
+            search: "usersgroups",
+            pages: "usersgroups/pages",
+            page: "usersgroups/page",
+            lastPage: "usersgroups/lastPage",
+            filter: "usersgroups/filteredPages",
+            pageNo: "usersgroups/pageNo",
+            delete: "usersgroups",
+          },
         },
       },
-      from_user_id: {
-        mainFields: [
-          { label: "user_no", propName: "user_id" },
-          { propName: "direct_mang", label: "direct_manager" },
-          "group_no",
-          { label: "name", propName: "user_d_name" },
-        ],
-        urls: {
-          add: "users",
-          modify: "users",
-          search: "users",
-          pages: "users/pages",
-          page: "users/page",
-          lastPage: "users/lastPage",
-          filter: "users/filteredPages",
-          pageNo: "users/pageNo",
-          delete: "users",
-        },
-      },
-      to_user_id: {
-        mainFields: [
-          { label: "user_no", propName: "user_id" },
-          { propName: "direct_mang", label: "direct_manager" },
-          "group_no",
-          { label: "name", propName: "user_d_name" },
-        ],
-        urls: {
-          add: "users",
-          modify: "users",
-          search: "users",
-          pages: "users/pages",
-          page: "users/page",
-          lastPage: "users/lastPage",
-          filter: "users/filteredPages",
-          pageNo: "users/pageNo",
-          delete: "users",
-        },
-      },
-      group_no: {
-        mainFields: [
-          "group_no",
-          { label: "name", propName: "group_d_name" },
-          "admin_group",
-        ],
-        urls: {
-          add: "usersgroups",
-          modify: "usersgroups",
-          search: "usersgroups",
-          pages: "usersgroups/pages",
-          page: "usersgroups/page",
-          lastPage: "usersgroups/lastPage",
-          filter: "usersgroups/filteredPages",
-          pageNo: "usersgroups/pageNo",
-          delete: "usersgroups",
-        },
-      },
-    },
-    tapTools: [
-      "list",
-      "delete",
-      "add",
-      "copy",
-      "search",
-      "next",
-      "previous",
-      "last",
-      "first",
-    ],
-    tools: null,
-    mode: "start",
-    // we handle prevMode in list show only ....
-    prevMode: null,
-    recordIndex: null,
-    lastIndex: null,
-    message: null,
-    loading: false,
-    listShow: false,
-    mainFields: [],
-    tapName: "branches",
-    deleteConfirm: false,
-    searchFields: [],
-    ShortCutsList: false,
-  };
-
-  // Tools Handle *********************************************
-  toolsClickedHandler = (identifier) => toolSelectHandler(identifier, this);
-  modify = () => handleModify(this);
-  undo = () => handleUndo(this);
-
-  // Handlers ************************************************
-  closeFkList = () => handleCloseFkList(this);
-  recordFkClick = (record, i) => fkRecordClickHandler(this, record);
-  inputChange = (state, identifier) =>
-    handleInputChange(this, state, identifier);
-  deleteConfirmation = (res) => handleDeleteConfirmation(this, res);
-  ShortCutsListCloseHandler = () => handleCloseShortCuts(this);
-
-  // LifeCycle methods *******************************************
+      tapTools: [
+        "list",
+        "delete",
+        "add",
+        "copy",
+        "search",
+        "next",
+        "previous",
+        "last",
+        "first",
+      ],
+    };
+  }
   componentDidMount() {
     // changeLangSelectAcivity(true)
     setlastIndex(this);
@@ -351,10 +326,6 @@ class Branches extends Component {
         f: { recordProp: "group_f_name", stateProp: "group_no_f_name" },
       },
     });
-  }
-  componentWillUnmount() {
-    functionsListenrs(this, false);
-    this.props.changeLangSelectAcivity(true);
   }
 
   save = () => {
@@ -563,7 +534,7 @@ const mapStateToProps = (state) => {
     languages: state.lang.langInfo,
     rawTree_hash: state.auth.authData.raw_tree_hash,
     forms_privs_hash: state.auth.authData.forms_privs_hash,
-    logged_user_id: state.auth.authData.user_id
+    logged_user_id: state.auth.authData.user_id,
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -582,7 +553,15 @@ const pickProps = (propsList, obj) => {
   return newObj;
 };
 
-const inputsControl = (disabled, i, propName, cursor, lanState, lanTable, logged_user_id) => {
+const inputsControl = (
+  disabled,
+  i,
+  propName,
+  cursor,
+  lanState,
+  lanTable,
+  logged_user_id
+) => {
   let message = null;
   let newCursor = cursor;
   if (!i[`can_change_${propName}`]) {
@@ -593,9 +572,9 @@ const inputsControl = (disabled, i, propName, cursor, lanState, lanTable, logged
     disabled = true;
     message = t("group_admin_cannot_change_privs", lanTable, lanState);
   }
-  if(i.user_id === logged_user_id){
+  if (i.user_id === logged_user_id) {
     disabled = true;
-    message = t("you_logged_user", lanTable, lanState);;
+    message = t("you_logged_user", lanTable, lanState);
   }
   if (message) {
     newCursor = "help";

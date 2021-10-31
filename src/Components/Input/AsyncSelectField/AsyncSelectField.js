@@ -9,7 +9,7 @@ import {faAngleDown} from "@fortawesome/free-solid-svg-icons";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import Aux from "../../../hoc/wrap";
 import { CircularProgress } from "@material-ui/core";
-import { isValid } from "../../../utilities/tap/validation";
+import { isValid } from "../../../Contianers/ScreenConstructor/screen/validation";
 
 
 class AsyncSelectField extends Component {

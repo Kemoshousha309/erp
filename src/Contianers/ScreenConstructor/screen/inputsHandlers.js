@@ -1,7 +1,6 @@
-import { selectMessage } from "../lang";
-import axios from "../../axios";
-import { t } from "../../utilities/lang";
 import { isValid } from "./validation";
+import axios from "axios";
+import { selectMessage, t } from "../../../utilities/lang";
 
 // AUTO DISPLAY FUNCTIONS
 

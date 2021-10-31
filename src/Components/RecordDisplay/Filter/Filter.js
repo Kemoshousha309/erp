@@ -6,8 +6,8 @@ import { TextField } from "@material-ui/core";
 import { Component } from "react";
 import { t } from "../../../utilities/lang";
 import { connect } from "react-redux";
-import { trigerEnterButton } from "../../../utilities/tap/utilities";
 import { getF } from "../../../utilities/utilities";
+import { trigerEnterButton } from "../../../Contianers/ScreenConstructor/screen/utilities";
 
 class Filter extends Component {
     componentDidMount () {

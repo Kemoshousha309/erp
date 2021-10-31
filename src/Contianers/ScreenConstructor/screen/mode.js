@@ -1,6 +1,6 @@
+import { getSelectLangDir } from "../../../utilities/lang"
+import { startMode, toolsNameMap } from "../../../utilities/tools"
 import { deepClone } from "./validation"
-import { getSelectLangDir } from "../lang"
-import { startMode, toolsNameMap } from "../tools"
 
 // mode processes *******************************************************
 export const handleMode = (mode, lang_no, langs, tools, changeLangSelectAcivity) => {

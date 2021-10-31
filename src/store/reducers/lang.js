@@ -63,6 +63,8 @@ const handleClearLangData = (state) => {
     "labels_storeTime",
     "messages",
     "messages_storeTime",
+    "authData",       // update the auth data and the tree as well
+    "authData_storeTime"
   ];
   itemsToRemove.forEach((i) => localStorage.removeItem(i));
   window.location.reload();
