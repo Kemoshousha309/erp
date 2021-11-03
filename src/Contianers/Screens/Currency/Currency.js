@@ -2,13 +2,14 @@ import { connect } from "react-redux";
 import { langChangeActivity } from "../../../store/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { fieldListner } from "../../ScreenConstructor/screen/fields";
+import { handleRecordClick } from "../../ScreenConstructor/screen/functions/list";
 import { handleModify } from "../../ScreenConstructor/screen/functions/modify";
 import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import { handleDetailsScreensSave } from "../../ScreenConstructor/screen/functions/save";
 import { handleDetailsScreensUndo } from "../../ScreenConstructor/screen/functions/undo";
 import { handleDrivedState } from "../../ScreenConstructor/screen/handlers";
 import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
-import { TabsHandler } from "../../ScreenConstructor/screen/tabsPanel/tabsPanel";
+import { getDetails, TabsHandler } from "../../ScreenConstructor/screen/tabsPanel/tabsPanel";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
 
 
@@ -273,6 +274,7 @@ class Currency extends ScreenConstructor {
   modify = () => handleModify(this, { local_currency_update: true });
   undo = () => handleDetailsScreensUndo.call(this);
   save = () => handleDetailsScreensSave.call(this);
+  recordClick = (record, i) => handleRecordClick(this, record, i, getDetails);
   componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);

@@ -105,34 +105,15 @@ export const displayPattren = (fields, changeHandler, thisK, additional) => {
 }
 
 export const displayPattrenTree = (fields, changeHandler, thisK, tree, additional) => {
-    const fieldsArr = [];
-    for(let key in fields){
-        let fieldobj;
-        if(fields[key].id){
-            fieldobj = {
-                ...fields[key]
-            }
-            fieldsArr.push(fieldobj);
-        }else{
-            fieldobj = {
-                id: key,
-                ...fields[key]
-            }
-            fieldsArr.push(fieldobj);
-        }
+    let tapContent = displayGrid(fields, 2, changeHandler, thisK)
+    if(thisK.state.gridType){
+     tapContent = displayGrid(fields, thisK.state.gridType, changeHandler, thisK)
     }
-    const content = fieldsArr.map(f => {
-        return (
-            <div key={f.id} >
-                {inputField(f, changeHandler, thisK)}
-            </div>
-        )
-    })
     return (
         <div   className="row px-3 mt-4">
             <div className="col-sm-8 px-0" >
                 <form>
-                {content}
+                {tapContent}
                 {additional}
                 </form>
             </div>

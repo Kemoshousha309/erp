@@ -1,5 +1,5 @@
 import { isValid } from "./validation";
-import axios from "axios";
+import axios from "../../../axios";
 import { selectMessage, t } from "../../../utilities/lang";
 
 // AUTO DISPLAY FUNCTIONS
@@ -50,6 +50,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
       fields,
       lanState
     );
+    fields[listenField].usedRecord = "LOADING"
     thisK.setState({ fields: fields });
 
     if (value !== "") {
@@ -59,6 +60,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
         .then((res) => {
           const { data: record } = res;
           // fill the fields main and others
+          fields[listenField].usedRecord = record
           fillAutoDisplayFields(record, fillFields, fields, thisK, lanState);
         })
         .catch((err) => {
@@ -71,6 +73,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
           }
           // put the err message
           fields = setMainField(main, errorMess, fields, lanState);
+          fields[listenField].usedRecord = null
           thisK.setState({ fields: fields });
         });
     } else {
@@ -79,6 +82,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
       if (others) {
         fields = emptyOtherFields(others, fields, lanState);
       }
+      fields[listenField].usedRecord = null
       thisK.setState({ fields: fields });
     }
   };
@@ -98,13 +102,7 @@ const setMainField = (main, value, fields, lang_no) => {
   return fields;
 };
 
-const fill = (
-  fields,
-  stateProp,
-  recordProp,
-  record,
-  recordPropO
-) => {
+const fill = (fields, stateProp, recordProp, record, recordPropO) => {
   if (fields[stateProp]) {
     if (record[recordProp]) {
       fields[stateProp].value = record[recordProp];
@@ -134,14 +132,12 @@ const fillAutoDisplayFields = (record, fillFields, fields, thisK, lang_no) => {
     if (key === "main") {
       const { stateProp, recordProp } = item[lanState];
       // other props names based on other statee
-      const { recordProp: recordPropO } =
-        item[otherState];
+      const { recordProp: recordPropO } = item[otherState];
       fill(fields, stateProp, recordProp, record, recordPropO);
     } else {
       item.forEach((i) => {
         const { stateProp, recordProp } = i[lanState];
-        const { recordProp: recordPropO } =
-          i[otherState];
+        const { recordProp: recordPropO } = i[otherState];
 
         fill(fields, stateProp, recordProp, record, recordPropO);
       });

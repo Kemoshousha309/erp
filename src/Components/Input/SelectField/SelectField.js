@@ -10,7 +10,7 @@ class SelectField extends Component {
     state = {
         value: "", 
         touched: false,
-        valid: false,
+        valid: true,
         invalidFeedBack: null,
         lastPropValue: null,
         lastPropValid: null

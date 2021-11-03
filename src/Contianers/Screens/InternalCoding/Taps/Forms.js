@@ -161,7 +161,6 @@ class Forms extends ScreenConstructor {
         },
       },
       pks: ["form_no"],
-      listShow: false,
       tapName: "forms",
       mainFields: ["form_no", "module_no", "form_d_name"],
       searchFields: ["form_no"],

@@ -15,6 +15,8 @@ const AsyncScreenPrivs = asyncComponent(() => import( "../Screens/ScreenPrivs/Sc
 const AsyncInputPrivs = asyncComponent(() => import( "../Screens/InputPrivs/InputPrivs"))
 const AsyncSystemCommands = asyncComponent(() => import( "../Screens/SystemCommands/SystemCommands.js"))
 const AsyncCurrency = asyncComponent(() => import( "../Screens/Currency/Currency"))
+const AsyncChartsOfAccounts = asyncComponent(() => import( "../Screens/ChartsOfAccounts/ChartsOfAccounts"))
+const AsyncEmployeeInformations = asyncComponent(() => import( "../Screens/EmployeeInformations/EmployeeInformations"))
 
 
 class MainScreen extends Component  {
@@ -49,6 +51,8 @@ class MainScreen extends Component  {
                         <Route path={rootPath +"/system-commands"} exact component={AsyncSystemCommands} />
                         <Route path={rootPath +"/currency"} exact component={AsyncCurrency} />
                         <Route path={rootPath +"/financial-coding"} exact component={AsyncFinancialCoding} />
+                        <Route path={rootPath +"/accounts-charts"} exact component={AsyncChartsOfAccounts} />
+                        <Route path={rootPath +"/empolyee-info"} exact component={AsyncEmployeeInformations} />
                     </Switch>
                 </div>
             </Aux>

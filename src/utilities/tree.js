@@ -250,6 +250,7 @@ export const treehandler = (event, sideNavActivity) => {
         }else if(children.classList.contains("d-block")){
             children.classList.remove("d-block")
             children.classList.add("d-none")
+
         }
     }
 }
@@ -269,7 +270,7 @@ export const routeMap = [
     },
     {
         form_no: 2101,
-        route: ""
+        route: "accounts-charts?no=2101"
     },
     {
         form_no: 2102,
@@ -404,6 +405,10 @@ export const routeMap = [
     {
         form_no: 1304,
         route: "currency?no=1304"
+    },
+    {
+        form_no: 1305,
+        route: "empolyee-info?no=1305"
     },
 ]
 

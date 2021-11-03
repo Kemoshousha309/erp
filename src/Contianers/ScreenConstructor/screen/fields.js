@@ -116,19 +116,17 @@ export const getPkUrl = (pks, record) => {
 };
 
 export const setReadOnlyFields = (fieldnames, fields) => {
-  const fieldsClone = JSON.parse(JSON.stringify(fields))
   fieldnames.forEach((i) => {
-    fieldsClone[i].writability = false;
+    fields[i].writability = false;
   });
-  return fieldsClone;
+  return fields;
 };
 
 export const setDefaultValues = (fields, defaultValues) => {
-  const fieldsClone = JSON.parse(JSON.stringify(fields))
   Object.keys(defaultValues).forEach(key => {
-    fieldsClone[key].value = defaultValues[key]
+    fields[key].value = defaultValues[key]
   })  
-  return fieldsClone
+  return fields
 };
 
 export function fieldListner(fieldName, handler) {
