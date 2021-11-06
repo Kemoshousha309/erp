@@ -23,12 +23,16 @@ export const t = (code, langTables, lang_no, placeholder) => {
 }
 
 export const selectMessage = (messages, lang_no) => {
-    if(parseInt(lang_no) === 1){
-        return messages.ar
-    }else{
-        return messages.en
+    if(messages){
+        if(parseInt(lang_no) === 1){
+            return messages.ar
+        }else{
+            return messages.en
+        }
+    }else {
+        return "";
     }
-}
+}   
 export const decideLanguageName = (languages, input, langTables, lang_no)=> {
     let name = ""
     languages.forEach(lan => {

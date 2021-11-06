@@ -22,17 +22,19 @@ const gridContent = (fields, grid) => {
     const fieldsArr = [];
     for(let key in fields){
         let fieldobj;
-        if(fields[key].id){
-            fieldobj = {
-                ...fields[key]
+        if(!fields[key].hide){
+            if(fields[key].id){
+                fieldobj = {
+                    ...fields[key]
+                }
+                fieldsArr.push(fieldobj);
+            }else{
+                fieldobj = {
+                    id: key,
+                    ...fields[key]
+                }
+                fieldsArr.push(fieldobj);
             }
-            fieldsArr.push(fieldobj);
-        }else{
-            fieldobj = {
-                id: key,
-                ...fields[key]
-            }
-            fieldsArr.push(fieldobj);
         }
     }
     const Arr = formatItems(fieldsArr, grid);

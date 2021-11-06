@@ -28,7 +28,7 @@ class SelectField extends Component {
         let options = null
         if(field.options) {
            options = field.options.map(op => {
-                return <option key={op.value} value={op.value}>{op.template}</option>
+                return <option key={op.value} value={op.value}>{t(op.template, this.props.lanTable, this.props.lanState)}</option>
             })
         }
          // style 

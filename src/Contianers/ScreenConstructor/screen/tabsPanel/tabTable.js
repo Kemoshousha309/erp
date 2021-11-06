@@ -1,8 +1,4 @@
-import {
-  CircularProgress,
-  createMuiTheme,
-  TextField,
-} from "@material-ui/core";
+import { CircularProgress, createTheme } from "@material-ui/core";
 
 import { faPlusCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,8 +7,7 @@ import { detialFieldValidity } from "../validation";
 import { addHandler, inputChangeHandler, removeHandler } from "./handlers";
 import { formatDate } from "../../../../utilities/date";
 import { decideName, t } from "../../../../utilities/lang";
-
-
+import { selectField } from "./detailFields";
 
 export function tabTable() {
   const {
@@ -26,7 +21,7 @@ export function tabTable() {
   const tab = tabs[current_tab];
   const { headers, viewOnly } = tab;
 
-  const theme = createMuiTheme({
+  const theme = createTheme({
     direction: parseInt(lanState) === 1 ? "rtl" : "ltr",
     typography: {
       fontSize: 20,
@@ -44,9 +39,13 @@ export function tabTable() {
     );
   }
 
-  let output = null; 
+  let output = null;
 
-  output = loading ? <div className={style.loaderContainer}><CircularProgress /></div> : null
+  output = loading ? (
+    <div className={style.loaderContainer}>
+      <CircularProgress />
+    </div>
+  ) : null;
 
   if (details_exist || mode === "add") {
     output = (
@@ -132,12 +131,12 @@ function tableBody(tab, theme) {
   const { headers, viewOnly, recordDetailPropName } = tabs[current_tab];
   const {
     state: { mode, record },
-    props: {lanState}
+    props: { lanState },
   } = this;
   let pages = [];
   if (record) {
     if (record[recordDetailPropName]) {
-      pages = record[recordDetailPropName]
+      pages = record[recordDetailPropName];
     }
   }
 
@@ -147,47 +146,55 @@ function tableBody(tab, theme) {
       {pages.map((page, index) => {
         if (page.action === "delete") {
           return null;
-        }else{
+        } else {
           const returnedValue = (
             <tr key={index}>
               <th scope="row" style={{ verticalAlign: "middle" }}>
                 {hashIndex}
               </th>
               {headers.map((i, ix) => {
-                let { propName, disabled, type, validationRules, changeOnLang } = i;
+                let {
+                  propName,
+                  disabled,
+                  type,
+                  validationRules,
+                  changeOnLang,
+                } = i;
+
+                const Field = selectField(type);
                 const [valid, message] = detialFieldValidity(page, propName);
                 if (page.action === "add") {
                   disabled = false;
                 }
-                if(changeOnLang){
-                  propName = decideName(propName, lanState)
+                if (changeOnLang) {
+                  propName = decideName(propName, lanState);
                 }
-                let value = page[propName] === null ? "-" : page[propName]
-                if(type === "date"){
-                  value = formatDate(value, 12)
+                let value = page[propName] === null ? "-" : page[propName];
+                if (type === "date") {
+                  value = formatDate(value, 12);
                 }
                 let output = <td key={ix}>{value}</td>;
                 if (["modify", "add"].includes(mode) && !viewOnly) {
                   output = (
                     <td key={ix}>
-                        <TextField
-                          error={!valid}
-                          helperText={message}
-                          type={type}
-                          autoComplete="off"
-                          disabled={disabled}
-                          id={propName}
-                          value={value}
-                          onChange={(event) =>
-                            inputChangeHandler.call(
-                              this,
-                              event,
-                              index,
-                              page[propName],
-                              validationRules
-                            )
-                          }
-                        />
+                      <Field
+                        error={!valid}
+                        helperText={message}
+                        type={type}
+                        autoComplete="off"
+                        disabled={disabled}
+                        id={propName}
+                        value={value}
+                        onChange={(event) =>
+                          inputChangeHandler.call(
+                            this,
+                            event,
+                            index,
+                            page[propName],
+                            validationRules
+                          )
+                        }
+                      />
                     </td>
                   );
                 }
@@ -195,9 +202,9 @@ function tableBody(tab, theme) {
               })}
               {removeIcon.call(this, viewOnly, mode, index)}
             </tr>
-          )
-          hashIndex ++
-          return returnedValue
+          );
+          hashIndex++;
+          return returnedValue;
         }
       })}
     </tbody>

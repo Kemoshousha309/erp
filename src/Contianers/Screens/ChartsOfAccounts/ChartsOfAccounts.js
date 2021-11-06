@@ -1,9 +1,8 @@
 import { CircularProgress } from "@material-ui/core";
 import { connect } from "react-redux";
 import { langChangeActivity } from "../../../store/actions/lang";
-import { t } from "../../../utilities/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
-import { handleRecordClick } from "../../ScreenConstructor/screen/functions/list";
+import { fkRecordClickHandler, handleRecordClick } from "../../ScreenConstructor/screen/functions/list";
 import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import { handleDrivedState } from "../../ScreenConstructor/screen/handlers";
 import {
@@ -12,12 +11,14 @@ import {
 } from "../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
-import { getAccTree, parentAccHandler } from "./Utilities";
+import { getAccTree, parentAccHandler, updateOnParentAcc } from "./Utilities";
+import axios from "../../../axios";
+import { TabsHandler } from "../../ScreenConstructor/screen/tabsPanel/tabsPanel";
+
 
 class ChartsOfAccounts extends ScreenConstructor {
   constructor(props) {
     super(props);
-    const {lanTable, lanState} = props
     this.state = {
       ...this.state,
       fields: {
@@ -27,7 +28,7 @@ class ChartsOfAccounts extends ScreenConstructor {
           label: "parent_acc",
           validation: {
             requiered: true,
-            length: 30,
+            size: 2147483647,
           },
           validity: {
             valid: true,
@@ -42,6 +43,7 @@ class ChartsOfAccounts extends ScreenConstructor {
             { recordName: "acc_f_name", stateName: "parent_acc_f_name" },
             { recordName: "acc_no", stateName: "parent_acc" },
           ],
+          prevReqStatus: "FULFILLED"
         },
         parent_acc_name: {
           fieldType: "input",
@@ -55,7 +57,7 @@ class ChartsOfAccounts extends ScreenConstructor {
           label: "acc_no",
           validation: {
             requiered: true,
-            length: 30,
+            size: 2147483647,
           },
           validity: {
             valid: true,
@@ -71,7 +73,7 @@ class ChartsOfAccounts extends ScreenConstructor {
           label: "name",
           validation: {
             requiered: true,
-            length: 30,
+            length: 100,
           },
           validity: {
             valid: true,
@@ -86,8 +88,7 @@ class ChartsOfAccounts extends ScreenConstructor {
           type: "text",
           label: "foreign_name",
           validation: {
-            requiered: true,
-            length: 30,
+            length: 100,
           },
           validity: {
             valid: true,
@@ -103,14 +104,14 @@ class ChartsOfAccounts extends ScreenConstructor {
           readOnly: true,
           value: "",
         },
-        acc_type: {
+        sub: {
           fieldType: "select",
           type: "select",
-          label: "acc_type",
+          label: "type",
           readOnly: true,
           options: [
-            { template: t("sub", lanTable, lanState), value: true },
-            { template: t("main", lanTable, lanState), value: false },
+            { template: "sub", value: true },
+            { template: "main", value: false },
           ],
           value: "",
         },
@@ -119,7 +120,6 @@ class ChartsOfAccounts extends ScreenConstructor {
           type: "text",
           label: "report_type",
           validation: {
-            requiered: true,
             length: 30,
           },
           validity: {
@@ -128,8 +128,8 @@ class ChartsOfAccounts extends ScreenConstructor {
             message: null,
           },
           options: [
-            { template: t("balance_sheet", lanTable, lanState), value: true },
-            { template: t("profit_loss", lanTable, lanState), value: false },
+            { template: "balance_sheet", value: true },
+            { template: "profit_loss", value: false },
           ],
           writability: false,
           value: "",
@@ -140,7 +140,7 @@ class ChartsOfAccounts extends ScreenConstructor {
           label: "group",
           validation: {
             requiered: true,
-            length: 30,
+            size: 2147483647,
           },
           validity: {
             valid: true,
@@ -159,6 +159,97 @@ class ChartsOfAccounts extends ScreenConstructor {
           fieldType: "input",
           label: "name",
           readOnly: true,
+          value: "",
+        },
+        cc_post: {
+          fieldType: "select",
+          type: "text",
+          label: "cc_post",
+          validation: {
+            length: 11,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          options: [
+            { template: "mandatury", value: 1 },
+            { template: "optional", value: 3 },
+            { template: "not_used", value: 2 },
+          ],
+          writability: false,
+          value: "",
+        },
+        // sub fields 
+        acc_type: {
+          fieldType: "select",
+          type: "text",
+          label: "acc_type",
+          validation: {
+            length: 100,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          options: [
+            { template: "general", value: 1 },
+            { template: "cash_on_hand", value: 2 },
+            { template: "bank", value: 3 },
+            { template: "customer", value: 4 },
+            { template: "supplier", value: 5 },
+            { template: "other_debit", value: 6 },
+            { template: "other_credit", value: 7 },
+            { template: "employee", value: 8 },
+          ],
+          writability: false,
+          hide: true,
+          value: "",
+        },
+        cash_flow_type: {
+          fieldType: "select",
+          type: "text",
+          label: "cash_flow_type",
+          validation: {
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          options: [
+            { template: "invest", value: 2 },
+            { template: "finance", value: 3 },
+            { template: "operation", value: 1 },
+          ],
+          writability: false,
+          hide: true,
+          value: "",
+        },
+        acc_dtl: {
+          fieldType: "select",
+          type: "text",
+          label: "acc_dtl",
+          validation: {
+            length: 30,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          options: [
+            { template: "cash_cash_equevilant", value: 1 },
+            { template: "inventory", value: 2 },
+            { template: "acc_recievable", value: 3 },
+            { template: "fixed_asset", value: 4 },
+            { template: "Intangible_assets", value: 5 },
+          ],
+          writability: false,
+          hide: true,
           value: "",
         },
       },
@@ -235,9 +326,53 @@ class ChartsOfAccounts extends ScreenConstructor {
         nodeIdentifier: "acc_no",
       },
       treeLoading: <CircularProgress className="m-5" />,
+      details: {
+        current_tab: "currency",
+        loading: false,
+        tabs: {
+          currency: {
+            label: "currency",
+            headers: [
+              {
+                propName: "cur_code",
+                label: "currency_code",
+                disabled: true,
+                type: "number",
+                validationRules: {
+                  requiered: true,
+                },
+              },
+              {
+                propName: "active",
+                label: "active",
+                disabled: true,
+                type: "checkbox",
+                validationRules: {
+                  requiered: true,
+                },
+              },
+              {
+                propName: "used",
+                label: "used",
+                disabled: true,
+                type: "checkbox",
+                validationRules: {
+                  requiered: true,
+                },
+              },
+            ],
+            viewOnly: false,
+            recordDetailPropName: "account_currency_list",
+            pageURL: {
+              master: "currency_code",
+              temp: "currency",
+            },
+          },
+        },
+      },
     };
   }
-  recordClick = (record, i) => handleRecordClick(this, record, i, );
+  recordFkClick = (record) => fkRecordClickHandler(this, record, updateFields);
   treeNodeClick = (record) => handleRecordClick(this, record);
   componentDidMount() {
     setlastIndex(this);
@@ -283,7 +418,8 @@ class ChartsOfAccounts extends ScreenConstructor {
     };
   }
   render() {
-    return displayContent(this, this.props.location);
+    const tabs = TabsHandler.call(this);
+    return displayContent(this, this.props.location, tabs);
   }
 }
 const mapStateToProps = (state) => {
@@ -302,3 +438,19 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ChartsOfAccounts);
+
+
+function updateFields(record) {
+  axios.get(`chartofaccounts/nextPK/${record.acc_no}`)
+  .then(res => {
+    this.setState((state, props) => {
+      const { fields } = state;
+      fields.acc_no.value = res.data.next_PK
+        ? res.data.next_PK
+        : "";
+      return {
+        fields: updateOnParentAcc.call(this, fields, record, "PRESENT"),
+      };
+    });
+  }).catch(err => console.log(err))
+} 

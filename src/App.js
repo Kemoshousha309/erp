@@ -7,7 +7,7 @@ import Login from "./Contianers/Login/Login";
 import { checkLabelesLocalStorage } from "./store";
 import { Redirect } from "react-router";
 import {
-  createMuiTheme,
+  createTheme,
   ThemeProvider,
   jssPreset,
   StylesProvider,
@@ -36,7 +36,7 @@ class App extends Component {
       appLangState = style.ltr;
     }
 
-    const theme = createMuiTheme({
+    const theme = createTheme({
       direction: dir,
       typography: {
         fontSize: 22,
