@@ -9,9 +9,16 @@ import { handleDetailsScreensSave } from "../../ScreenConstructor/screen/functio
 import { handleDetailsScreensUndo } from "../../ScreenConstructor/screen/functions/undo";
 import { handleDrivedState } from "../../ScreenConstructor/screen/handlers";
 import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
-import { getDetails, TabsHandler } from "../../ScreenConstructor/screen/tabsPanel/tabsPanel";
+import {
+  addHandler,
+  detailsInputChangeHandler,
+  removeHandler,
+  tabsChangeHandler,
+} from "../../ScreenConstructor/screen/Details/handlers";
+import DetailsPanel from "../../ScreenConstructor/screen/Details/DetailsPanel";
+import { getDetails } from "../../ScreenConstructor/screen/Details/Utilities";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
-
+import _ from "lodash";
 
 class Currency extends ScreenConstructor {
   constructor() {
@@ -280,6 +287,17 @@ class Currency extends ScreenConstructor {
     functionsListenrs(this, true);
     fieldListner.call(this, "local_currency", rateValidtaion);
   }
+
+  // DETAILS HANDLERS
+  navigateTabsHandler = (value) => tabsChangeHandler(value)
+
+  detailsAddHandler = (e) => addHandler.call(this, e);
+
+  detailsRemoveHandler = (index, e) => removeHandler.call(this, index, e);
+
+  detailsInputChangeHandler = (event, index, serverValue, validationRules) =>
+    detailsInputChangeHandler.call(this, event, index, serverValue, validationRules);
+
   static getDerivedStateFromProps(props, state) {
     // open local currency field when the local currency field is open
     const {
@@ -309,13 +327,26 @@ class Currency extends ScreenConstructor {
     };
   }
   render() {
-    const { mode, fields, local_currency_update } = this.state;
+    const { mode, fields, local_currency_update, record, details } = this.state;
     if (mode === "modify" && local_currency_update) {
       rateValidtaion(fields.local_currency.value, null, this);
       this.setState({ local_currency_update: false });
     }
-    const tabs = TabsHandler.call(this);
-    return displayContent(this, this.props.location, tabs);
+    // const tabs = TabsHandler.call(this);
+    const detailsPanel = (
+      <DetailsPanel
+        current_tab={details.current_tab}
+        details={details}
+        record={_.clone(record)}
+        mode={mode}
+        navigateTabsHandler={this.navigateTabsHandler}
+        detailsAddHandler={this.detailsAddHandler}
+        detailsRemoveHandler={this.detailsRemoveHandler}
+        detailsInputChangeHandler={this.detailsInputChangeHandler}
+      />
+    );
+
+    return displayContent(this, this.props.location, detailsPanel);
   }
 }
 

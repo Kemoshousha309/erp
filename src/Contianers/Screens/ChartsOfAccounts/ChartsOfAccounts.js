@@ -13,7 +13,6 @@ import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
 import { getAccTree, parentAccHandler, updateOnParentAcc } from "./Utilities";
 import axios from "../../../axios";
-import { TabsHandler } from "../../ScreenConstructor/screen/tabsPanel/tabsPanel";
 
 
 class ChartsOfAccounts extends ScreenConstructor {
@@ -418,8 +417,8 @@ class ChartsOfAccounts extends ScreenConstructor {
     };
   }
   render() {
-    const tabs = TabsHandler.call(this);
-    return displayContent(this, this.props.location, tabs);
+    // const tabs = TabsHandler.call(this);
+    return displayContent(this, this.props.location);
   }
 }
 const mapStateToProps = (state) => {

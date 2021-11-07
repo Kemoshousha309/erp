@@ -1,80 +1,18 @@
-import { CircularProgress, createTheme } from "@material-ui/core";
-
-import { faPlusCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import style from "./style.module.scss";
-import { detialFieldValidity } from "../validation";
-import { addHandler, inputChangeHandler, removeHandler } from "./handlers";
-import { formatDate } from "../../../../utilities/date";
 import { decideName, t } from "../../../../utilities/lang";
 import { selectField } from "./detailFields";
-
-export function tabTable() {
-  const {
-    state: {
-      details: { tabs, current_tab, loading },
-      mode,
-      record,
-    },
-    props: { lanState, lanTable },
-  } = this;
-  const tab = tabs[current_tab];
-  const { headers, viewOnly } = tab;
-
-  const theme = createTheme({
-    direction: parseInt(lanState) === 1 ? "rtl" : "ltr",
-    typography: {
-      fontSize: 20,
-    },
-  });
-
-  const properties = Object.keys(tabs).map(
-    (key) => tabs[key].recordDetailPropName
-  );
-  let details_exist = false;
-  if (record) {
-    details_exist = properties.reduce(
-      (accum, cur) => record[cur] && accum,
-      true
-    );
-  }
-
-  let output = null;
-
-  output = loading ? (
-    <div className={style.loaderContainer}>
-      <CircularProgress />
-    </div>
-  ) : null;
-
-  if (details_exist || mode === "add") {
-    output = (
-      <div className={style.container}>
-        <div className={style.header}>
-          {addIcon.call(this, viewOnly, mode)}
-          {/* {paginator.call(this, theme)} */}
-        </div>
-        <div id="tableContainer" className={style.tableContainer}>
-          <table className="table">
-            {tableHead(headers, lanTable, lanState)}
-            {tableBody.call(this, tab, theme)}
-          </table>
-        </div>
-      </div>
-    );
-  }
-  return output;
-}
+import { detialFieldValidity } from "../validation";
+import { formatDate } from "../../../../utilities/date";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlusCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import style from "./style.module.scss";
+import axios from "../../../../axios";
 
 // UTILITIES =>
-function addIcon(viewOnly, mode) {
+export function addIcon(viewOnly, mode, addHandler) {
   if (!viewOnly) {
     if (["add", "modify"].includes(mode)) {
       return (
-        <button
-          className={style.addIcon}
-          onClick={(e) => addHandler.call(this, e)}
-        >
+        <button className={style.addIcon} onClick={(e) => addHandler(e)}>
           <FontAwesomeIcon icon={faPlusCircle} />
         </button>
       );
@@ -86,14 +24,14 @@ function addIcon(viewOnly, mode) {
   }
 }
 
-function removeIcon(viewOnly, mode, index) {
+function removeIcon(viewOnly, mode, index, removeHandler) {
   if (!viewOnly) {
     if (["add", "modify"].includes(mode)) {
       return (
         <td>
           <button
             className={style.removeIcon}
-            onClick={(e) => removeHandler.call(this, index, e)}
+            onClick={(e) => removeHandler(index, e)}
           >
             <FontAwesomeIcon icon={faTrashAlt} />
           </button>
@@ -107,7 +45,7 @@ function removeIcon(viewOnly, mode, index) {
   }
 }
 
-const tableHead = (headers, lanTable, lanState) => {
+export const tableHead = (headers, lanTable, lanState) => {
   return (
     <thead>
       <tr>
@@ -126,20 +64,24 @@ const tableHead = (headers, lanTable, lanState) => {
   );
 };
 
-function tableBody(tab, theme) {
-  const { current_tab, tabs } = this.state.details;
+export function tableBody(
+  tab,
+  theme,
+  tabs,
+  current_tab,
+  record,
+  lanState,
+  mode,
+  removeHandler,
+  inputChangeHandler
+) {
   const { headers, viewOnly, recordDetailPropName } = tabs[current_tab];
-  const {
-    state: { mode, record },
-    props: { lanState },
-  } = this;
   let pages = [];
   if (record) {
     if (record[recordDetailPropName]) {
       pages = record[recordDetailPropName];
     }
   }
-
   let hashIndex = 1;
   return (
     <tbody>
@@ -186,8 +128,7 @@ function tableBody(tab, theme) {
                         id={propName}
                         value={value}
                         onChange={(event) =>
-                          inputChangeHandler.call(
-                            this,
+                          inputChangeHandler(
                             event,
                             index,
                             page[propName],
@@ -200,7 +141,7 @@ function tableBody(tab, theme) {
                 }
                 return output;
               })}
-              {removeIcon.call(this, viewOnly, mode, index)}
+              {removeIcon(viewOnly, mode, index, removeHandler)}
             </tr>
           );
           hashIndex++;
@@ -209,4 +150,32 @@ function tableBody(tab, theme) {
       })}
     </tbody>
   );
+}
+
+export function getDetails(record, i) {
+  const {
+    details: { tabs },
+    details,
+  } = this.state;
+  const detailsPagesURLs = Object.keys(tabs).map((key) => {
+    tabs[key].pageURL.id = key;
+    return tabs[key].pageURL;
+  });
+  detailsPagesURLs.forEach((pageURL) => {
+    const { master, temp, id } = pageURL;
+    const url = `${temp}/${record[master]}`;
+    console.log(url);
+    this.setState({ details: { ...details, loading: true } });
+    axios
+      .get(url)
+      .then((res) => {
+        record[tabs[id].recordDetailPropName] =
+          res.data[tabs[id].recordDetailPropName];
+        this.setState({
+          record: record,
+          details: { ...details, loading: false },
+        });
+      })
+      .catch((err) => console.log(err));
+  });
 }

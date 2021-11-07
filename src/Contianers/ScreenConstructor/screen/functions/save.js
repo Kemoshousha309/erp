@@ -4,7 +4,7 @@ import { checkDetailsValidity, checkValidity } from "../validation";
 import axios from "../../../../axios"
 import { logout } from "../../../../store";
 import { store } from "../../../../index";
-import { getDetails } from "../tabsPanel/tabsPanel";
+import { getDetails } from "../Details/Utilities";
 import { selectMessage } from "../../../../utilities/lang";
 
 // save processes ***************************************************

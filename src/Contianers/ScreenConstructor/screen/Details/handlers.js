@@ -2,7 +2,7 @@ import { isValid } from "../validation";
 
 
 // HANDLERS
-export function inputChangeHandler(event, index, serverValue, validationRules) {
+export function detailsInputChangeHandler(event, index, serverValue, validationRules) {
   const {
     target: { value, id },
   } = event;
@@ -60,6 +60,7 @@ export function addHandler(e) {
 
 export function removeHandler(index, e) {
   e.preventDefault();
+  debugger;
   const {
     record,
     details: { current_tab, tabs },
@@ -72,49 +73,10 @@ export function removeHandler(index, e) {
   this.setState({ record: record });
 }
 
-//  LEGACY PAGINATOR
-// function paginator(theme) {
-//   const { record, mode, fields } = this.state;
-//   if (["d_record", "modify"].includes(mode)) {
-//     const { current_tab, tabs } = this.state.details;
-//     const { pageURL, recordDetailPropName } = tabs[current_tab];
-//     const recordDetail = record[recordDetailPropName];
-//     const master = fields[pageURL.master].value;
-//     let page_no = 1;
-//     let pages_count = 1;
-//     if (recordDetail.pages) {
-//       page_no = recordDetail.page_no;
-//       pages_count = recordDetail.pages_count;
-//     }
-//     return (
-//       <div className={style.pagContainer}>
-//         <ThemeProvider theme={theme}>
-//           <Pagination
-//             onChange={(e, v) =>
-//               pagHandler.call(this, e, v, current_tab, master)
-//             }
-//             count={pages_count}
-//             page={page_no}
-//             color="primary"
-//           />
-//         </ThemeProvider>
-//       </div>
-//     );
-//   }
-// }
-// function pagHandler(event, value, tabId, master) {
-//   const { details, record } = this.state;
-//   const {
-//     recordDetailPropName,
-//     pageURL: { temp },
-//   } = details.tabs[tabId];
-//   const url = `${temp}/${master}/${value}`;
-//   this.setState({ loading: true });
-//   axios
-//     .get(url)
-//     .then((res) => {
-//       record[recordDetailPropName] = res.data;
-//       this.setState({ details: details, loading: false, record: record });
-//     })
-//     .catch((err) => console.log(err));
-// }
+export function tabsChangeHandler(value) {
+  const {
+    state: { details },
+  } = this;
+  details.current_tab = value;
+  this.setState({ details: details });
+}
