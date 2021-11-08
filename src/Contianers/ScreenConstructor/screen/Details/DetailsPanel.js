@@ -1,10 +1,9 @@
-import { CircularProgress, createTheme } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
+import _ from "lodash";
 import { Component } from "react";
-import { connect } from "react-redux";
 import TabPanel from "../../../../Components/UI/TabPanel/TabPanel";
 import style from "./style.module.scss";
 import { addIcon, tableBody, tableHead } from "./Utilities";
-
 
 class DetailsPanel extends Component {
   render() {
@@ -14,7 +13,7 @@ class DetailsPanel extends Component {
         lanTable,
         navigateTabsHandler,
         current_tab,
-        details: { loading, tabs },
+        details: { loading, tabs, type },
         mode,
         record,
         detailsAddHandler,
@@ -25,13 +24,6 @@ class DetailsPanel extends Component {
 
     const tab = tabs[current_tab];
     const { headers, viewOnly } = tab;
-    const theme = createTheme({
-      direction: parseInt(lanState) === 1 ? "rtl" : "ltr",
-      typography: {
-        fontSize: 20,
-      },
-    });
-
     const properties = Object.keys(tabs).map(
       (key) => tabs[key].recordDetailPropName
     );
@@ -61,8 +53,7 @@ class DetailsPanel extends Component {
             <table className="table">
               {tableHead(headers, lanTable, lanState)}
               {tableBody(
-                tab,
-                theme,
+                type,
                 tabs,
                 current_tab,
                 record,
@@ -90,11 +81,28 @@ class DetailsPanel extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
-  };
-};
+export function initDetials() {
+  const {
+    state: { details, record, mode },
+    props: {lanState, lanTable},
+    navigateTabsHandler,
+    detailsRemoveHandler,
+    detailsAddHandler,
+    detailsInputChangeHandler,
+  } = this;
 
-export default connect(mapStateToProps, null)(DetailsPanel);
+  return ( details.show ? 
+    <DetailsPanel
+      lanState={lanState}
+      lanTable={lanTable}
+      current_tab={details.current_tab}
+      details={details}
+      record={_.clone(record)}
+      mode={mode}
+      navigateTabsHandler={navigateTabsHandler}
+      detailsAddHandler={detailsAddHandler}
+      detailsRemoveHandler={detailsRemoveHandler}
+      detailsInputChangeHandler={detailsInputChangeHandler}
+    /> : null
+  );
+}

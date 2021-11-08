@@ -4,8 +4,8 @@ import { checkDetailsValidity, checkValidity } from "../validation";
 import axios from "../../../../axios"
 import { logout } from "../../../../store";
 import { store } from "../../../../index";
-import { getDetails } from "../Details/Utilities";
 import { selectMessage } from "../../../../utilities/lang";
+import { getDetails } from "../Details/requestDetails";
 
 // save processes ***************************************************
 export const handleSave = (thisK, func) => {
@@ -83,17 +83,17 @@ const handleSaveRequest = (thisK, func) => {
 };
 
 
-export function handleDetailsScreensSave() {
+export function handleDetailsScreensSave(callback) {
   const [valid, fieldsUpdate] = checkValidity(this);
   const detailsValid = checkDetailsValidity.call(this)
   if (valid && detailsValid) {
-    handleDetailsScreensSaveRequest.call(this)
+    handleDetailsScreensSaveRequest.call(this, callback)
   } else {
     this.setState({ fields: fieldsUpdate });
   }
 }
 
-function handleDetailsScreensSaveRequest() {
+function handleDetailsScreensSaveRequest(callback) {
   const { mode, urls, fields: masterfields, record, details: {tabs} } = this.state
   let method = null;
   let url = null;
@@ -122,6 +122,9 @@ function handleDetailsScreensSaveRequest() {
     data: body
   })
     .then((res) => {
+      if(callback){
+        callback()
+      }
       fields(masterfields, "close", false);
       const message = {
         content: selectMessage(res.data.message, this.props.lanState),

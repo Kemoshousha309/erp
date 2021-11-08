@@ -1,11 +1,10 @@
 import { decideName, t } from "../../../../utilities/lang";
-import { selectField } from "./detailFields";
+import { Field } from "./detailFields";
 import { detialFieldValidity } from "../validation";
 import { formatDate } from "../../../../utilities/date";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import style from "./style.module.scss";
-import axios from "../../../../axios";
 
 // UTILITIES =>
 export function addIcon(viewOnly, mode, addHandler) {
@@ -21,27 +20,6 @@ export function addIcon(viewOnly, mode, addHandler) {
     }
   } else {
     return <div></div>;
-  }
-}
-
-function removeIcon(viewOnly, mode, index, removeHandler) {
-  if (!viewOnly) {
-    if (["add", "modify"].includes(mode)) {
-      return (
-        <td>
-          <button
-            className={style.removeIcon}
-            onClick={(e) => removeHandler(index, e)}
-          >
-            <FontAwesomeIcon icon={faTrashAlt} />
-          </button>
-        </td>
-      );
-    } else {
-      return null;
-    }
-  } else {
-    return null;
   }
 }
 
@@ -64,9 +42,8 @@ export const tableHead = (headers, lanTable, lanState) => {
   );
 };
 
-export function tableBody(
-  tab,
-  theme,
+export function tableBody( 
+  detailsType,
   tabs,
   current_tab,
   record,
@@ -103,9 +80,8 @@ export function tableBody(
                   changeOnLang,
                 } = i;
 
-                const Field = selectField(type);
                 const [valid, message] = detialFieldValidity(page, propName);
-                if (page.action === "add") {
+                if (page.action === "add" && detailsType === "PRIMARY") {
                   disabled = false;
                 }
                 if (changeOnLang) {
@@ -115,27 +91,22 @@ export function tableBody(
                 if (type === "date") {
                   value = formatDate(value, 12);
                 }
-                let output = <td key={ix}>{value}</td>;
+                let output = <td key={ix}>{value.toString()}</td>;
                 if (["modify", "add"].includes(mode) && !viewOnly) {
                   output = (
                     <td key={ix}>
-                      <Field
-                        error={!valid}
-                        helperText={message}
-                        type={type}
-                        autoComplete="off"
-                        disabled={disabled}
-                        id={propName}
-                        value={value}
-                        onChange={(event) =>
-                          inputChangeHandler(
-                            event,
-                            index,
-                            page[propName],
-                            validationRules
-                          )
-                        }
-                      />
+                      {Field(
+                        valid,
+                        message,
+                        type,
+                        disabled,
+                        propName,
+                        value,
+                        inputChangeHandler,
+                        index,
+                        page,
+                        validationRules
+                      )}
                     </td>
                   );
                 }
@@ -152,30 +123,23 @@ export function tableBody(
   );
 }
 
-export function getDetails(record, i) {
-  const {
-    details: { tabs },
-    details,
-  } = this.state;
-  const detailsPagesURLs = Object.keys(tabs).map((key) => {
-    tabs[key].pageURL.id = key;
-    return tabs[key].pageURL;
-  });
-  detailsPagesURLs.forEach((pageURL) => {
-    const { master, temp, id } = pageURL;
-    const url = `${temp}/${record[master]}`;
-    console.log(url);
-    this.setState({ details: { ...details, loading: true } });
-    axios
-      .get(url)
-      .then((res) => {
-        record[tabs[id].recordDetailPropName] =
-          res.data[tabs[id].recordDetailPropName];
-        this.setState({
-          record: record,
-          details: { ...details, loading: false },
-        });
-      })
-      .catch((err) => console.log(err));
-  });
+function removeIcon(viewOnly, mode, index, removeHandler) {
+  if (!viewOnly) {
+    if (["add", "modify"].includes(mode)) {
+      return (
+        <td>
+          <button
+            className={style.removeIcon}
+            onClick={(e) => removeHandler(index, e)}
+          >
+            <FontAwesomeIcon icon={faTrashAlt} />
+          </button>
+        </td>
+      );
+    } else {
+      return null;
+    }
+  } else {
+    return null;
+  }
 }

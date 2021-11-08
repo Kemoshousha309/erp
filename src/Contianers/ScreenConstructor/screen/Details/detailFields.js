@@ -1,13 +1,46 @@
-import { TextField } from "@material-ui/core";
-import { CheckBox } from "@material-ui/icons";
+import { Checkbox, TextField } from "@material-ui/core";
 
-export const selectField = (type) => {
+
+export const Field = (
+  valid,
+  message,
+  type,
+  disabled,
+  propName,
+  value,
+  inputChangeHandler,
+  index,
+  page,
+  validationRules
+) => {
   switch (type) {
-    case "text":
-      return TextField;
     case "checkbox":
-      return CheckBox;
+      return (
+        <Checkbox
+        color="primary"
+          type={type}
+          disabled={disabled}
+          id={propName}
+          checked={Boolean(value)}
+          onChange={(event) =>
+            inputChangeHandler(event, index, page[propName], validationRules)
+          }
+        />
+      );
     default:
-        return TextField;
+      return (
+        <TextField
+          error={!valid}
+          helperText={message}
+          type={type}
+          autoComplete="off"
+          disabled={disabled}
+          id={propName}
+          value={value}
+          onChange={(event) =>
+            inputChangeHandler(event, index, page[propName], validationRules)
+          }
+        />
+      );
   }
 };

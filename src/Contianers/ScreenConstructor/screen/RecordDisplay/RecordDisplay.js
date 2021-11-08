@@ -3,17 +3,17 @@ import Filter from "./Filter/Filter"
 import Page from "./Page/Page"
 import style from "./RecordDisplay.module.scss"
 import { Pagination } from "@material-ui/lab"
-import Spinner from "../UI/Spinner/Spinner"
-import axios from "../../axios"
+import Spinner from "../../../../Components/UI/Spinner/Spinner"
+import axios from "../../../../axios"
 import { connect } from "react-redux"
 import { Button } from "@material-ui/core"
-import { t } from "../../utilities/lang"
-import Modal from "../UI/Modal/Modal"
-import {store} from "../../index";
-import { logout } from "../../store"
-import { getPkUrl } from "../../Contianers/ScreenConstructor/screen/fields"
+import { t } from "../../../../utilities/lang"
+import Modal from "../../../../Components/UI/Modal/Modal"
+import {store} from "../../../../index";
+import { logout } from "../../../../store"
+import { getPkUrl } from "../../screen/fields"
 
-
+    
 
 class RecordDisply extends Component {
     state = {

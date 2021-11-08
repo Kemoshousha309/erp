@@ -1,8 +1,8 @@
 import React from "react"
 import { Component } from "react"
 import { connect } from "react-redux"
-import { t } from "../../../utilities/lang"
-import { getF } from "../../../utilities/utilities"
+import { t } from "../../../../../utilities/lang"
+import { getF } from "../../../../../utilities/utilities"
 import style from "./Page.module.scss"
 
 

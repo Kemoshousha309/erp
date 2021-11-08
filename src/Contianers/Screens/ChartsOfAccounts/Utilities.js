@@ -3,6 +3,7 @@ import axios from "../../../axios";
 
 // TREE
 export function getAccTree(url) {
+  this.setState({ tree: null });
   axios
     .get(url)
     .then((res) => {
@@ -36,6 +37,13 @@ function getChildren(node, accounts) {
 
 // INPUT HANDLING
 
+// inactive Change Handler
+export function inactiveChangeHandler(value, field) {
+  const { fields } = this.state;
+  fields.inactive_reason.writability = value;
+  this.setState({ fields: fields });
+}
+
 // parallel to send a bunch of requests at the same time
 const parallel = (...Promises) => {
   return Promise.all(Promises);
@@ -67,17 +75,19 @@ function request(task1, task2, index) {
       .then(([usedRecord, nextPkRes]) => {
         requestsList[index].status = "FULFILLED";
         this.setState((state, props) => {
-          const { fields } = state;
-          fields.parent_acc.writability = true;
-          fields.acc_no.value = nextPkRes.data.next_PK
+          let newState = _.cloneDeep(state);
+          newState.fields.parent_acc.writability = true;
+          newState.fields.acc_no.value = nextPkRes.data.next_PK
             ? nextPkRes.data.next_PK
             : "";
-          let fieldsUpdate = updateOnParentAcc.call(this, fields, usedRecord, "PRESENT");
-          fieldsUpdate = subUpdate(fieldsUpdate.sub.value, fieldsUpdate);
-          return {
-            fields: fieldsUpdate,
-            sub: fieldsUpdate.sub.value
-          };
+          newState.fields = updateOnParentAcc.call(
+            this,
+            newState.fields,
+            usedRecord,
+            "PRESENT"
+          );
+          newState = subUpdate(newState);
+          return newState;
         });
       })
       .catch(([mess, parentAccValue]) => {
@@ -200,28 +210,29 @@ export function updateOnParentAcc(fields, usedRecord, parentAcc) {
       fieldsUpdate.bs.value = "";
 
       // cc_post
-      fieldsUpdate.cc_post.value = ""
+      fieldsUpdate.cc_post.value = "";
       break;
   }
 
   return fieldsUpdate;
 }
 
-function subUpdate(sub, fields) {
-  const fieldsUpdate = _.cloneDeep(fields);
+export function subUpdate(state) {
+  const stateUpdate = _.cloneDeep(state);
   const subFields = ["acc_type", "cash_flow_type", "acc_dtl"];
-  if(sub){
-    subFields.forEach(i => {
-      fieldsUpdate[i].hide = false
-    })
-  }else {
-    subFields.forEach(i => {
-      fieldsUpdate[i].hide = true
-    })
+  if (stateUpdate.fields.sub.value) {
+    subFields.forEach((i) => {
+      stateUpdate.fields[i].hide = false;
+    });
+    stateUpdate.details.show = true;
+  } else {
+    subFields.forEach((i) => {
+      stateUpdate.fields[i].hide = true;
+      stateUpdate.details.show = false;
+    });
   }
-  return fieldsUpdate
+  return stateUpdate;
 }
-
 
 // utility function to decide the sub
 function decideAccSub(level) {

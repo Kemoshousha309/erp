@@ -8,10 +8,19 @@ export const handleModify = (thisK, updateState) => {
     fields: fieldsClone,
     preModify,
     pks,
+    specialFields
   } = thisK.state;
   // handle modify fields
   fields(fieldsClone, "open", false);
   fields(fieldsClone, "close", false, pks);
+  if (specialFields) {
+    specialFields.forEach((f) => {
+      if (f.modify) {
+        const specific = [f.key];
+        fields(fieldsClone, f.modify, false, specific);
+      }
+    });
+  }
   thisK.setState({ mode: "modify", ...updateState });
 
   // handle preAdd

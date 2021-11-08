@@ -1,13 +1,15 @@
 import { isValid } from "../validation";
 
-
 // HANDLERS
 export function detailsInputChangeHandler(event, index, serverValue, validationRules) {
-  const {
-    target: { value, id },
+  let {
+    target: { value, id, checked },
   } = event;
+  if(event.target.hasOwnProperty("checked")){
+    value = checked
+  }
   const {
-    details: { tabs, current_tab },
+    details: { tabs, current_tab }, 
     record,
     mode,
   } = this.state;
@@ -28,7 +30,32 @@ export function detailsInputChangeHandler(event, index, serverValue, validationR
   this.setState({ record: record });
 }
 
+export function tabsChangeHandler(value) {
+  const {
+    state: { details },
+  } = this;
+  details.current_tab = value;
+  this.setState({ details: details });
+}
+
+
+
+
+// ADD HANDLERS
 export function addHandler(e) {
+  switch (this.state.details.type) {
+    case "PRIMARY":
+      primaryAddHandler.call(this, e)
+      break;
+      case "FOREIGN":
+        foreignAddHandler.call(this, e)
+        break;
+    default:
+      break;
+  }
+}
+
+function primaryAddHandler(e) {
   e.preventDefault();
   let {
     record,
@@ -58,9 +85,16 @@ export function addHandler(e) {
   this.setState({ record: record });
 }
 
+
+function foreignAddHandler(e) {
+  const { details } = this.state
+  this.setState({detailsForeignList: details.current_tab})
+}
+
+
+// REOMVE HANDLERS
 export function removeHandler(index, e) {
   e.preventDefault();
-  debugger;
   const {
     record,
     details: { current_tab, tabs },
@@ -73,10 +107,4 @@ export function removeHandler(index, e) {
   this.setState({ record: record });
 }
 
-export function tabsChangeHandler(value) {
-  const {
-    state: { details },
-  } = this;
-  details.current_tab = value;
-  this.setState({ details: details });
-}
+

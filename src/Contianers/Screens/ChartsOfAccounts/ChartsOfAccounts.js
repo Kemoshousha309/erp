@@ -2,7 +2,10 @@ import { CircularProgress } from "@material-ui/core";
 import { connect } from "react-redux";
 import { langChangeActivity } from "../../../store/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
-import { fkRecordClickHandler, handleRecordClick } from "../../ScreenConstructor/screen/functions/list";
+import {
+  fkRecordClickHandler,
+  handleRecordClick,
+} from "../../ScreenConstructor/screen/functions/list";
 import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import { handleDrivedState } from "../../ScreenConstructor/screen/handlers";
 import {
@@ -11,9 +14,18 @@ import {
 } from "../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
-import { getAccTree, parentAccHandler, updateOnParentAcc } from "./Utilities";
+import {
+  getAccTree,
+  parentAccHandler,
+  subUpdate,
+  updateOnParentAcc,
+} from "./Utilities";
 import axios from "../../../axios";
-
+import { initDetials } from "../../ScreenConstructor/screen/Details/DetailsPanel";
+import { handleDetailsScreensUndo } from "../../ScreenConstructor/screen/functions/undo";
+import { getDetails } from "../../ScreenConstructor/screen/Details/requestDetails";
+import _ from "lodash";
+import { handleDetailsScreensSave } from "../../ScreenConstructor/screen/functions/save";
 
 class ChartsOfAccounts extends ScreenConstructor {
   constructor(props) {
@@ -42,7 +54,7 @@ class ChartsOfAccounts extends ScreenConstructor {
             { recordName: "acc_f_name", stateName: "parent_acc_f_name" },
             { recordName: "acc_no", stateName: "parent_acc" },
           ],
-          prevReqStatus: "FULFILLED"
+          prevReqStatus: "FULFILLED",
         },
         parent_acc_name: {
           fieldType: "input",
@@ -50,6 +62,7 @@ class ChartsOfAccounts extends ScreenConstructor {
           readOnly: true,
           value: "",
         },
+        holder1: {},
         acc_no: {
           fieldType: "input",
           type: "number",
@@ -133,6 +146,52 @@ class ChartsOfAccounts extends ScreenConstructor {
           writability: false,
           value: "",
         },
+        cc_post: {
+          fieldType: "select",
+          type: "text",
+          label: "cc_post",
+          validation: {
+            length: 11,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          options: [
+            { template: "mandatury", value: 1 },
+            { template: "optional", value: 3 },
+            { template: "not_used", value: 2 },
+          ],
+          writability: false,
+          value: "",
+        },
+        dr: {
+          fieldType: "select",
+          type: "text",
+          label: "acc_nature",
+          validation: {
+            length: 11,
+          },
+          validity: {
+            valid: true,
+            touched: false,
+            message: null,
+          },
+          options: [
+            { template: "credit", value: false },
+            { template: "debit", value: true },
+          ],
+          writability: false,
+          value: "",
+        },
+        inactive: {
+          fieldType: "checkbox",
+          type: "checkbox",
+          label: "inactive",
+          writability: false,
+          value: false,
+        },
         acc_group: {
           fieldType: "input",
           type: "number",
@@ -160,27 +219,19 @@ class ChartsOfAccounts extends ScreenConstructor {
           readOnly: true,
           value: "",
         },
-        cc_post: {
-          fieldType: "select",
-          type: "text",
-          label: "cc_post",
-          validation: {
-            length: 11,
-          },
+        inactive_reason: {
+          fieldType: "textarea",
+          type: "textarea",
+          label: "inactive_reason",
           validity: {
             valid: true,
             touched: false,
             message: null,
           },
-          options: [
-            { template: "mandatury", value: 1 },
-            { template: "optional", value: 3 },
-            { template: "not_used", value: 2 },
-          ],
           writability: false,
           value: "",
         },
-        // sub fields 
+        // sub fields
         acc_type: {
           fieldType: "select",
           type: "text",
@@ -272,15 +323,12 @@ class ChartsOfAccounts extends ScreenConstructor {
         pageNo: "chartofaccounts/pageNo",
         delete: "chartofaccounts",
         preAdd: "chartofaccounts/preAdd",
-        preModify: "chartofaccounts/preModify"
+        preModify: "chartofaccounts/preModify",
       },
       fks: ["parent_acc", "acc_group"],
       fkList: {
         parent_acc: {
-          mainFields: [
-            "acc_no",
-            { label: "name", propName: "acc_d_name" },
-          ],
+          mainFields: ["acc_no", { label: "name", propName: "acc_d_name" }],
           urls: {
             add: "chartofaccounts",
             modify: "chartofaccounts",
@@ -308,7 +356,7 @@ class ChartsOfAccounts extends ScreenConstructor {
           },
         },
       },
-      gridType: 2,
+      gridType: 3,
       mainFields: [
         "parent_acc",
         "acc_no",
@@ -328,51 +376,74 @@ class ChartsOfAccounts extends ScreenConstructor {
       details: {
         current_tab: "currency",
         loading: false,
+        type: "FOREIGN",
+        show: false,
         tabs: {
           currency: {
+            fk: "cur_code",
             label: "currency",
             headers: [
               {
                 propName: "cur_code",
                 label: "currency_code",
                 disabled: true,
-                type: "number",
+                type: "text",
                 validationRules: {
                   requiered: true,
                 },
+                foriegnPropName: "currency_code",
+                fk: true,
               },
               {
                 propName: "active",
                 label: "active",
-                disabled: true,
                 type: "checkbox",
                 validationRules: {
                   requiered: true,
                 },
+                foriegnPropName: "active",
+                defaultValue: false,
               },
               {
                 propName: "used",
                 label: "used",
-                disabled: true,
                 type: "checkbox",
                 validationRules: {
                   requiered: true,
                 },
+                foriegnPropName: "used",
+                defaultValue: true,
               },
             ],
             viewOnly: false,
             recordDetailPropName: "account_currency_list",
             pageURL: {
-              master: "currency_code",
-              temp: "currency",
+              master: "acc_no",
+              temp: "chartofaccounts",
             },
+            foreignURLs: {
+              pages: "currency/pages",
+              page: "currency/page",
+              lastPage: "currency/lastPage",
+              filter: "currency/filteredPages",
+              pageNo: "currency/pageNo",
+            },
+            foreignMainFields: [
+              "currency_code",
+              { label: "name", propName: "currency_d_name" },
+              { label: "ex_rate", propName: "exchange_rate" },
+            ],
           },
         },
       },
     };
   }
   recordFkClick = (record) => fkRecordClickHandler(this, record, updateFields);
-  treeNodeClick = (record) => handleRecordClick(this, record);
+  treeNodeClick = (record) => handleRecordClick(this, record, null, getDetails);
+  recordClick = (record, i) => handleRecordClick(this, record, i, getDetails);
+  undo = () => handleDetailsScreensUndo.call(this);
+  save = () => handleDetailsScreensSave.call(this, getAccTree.bind(this, "chartofaccounts"));
+
   componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
@@ -394,31 +465,33 @@ class ChartsOfAccounts extends ScreenConstructor {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const fieldsClone = { ...state.fields };
-    let fieldsUpdate = changePropName(
+    let newState = _.cloneDeep(state);
+    newState.fields = changePropName(
       props,
-      fieldsClone,
+      newState.fields,
       "parent_acc_name",
       "parent_acc"
     );
 
-    fieldsUpdate = changePropName(
+    newState.fields = changePropName(
       props,
-      fieldsUpdate,
+      newState.fields,
       "acc_group_name",
       "group"
     );
 
-    let { tools } = handleDrivedState(props, state);
+    if(newState.mode === "add" || newState.mode === "modify"){
+      newState.fields.inactive_reason.writability = newState.fields.inactive.value
+    }
 
-    return {
-      tools: tools,
-      fields: fieldsUpdate,
-    };
+
+    newState = subUpdate(newState);
+    const { tools } = handleDrivedState(props, newState);
+    newState.tools = tools;
+    return newState;
   }
   render() {
-    // const tabs = TabsHandler.call(this);
-    return displayContent(this, this.props.location);
+    return displayContent(this, this.props.location, initDetials.call(this));
   }
 }
 const mapStateToProps = (state) => {
@@ -438,18 +511,17 @@ const mapDispatchToProps = (dispatch) => {
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ChartsOfAccounts);
 
-
 function updateFields(record) {
-  axios.get(`chartofaccounts/nextPK/${record.acc_no}`)
-  .then(res => {
-    this.setState((state, props) => {
-      const { fields } = state;
-      fields.acc_no.value = res.data.next_PK
-        ? res.data.next_PK
-        : "";
-      return {
-        fields: updateOnParentAcc.call(this, fields, record, "PRESENT"),
-      };
-    });
-  }).catch(err => console.log(err))
-} 
+  axios
+    .get(`chartofaccounts/nextPK/${record.acc_no}`)
+    .then((res) => {
+      this.setState((state, props) => {
+        const { fields } = state;
+        fields.acc_no.value = res.data.next_PK ? res.data.next_PK : "";
+        return {
+          fields: updateOnParentAcc.call(this, fields, record, "PRESENT"),
+        };
+      });
+    })
+    .catch((err) => console.log(err));
+}

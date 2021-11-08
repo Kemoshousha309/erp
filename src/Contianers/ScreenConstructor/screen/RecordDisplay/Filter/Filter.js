@@ -4,10 +4,10 @@ import {faSearch} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { TextField } from "@material-ui/core";
 import { Component } from "react";
-import { t } from "../../../utilities/lang";
+import { t } from "../../../../../utilities/lang";
 import { connect } from "react-redux";
-import { getF } from "../../../utilities/utilities";
-import { trigerEnterButton } from "../../../Contianers/ScreenConstructor/screen/utilities";
+import { getF } from "../../../../../utilities/utilities";
+import { trigerEnterButton } from "../../utilities";
 
 class Filter extends Component {
     componentDidMount () {

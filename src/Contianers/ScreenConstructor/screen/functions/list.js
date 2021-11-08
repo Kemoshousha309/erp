@@ -1,5 +1,8 @@
 import _ from "lodash";
+import { t } from "../../../../utilities/lang";
+import { transformForiegnDetailsData } from "../Details/requestDetails";
 import { fields, fillRecord } from "../fields";
+import { timer } from "../utilities";
 
 // list handle ******************************
 export const handleList = (thisK) => {
@@ -18,6 +21,11 @@ export const handleCloseList = (thisK) => {
 export const handleCloseFkList = (thisK) => {
   thisK.setState({ fkListShow: null });
 };
+
+// close foreign details list *******************
+export function handleCloseDetailsFkList() {
+  this.setState({ detailsForeignList: null });
+}
 
 // record click Handler ************************
 export const handleRecordClick = (thisK, record, i, func) => {
@@ -90,3 +98,54 @@ export const fkRecordClickHandler = (thisK, record, func) => {
     func.call(thisK, record);
   }
 };
+
+// handle details Record Click
+export function handleDetailsRecordClick(record) {
+  let {
+    state: {
+      record: stateRecord,
+      details: { tabs, current_tab },
+    },
+    props: {lanState, lanTable}
+  } = this;
+  if(stateRecord){
+    if (stateRecord[tabs[current_tab].recordDetailPropName]) {
+      let fk = tabs[current_tab].fk
+      let present = false;
+      const newRow = transformForiegnDetailsData(record, tabs[current_tab].headers);
+      stateRecord[tabs[current_tab].recordDetailPropName].forEach(i => {
+        if(newRow[fk] === i[fk]){
+          present = true
+        }
+      })
+      if(!present){
+        stateRecord[tabs[current_tab].recordDetailPropName].unshift(newRow);
+        this.setState({ detailsForeignList: null, record: stateRecord });
+      }else{  
+        const message = {
+          content: t("item_exist", lanTable, lanState),
+          type: "error"
+        }
+        this.setState({ detailsForeignList: null, message: message });
+        timer(this)
+      }
+    } else {
+      stateRecord[tabs[current_tab].recordDetailPropName] = [];
+      stateRecord[tabs[current_tab].recordDetailPropName].unshift(
+        transformForiegnDetailsData(record, tabs[current_tab].headers)
+      );
+      this.setState({ detailsForeignList: null, record: stateRecord });
+    }
+  }else {
+    stateRecord = {}
+    stateRecord[tabs[current_tab].recordDetailPropName] = [];
+    stateRecord[tabs[current_tab].recordDetailPropName].unshift(
+      transformForiegnDetailsData(record, tabs[current_tab].headers)
+    );
+    this.setState({ detailsForeignList: null, record: stateRecord });
+  }
+  document.getElementById("tableContainer").scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+}

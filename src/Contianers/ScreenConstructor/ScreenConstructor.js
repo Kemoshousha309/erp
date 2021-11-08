@@ -10,8 +10,10 @@ import { handleMove, setlastIndex } from "./screen/functions/moves";
 import { functionsListenrs } from "./screen/listeners";
 import {
   fkRecordClickHandler,
+  handleCloseDetailsFkList,
   handleCloseFkList,
   handleCloseList,
+  handleDetailsRecordClick,
   handleList,
   handleRecordClick,
 } from "./screen/functions/list";
@@ -24,8 +26,12 @@ import {
   handleInputChange,
 } from "./screen/handlers";
 import { handleUndo } from "./screen/functions/undo";
-
-
+import {
+  tabsChangeHandler,
+  addHandler,
+  removeHandler,
+  detailsInputChangeHandler,
+} from "./screen/Details/handlers";
 
 class ScreenConstructor extends React.Component {
   constructor(props) {
@@ -43,6 +49,7 @@ class ScreenConstructor extends React.Component {
       deleteConfirm: false,
       ShortCutsList: false,
       record: null,
+      detailsForeignList: null,
       tapTools: [],
       searchFields: [],
       mainFields: [],
@@ -67,13 +74,30 @@ class ScreenConstructor extends React.Component {
   // Handlers ************************************************
   closeList = () => handleCloseList(this);
   closeFkList = () => handleCloseFkList(this);
+  closeDetailsFkList = () => handleCloseDetailsFkList.call(this)
   recordClick = (record, i) => handleRecordClick(this, record, i);
   recordFkClick = (record, i) => fkRecordClickHandler(this, record);
+  recordDetailsClick = (record, i) => handleDetailsRecordClick.call(this, record, i)
   inputChange = (state, identifier) =>
     handleInputChange(this, state, identifier);
   deleteConfirmation = (res) => handleDeleteConfirmation(this, res);
   ShortCutsListCloseHandler = () => handleCloseShortCuts(this);
 
+  // DETAILS HANDLERS
+  navigateTabsHandler = (value) => tabsChangeHandler.call(this, value);
+
+  detailsAddHandler = (e) => addHandler.call(this, e);
+
+  detailsRemoveHandler = (index, e) => removeHandler.call(this, index, e);
+
+  detailsInputChangeHandler = (event, index, serverValue, validationRules) =>
+    detailsInputChangeHandler.call(
+      this,
+      event,
+      index,
+      serverValue,
+      validationRules
+    );
 
   // LifeCycle methods *******************************************
   componentDidMount() {
