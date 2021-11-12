@@ -62,3 +62,14 @@ export const decideName = (fieldName ,lang_no) => {
     }
     return retrunName
 }
+
+
+export const getAvialableValue = (d_value, f_value, lan_no) => {
+    let currentValue = d_value;
+    let otherValue = f_value;
+    if(parseInt(lan_no) === 2){
+        currentValue = f_value;
+        otherValue = d_value;
+    }
+    return currentValue ? currentValue : otherValue;
+}

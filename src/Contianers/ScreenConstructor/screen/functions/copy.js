@@ -1,21 +1,28 @@
-import { fields } from "../fields"
-import axois from "../../../../axios"
+import { fields } from "../fields";
+import axois from "../../../../axios";
+import { preHanler } from "../functions/add";
 
 // copy handle ******************************
-export const handleCopy = (thisK) => {
-    fields(thisK.state.fields, "open", false)
-    thisK.setState({mode: "copy"})
+export function handleCopy() {
+  const { fields: fieldsClone, preAdd, pks } = this.state;
+  fields(this.state.fields, "open", false);
+  this.setState({ mode: "copy" });
 
-     // apply auto increment primary key 
-     const pkPropName = thisK.state.pks[0];
-     let fieldsClone = {...thisK.state.fields}
-     if(thisK.state.fields[pkPropName].autoIncrement){
-         axois.get(`${thisK.state.fields[pkPropName].autoIncrement}`)
-         .then(res => {
-             fieldsClone[pkPropName].value = res.data.next_PK
-             thisK.setState({fields: fieldsClone})
-         })
-         .catch(err => console.log(err))
-     }
-     thisK.setState({mode: "add", fields: fieldsClone})
+  // apply auto increment primary key
+  const pkPropName = pks[0];
+  if (fieldsClone[pkPropName].autoIncrement) {
+    const autoIncrementValue = fieldsClone[pkPropName].autoIncrementValue
+      ? fieldsClone[pkPropName].autoIncrementValue
+      : "";
+    axois
+      .get(`${fieldsClone[pkPropName].autoIncrement+fieldsClone[autoIncrementValue].value}`)
+      .then((res) => {
+        fieldsClone[pkPropName].value = res.data.next_PK ? res.data.next_PK : '';
+        this.setState({ fields: fieldsClone });
+      })
+      .catch((err) => console.log(err));
+  }
+  if (preAdd) {
+    preHanler.call(this, "Add");
+  }
 }

@@ -87,13 +87,13 @@ const setListenrs = (event, thisK) => {
     case "Escape":
       handleListenrClick(event, tools, "undo", thisK.undo);
       const {
-        state: { prevMode, fkListShow, listShow, ShortCutsList},
+        state: { prevMode, fkListShow, listShow, ShortCutsList, mode},
       } = thisK;
       if (fkListShow || listShow || ShortCutsList) {
         if(ShortCutsList){
           thisK.setState({ShortCutsList: false });
         }else{
-          thisK.setState({ fkListShow: null, listShow: false, mode: prevMode});
+          thisK.setState({ fkListShow: null, listShow: false, mode: prevMode ? prevMode : mode});
         }
       }
       break;

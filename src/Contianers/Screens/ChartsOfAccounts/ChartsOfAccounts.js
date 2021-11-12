@@ -26,6 +26,7 @@ import { handleDetailsScreensUndo } from "../../ScreenConstructor/screen/functio
 import { getDetails } from "../../ScreenConstructor/screen/Details/requestDetails";
 import _ from "lodash";
 import { handleDetailsScreensSave } from "../../ScreenConstructor/screen/functions/save";
+import { handleDeleteConfirmation } from "../../ScreenConstructor/screen/functions/delete";
 
 class ChartsOfAccounts extends ScreenConstructor {
   constructor(props) {
@@ -78,6 +79,8 @@ class ChartsOfAccounts extends ScreenConstructor {
           },
           writability: false,
           value: "",
+          autoIncrement: "/chartofaccounts/nextPK/",
+          autoIncrementValue: "parent_acc"
         },
         acc_d_name: {
           fieldType: "input",
@@ -228,6 +231,7 @@ class ChartsOfAccounts extends ScreenConstructor {
             touched: false,
             message: null,
           },
+          validation: {},
           writability: false,
           value: "",
         },
@@ -370,6 +374,9 @@ class ChartsOfAccounts extends ScreenConstructor {
           d: "acc_d_name",
           f: "acc_f_name",
         },
+        propToAddToLabel: "acc_no",
+        delimiter: " ",
+        contain: (input) => `(${input})`,
         nodeIdentifier: "acc_no",
       },
       treeLoading: <CircularProgress className="m-5" />,
@@ -442,7 +449,18 @@ class ChartsOfAccounts extends ScreenConstructor {
   treeNodeClick = (record) => handleRecordClick(this, record, null, getDetails);
   recordClick = (record, i) => handleRecordClick(this, record, i, getDetails);
   undo = () => handleDetailsScreensUndo.call(this);
-  save = () => handleDetailsScreensSave.call(this, getAccTree.bind(this, "chartofaccounts"));
+  save = () =>
+    handleDetailsScreensSave.call(
+      this,
+      getAccTree.bind(this, "chartofaccounts")
+    );
+  deleteConfirmation = (res) =>
+    handleDeleteConfirmation(
+      this,
+      res,
+      getAccTree.bind(this, "chartofaccounts")
+    );
+
 
   componentDidMount() {
     setlastIndex(this);
@@ -480,10 +498,12 @@ class ChartsOfAccounts extends ScreenConstructor {
       "group"
     );
 
-    if(newState.mode === "add" || newState.mode === "modify"){
-      newState.fields.inactive_reason.writability = newState.fields.inactive.value
+    if (["add", "modify", "copy"].includes(newState.mode)) {
+      newState.fields.inactive_reason.writability =
+        newState.fields.inactive.value;
+      newState.fields.inactive_reason.validation.requiered =
+        newState.fields.inactive.value;
     }
-
 
     newState = subUpdate(newState);
     const { tools } = handleDrivedState(props, newState);

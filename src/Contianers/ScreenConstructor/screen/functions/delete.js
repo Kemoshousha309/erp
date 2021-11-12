@@ -10,15 +10,15 @@ export const handleDelete = (thisK) => {
   thisK.setState({ deleteConfirm: true });
 };
 
-export const handleDeleteConfirmation = (thisK, res) => {
+export const handleDeleteConfirmation = (thisK, res, callback) => {
   if (res) {
-    handleDeleteRequest(thisK);
+    handleDeleteRequest(thisK, callback);
   }
   const currentState = thisK.state.deleteConfirm;
   thisK.setState({ deleteConfirm: !currentState });
 };
 
-const handleDeleteRequest = (thisK) => {
+const handleDeleteRequest = (thisK, callback) => {
   const record = getValues(thisK.state.fields);
   const pkUrl = getPkUrl(thisK.state.pks, record);
   const url = `${thisK.state.urls.delete}${pkUrl}`;
@@ -28,6 +28,9 @@ const handleDeleteRequest = (thisK) => {
     url: url,
   })
     .then((res) => {
+      // if(callback){
+      //   callback()
+      // }
       fields(thisK.state.fields, "close", true);
       const message = {
         content: selectMessage(res.data.message, thisK.props.lanState),
@@ -39,7 +42,7 @@ const handleDeleteRequest = (thisK) => {
         message: message,
         recordIndex: null,
         record: null,
-      });
+      }, callback );
       timer(thisK);
     })
     .catch((err) => {

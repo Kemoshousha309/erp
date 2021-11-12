@@ -21,6 +21,10 @@ import { handleAdd } from "./screen/functions/add";
 import { handleModify } from "./screen/functions/modify";
 import { handleCopy } from "./screen/functions/copy";
 import {
+  handleChipsAdd,
+  handleChipsListClose,
+  handleChipsRecordClick,
+  handleChipsRemove,
   handleCloseShortCuts,
   handleDrivedState,
   handleInputChange,
@@ -36,6 +40,7 @@ import {
 class ScreenConstructor extends React.Component {
   constructor(props) {
     super(props);
+    this.mounted = true;
     this.state = {
       tools: null,
       mode: "start",
@@ -53,6 +58,7 @@ class ScreenConstructor extends React.Component {
       tapTools: [],
       searchFields: [],
       mainFields: [],
+      pks: []
     };
   }
 
@@ -62,7 +68,7 @@ class ScreenConstructor extends React.Component {
   add = () => handleAdd(this);
   undo = () => handleUndo(this);
   save = () => handleSave(this);
-  copy = () => handleCopy(this);
+  copy = () => handleCopy.call(this);
   list = () => handleList(this);
   delete = () => handleDelete(this);
   search = () => handleSearch(this);
@@ -82,6 +88,12 @@ class ScreenConstructor extends React.Component {
     handleInputChange(this, state, identifier);
   deleteConfirmation = (res) => handleDeleteConfirmation(this, res);
   ShortCutsListCloseHandler = () => handleCloseShortCuts(this);
+
+  // Chips Handling
+  chipsAddHandler = (id, index) => handleChipsAdd.call(this, id, index)
+  chipsRemoveHandler = (id, index) => handleChipsRemove.call(this, id, index)
+  closeChipsList = () => handleChipsListClose.call(this)
+  chipsRecordClick = (record) => handleChipsRecordClick.call(this, record)
 
   // DETAILS HANDLERS
   navigateTabsHandler = (value) => tabsChangeHandler.call(this, value);
@@ -105,6 +117,7 @@ class ScreenConstructor extends React.Component {
     functionsListenrs(this, true);
   }
   componentWillUnmount() {
+    this.mounted = false
     functionsListenrs(this, false);
     this.props.changeLangSelectAcivity(true);
   }

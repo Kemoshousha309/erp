@@ -1,12 +1,16 @@
 import React from "react";
-import { t } from "../../../../../utilities/lang";
+import { t } from "../../../../utilities/lang";
 
-const InputPrivsTable = (thisK, content, inputsControl) => {
-  const {
-    state: { input_privs, mode },
-    props: { lanState, lanTable, logged_user_id },
-    privChangeHandler
-  } = thisK;
+const InputPrivsTable = (
+  content,
+  inputsControl,
+  lanTable,
+  lanState,
+  input_privs,
+  mode,
+  logged_user_id,
+  privChangeHandler
+) => {
   const { header, propsName } = content;
   let table = t("no_match", lanTable, lanState);
   if (input_privs.length > 0) {
@@ -16,40 +20,48 @@ const InputPrivsTable = (thisK, content, inputsControl) => {
           <thead>
             <tr>
               <th scope="col">#</th>
-              {header.map((i) => (
-                <th scope="col">{t(i, lanTable, lanState)}</th>
+              {header.map((i, index) => (
+                <th key={index} scope="col">{t(i, lanTable, lanState)}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {input_privs.map((i, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <th scope="row">{index + 1}</th>
-                  {propsName.map((propName) => {
+                  {propsName.map((propName, indx) => {
                     if (typeof propName === "object") {
                       if (parseInt(lanState) === 1) {
-                        return <td>{i[propName.d]}</td>;
+                        return <td key={indx}>{i[propName.d]}</td>;
                       } else {
-                        return <td>{i[propName.f]}</td>;
+                        return <td key={indx}>{i[propName.f]}</td>;
                       }
                     } else {
                       if (typeof i[propName] === "boolean") {
-                        let disabled = false
-                        let cursor = "pointer"
-                        let [control, mess, newCursor] = inputsControl(disabled, i, propName, cursor, lanState, lanTable, logged_user_id)
-                        disabled = control
-                        cursor = newCursor
-                        if(mode !== "modify"){
-                          disabled = true
-                          cursor = null
-                          mess = null
+                        let disabled = false;
+                        let cursor = "pointer";
+                        let [control, mess, newCursor] = inputsControl(
+                          disabled,
+                          i,
+                          propName,
+                          cursor,
+                          lanState,
+                          lanTable,
+                          logged_user_id
+                        );
+                        disabled = control;
+                        cursor = newCursor;
+                        if (mode !== "modify") {
+                          disabled = true;
+                          cursor = null;
+                          mess = null;
                         }
                         return (
-                          <td>
+                          <td key={indx} >
                             <input
                               title={mess}
-                              style={{cursor: cursor}}
+                              style={{ cursor: cursor }}
                               disabled={disabled}
                               type="checkbox"
                               onChange={(e) => privChangeHandler(e, i)}
@@ -59,7 +71,7 @@ const InputPrivsTable = (thisK, content, inputsControl) => {
                           </td>
                         );
                       } else {
-                        return <td>{i[propName]}</td>;
+                        return <td key={indx} >{i[propName]}</td>;
                       }
                     }
                   })}
@@ -71,9 +83,7 @@ const InputPrivsTable = (thisK, content, inputsControl) => {
       </div>
     );
   }
-  return (
-    <div className={["text-center"].join(" ")}>{table}</div>
-  );
+  return <div className={["text-center"].join(" ")}>{table}</div>;
 };
 
 export default InputPrivsTable;

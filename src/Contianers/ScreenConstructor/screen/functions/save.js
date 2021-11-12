@@ -1,7 +1,7 @@
 import { getDtailsPropnams, timer } from "../utilities";
 import { getValues, fields, getHeaders } from "../fields";
 import { checkDetailsValidity, checkValidity } from "../validation";
-import axios from "../../../../axios"
+import axios from "../../../../axios";
 import { logout } from "../../../../store";
 import { store } from "../../../../index";
 import { selectMessage } from "../../../../utilities/lang";
@@ -82,19 +82,24 @@ const handleSaveRequest = (thisK, func) => {
     });
 };
 
-
 export function handleDetailsScreensSave(callback) {
   const [valid, fieldsUpdate] = checkValidity(this);
-  const detailsValid = checkDetailsValidity.call(this)
+  const detailsValid = checkDetailsValidity.call(this);
   if (valid && detailsValid) {
-    handleDetailsScreensSaveRequest.call(this, callback)
+    handleDetailsScreensSaveRequest.call(this, callback);
   } else {
     this.setState({ fields: fieldsUpdate });
   }
 }
 
 function handleDetailsScreensSaveRequest(callback) {
-  const { mode, urls, fields: masterfields, record, details: {tabs} } = this.state
+  const {
+    mode,
+    urls,
+    fields: masterfields,
+    record,
+    details: { tabs },
+  } = this.state;
   let method = null;
   let url = null;
   if (mode === "modify") {
@@ -105,27 +110,25 @@ function handleDetailsScreensSaveRequest(callback) {
     url = urls.add;
   }
   // prepare the body
-  let detailsValues = trackDetailsChange.call(this)
-  if(mode === "add" && record){ // copy mode..
-    // copy all records ...
-    console.log("copy mode")
-  }
-  const fieldsValues = getValues(masterfields)
+  let detailsValues = trackDetailsChange.call(this);
+  
+  console.log(detailsValues)
+  console.log(detailsValues);
+  const fieldsValues = getValues(masterfields);
   const body = {
     ...detailsValues,
-    ...fieldsValues
-  }
+    ...fieldsValues,
+  };
   this.setState({ loading: true });
   axios({
     method: method,
     url: url,
-    data: body
+    data: body,
   })
     .then((res) => {
-      if(callback){
-        callback()
+      if (callback) {
+        callback();
       }
-      fields(masterfields, "close", false);
       const message = {
         content: selectMessage(res.data.message, this.props.lanState),
         type: "success",
@@ -135,21 +138,22 @@ function handleDetailsScreensSaveRequest(callback) {
         loading: false,
         message: message,
         recordIndex: null,
+        fields: fields(masterfields, "close", false),
       });
-      if(mode === "add"){
+      if (mode === "add") {
         // prepare a record for getDetails function as in add mode the record is null
-        const detailsPagesURLs = Object.keys(tabs).map(key => {
-          tabs[key].pageURL.id = key
-          return tabs[key].pageURL
+        const detailsPagesURLs = Object.keys(tabs).map((key) => {
+          tabs[key].pageURL.id = key;
+          return tabs[key].pageURL;
         });
-        const preparedRecord = {}
-        detailsPagesURLs.forEach(pageURL => {
-          const {master} = pageURL
-          preparedRecord[master] = masterfields[master].value 
-        })
-        getDetails.call(this, preparedRecord)
-      }else{
-        getDetails.call(this, record)
+        const preparedRecord = {};
+        detailsPagesURLs.forEach((pageURL) => {
+          const { master } = pageURL;
+          preparedRecord[master] = masterfields[master].value;
+        });
+        getDetails.call(this, preparedRecord);
+      } else {
+        getDetails.call(this, record);
       }
       timer(this);
     })
@@ -181,35 +185,51 @@ function handleDetailsScreensSaveRequest(callback) {
     });
 }
 
-
 function trackDetailsChange() {
-  const { record, details:{tabs} } = this.state;
+  const {
+    record,
+    details: { tabs },
+    mode,
+  } = this.state;
   const properties = getDtailsPropnams(tabs, true);
-  const detailsToSave = {}
-  properties.forEach(prop => {
-    if(prop){
-      const {recordDetailPropName, headers} = prop
+  const detailsToSave = {};
+  properties.forEach((prop) => {
+    if (prop) {
+      const { recordDetailPropName, headers } = prop;
       detailsToSave[recordDetailPropName] = [];
-      if(record){
+      if (record) {
         const pages = record[recordDetailPropName];
-        if(pages){
-          pages.forEach(page => {
-            if(page.action){
-              const updatedPage = {}
-              headers.forEach(header => {
-                updatedPage[header.propName] = page[header.propName]
-              })
-              updatedPage.action = page.action
-              if(page.action !== "delete"){
-                detailsToSave[recordDetailPropName].push(updatedPage)
-              }else if(page.action === "delete" && !page.frontRow){
-                detailsToSave[recordDetailPropName].push(updatedPage)
+        if (pages) {
+          if (mode === "copy") {
+            pages.forEach((page) => {
+              const updatedPage = {};
+              headers.forEach((header) => {
+                updatedPage[header.propName] = page[header.propName];
+              });
+              updatedPage.action = "add";
+              detailsToSave[recordDetailPropName].push(updatedPage);
+            });
+          } else {
+            pages.forEach((page) => {
+              if (page.action) {
+                const updatedPage = {};
+                headers.forEach((header) => {
+                  updatedPage[header.propName] = page[header.propName];
+                });
+                updatedPage.action = page.action;
+                if (page.action !== "delete") {
+                  detailsToSave[recordDetailPropName].push(updatedPage);
+                } else if (page.action === "delete" && !page.frontRow) {
+                  detailsToSave[recordDetailPropName].push(updatedPage);
+                }
               }
-            }
-          })
+            });
+          }
         }
       }
     }
-  })
+  });
   return detailsToSave;
 }
+
+

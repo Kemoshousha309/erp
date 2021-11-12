@@ -9,7 +9,7 @@ import style from "./style.module.scss";
 // UTILITIES =>
 export function addIcon(viewOnly, mode, addHandler) {
   if (!viewOnly) {
-    if (["add", "modify"].includes(mode)) {
+    if (["add", "modify", "copy"].includes(mode)) {
       return (
         <button className={style.addIcon} onClick={(e) => addHandler(e)}>
           <FontAwesomeIcon icon={faPlusCircle} />
@@ -92,7 +92,7 @@ export function tableBody(
                   value = formatDate(value, 12);
                 }
                 let output = <td key={ix}>{value.toString()}</td>;
-                if (["modify", "add"].includes(mode) && !viewOnly) {
+                if (["modify", "add", "copy"].includes(mode) && !viewOnly) {
                   output = (
                     <td key={ix}>
                       {Field(
@@ -125,7 +125,7 @@ export function tableBody(
 
 function removeIcon(viewOnly, mode, index, removeHandler) {
   if (!viewOnly) {
-    if (["add", "modify"].includes(mode)) {
+    if (["add", "modify", "copy"].includes(mode)) {
       return (
         <td>
           <button

@@ -1,14 +1,19 @@
 import { formatDate } from "../../../utilities/date";
 
-
 export const fields = (fields, mode, empty = true, specific) => {
   if (specific) {
     for (const field in fields) {
       if (empty && !fields[field].controlField) {
-        if (fields[field].type === "checkbox") {
-          fields[field].value = false;
-        } else {
-          fields[field].value = "";
+        switch (fields[field].fieldType) {
+          case "checkbox":
+            fields[field].value = false;
+            break;
+          case "chips":
+            fields[field].value = [];
+            break;
+          default:
+            fields[field].value = "";
+            break;
         }
       }
     }
@@ -27,10 +32,16 @@ export const fields = (fields, mode, empty = true, specific) => {
       }
       if (!fields[field].controlField) {
         if (empty) {
-          if (fields[field].type === "checkbox") {
-            fields[field].value = false;
-          } else {
-            fields[field].value = "";
+          switch (fields[field].fieldType) {
+            case "checkbox":
+              fields[field].value = false;
+              break;
+            case "chips":
+              fields[field].value = [];
+              break;
+            default:
+              fields[field].value = "";
+              break;
           }
         }
         if (mode === "open") {
@@ -123,10 +134,10 @@ export const setReadOnlyFields = (fieldnames, fields) => {
 };
 
 export const setDefaultValues = (fields, defaultValues) => {
-  Object.keys(defaultValues).forEach(key => {
-    fields[key].value = defaultValues[key]
-  })  
-  return fields
+  Object.keys(defaultValues).forEach((key) => {
+    fields[key].value = defaultValues[key];
+  });
+  return fields;
 };
 
 export function fieldListner(fieldName, handler) {

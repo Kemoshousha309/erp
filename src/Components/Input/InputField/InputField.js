@@ -20,7 +20,7 @@ class InputField extends Component {
     lastPropValid: null,
     passIconOpen: true,
   };
-  inputChange = (e) =>
+  inputChange = (e) =>  
     changeHandler(
       e,
       this,

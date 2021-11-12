@@ -7,12 +7,7 @@ import style from "./Page.module.scss"
 
 
 class Page extends Component {
-    componentDidUpdate () {
-        document.getElementById("pageContianer").scrollTo({
-            top: 0, 
-            behavior: "smooth"
-        })
-    }
+
     render(){
         // console.log("page render")
         const body =displayBody(this.props.page.pages, this.props.fields, this.props.recordClick, this.props.lanState)

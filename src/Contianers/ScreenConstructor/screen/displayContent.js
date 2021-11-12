@@ -39,6 +39,7 @@ export const displayContent = (thisK, location, additional) => {
       ) : null}
       {fkList(thisK)}
       {detailsForeignListHandler.call(thisK)}
+      {chipsList.call(thisK)}
       <Boilerplate
         gridType={thisK.state.gridType}
         dropDown={thisK.props.dropDown}
@@ -102,4 +103,17 @@ function detailsForeignListHandler() {
   ) : null; 
 }
 
+
+function chipsList() {
+  const {chipsListShow, chipsList} = this.state
+  return chipsListShow ? (
+    <RecordDisplay
+      urls={chipsList[chipsListShow].urls}
+      modalClose={this.closeChipsList}
+      recordClick={this.chipsRecordClick}
+      fk
+      mainFields={chipsList[chipsListShow].mainFields}
+    />
+  ) : null; 
+}
 

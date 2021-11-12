@@ -78,7 +78,7 @@ function primaryAddHandler(e) {
   } else {
     record[tabs[current_tab].recordDetailPropName].unshift(row);
   }
-  document.getElementById("tableContainer").scrollTo({
+  document.getElementById("detailsTableContainer").scrollTo({
     top: 0,
     behavior: "smooth",
   });

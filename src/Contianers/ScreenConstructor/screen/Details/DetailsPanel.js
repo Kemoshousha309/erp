@@ -49,7 +49,7 @@ class DetailsPanel extends Component {
           <div className={style.header}>
             {addIcon(viewOnly, mode, detailsAddHandler)}
           </div>
-          <div id="tableContainer" className={style.tableContainer}>
+          <div id="detailsTableContainer" className={style.tableContainer}>
             <table className="table">
               {tableHead(headers, lanTable, lanState)}
               {tableBody(

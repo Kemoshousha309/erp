@@ -144,7 +144,7 @@ export function handleDetailsRecordClick(record) {
     );
     this.setState({ detailsForeignList: null, record: stateRecord });
   }
-  document.getElementById("tableContainer").scrollTo({
+  document.getElementById("detailsTableContainer").scrollTo({
     top: 0,
     behavior: "smooth",
   });

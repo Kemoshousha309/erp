@@ -21,24 +21,21 @@ class Treeview extends Component {
         }
         const icon = getRelatedIcon(ele.form_no, iconMap);
         const route = getRelatedRoute(ele.form_no, routeMap);
-        if (ele.children && ele.children.length > 0) {
-          return (
-            <TreeNode
-              thisK={thisK}
-              {...this.props}
-              route={route}
-              lang={lanState}
-              lanTable={lanTable}
-              sideNavClick={sideNavClick}
-              sideNavActivity={sideNavActivity}
-              key={key}
-              icon={icon}
-              config={ele}
-              children={ele.children}
-            />
-          );
-        }
-        return null;
+        return (
+          <TreeNode
+            thisK={thisK}
+            {...this.props}
+            route={route}
+            lang={lanState}
+            lanTable={lanTable}
+            sideNavClick={sideNavClick}
+            sideNavActivity={sideNavActivity}
+            key={key}
+            icon={icon}
+            config={ele}
+            children={ele.children}
+          />
+        );
       });
       treeContent = <ul className={style.tree}>{content}</ul>;
     }

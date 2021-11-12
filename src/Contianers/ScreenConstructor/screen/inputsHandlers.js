@@ -32,6 +32,7 @@ import { selectMessage, t } from "../../../utilities/lang";
 // }
 
 export const autoDisplay = (thisK, listenField, url, fillFields) => {
+  
   // set onChange listener
   thisK.state.fields[listenField].changeHandler = (event) => {
     const { main, others } = fillFields;
@@ -86,6 +87,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
       thisK.setState({ fields: fields });
     }
   };
+  thisK.setState({fields: thisK.state.fields})
 };
 
 const setMainField = (main, value, fields, lang_no) => {

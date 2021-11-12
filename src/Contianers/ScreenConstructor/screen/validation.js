@@ -79,7 +79,7 @@ export const checkValidity = (thisK) => {
   for (const key in fieldsClone) {
     const f = fieldsClone[key];
     if (!f.readOnly && f.writability && f.validity && f.validation) {
-      if (f.value === "" && f.validation.requiered) {
+      if (f.value.length === 0  && f.validation.requiered) {
         f.validity.valid = false;
         f.validity.message = t(
           "required_field",

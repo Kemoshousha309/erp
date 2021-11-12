@@ -238,7 +238,7 @@ export function subUpdate(state) {
 function decideAccSub(level) {
   let output;
   const { mode } = this.state;
-  const pre = mode === "add" ? "preAdd" : "preModify";
+  const pre = mode === "add" || mode === "copy" ? "preAdd" : "preModify";
   const subLevel = this.state[pre].content.info.sub_level;
   if (parseInt(level) === parseInt(subLevel)) {
     output = true;
@@ -252,7 +252,7 @@ function decideAccSub(level) {
 function update_ccPost_field(ccPost_field, report_type) {
   const field = _.cloneDeep(ccPost_field);
   const { mode } = this.state;
-  const pre = mode === "add" ? "preAdd" : "preModify";
+  const pre = mode === "add" || mode === "copy" ? "preAdd" : "preModify";
   const pre_ccPost_value = this.state[pre].content.info.cc_post;
   switch (parseInt(pre_ccPost_value)) {
     case 1:

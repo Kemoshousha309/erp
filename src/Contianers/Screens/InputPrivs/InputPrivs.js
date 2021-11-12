@@ -9,12 +9,13 @@ import Boilerplate from "../../../Components/Boilerplate/Boilerplate";
 
 
 const AsyncBranches = asyncComponent(() => import("./Taps/Branches"))
+const AsyncAccountsChart = asyncComponent(() => import("./Taps/AccountsChart"))
 
 
 
 class InternalCoding extends Component {
     state={
-        tapOptions: ["select_screen",  "branches"], // these options is static just for now
+        tapOptions: ["select_screen",  "branches", "acc_chart"], // these options is static just for now
         currentTap: "select_screen",
         dropDownChange: false,
     }
@@ -35,6 +36,7 @@ class InternalCoding extends Component {
         
         switch(this.state.currentTap){
             case  "branches": return <AsyncBranches {...this.props} dropDown={dropDown} />
+            case  "acc_chart": return <AsyncAccountsChart {...this.props} dropDown={dropDown} />
             case  "select_screen": return <Boilerplate dropDown={dropDown} />
             default: return <h1>Not Exist</h1>
         }
