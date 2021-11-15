@@ -279,6 +279,10 @@ export const routeMap = [
         route: "financial-coding?no=2102"
     },
     {
+        form_no: 2104,
+        route: "cost-center?no=2104"
+    },
+    {
         form_no: 22,
         route: ""
     },

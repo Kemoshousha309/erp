@@ -11,6 +11,7 @@ import { langChangeActivity } from "../../../../store/actions/lang";
 import { CircularProgress } from "@material-ui/core";
 import { handleRecordClick } from "../../../ScreenConstructor/screen/functions/list";
 import { getTree } from "../../../ScreenConstructor/screen/async";
+import { getTreeStructure } from "../../../../utilities/tree";
 
 
 class Forms extends ScreenConstructor {
@@ -211,7 +212,7 @@ class Forms extends ScreenConstructor {
   }
   treeNodeClick = (record) => handleRecordClick(this, record);
   componentDidMount() {
-    getTree(this);
+    getTree.call(this, "forms/mainTree", getTreeStructure);
     setlastIndex(this);
     functionsListenrs(this, true);
 

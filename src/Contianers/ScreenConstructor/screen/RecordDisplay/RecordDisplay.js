@@ -71,6 +71,7 @@ class RecordDisply extends Component {
   };
   pagesRequest = (page_no) => {
     const url = `${this.props.urls.pages}/${page_no}`;
+    console.log(url)
     this.setState({ loading: true });
     axios
       .get(url)

@@ -15,7 +15,7 @@ import {
 import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
 import {
-  getAccTree,
+  getAccTreestructure,
   parentAccHandler,
   subUpdate,
   updateOnParentAcc,
@@ -27,6 +27,7 @@ import { getDetails } from "../../ScreenConstructor/screen/Details/requestDetail
 import _ from "lodash";
 import { handleDetailsScreensSave } from "../../ScreenConstructor/screen/functions/save";
 import { handleDeleteConfirmation } from "../../ScreenConstructor/screen/functions/delete";
+import { getTree } from "../../ScreenConstructor/screen/async";
 
 class ChartsOfAccounts extends ScreenConstructor {
   constructor(props) {
@@ -452,20 +453,20 @@ class ChartsOfAccounts extends ScreenConstructor {
   save = () =>
     handleDetailsScreensSave.call(
       this,
-      getAccTree.bind(this, "chartofaccounts")
+      () => getTree.call(this, "chartofaccounts", getAccTreestructure)
     );
   deleteConfirmation = (res) =>
     handleDeleteConfirmation(
       this,
       res,
-      getAccTree.bind(this, "chartofaccounts")
+      () => getTree.call(this, "chartofaccounts", getAccTreestructure)
     );
 
 
   componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
-    getAccTree.call(this, "chartofaccounts");
+    getTree.call(this, "chartofaccounts", getAccTreestructure)
 
     autoDisplay(this, "parent_acc", "chartofaccounts", {
       main: {

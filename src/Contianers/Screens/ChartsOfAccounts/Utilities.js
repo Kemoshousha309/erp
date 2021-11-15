@@ -1,20 +1,10 @@
 import _ from "lodash";
 import axios from "../../../axios";
+import { parallel } from "../../ScreenConstructor/screen/async";
 
-// TREE
-export function getAccTree(url) {
-  this.setState({ tree: null });
-  axios
-    .get(url)
-    .then((res) => {
-      const accounts = res.data;
-      const tree = getAccTreestructure(accounts);
-      this.setState({ tree: tree });
-    })
-    .catch((err) => console.log(err));
-}
 
-function getAccTreestructure(accounts) {
+// TREE 
+export function getAccTreestructure(accounts) {
   const rootParents = accounts.filter(({ parent_acc }) => parent_acc === 0);
   const tree = rootParents.map((parent) => getChildren(parent, accounts));
   return tree;
@@ -36,18 +26,6 @@ function getChildren(node, accounts) {
 }
 
 // INPUT HANDLING
-
-// inactive Change Handler
-export function inactiveChangeHandler(value, field) {
-  const { fields } = this.state;
-  fields.inactive_reason.writability = value;
-  this.setState({ fields: fields });
-}
-
-// parallel to send a bunch of requests at the same time
-const parallel = (...Promises) => {
-  return Promise.all(Promises);
-};
 
 // check if the record is present
 const getUsedRecord = (fields, parentAccValue) => {

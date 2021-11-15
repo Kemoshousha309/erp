@@ -17,6 +17,7 @@ const AsyncSystemCommands = asyncComponent(() => import( "../Screens/SystemComma
 const AsyncCurrency = asyncComponent(() => import( "../Screens/Currency/Currency"))
 const AsyncChartsOfAccounts = asyncComponent(() => import( "../Screens/ChartsOfAccounts/ChartsOfAccounts"))
 const AsyncEmployeeInformations = asyncComponent(() => import( "../Screens/EmployeeInformations/EmployeeInformations"))
+const AsyncCostCenter = asyncComponent(() => import( "../Screens/CostCenter/CostCenter"))
 
 
 class MainScreen extends Component  {
@@ -53,6 +54,7 @@ class MainScreen extends Component  {
                         <Route path={rootPath +"/financial-coding"} exact component={AsyncFinancialCoding} />
                         <Route path={rootPath +"/accounts-charts"} exact component={AsyncChartsOfAccounts} />
                         <Route path={rootPath +"/empolyee-info"} exact component={AsyncEmployeeInformations} />
+                        <Route path={rootPath +"/cost-center"} exact component={AsyncCostCenter} />
                     </Switch>
                 </div>
             </Aux>

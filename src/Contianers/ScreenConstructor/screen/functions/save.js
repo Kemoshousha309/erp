@@ -35,10 +35,10 @@ const handleSaveRequest = (thisK, func) => {
     headers: getHeaders(thisK),
   })
     .then((res) => {
-      fields(thisK.state.fields, "close", false);
       if (func) {
         func(thisK);
       }
+      fields(thisK.state.fields, "close", false);
       const message = {
         content: selectMessage(res.data.message, thisK.props.lanState),
         type: "success",
@@ -111,9 +111,6 @@ function handleDetailsScreensSaveRequest(callback) {
   }
   // prepare the body
   let detailsValues = trackDetailsChange.call(this);
-  
-  console.log(detailsValues)
-  console.log(detailsValues);
   const fieldsValues = getValues(masterfields);
   const body = {
     ...detailsValues,
