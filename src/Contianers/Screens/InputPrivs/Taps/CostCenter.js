@@ -1,23 +1,21 @@
 import { connect } from "react-redux";
-import {
-  chipsRecordClickHandler,
-  handleDrivedState,
-} from "../../../ScreenConstructor/screen/handlers";
+import { handleDrivedState } from "../../../ScreenConstructor/screen/handlers";
 import { displayContent } from "../../../ScreenConstructor/screen/displayContent";
 import { langChangeActivity } from "../../../../store/actions/lang";
 import InputPrivsConstructor from "../InputPrivsConstructor/InputPrivsConstructor";
-import { initInputPrivsView } from "../InputPrivsConstructor/InputPrivsView";
+import { initInputPrivsView } from "../InputPrivsConstructor/InputPrivsView"
 
-class AccountsChart extends InputPrivsConstructor {
-  constructor() {
+
+class Branches extends InputPrivsConstructor {
+  constructor(){
     super();
     this.state = {
       ...this.state,
       fields: {
-        from_account_no: {
+        from_cc_no: {
           fieldType: "input",
           type: "number",
-          label: "from_account_no",
+          label: "from_cc_no",
           validation: {
             length: 11,
           },
@@ -30,17 +28,15 @@ class AccountsChart extends InputPrivsConstructor {
           controlField: true,
           value: "",
           fillFields: [
-            { recordName: "acc_no", stateName: "from_account_no" },
-            { recordName: "acc_f_name", stateName: "from_account_no_f_name" },
-            { recordName: "acc_d_name", stateName: "from_account_no_d_name" },
+            { recordName: "cc_no", stateName: "from_cc_no" },
           ],
         },
-        to_account_no: {
+        to_cc_no: {
           fieldType: "input",
           type: "number",
           label: "to",
           validation: {
-            length: 11,
+            length: 30,
           },
           validity: {
             valid: true,
@@ -51,9 +47,7 @@ class AccountsChart extends InputPrivsConstructor {
           controlField: true,
           value: "",
           fillFields: [
-            { recordName: "acc_no", stateName: "to_account_no" },
-            { recordName: "acc_f_name", stateName: "to_account_no_f_name" },
-            { recordName: "acc_d_name", stateName: "to_account_no_d_name" },
+            { recordName: "cc_no", stateName: "to_cc_no" },
           ],
         },
         from_user_id: {
@@ -61,7 +55,7 @@ class AccountsChart extends InputPrivsConstructor {
           type: "number",
           label: "from_user_id",
           validation: {
-            length: 11,
+            length: 30,
           },
           validity: {
             valid: true,
@@ -73,8 +67,6 @@ class AccountsChart extends InputPrivsConstructor {
           value: "",
           fillFields: [
             { recordName: "user_id", stateName: "from_user_id" },
-            { recordName: "user_f_name", stateName: "from_user_id_f_name" },
-            { recordName: "user_d_name", stateName: "from_user_id_d_name" },
           ],
         },
         to_user_id: {
@@ -82,7 +74,7 @@ class AccountsChart extends InputPrivsConstructor {
           type: "number",
           label: "to",
           validation: {
-            length: 11,
+            length: 30,
           },
           validity: {
             valid: true,
@@ -94,29 +86,6 @@ class AccountsChart extends InputPrivsConstructor {
           value: "",
           fillFields: [
             { recordName: "user_id", stateName: "to_user_id" },
-            { recordName: "user_f_name", stateName: "to_user_id_f_name" },
-            { recordName: "user_d_name", stateName: "to_user_id_d_name" },
-          ],
-        },
-        group_no: {
-          fieldType: "input",
-          type: "number",
-          label: "group_no",
-          validation: {
-            length: 11,
-          },
-          validity: {
-            valid: true,
-            touched: false,
-            message: null,
-          },
-          writability: true,
-          controlField: true,
-          value: "",
-          fillFields: [
-            { recordName: "group_no", stateName: "group_no" },
-            { recordName: "group_f_name", stateName: "group_no_f_name" },
-            { recordName: "group_d_name", stateName: "group_no_d_name" },
           ],
         },
         from_group_no: {
@@ -161,12 +130,12 @@ class AccountsChart extends InputPrivsConstructor {
             { recordName: "group_d_name", stateName: "to_group_no_d_name" },
           ],
         },
-        currency_list: {
-          fieldType: "chips",
-          type: "text",
-          label: "currency_list",
+        group_no: {
+          fieldType: "input",
+          type: "number",
+          label: "group_no",
           validation: {
-            requiered: false,
+            length: 30,
           },
           validity: {
             valid: true,
@@ -174,81 +143,57 @@ class AccountsChart extends InputPrivsConstructor {
             message: null,
           },
           writability: true,
-          value: [],
           controlField: true,
-          addHandler: this.chipsAddHandler.bind(this, "currency_list"),
-          recordClickHandler: (record) =>
-            chipsRecordClickHandler.call(this, record, "currency_code"),
-          removeHandler: this.chipsRemoveHandler.bind(this, "currency_list"),
-        },
-      },
-      chipsListShow: null,
-      chipsList: {
-        currency_list: {
-          mainFields: [
-            "currency_code",
-            { label: "name", propName: "currency_d_name" },
-            { label: "ex_rate", propName: "exchange_rate" },
+          value: "",
+          fillFields: [
+            { recordName: "group_no", stateName: "group_no" },
           ],
-          urls: {
-            add: "currency",
-            modify: "currency",
-            search: "currency",
-            pages: "currency/pages",
-            page: "currency/page",
-            lastPage: "currency/lastPage",
-            filter: "currency/filteredPages",
-            pageNo: "currency/pageNo",
-            delete: "currency",
-            preAdd: "currency/preAdd",
-            preModify: "currency/preModify",
-          },
         },
       },
       fks: [
-        "from_account_no",
-        "to_account_no",
-        "from_group_no",
-        "to_group_no",
+        "from_cc_no",
+        "to_cc_no",
         "from_user_id",
         "to_user_id",
+        "from_group_no",
+        "to_group_no",
         "group_no",
       ],
       fkList: {
-        from_account_no: {
+        from_cc_no: {
           mainFields: [
-            "parent_acc",
-            "acc_no",
-            { label: "name", propName: "acc_d_name" },
+            "parent_cc",
+            "cc_no",
+            { label: "name", propName: "cc_d_name" },
           ],
           urls: {
-            add: "chartofaccounts",
-            modify: "chartofaccounts",
-            search: "chartofaccounts",
-            pages: "chartofaccounts/pages",
-            page: "chartofaccounts/page",
-            lastPage: "chartofaccounts/lastPage",
-            filter: "chartofaccounts/filteredPages",
-            pageNo: "chartofaccounts/pageNo",
-            delete: "chartofaccounts",
+            add: "costcenters",
+            modify: "costcenters",
+            search: "costcenters",
+            pages: "costcenters/pages",
+            page: "costcenters/page",
+            lastPage: "costcenters/lastPage",
+            filter: "costcenters/filteredPages",
+            pageNo: "costcenters/pageNo",
+            delete: "costcenters",
           },
         },
-        to_account_no: {
+        to_cc_no: {
           mainFields: [
-            "parent_acc",
-            "acc_no",
-            { label: "name", propName: "acc_d_name" },
+            "parent_cc",
+            "cc_no",
+            { label: "name", propName: "cc_d_name" },
           ],
           urls: {
-            add: "chartofaccounts",
-            modify: "chartofaccounts",
-            search: "chartofaccounts",
-            pages: "chartofaccounts/pages",
-            page: "chartofaccounts/page",
-            lastPage: "chartofaccounts/lastPage",
-            filter: "chartofaccounts/filteredPages",
-            pageNo: "chartofaccounts/pageNo",
-            delete: "chartofaccounts",
+            add: "costcenters",
+            modify: "costcenters",
+            search: "costcenters",
+            pages: "costcenters/pages",
+            page: "costcenters/page",
+            lastPage: "costcenters/lastPage",
+            filter: "costcenters/filteredPages",
+            pageNo: "costcenters/pageNo",
+            delete: "costcenters",
           },
         },
         from_user_id: {
@@ -328,12 +273,12 @@ class AccountsChart extends InputPrivsConstructor {
           },
         },
       },
-      // the content identify the header labels and propNames in the input priv record
+      // to indicate the content of the privs table
       content: {
-        header: ["acc_no", "name", "user_no", "name", "add", "view"],
+        header: ["cc_no", "name", "user_no", "name", "add", "view"],
         propsName: [
-          "acc_no",
-          { d: "acc_d_name", f: "acc_f_name" },
+          "cost_center",
+          { d: "cc_d_name", f: "cc_f_name" },
           "user_id",
           { d: "user_d_name", f: "user_f_name" },
           "add_priv",
@@ -341,11 +286,11 @@ class AccountsChart extends InputPrivsConstructor {
         ],
       },
       // to indicate the url of the screen
-      url: "accounts",
-      // to indicate the props of input priv record and used to get the body to be sent in save
-      propsNames: ["user_id", "acc_no", "acc_cur", "add_priv", "view_priv"],
-      // identifiers used to determine the specific input priv to be handled on change
-      identifiers: ["user_id", "acc_no"],
+      url: "costcenters",
+      // to indicate the props names
+      propsNames: ["user_id", "cost_center", "add_priv", "view_priv"],
+      // pks
+      identifiers:  ["user_id", "cost_center"]
     };
   }
 
@@ -362,13 +307,10 @@ class AccountsChart extends InputPrivsConstructor {
   }
 
   render() {
-    return displayContent(
-      this,
-      this.props.location,
-      initInputPrivsView.call(this)
-    );
+    return displayContent(this, this.props.location, initInputPrivsView.call(this));
   }
 }
+
 
 const mapStateToProps = (state) => {
   return {
@@ -387,4 +329,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountsChart);
+export default connect(mapStateToProps, mapDispatchToProps)(Branches);

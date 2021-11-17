@@ -1,18 +1,12 @@
 import { connect } from "react-redux";
-import { functionsListenrs } from "../../../ScreenConstructor/screen/listeners";
-import {
-  autoDisplay,
-  changePropName
-} from "../../../ScreenConstructor/screen/inputsHandlers"
 import { handleDrivedState } from "../../../ScreenConstructor/screen/handlers";
 import { displayContent } from "../../../ScreenConstructor/screen/displayContent";
 import { langChangeActivity } from "../../../../store/actions/lang";
 import InputPrivsConstructor from "../InputPrivsConstructor/InputPrivsConstructor";
-import { initInputPrivsView } from "../InputPrivsConstructor/InputPrivsView"
-
+import { initInputPrivsView } from "../InputPrivsConstructor/InputPrivsView";
 
 class Branches extends InputPrivsConstructor {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       ...this.state,
@@ -38,12 +32,6 @@ class Branches extends InputPrivsConstructor {
             { recordName: "branch_d_name", stateName: "from_branch_no_d_name" },
           ],
         },
-        from_branch_no_name: {
-          fieldType: "input",
-          label: "name",
-          readOnly: true,
-          value: "",
-        },
         to_branch_no: {
           fieldType: "input",
           type: "number",
@@ -64,12 +52,6 @@ class Branches extends InputPrivsConstructor {
             { recordName: "branch_f_name", stateName: "to_branch_no_f_name" },
             { recordName: "branch_d_name", stateName: "to_branch_no_d_name" },
           ],
-        },
-        to_branch_no_name: {
-          fieldType: "input",
-          label: "name",
-          readOnly: true,
-          value: "",
         },
         from_user_id: {
           fieldType: "input",
@@ -92,12 +74,6 @@ class Branches extends InputPrivsConstructor {
             { recordName: "user_d_name", stateName: "from_user_id_d_name" },
           ],
         },
-        from_user_id_name: {
-          fieldType: "input",
-          label: "name",
-          readOnly: true,
-          value: "",
-        },
         to_user_id: {
           fieldType: "input",
           type: "number",
@@ -119,12 +95,6 @@ class Branches extends InputPrivsConstructor {
             { recordName: "user_d_name", stateName: "to_user_id_d_name" },
           ],
         },
-        to_user_id_name: {
-          fieldType: "input",
-          label: "name",
-          readOnly: true,
-          value: "",
-        },
         group_no: {
           fieldType: "input",
           type: "number",
@@ -145,12 +115,6 @@ class Branches extends InputPrivsConstructor {
             { recordName: "group_f_name", stateName: "group_no_f_name" },
             { recordName: "group_d_name", stateName: "group_no_d_name" },
           ],
-        },
-        group_no_name: {
-          fieldType: "input",
-          label: "name",
-          readOnly: true,
-          value: "",
         },
       },
       fks: [
@@ -277,75 +241,12 @@ class Branches extends InputPrivsConstructor {
       // to indicate the props names
       propsNames: ["user_id", "branch_no", "add_priv", "view_priv"],
       // pks
-      identifiers:  ["user_id", "branch_no"]
+      identifiers: ["user_id", "branch_no"],
     };
   }
 
-  componentDidMount() {
-    functionsListenrs(this, true);
-    autoDisplay(this, "from_branch_no", "branches", {
-      main: {
-        d: { recordProp: "branch_d_name", stateProp: "from_branch_no_d_name" },
-        f: { recordProp: "branch_f_name", stateProp: "from_branch_no_f_name" },
-      },
-    });
-    autoDisplay(this, "to_branch_no", "branches", {
-      main: {
-        d: { recordProp: "branch_d_name", stateProp: "to_branch_no_d_name" },
-        f: { recordProp: "branch_f_name", stateProp: "to_branch_no_f_name" },
-      },
-    });
-    autoDisplay(this, "from_user_id", "users", {
-      main: {
-        d: { recordProp: "user_d_name", stateProp: "from_user_id_d_name" },
-        f: { recordProp: "user_f_name", stateProp: "from_user_id_f_name" },
-      },
-    });
-    autoDisplay(this, "to_user_id", "users", {
-      main: {
-        d: { recordProp: "user_d_name", stateProp: "to_user_id_d_name" },
-        f: { recordProp: "user_f_name", stateProp: "to_user_id_f_name" },
-      },
-    });
-    autoDisplay(this, "group_no", "usersgroups", {
-      main: {
-        d: { recordProp: "group_d_name", stateProp: "group_no_d_name" },
-        f: { recordProp: "group_f_name", stateProp: "group_no_f_name" },
-      },
-    });
-  }
-
   static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changePropName(
-      props,
-      state.fields,
-      "from_branch_no_name",
-      "from_branch_no"
-    );
-    fieldsUpdate = changePropName(
-      props,
-      fieldsUpdate,
-      "to_branch_no_name",
-      "to_branch_no"
-    );
-    fieldsUpdate = changePropName(
-      props,
-      fieldsUpdate,
-      "from_user_id_name",
-      "from_user_id"
-    );
-    fieldsUpdate = changePropName(
-      props,
-      fieldsUpdate,
-      "to_user_id_name",
-      "to_user_id"
-    );
-    fieldsUpdate = changePropName(
-      props,
-      fieldsUpdate,
-      "group_no_name",
-      "group_no"
-    );
+  
     let { mode, input_privs } = state;
     if (mode === "start") {
       input_privs = null;
@@ -354,15 +255,17 @@ class Branches extends InputPrivsConstructor {
     return {
       tools: tools,
       input_privs: input_privs,
-      fields: fieldsUpdate,
     };
   }
 
   render() {
-    return displayContent(this, this.props.location, initInputPrivsView.call(this));
+    return displayContent(
+      this,
+      this.props.location,
+      initInputPrivsView.call(this)
+    );
   }
 }
-
 
 const mapStateToProps = (state) => {
   return {
