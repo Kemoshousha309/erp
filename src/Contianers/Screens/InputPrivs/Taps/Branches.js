@@ -226,7 +226,20 @@ class Branches extends InputPrivsConstructor {
       },
       // to indicate the content of the privs table
       content: {
-        header: ["branch_no", "name", "user_no", "name", "add", "view"],
+        header: [
+          "branch_no",
+          "name",
+          "user_no",
+          "name",
+          {
+            label: "add",
+            control: "add_priv",
+          },
+          {
+            label: "view",
+            control: "view_priv",
+          },
+        ],
         propsName: [
           "branch_no",
           { d: "branch_d_name", f: "branch_f_name" },
@@ -246,7 +259,6 @@ class Branches extends InputPrivsConstructor {
   }
 
   static getDerivedStateFromProps(props, state) {
-  
     let { mode, input_privs } = state;
     if (mode === "start") {
       input_privs = null;

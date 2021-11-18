@@ -7,7 +7,6 @@ import { handleDrivedState } from "../../../ScreenConstructor/screen/handlers";
 import { selectMessage } from "../../../../utilities/lang";
 import { timer } from "../../../ScreenConstructor/screen/utilities";
 
-
 class InputPrivsConstructor extends ScreenConstructor {
   constructor() {
     super();
@@ -39,7 +38,7 @@ class InputPrivsConstructor extends ScreenConstructor {
         body.push(pickProps(propsNames, item));
       }
     });
-
+    
     this.setState({ loading: true });
     axios({
       method: "put",
@@ -149,6 +148,59 @@ class InputPrivsConstructor extends ScreenConstructor {
     this.setState({ input_privs: input_privs });
   };
 
+  privControlIpnputHandler = (e, type, identifier) => {
+    const value = e.target.checked;
+    const {
+      state: {
+        input_privs,
+        content: { header },
+      },
+    } = this;
+    const controls = [];
+    header.forEach((i) =>
+      typeof i === "object" ? controls.push(i.control) : null
+    );
+    if (type === "COLUMN") {
+      Object.keys(input_privs).forEach((i) => {
+        const item = input_privs[i];
+        if (
+          item.can_change_add_priv &&
+          item.can_change_view_priv &&
+          !item.admin_group
+        ) {
+          item[identifier] = value;
+          item.edited = true;
+        }
+      });
+    } else if (type === "ROW") {
+      controls.forEach((i) => {
+        if (
+          input_privs[identifier].can_change_add_priv &&
+          input_privs[identifier].can_change_view_priv &&
+          !input_privs[identifier].admin_group
+        ) {
+          input_privs[identifier][i] = value;
+          input_privs[identifier].edited = true;
+        }
+      });
+    } else if (type === "ALL") {
+      Object.keys(input_privs).forEach((i) => {
+        const item = input_privs[i];
+        if (
+          item.can_change_add_priv &&
+          item.can_change_view_priv &&
+          !item.admin_group
+        ) {
+          controls.forEach((i) => {
+            item[i] = value
+            item.edited = true
+          });
+        }
+      });
+    }
+    this.setState({ input_privs: input_privs });
+  };
+
   static getDerivedStateFromProps(props, state) {
     let { mode, input_privs } = state;
     if (mode === "start") {
@@ -164,7 +216,6 @@ class InputPrivsConstructor extends ScreenConstructor {
     return false;
   }
 }
-
 
 const pickProps = (propsList, obj) => {
   const newObj = {};

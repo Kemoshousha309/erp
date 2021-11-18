@@ -12,7 +12,8 @@ const InputPrivsView = (props) => {
     privChangeHandler,
     logged_user_id,
     viewInputPrivs,
-    content
+    content,
+    privControlIpnputHandler,
   } = props;
   const aditionalStyle = {
     margin: "2rem",
@@ -36,7 +37,8 @@ const InputPrivsView = (props) => {
             input_privs,
             mode,
             logged_user_id,
-            privChangeHandler
+            privChangeHandler,
+            privControlIpnputHandler
           )
         : null}
     </div>
@@ -46,19 +48,21 @@ const InputPrivsView = (props) => {
 export function initInputPrivsView() {
   const {
     state: { input_privs, mode, content },
-    props: {lanState, lanTable},
+    props: { lanState, lanTable },
     viewInputPrivs,
-    privChangeHandler
+    privChangeHandler,
+    privControlIpnputHandler,
   } = this;
   return (
     <InputPrivsView
-    lanState={lanState}
-    lanTable={lanTable}
-    viewInputPrivs={viewInputPrivs}
+      lanState={lanState}
+      lanTable={lanTable}
+      viewInputPrivs={viewInputPrivs}
       content={content}
       mode={mode}
       privChangeHandler={privChangeHandler}
       input_privs={input_privs}
+      privControlIpnputHandler={privControlIpnputHandler}
     />
   );
 }

@@ -1,0 +1,13 @@
+.privControlContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  .privControlInput {
+    transform: scale(1.2);
+    margin: 0.5rem;
+  }
+}
+
+.hidden {
+  display: none;
+}

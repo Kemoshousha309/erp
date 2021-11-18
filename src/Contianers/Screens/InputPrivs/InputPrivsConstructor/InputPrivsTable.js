@@ -1,5 +1,6 @@
 import React from "react";
 import { t } from "../../../../utilities/lang";
+import style from "./InputPrivs.module.scss";
 
 const InputPrivsTable = (
   content,
@@ -9,27 +10,77 @@ const InputPrivsTable = (
   input_privs,
   mode,
   logged_user_id,
-  privChangeHandler
+  privChangeHandler,
+  privControlIpnputHandler
 ) => {
   const { header, propsName } = content;
   let table = t("no_match", lanTable, lanState);
+  const controlInputclasses = [style.privControlInput];
+  if (mode !== "modify") {
+    controlInputclasses.push(style.hidden);
+  }
   if (input_privs.length > 0) {
     table = (
       <div className="table-responsive">
         <table className="table table-bordered table-dark text-center">
           <thead>
             <tr>
-              <th scope="col">#</th>
-              {header.map((i, index) => (
-                <th key={index} scope="col">{t(i, lanTable, lanState)}</th>
-              ))}
+              <th scope="col">
+                <div className={style.privControlContainer}>
+                  <span>#</span>
+                  <input
+                    className={controlInputclasses.join(" ")}
+                    type="checkbox"
+                    onChange={(e) => privControlIpnputHandler(e, "ALL")}
+                  />
+                </div>
+              </th>
+              {header.map((i, index) => {
+                let label = i;
+                let control = null;
+                if (typeof i === "object") {
+                  label = i.label;
+                  control = i.control;
+                }
+                let controlInput = null;
+                if (control) {
+                  controlInput = (
+                    <input
+                      className={controlInputclasses.join(" ")}
+                      type="checkbox"
+                      onChange={(e) =>
+                        privControlIpnputHandler(e, "COLUMN", control)
+                      }
+                    />
+                  );
+                }
+                return (
+                  <th key={index} scope="col">
+                    <div className={style.privControlContainer}>
+                      <span>{t(label, lanTable, lanState)}</span>
+                      {controlInput}
+                    </div>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody>
             {input_privs.map((i, index) => {
               return (
                 <tr key={index}>
-                  <th scope="row">{index + 1}</th>
+                  <th scope="row">
+                    <div className={style.privControlContainer}>
+                      <span>{index + 1}</span>
+                      <input
+                        className={controlInputclasses.join(" ")}
+                        type="checkbox"
+                        onChange={(e) =>
+                          privControlIpnputHandler(e, "ROW", index)
+                        }
+                      />
+                    </div>
+                  </th>
                   {propsName.map((propName, indx) => {
                     if (typeof propName === "object") {
                       if (parseInt(lanState) === 1) {
@@ -58,7 +109,7 @@ const InputPrivsTable = (
                           mess = null;
                         }
                         return (
-                          <td key={indx} >
+                          <td key={indx}>
                             <input
                               title={mess}
                               style={{ cursor: cursor }}
@@ -71,7 +122,7 @@ const InputPrivsTable = (
                           </td>
                         );
                       } else {
-                        return <td key={indx} >{i[propName]}</td>;
+                        return <td key={indx}>{i[propName]}</td>;
                       }
                     }
                   })}

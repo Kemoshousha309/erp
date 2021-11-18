@@ -3,11 +3,10 @@ import { handleDrivedState } from "../../../ScreenConstructor/screen/handlers";
 import { displayContent } from "../../../ScreenConstructor/screen/displayContent";
 import { langChangeActivity } from "../../../../store/actions/lang";
 import InputPrivsConstructor from "../InputPrivsConstructor/InputPrivsConstructor";
-import { initInputPrivsView } from "../InputPrivsConstructor/InputPrivsView"
-
+import { initInputPrivsView } from "../InputPrivsConstructor/InputPrivsView";
 
 class Branches extends InputPrivsConstructor {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       ...this.state,
@@ -27,9 +26,7 @@ class Branches extends InputPrivsConstructor {
           writability: true,
           controlField: true,
           value: "",
-          fillFields: [
-            { recordName: "cc_no", stateName: "from_cc_no" },
-          ],
+          fillFields: [{ recordName: "cc_no", stateName: "from_cc_no" }],
         },
         to_cc_no: {
           fieldType: "input",
@@ -46,9 +43,7 @@ class Branches extends InputPrivsConstructor {
           writability: true,
           controlField: true,
           value: "",
-          fillFields: [
-            { recordName: "cc_no", stateName: "to_cc_no" },
-          ],
+          fillFields: [{ recordName: "cc_no", stateName: "to_cc_no" }],
         },
         from_user_id: {
           fieldType: "input",
@@ -65,9 +60,7 @@ class Branches extends InputPrivsConstructor {
           writability: true,
           controlField: true,
           value: "",
-          fillFields: [
-            { recordName: "user_id", stateName: "from_user_id" },
-          ],
+          fillFields: [{ recordName: "user_id", stateName: "from_user_id" }],
         },
         to_user_id: {
           fieldType: "input",
@@ -84,9 +77,7 @@ class Branches extends InputPrivsConstructor {
           writability: true,
           controlField: true,
           value: "",
-          fillFields: [
-            { recordName: "user_id", stateName: "to_user_id" },
-          ],
+          fillFields: [{ recordName: "user_id", stateName: "to_user_id" }],
         },
         from_group_no: {
           fieldType: "input",
@@ -145,9 +136,7 @@ class Branches extends InputPrivsConstructor {
           writability: true,
           controlField: true,
           value: "",
-          fillFields: [
-            { recordName: "group_no", stateName: "group_no" },
-          ],
+          fillFields: [{ recordName: "group_no", stateName: "group_no" }],
         },
       },
       fks: [
@@ -275,7 +264,20 @@ class Branches extends InputPrivsConstructor {
       },
       // to indicate the content of the privs table
       content: {
-        header: ["cc_no", "name", "user_no", "name", "add", "view"],
+        header: [
+          "cc_no",
+          "name",
+          "user_no",
+          "name",
+          {
+            label: "add",
+            control: "add_priv",
+          },
+          {
+            label: "view",
+            control: "view_priv",
+          },
+        ],
         propsName: [
           "cost_center",
           { d: "cc_d_name", f: "cc_f_name" },
@@ -290,7 +292,7 @@ class Branches extends InputPrivsConstructor {
       // to indicate the props names
       propsNames: ["user_id", "cost_center", "add_priv", "view_priv"],
       // pks
-      identifiers:  ["user_id", "cost_center"]
+      identifiers: ["user_id", "cost_center"],
     };
   }
 
@@ -307,10 +309,13 @@ class Branches extends InputPrivsConstructor {
   }
 
   render() {
-    return displayContent(this, this.props.location, initInputPrivsView.call(this));
+    return displayContent(
+      this,
+      this.props.location,
+      initInputPrivsView.call(this)
+    );
   }
 }
-
 
 const mapStateToProps = (state) => {
   return {

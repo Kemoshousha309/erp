@@ -330,7 +330,20 @@ class AccountsChart extends InputPrivsConstructor {
       },
       // the content identify the header labels and propNames in the input priv record
       content: {
-        header: ["acc_no", "name", "user_no", "name", "add", "view"],
+        header: [
+          "acc_no",
+          "name",
+          "user_no",
+          "name",
+          {
+            label: "add",
+            control: "add_priv",
+          },
+          {
+            label: "view",
+            control: "view_priv",
+          },
+        ],
         propsName: [
           "acc_no",
           { d: "acc_d_name", f: "acc_f_name" },
