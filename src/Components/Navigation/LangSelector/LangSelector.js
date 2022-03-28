@@ -28,7 +28,7 @@ class LangSelector extends PureComponent {
     this.close();
   };
 
-
+// refactor
   selectorClickHandler = (e) => {
     this.close()
   }
