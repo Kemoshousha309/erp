@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import style from "./Treeview.module.scss";
 import {
@@ -9,7 +9,7 @@ import {
 } from "../../utilities/tree";
 import TreeNode from "./TreeNode/TreeNode";
 
-class Treeview extends Component {
+class Treeview extends PureComponent {
   render() {
     const {tree, loading, thisK, lanState, lanTable, sideNavClick, sideNavActivity} = this.props
       let treeContent = loading;

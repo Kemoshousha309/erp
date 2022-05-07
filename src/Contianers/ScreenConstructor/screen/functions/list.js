@@ -114,10 +114,11 @@ export function handleDetailsRecordClick(record) {
       let present = false;
       const newRow = transformForiegnDetailsData(record, tabs[current_tab].headers);
       stateRecord[tabs[current_tab].recordDetailPropName].forEach(i => {
-        if(newRow[fk] === i[fk]){
+        if(newRow[fk] === i[fk] && i.action !== "delete"){
           present = true
         }
       })
+      console.log({present})
       if(!present){
         stateRecord[tabs[current_tab].recordDetailPropName].unshift(newRow);
         this.setState({ detailsForeignList: null, record: stateRecord });

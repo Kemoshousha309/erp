@@ -1,19 +1,18 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Filter from "./Filter/Filter";
 import Page from "./Page/Page";
 import style from "./RecordDisplay.module.scss";
-import { Pagination } from "@material-ui/lab";
 import Spinner from "../../../../Components/UI/Spinner/Spinner";
 import axios from "../../../../axios";
 import { connect } from "react-redux";
-import { Button } from "@material-ui/core";
+import { Button, Pagination } from "@mui/material";
 import { t } from "../../../../utilities/lang";
 import Modal from "../../../../Components/UI/Modal/Modal";
 import { store } from "../../../../index";
 import { logout } from "../../../../store";
 import { getPkUrl } from "../../screen/fields";
 
-class RecordDisply extends Component {
+class RecordDisply extends PureComponent {
   state = {
     firstTime: true,
     pages: null,
@@ -71,7 +70,6 @@ class RecordDisply extends Component {
   };
   pagesRequest = (page_no) => {
     const url = `${this.props.urls.pages}/${page_no}`;
-    console.log(url)
     this.setState({ loading: true });
     axios
       .get(url)

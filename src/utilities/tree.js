@@ -237,7 +237,8 @@ export const treehandler = (event, sideNavActivity) => {
         sideNavActivity()
     }
     let Element = null;
-    event.nativeEvent.path.forEach(ele => {
+    const path = event.nativeEvent.path || (event.nativeEvent.composedPath && event.nativeEvent.composedPath());
+    path.forEach(ele => {
         if(ele.tagName === "LI"){
             Element = ele;
         }

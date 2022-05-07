@@ -1,12 +1,11 @@
-import React from "react"
-import { Component } from "react"
+import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import { t } from "../../../../../utilities/lang"
 import { getF } from "../../../../../utilities/utilities"
 import style from "./Page.module.scss"
 
 
-class Page extends Component {
+class Page extends PureComponent {
 
     render(){
         // console.log("page render")

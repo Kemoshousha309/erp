@@ -1,16 +1,16 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
-import MenuItem from '@material-ui/core/MenuItem';
+import {MenuItem} from '@mui/material';
 import {t} from "../../../utilities/lang"
 import { connect } from "react-redux";
-import asyncComponent from "../../../utilities/asyncComponent";
 import { withRouter } from "react-router";
 import Boilerplate from "../../../Components/Boilerplate/Boilerplate";
+import SkeletonLoader from "../../../Components/UI/SkeletonLoader/SkeletonLoader";
 
 
-const AsyncBranches = asyncComponent(() => import("./Taps/Branches"))
-const AsyncAccountsChart = asyncComponent(() => import("./Taps/AccountsChart"))
-const AsyncCostCenter = asyncComponent(() => import("./Taps/CostCenter"))
+const Branches = React.lazy(() => import("./Taps/Branches"))
+const AccountsChart = React.lazy(() => import("./Taps/AccountsChart"))
+const CostCenter = React.lazy(() => import("./Taps/CostCenter"))
 
 
 
@@ -34,15 +34,19 @@ class InputPrivs extends Component {
                 })}
             </SelectDrop>
         )
-        
+        let content = null;
         switch(this.state.currentTap){
-            case  "branches": return <AsyncBranches {...this.props} dropDown={dropDown} />
-            case  "acc_chart": return <AsyncAccountsChart {...this.props} dropDown={dropDown} />
-            case  "cost_center": return <AsyncCostCenter {...this.props} dropDown={dropDown} />
-            case  "select_screen": return <Boilerplate dropDown={dropDown} />
-            default: return <h1>Not Exist</h1>
+            case  "branches": content =  <Branches {...this.props} dropDown={dropDown} />; break;
+            case  "acc_chart": content =  <AccountsChart {...this.props} dropDown={dropDown} />; break;
+            case  "cost_center": content =  <CostCenter {...this.props} dropDown={dropDown} />; break;
+            case  "select_screen": content =  <Boilerplate dropDown={dropDown} />; break;
+            default: content =  <h1>Not Exist</h1>
         }
-          
+        return (
+            <Suspense fallback={<SkeletonLoader type="Bp" />}>
+              {content}
+            </Suspense>
+          ); 
     }
 } 
 

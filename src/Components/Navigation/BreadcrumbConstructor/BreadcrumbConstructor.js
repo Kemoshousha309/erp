@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Breadcrumbs, Link } from "@material-ui/core";
-import { Component } from "react";
+import { Breadcrumbs } from "@mui/material";
+import { PureComponent } from "react";
 import { connect } from "react-redux";
 import { getRelatedIcon, iconMap } from "../../../utilities/tree";
 import { getParam } from "../../../utilities/utilities";
 import style from "./BreadcrumbConstructor.module.scss"
 
-class BreadcrumbConstructor extends Component {
+class BreadcrumbConstructor extends PureComponent {
   render() {
     const { location, tree, lanState, maxItems } = this.props;
     const formNo = getParam(location.search, "no");
@@ -17,11 +17,10 @@ class BreadcrumbConstructor extends Component {
         {path.map((i, index) => {
           if (i) {
             return (
-              <Link key={index}>
+              <div  key={index}>
                 <FontAwesomeIcon icon={getRelatedIcon(i.form_no, iconMap)} />
-                <span> </span>
-                {parseInt(lanState) === 1 ? i.form_d_name : i.form_f_name}
-              </Link>
+                <span> {parseInt(lanState) === 1 ? i.form_d_name : i.form_f_name}</span>
+              </div>
             );
           }else {
               return null

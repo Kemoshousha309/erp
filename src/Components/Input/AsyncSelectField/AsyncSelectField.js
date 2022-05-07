@@ -1,18 +1,17 @@
-import React from "react"
+import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import { t } from "../../../utilities/lang"
 import style from "./AsyncSelectField.module.scss"
-import { Component } from "react";
 import { label, checkInputValiditiy, reflectOuterState } from "../../../utilities/inputs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faAngleDown} from "@fortawesome/free-solid-svg-icons";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import Aux from "../../../hoc/wrap";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import { isValid } from "../../../Contianers/ScreenConstructor/screen/validation";
 
 
-class AsyncSelectField extends Component {
+class AsyncSelectField extends PureComponent {
     state = {
         value: "", 
         displayValue:"",
@@ -115,11 +114,6 @@ const dropListClasses = (thisK) => {
 }
 const downAngleClasses = (thisK) => {
     let classes = [style.downAngle]
-    if(parseInt(thisK.props.lanState) === 1){
-        classes.push(style.arAngle)
-    }else{
-        classes.push(style.enAngle)
-    }
     if(thisK.state.dropList){
         classes.push(style.angleUp)
     }

@@ -1,16 +1,17 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
-import MenuItem from '@material-ui/core/MenuItem';
+import {MenuItem} from '@mui/material';
 import {t} from "../../../utilities/lang"
 import { connect } from "react-redux";
-import asyncComponent from "../../../utilities/asyncComponent";
 import { withRouter } from "react-router";
+import SkeletonLoader from "../../../Components/UI/SkeletonLoader/SkeletonLoader";
 
-const Region = asyncComponent(() => import("./Taps/Region"))
-const AsyncCountry = asyncComponent(() => import("./Taps/Country"))
-const AsyncProvince = asyncComponent(() => import("./Taps/Province"))
-const AsyncCity = asyncComponent(() => import("./Taps/City"))
-const AsyncZone = asyncComponent(() => import("./Taps/Zone"))
+
+const Region = React.lazy(() => import("./Taps/Region"))
+const Country = React.lazy(() => import("./Taps/Country"))
+const Province = React.lazy(() => import("./Taps/Province"))
+const City = React.lazy(() => import("./Taps/City"))
+const Zone = React.lazy(() => import("./Taps/Zone"))
 
 
 
@@ -36,14 +37,21 @@ class GeographicalData extends Component {
                 })}
             </SelectDrop>
         )
+        let content = null;
         switch(this.state.currentTap){
-            case  "region": return <Region {...this.props} dropDown={dropDown} />
-            case  "country": return <AsyncCountry {...this.props} dropDown={dropDown} />
-            case  "province": return <AsyncProvince {...this.props} dropDown={dropDown} />
-            case  "city": return <AsyncCity {...this.props} dropDown={dropDown} />
-            case  "zone": return <AsyncZone {...this.props} dropDown={dropDown} />
-            default: return <h1>Not Exist</h1>
+            case  "region": content =  <Region {...this.props} dropDown={dropDown} />; break;
+            case  "country": content =  <Country {...this.props} dropDown={dropDown} />; break;
+            case  "province": content =  <Province {...this.props} dropDown={dropDown} />; break;
+            case  "city": content =  <City {...this.props} dropDown={dropDown} />; break;
+            case  "zone": content =  <Zone {...this.props} dropDown={dropDown} />; break;
+            default: content =  <h1>Not Exist</h1>
         }
+        
+        return (
+            <Suspense fallback={<SkeletonLoader type="Bp" />}>
+              {content}
+            </Suspense>
+          );
           
     }
 } 

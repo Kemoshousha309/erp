@@ -1,4 +1,4 @@
-import React from "react";
+import { PureComponent } from "react";
 import { toolSelectHandler } from "../../utilities/tools";
 import {
   handleDelete,
@@ -37,7 +37,7 @@ import {
   detailsInputChangeHandler,
 } from "./screen/Details/handlers";
 
-class ScreenConstructor extends React.Component {
+class ScreenConstructor extends PureComponent {
   constructor(props) {
     super(props);
     this.mounted = true;

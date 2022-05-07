@@ -1,11 +1,11 @@
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import _ from "lodash";
-import { Component } from "react";
+import { PureComponent } from "react";
 import TabPanel from "../../../../Components/UI/TabPanel/TabPanel";
 import style from "./style.module.scss";
 import { addIcon, tableBody, tableHead } from "./Utilities";
 
-class DetailsPanel extends Component {
+class DetailsPanel extends PureComponent {
   render() {
     const {
       props: {

@@ -1,17 +1,18 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
-import MenuItem from "@material-ui/core/MenuItem";
+import {MenuItem} from "@mui/material";
 import { t } from "../../../utilities/lang";
 import { connect } from "react-redux";
-import asyncComponent from "../../../utilities/asyncComponent";
-import { withRouter } from "react-router";
+  import { withRouter } from "react-router";
+import SkeletonLoader from "../../../Components/UI/SkeletonLoader/SkeletonLoader";
 
-const AsyncLanguage = asyncComponent(() => import("./Taps/Language"));
-const AsyncMassage = asyncComponent(() => import("./Taps/Massage"));
-const AsyncModule = asyncComponent(() => import("./Taps/Module"));
-const AsyncForms = asyncComponent(() => import("./Taps/Forms"));
-const AsyncFlags = asyncComponent(() => import("./Taps/Flags"));
-const AsyncLabel = asyncComponent(() => import("./Taps/label"));
+
+const Language = React.lazy(() => import("./Taps/Language"));
+const Massage = React.lazy(() => import("./Taps/Massage"));
+const Module = React.lazy(() => import("./Taps/Module"));
+const Forms = React.lazy(() => import("./Taps/Forms"));
+const Flags = React.lazy(() => import("./Taps/Flags"));
+const Label = React.lazy(() => import("./Taps/label"));
 
 class InternalCoding extends Component {
   state = {
@@ -44,22 +45,28 @@ class InternalCoding extends Component {
         })}
       </SelectDrop>
     );
+    let content = null;
     switch (this.state.currentTap) {
       case "language":
-        return <AsyncLanguage {...this.props} dropDown={dropDown} />;
+        content = <Language {...this.props} dropDown={dropDown} />; break;
       case "label":
-        return <AsyncLabel {...this.props} dropDown={dropDown} />;
+        content = <Label {...this.props} dropDown={dropDown} />; break;
       case "message":
-        return <AsyncMassage {...this.props} dropDown={dropDown} />;
+        content = <Massage {...this.props} dropDown={dropDown} />; break;
       case "form":
-        return <AsyncForms {...this.props} dropDown={dropDown} />;
+        content = <Forms {...this.props} dropDown={dropDown} />; break;
       case "module":
-        return <AsyncModule {...this.props} dropDown={dropDown} />;
+        content = <Module {...this.props} dropDown={dropDown} />; break;
       case "flag":
-        return <AsyncFlags {...this.props} dropDown={dropDown} />;
+        content = <Flags {...this.props} dropDown={dropDown} />; break;
       default:
-        return <h1>Not Exist</h1>;
+        content = <h1>Not Exist</h1>;
     }
+    return (
+      <Suspense fallback={<SkeletonLoader type="Bp" />}>
+        {content}
+      </Suspense>
+    );
   }
 }
 

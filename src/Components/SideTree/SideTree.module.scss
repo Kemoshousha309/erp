@@ -1,5 +1,6 @@
+@import "../../styles/styleUtility.scss";
+
 .SideTree{
-    background-color:  #222831;
     height: 100vh;
     color: white;
     transition: all .3s;
@@ -8,9 +9,12 @@
     animation: gradient 15s ease infinite;
     background-size: 400% 400%;
     text-align: center;
-    @media only screen and (max-width: 1024px){
+    padding: 1rem 0rem;
+    
+    @include respond(tablet_landscape) {
         display: none;
     }
+
     a{
         color: white !important;
         text-decoration: none;
@@ -49,7 +53,6 @@
     span{
         font-size: 2rem;
         display: block;
-        padding: 1.1rem .5rem;
         width: 100%;
 
     }
@@ -58,6 +61,7 @@
     }
 .toggleIcon{
     cursor: pointer;
+    
     }
 }
 
@@ -75,10 +79,9 @@
 
 .active{
     width: 30rem;
-    flex-grow: 0; 
 }
 .inActive{
-    flex-grow: .1; 
+    width: fit-content; 
 }
 
 

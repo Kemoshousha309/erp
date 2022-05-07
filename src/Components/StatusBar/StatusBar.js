@@ -1,10 +1,9 @@
-import { Snackbar } from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import React, { Component } from "react";
+import { Snackbar, Alert } from "@mui/material";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import style from "./StatusBar.module.scss";
 
-class StatusBar extends Component {
+class StatusBar extends PureComponent {
   state = {
     state: null,
   };
@@ -45,8 +44,9 @@ class StatusBar extends Component {
         onMouseOver={this.onMouseOverHandler}
         onMouseLeave={this.onMouseOutHandler}
         className={style.StatusBar}
+        sx={{position: "static", display: "inline-block"}}
       >
-        <Alert severity={type}>{children}</Alert>
+        <Alert  severity={type}>{children}</Alert>
       </Snackbar>
     ) : null;
   }

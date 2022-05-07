@@ -1,4 +1,4 @@
-@import "../../../../utilities/styleUtility.scss";
+@import "../../../../styles/styleUtility.scss";
 
 
 .loaderContainer {
@@ -51,7 +51,7 @@
     position: relative;
 
     .addIcon {
-      color: $primaryColor;
+      color: var(--primaryColor);
       position: sticky;
       font-size: 2.5rem;
       cursor: pointer;
@@ -69,7 +69,7 @@
     }
   }
   .removeIcon {
-    color: $secondaryColor;
+    color: var(--secondaryColor);
     font-size: 1.8rem;
     height: 3rem;
     display: flex;

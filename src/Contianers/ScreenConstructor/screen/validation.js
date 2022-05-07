@@ -28,7 +28,9 @@ export const isValid = (value, rule, thisK) => {
   let isValid = true;
   if (rule) {
     if (rule.requiered) {
-      isValid = value.toString().trim() !== "" && isValid;
+      if(value !== undefined) {
+        isValid = value.toString().trim() !== "" && isValid;
+      }
       if (!isValid && !message) {
         message = t(
           "required_field",

@@ -1,4 +1,4 @@
-@import "../../../utilities/styleUtility.scss";
+@import "../../../styles/styleUtility.scss";
 
 $transformMove: .4rem;
 
@@ -26,7 +26,7 @@ $transformMove: .4rem;
 
 .active{
      svg{
-        color:  $primaryColor;
+        color:  var(--primaryColor);
         cursor: pointer;
         transition: all .3s;    
     }
@@ -49,7 +49,7 @@ $transformMove: .4rem;
 }
 .delete {
     svg{
-        color: $secondaryColor;
+        color: var(--secondaryColor);
         @include preBuzzOut;
         &:hover{
             @include buzzOut;
@@ -103,7 +103,7 @@ $transformMove: .4rem;
 
 .onMode{
     svg{
-        color:  $greenColor !important;
+        color:  green !important;
         @include pulse
     }
 }

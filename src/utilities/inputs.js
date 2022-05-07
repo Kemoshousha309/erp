@@ -111,11 +111,6 @@ export const handlePassIcon = (thisK, style) => {
   ///*******************************************************8 */
   let passIcon = null;
   let classes = [style.eyeIcon];
-  if (parseInt(thisK.props.lanState) === 1) {
-    classes.push(style.iconAr);
-  } else {
-    classes.push(style.iconEn);
-  }
   let disabled = false;
   if (!thisK.props.field.writability) {
     classes.push(style.disableIcon);

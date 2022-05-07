@@ -1,4 +1,4 @@
-import { Checkbox, TextField } from "@material-ui/core";
+import { Checkbox, TextField } from "@mui/material";
 
 
 export const Field = (
@@ -30,6 +30,7 @@ export const Field = (
     default:
       return (
         <TextField
+          variant="standard"
           error={!valid}
           helperText={message}
           type={type}

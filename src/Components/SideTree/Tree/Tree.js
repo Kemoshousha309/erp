@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import style from "./Tree.module.scss";
 import {
@@ -9,9 +9,9 @@ import {
 } from "../../../utilities/tree";
 import ParentNode from "./ParentNode/ParentNonde";
 import { treeRequest } from "../../../store";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 
-class Tree extends Component {
+class Tree extends PureComponent {
   render() {
     const padding = this.props.sideNavActivity
       ? { padding: "2rem" }

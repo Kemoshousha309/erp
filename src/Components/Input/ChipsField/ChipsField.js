@@ -6,7 +6,7 @@ import { t } from "../../../utilities/lang";
 import { label } from "../../../utilities/inputs";
 import { connect } from "react-redux";
 
-class ChipsField extends React.Component {
+class ChipsField extends React.PureComponent {
   render() {
     const {
       field: {

@@ -1,15 +1,14 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import style from "./Filter.module.scss"
 import {faSearch} from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { TextField } from "@material-ui/core";
-import { Component } from "react";
+import { TextField } from "@mui/material";
 import { t } from "../../../../../utilities/lang";
 import { connect } from "react-redux";
 import { getF } from "../../../../../utilities/utilities";
 import { trigerEnterButton } from "../../utilities";
 
-class Filter extends Component {
+class Filter extends PureComponent {
     componentDidMount () {
         this.props.fields.map((f,i) => {
             const id = `${getF(f, "label", this.props.lanState)}${i}100`

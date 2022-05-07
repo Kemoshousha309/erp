@@ -8,9 +8,7 @@ const Backdrop = (props) =>
       className={style.Backdrop}
       onClick={props.click}
     >
-      {
-        // console.log("Backdrop render")
-      }
+
     </div>
   ) : null;
 

@@ -7,16 +7,13 @@ import StatusBar from "../StatusBar/StatusBar";
 import style from "./Boilerplate.module.scss";
 
 const Boilerplate = (props) => {
-  
   const {
     loading,
     message,
-    lanState,
     toolsClicked,
     dropDown,
     tools,
     children,
-    gridType,
   } = props;
 
   const statusBar = (
@@ -32,22 +29,10 @@ const Boilerplate = (props) => {
     </Aux>
   );
 
-
-  const root = document.querySelector(":root");
-  if (gridType === 3) {
-    root.style.setProperty("--BoilerplateFont", "1.5rem");
-  } else {
-    root.style.setProperty("--BoilerplateFont", "1.8rem");
-  }
-
-  let transform = style.headerLtr;
-  if (parseInt(lanState) === 2) {
-    transform = style.haederRtl;
-  }
   return (
     <Aux>
       <div className={style.Boilerplate}>
-        <div className={[style.header, transform].join(" ")}>
+        <div className={[style.header].join(" ")}>
           {dropDown}
           <Tools clicked={toolsClicked} tools={tools} />
         </div>
@@ -59,8 +44,8 @@ const Boilerplate = (props) => {
             </div>
           </div>
         </div>
+        <div className={style.statusBar}>{statusBar}</div>
       </div>
-      <div className={style.statusBar}>{statusBar}</div>
     </Aux>
   );
 };

@@ -4,8 +4,9 @@ import { PureComponent } from "react";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import Aux from "../../../hoc/wrap";
 import { changeLnaguage } from "../../../store";
-import Icon from "../../UI/Icon"
 import { t } from "../../../utilities/lang";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
 
 class LangSelector extends PureComponent {
@@ -60,14 +61,9 @@ class LangSelector extends PureComponent {
         <Aux>
           <Backdrop show={show} click={this.close} opacity="0" />
           <div className={style.Select}>
-            <button disabled={!langChangeActive} style={disabled}  onClick={this.selectorClickHandler} value={value}>
+            <button disabled={!langChangeActive} style={disabled} type="button" onClick={this.selectorClickHandler} value={value}>
               {mapSymbol(value, "short", lanState, langTable)}
-              <Icon
-                className={arrowStyle}
-                size={10}
-                color="#43464E"
-                icon="chevron-up"
-              />
+              <FontAwesomeIcon className={arrowStyle} icon={faChevronUp} />
             </button>
             <ul className={openStyle}>
               {langs.map((i) => {

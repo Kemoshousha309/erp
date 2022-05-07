@@ -1,0 +1,64 @@
+@mixin noSpace {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+%scrollBar-y {
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  /* width */
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: #dfe1f3;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgb(182, 182, 182);
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+}
+
+
+
+
+// inputs placeholders
+%labelOverflow {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+%invalidMess {
+  color: red;
+  display: block;
+  padding: .5rem 1rem;
+  background-color: rgba(243, 191, 191, 0.507);
+  font-size: 1.5rem;
+}
+
+%invalidInput {
+  border: 1px solid red;
+  &:focus{
+      box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.274);
+  }
+}
+
+%eyeIcon {
+  position: absolute;
+  top: 25%;
+  inset-inline-end: 5%;
+  color: #757575;
+  cursor: pointer;
+}

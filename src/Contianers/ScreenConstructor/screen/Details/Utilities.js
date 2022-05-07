@@ -87,7 +87,7 @@ export function tableBody(
                 if (changeOnLang) {
                   propName = decideName(propName, lanState);
                 }
-                let value = page[propName] === null ? "-" : page[propName];
+                let value = page[propName] === null || page[propName] === undefined  ? "-" : page[propName];
                 if (type === "date") {
                   value = formatDate(value, 12);
                 }

@@ -1,6 +1,6 @@
 import React from "react";
 import style from "./PrivDisplay.module.scss";
-import Avatar from "@material-ui/core/Avatar";
+import {Avatar} from "@mui/material";
 import { decideName, t } from "../../../utilities/lang";
 import { hash, split_arr } from "../../../utilities/utilities";
 

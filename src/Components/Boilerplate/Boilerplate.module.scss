@@ -1,75 +1,33 @@
-:root {
-    --BoilerplateFont: 1.8rem;
-}
+@import "../../styles/styleUtility.scss";
 
 .Boilerplate{
-    position: relative;
-    box-sizing: border-box;
-    height: 82vh;
+    height: 100%;
+    padding: .7rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 6rem;
+    flex-basis: 6rem;
     flex-wrap: wrap;
-}
-.haederRtl{
-    padding: 0 12rem 0 1rem;
-    @media only screen and (max-width: 1400px){
-        padding: 0 1rem 0 1rem !important;
-    }
-}
-.headerLtr{
-    padding: 0 1rem 0 12rem;
-    @media only screen and (max-width: 1400px){
-        padding: 0 1rem 0 1rem !important;
-    }
 }
 
 
 
 .container{
-    position: relative;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: 100%;
-    
-
-
-    /* width */
-    &::-webkit-scrollbar {
-        width: 7px;
-        
-    }
-    
-    /* Track */
-    &::-webkit-scrollbar-track {
-        background: #DFE1F3;
-    }
-    
-    /* Handle */
-    &::-webkit-scrollbar-thumb {
-        background: rgb(182, 182, 182);
-        border-radius: 5px;
-    }
-    
-    /* Handle on hover */
-    &::-webkit-scrollbar-thumb:hover {
-        background: #555;
-    }
-  
-  
-    box-sizing: border-box;
-    background-color: #DFE1F3;
-    margin: 1rem 1rem 2rem 1rem;
+    flex-grow: 1;
+    max-height: 75vh;
+    @extend %scrollBar-y;
+    background-color: var(--tabColor);
+    padding: .5rem;
 }
 
 .statusBar {
-    position: absolute;
-    bottom: 1rem;
-    right: 50%;
-    transform: translateX(50%);
-    width: fit-content;
+    display: flex;
+    flex-basis: 8rem;
+    justify-content: center;
+    align-items: center;
 }

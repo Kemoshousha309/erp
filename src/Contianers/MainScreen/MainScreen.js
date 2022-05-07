@@ -1,29 +1,27 @@
-import React, { Component } from "react";
+import React, { PureComponent, Suspense } from "react";
 import { connect } from "react-redux";
 import style from "./MainScreen.module.scss";
 import { Route, Switch } from "react-router";
 import Aux from "../../hoc/wrap";
-import asyncComponent from "../../utilities/asyncComponent";
+import SkeletonLoader from "../../Components/UI/SkeletonLoader/SkeletonLoader";
 
-const AsyncUsers = asyncComponent(() => import("../Screens/Users/Users"))
-const AsyncUsersGroups = asyncComponent(() => import("../Screens/UsersGroups/UsersGroups"))
-const AsyncInternalCoding = asyncComponent(() => import( "../Screens/InternalCoding/InternalCoding"))
-const AsyncFinancialCoding = asyncComponent(() => import( "../Screens/FinancialCoding/FinancialCoding"))
-const AsyncGeographicalData = asyncComponent(() => import( "../Screens/GeographicalData/GeographicalData"))
-const AsyncCompanies_Branches = asyncComponent(() => import( "../Screens/Companies_Branches/Companies_Branches"))
-const AsyncScreenPrivs = asyncComponent(() => import( "../Screens/ScreenPrivs/ScreenPrivs"))
-const AsyncInputPrivs = asyncComponent(() => import( "../Screens/InputPrivs/InputPrivs"))
-const AsyncSystemCommands = asyncComponent(() => import( "../Screens/SystemCommands/SystemCommands.js"))
-const AsyncCurrency = asyncComponent(() => import( "../Screens/Currency/Currency"))
-const AsyncChartsOfAccounts = asyncComponent(() => import( "../Screens/ChartsOfAccounts/ChartsOfAccounts"))
-const AsyncEmployeeInformations = asyncComponent(() => import( "../Screens/EmployeeInformations/EmployeeInformations"))
-const AsyncCostCenter = asyncComponent(() => import( "../Screens/CostCenter/CostCenter"))
+const Users = React.lazy(() => import("../Screens/Users/Users"))
+const UsersGroups = React.lazy(() => import("../Screens/UsersGroups/UsersGroups"))
+const InternalCoding = React.lazy(() => import( "../Screens/InternalCoding/InternalCoding"))
+const FinancialCoding = React.lazy(() => import( "../Screens/FinancialCoding/FinancialCoding"))
+const GeographicalData = React.lazy(() => import( "../Screens/GeographicalData/GeographicalData"))
+const Companies_Branches = React.lazy(() => import( "../Screens/Companies_Branches/Companies_Branches"))
+const ScreenPrivs = React.lazy(() => import( "../Screens/ScreenPrivs/ScreenPrivs"))
+const InputPrivs = React.lazy(() => import( "../Screens/InputPrivs/InputPrivs"))
+const SystemCommands = React.lazy(() => import( "../Screens/SystemCommands/SystemCommands.js"))
+const Currency = React.lazy(() => import( "../Screens/Currency/Currency"))
+const ChartsOfAccounts = React.lazy(() => import( "../Screens/ChartsOfAccounts/ChartsOfAccounts"))
+const EmployeeInformations = React.lazy(() => import( "../Screens/EmployeeInformations/EmployeeInformations"))
+const CostCenter = React.lazy(() => import( "../Screens/CostCenter/CostCenter"))
 
 
-class MainScreen extends Component  {
-    componentDidUpdate(){
-        // console.log("MainScreen render")
-    }
+
+class MainScreen extends PureComponent  {
     render(){
 
         let lanState;
@@ -41,21 +39,23 @@ class MainScreen extends Component  {
         return(
             <Aux>
                 <div className={classes} >
-                    <Switch>
-                        <Route path={rootPath +"/internal-coding"} exact component={AsyncInternalCoding} />
-                        <Route path={rootPath +"/geographical-data"} exact component={AsyncGeographicalData} />
-                        <Route path={rootPath +"/companies-barnches"} exact component={AsyncCompanies_Branches} />
-                        <Route path={rootPath +"/users-groups"} exact component={AsyncUsersGroups} />
-                        <Route path={rootPath +"/users-data"} exact component={AsyncUsers} />
-                        <Route path={rootPath +"/screen-previlleges"} exact component={AsyncScreenPrivs} />
-                        <Route path={rootPath +"/input-previlleges"} exact component={AsyncInputPrivs} />
-                        <Route path={rootPath +"/system-commands"} exact component={AsyncSystemCommands} />
-                        <Route path={rootPath +"/currency"} exact component={AsyncCurrency} />
-                        <Route path={rootPath +"/financial-coding"} exact component={AsyncFinancialCoding} />
-                        <Route path={rootPath +"/accounts-charts"} exact component={AsyncChartsOfAccounts} />
-                        <Route path={rootPath +"/empolyee-info"} exact component={AsyncEmployeeInformations} />
-                        <Route path={rootPath +"/cost-center"} exact component={AsyncCostCenter} />
-                    </Switch>
+                    <Suspense fallback={<SkeletonLoader type="Bp"/>}>
+                        <Switch>
+                            <Route path={rootPath +"/internal-coding"} exact component={InternalCoding} />
+                            <Route path={rootPath +"/geographical-data"} exact component={GeographicalData} />
+                            <Route path={rootPath +"/companies-barnches"} exact component={Companies_Branches} />
+                            <Route path={rootPath +"/users-groups"} exact component={UsersGroups} />
+                            <Route path={rootPath +"/users-data"} exact component={Users} />
+                            <Route path={rootPath +"/screen-previlleges"} exact component={ScreenPrivs} />
+                            <Route path={rootPath +"/input-previlleges"} exact component={InputPrivs} />
+                            <Route path={rootPath +"/system-commands"} exact component={SystemCommands} />
+                            <Route path={rootPath +"/currency"} exact component={Currency} />
+                            <Route path={rootPath +"/financial-coding"} exact component={FinancialCoding} />
+                            <Route path={rootPath +"/accounts-charts"} exact component={ChartsOfAccounts} />
+                            <Route path={rootPath +"/empolyee-info"} exact component={EmployeeInformations} />
+                            <Route path={rootPath +"/cost-center"} exact component={CostCenter} />
+                        </Switch>
+                    </Suspense>
                 </div>
             </Aux>
         )   

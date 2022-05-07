@@ -4,7 +4,7 @@ import style from "./ParentNonde.module.scss"
 import {getRelatedIcon, iconMap, treehandler, getRelatedRoute, routeMap} from "../../../../utilities/tree"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
+import {Tooltip} from "@mui/material";
 
 
 

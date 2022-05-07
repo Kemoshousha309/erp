@@ -1,13 +1,14 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
-import MenuItem from "@material-ui/core/MenuItem";
+import {MenuItem} from "@mui/material";
 import { t } from "../../../utilities/lang";
 import { connect } from "react-redux";
-import asyncComponent from "../../../utilities/asyncComponent";
 import { withRouter } from "react-router";
+import SkeletonLoader from "../../../Components/UI/SkeletonLoader/SkeletonLoader";
 
-const AsyncAccountsGroup = asyncComponent(() => import("./Taps/AccountsGroup"));
-const AsyncCostCenterGroup = asyncComponent(() => import("./Taps/CostCenterGroup"));
+
+const AccountsGroup = React.lazy(() => import("./Taps/AccountsGroup"));
+const CostCenterGroup = React.lazy(() => import("./Taps/CostCenterGroup"));
 
 
 class InternalCoding extends Component {
@@ -44,14 +45,20 @@ class InternalCoding extends Component {
         })}
       </SelectDrop>
     );
+    let content = null;
     switch (currentTap) {
       case "accounts_group":
-        return <AsyncAccountsGroup {...this.props} dropDown={dropDown} />;  
+        content = <AccountsGroup {...this.props} dropDown={dropDown} />;   break;
       case "cost_center_group":
-        return <AsyncCostCenterGroup {...this.props} dropDown={dropDown} />;  
+        content = <CostCenterGroup {...this.props} dropDown={dropDown} />;   break;
       default:
-        return <h1>Not Exist</h1>;
+        content = <h1>Not Exist</h1>; break;
     }
+    return (
+      <Suspense fallback={<SkeletonLoader type="Bp" />}>
+        {content}
+      </Suspense>
+    );
   }
 }
 

@@ -8,84 +8,85 @@ import ErrorPage from "../../../Components/UI/ErrorPage/ErrorPage";
 import { t } from "../../../utilities/lang";
 import { getParam } from "../../../utilities/utilities";
 
-export const displayContent = (thisK, location, additional) => {
+
+export const displayContent = (screen, location, additional) => {
   let content = null;
-  if (thisK.state.tree === null || thisK.state.tree) {
+  if (screen.state.tree === null || screen.state.tree) {
     content = displayPattrenTree(
-      thisK.state.fields,
-      thisK.inputChange,
-      thisK,
-      thisK.state.tree,
+      screen.state.fields,
+      screen.inputChange,
+      screen,
+      screen.state.tree,
       additional
     );
   } else {
     content = displayPattren(
-      thisK.state.fields,
-      thisK.inputChange,
-      thisK,
+      screen.state.fields,
+      screen.inputChange,
+      screen,
       additional
     );
   }
   const tapContent = (
     <div id="tap" style={{ height: "100%" }}>
-      {thisK.state.listShow ? (
+      {screen.state.listShow ? (
         <RecordDisplay
-          urls={thisK.state.urls}
-          modalClose={thisK.closeList}
-          recordClick={thisK.recordClick}
-          pks={thisK.state.pks}
-          mainFields={thisK.state.mainFields}
+          urls={screen.state.urls}
+          modalClose={screen.closeList}
+          recordClick={screen.recordClick}
+          pks={screen.state.pks}
+          mainFields={screen.state.mainFields}
         />
       ) : null}
-      {fkList(thisK)}
-      {detailsForeignListHandler.call(thisK)}
-      {chipsList.call(thisK)}
+      {fkList(screen)}
+      {detailsForeignListHandler.call(screen)}
+      {chipsList.call(screen)}
       <Boilerplate
-        gridType={thisK.state.gridType}
-        dropDown={thisK.props.dropDown}
-        toolsClicked={thisK.toolsClickedHandler}
-        tools={thisK.state.tools}
-        loading={thisK.state.loading}
-        message={thisK.state.message}
+        gridType={screen.state.gridType}
+        dropDown={screen.props.dropDown}
+        toolsClicked={screen.toolsClickedHandler}
+        tools={screen.state.tools}
+        loading={screen.state.loading}
+        message={screen.state.message}
       >
         {content}
       </Boilerplate>
       <AlertDialog
-        open={thisK.state.deleteConfirm}
-        handleClose={thisK.deleteConfirmation}
+        open={screen.state.deleteConfirm}
+        handleClose={screen.deleteConfirmation}
       >
-        {t("delete_confirm", thisK.props.lanTable, thisK.props.lanState)}
+        {t("delete_confirm", screen.props.lanTable, screen.props.lanState)}
       </AlertDialog>
-      {thisK.state.ShortCutsList ? (
-        <ShortCutsList close={thisK.ShortCutsListCloseHandler} />
+      {screen.state.ShortCutsList ? (
+        <ShortCutsList close={screen.ShortCutsListCloseHandler} />
       ) : null}
     </div>
   );
 
-  let form = thisK.props.rawTree_hash[getParam(location.search, "no")];
+  let form = screen.props.rawTree_hash[getParam(location.search, "no")];
   if (form) {
     return tapContent;
   } else {
     return (
       <ErrorPage
-        message={t("not_allowed", thisK.props.lanTable, thisK.props.lanState)}
+        message={t("not_allowed", screen.props.lanTable, screen.props.lanState)}
       />
     );
   }
 };
 
-const fkList = (thisK) => {
+const fkList = (screen) => {
   let fk = null;
-  if (thisK.state.fkListShow) {
-    fk = thisK.state.fkListShow;
+  if (screen.state.fkListShow) {
+    fk = screen.state.fkListShow;
   }
-  return thisK.state.fkListShow ? (
+  return screen.state.fkListShow ? (
     <RecordDisplay
-      urls={thisK.state.fkList[fk].urls}
-      modalClose={thisK.closeFkList}
-      recordClick={thisK.recordFkClick}
+      urls={screen.state.fkList[fk].urls}
+      modalClose={screen.closeFkList}
+      recordClick={screen.recordFkClick}
       fk
-      mainFields={thisK.state.fkList[fk].mainFields}
+      mainFields={screen.state.fkList[fk].mainFields}
     />
   ) : null;
 };

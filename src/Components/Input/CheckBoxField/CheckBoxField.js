@@ -1,14 +1,13 @@
-import React from "react"
+import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import style from "./CheckBoxField.module.scss"
-import { Component } from "react";
 import {  label, reflectOuterState } from "../../../utilities/inputs"
 import { t } from "../../../utilities/lang";
-import { Checkbox } from "@material-ui/core";
+import { Checkbox } from "@mui/material";
 
 
 
-class CheckBoxField extends Component {
+class CheckBoxField extends PureComponent {
     state = {
         value: false, 
         valid: true,

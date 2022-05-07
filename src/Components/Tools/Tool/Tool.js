@@ -2,7 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import style from "./Tool.module.scss";
 import {connect} from "react-redux"
-import Tooltip from "@material-ui/core/Tooltip";
+import {Tooltip} from "@mui/material";
 import { getRelatedIcon } from "../../../utilities/tools";
 import { getSelectLangDir} from "../../../utilities/lang";
 

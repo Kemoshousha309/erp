@@ -6,25 +6,30 @@ import { HashRouter, Route, Switch } from "react-router-dom";
 import Login from "./Contianers/Login/Login";
 import { checkLabelesLocalStorage } from "./store";
 import { Redirect } from "react-router";
-import {
-  createTheme,
-  ThemeProvider,
-  jssPreset,
-  StylesProvider,
-} from "@material-ui/core/styles";
-import { create } from "jss";
-import rtl from "jss-rtl";
 import Modal from "./Components/UI/Modal/Modal";
 import * as actionsTypes from "./store/actions/actionTypes";
 import NetworkError from "./Components/UI/NetworkError/NetworkError";
+import { ThemeProvider } from "@mui/system";
+import { getCssVar } from "./utilities/styles";
+import rtlPlugin from 'stylis-plugin-rtl';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
+import { prefixer } from 'stylis';
+import { createTheme } from "@mui/material";
 
-// Configure JSS
-const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
+// Create rtl cache
+const cacheRtl = createCache({
+  key: 'muirtl',
+  stylisPlugins: [prefixer, rtlPlugin],
+});
+
+function RTL(app) {
+  return <CacheProvider value={cacheRtl}>{app}</CacheProvider>;
+}
 
 class App extends Component {
   componentDidMount = () => {
     this.props.onLoadApp();
-    
   };
   render() {
     let dir = "ltr";
@@ -34,23 +39,30 @@ class App extends Component {
       appLangState = style.rtl;
     } else {
       appLangState = style.ltr;
-    }
+    } 
 
     const theme = createTheme({
       direction: dir,
+      palette: {
+        primary: {
+          main: getCssVar("--primaryColor")
+        },
+      },
       typography: {
-        fontSize: 22,
+        // 1 unit => .7px
+        fontSize: 22, 
       },
     });
 
     const app = (
-      <div className={appLangState}>
+      <div className={appLangState} dir={dir} >
+        
         {this.props.networkError ? (
           <Modal
             clicked={() => this.props.close_networkError()}
             show={this.props.networkError}
           >
-            <NetworkError></NetworkError>
+            <NetworkError />
           </Modal>
         ) : null}
         <Switch>
@@ -63,7 +75,7 @@ class App extends Component {
     return (
       <HashRouter>
         <ThemeProvider theme={theme}>
-          <StylesProvider jss={jss}>{app}</StylesProvider>
+          {dir === "rtl" ?  RTL(app): app}
         </ThemeProvider>
       </HashRouter>
     );

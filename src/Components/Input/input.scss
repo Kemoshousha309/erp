@@ -1,0 +1,29 @@
+@import "../../styles/styleUtility.scss";
+
+.inputField{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    label{
+        @extend %labelOverflow;
+    }
+}
+
+.invalidMessage{
+   @extend %invalidMess;
+}
+.invalidInput{
+   @extend %invalidInput;
+}
+
+.eyeIcon {
+   @extend %eyeIcon;
+}
+.disableIcon{
+    opacity:.3;
+    cursor: auto;
+}
+
+.disabled {
+    opacity: .5 !important;
+}

@@ -1,48 +1,48 @@
-$desktop_larg: 1200px;
-$desktop_small: 1000px;
-$taplet_larg: 800px;
-$taplet_small: 600px;
-$phone_larg: 400px;
-$phone_small: 300px;
-html{
-    font-size: 62.5%;
-    margin: 0;
-    padding: 0;
-    @media only screen and (max-width: $desktop_larg) {
-      font-size: 58.5%;
-    }
-    @media only screen and (max-width: $desktop_small) {
-      font-size: 54.5%;
-    }
-    @media only screen and (max-width: $taplet_larg) {
-      font-size: 50.5%;
-    }
-    @media only screen and (max-width: $taplet_small) {
-      font-size: 46.5%;
-    }
-    @media only screen and (max-width: $phone_larg) {
-      font-size: 42.5%;
-    }
-    @media only screen and (max-width: $phone_small) {
-      font-size: 38.5%;
-    }
+@import "./styles/styleUtility.scss";
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+  @include respond(desktop) {
+    font-size: 95%; // 12 * 1.6 = 19.2px
   }
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Raleway', sans-serif;
-    background-color: white;
-    box-sizing: border-box;
-    overflow-x: hidden;
-    font-size: 1.7rem !important;
-    height: 100vh;
-    overflow: hidden;
+  @include respond(laptop) {
+    font-size: 62.5%; // 10 * 1.6 = 16px
   }
-  
-  code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-      monospace;
+  @include respond(tablet_landscape) {
+    font-size: 56.25%; // 9 * 1.6 = 14.4 px
   }
-  .row{
-    --bs-gutter-x: 0rem;
+  @include respond(tablet_portrait) {
+    font-size: 50%; // 8 * 1.6 = 12.8 px
   }
+  @include respond(mobile_landscape) {
+    font-size: 43.75%; // 7 * 1.6 = 11.2 px
+  }
+  @include respond(mobile_portrait) {
+    font-size: 37.5%; // 6 * 1.6 = 9.6 px
+  }
+}
+
+
+body, input, textarea, select {
+  margin: inherit;
+  padding: inherit;
+  box-sizing: inherit;
+  font-family: var(--primaryFont) !important;
+  font-size: 1.6rem !important;
+}
+
+
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+

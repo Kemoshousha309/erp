@@ -1,6 +1,3 @@
-$primaryColor: #3f51b5;
-$secondaryColor: #f51e56;
-$greenColor: #2ca745;
 
 @-webkit-keyframes wobble-to-top-right-on-hover {
   16.65% {
@@ -289,9 +286,4 @@ $transformMove: 0.4rem;
   animation-timing-function: ease-in-out;
   -webkit-animation-iteration-count: 1;
   animation-iteration-count: 1;
-}
-
-@mixin noSpace {
-  padding: 0 !important;
-  margin: 0 !important;
 }

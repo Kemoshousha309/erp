@@ -1,27 +1,9 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import Aux from "../../../hoc/wrap";
 import Backdrop from "../Backdrop/Backdrop";
 import style from "./Modal.module.scss";
 
-class Modal extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    // to prevent continuos updating which improve preformance
-    if (this.props.loading) {
-      return (
-        nextProps.show !== this.props.show ||
-        nextProps.loading !== this.props.loading
-      );
-    } else {
-      return (
-        nextProps.show !== this.props.show ||
-        nextProps.children !== this.props.children
-      );
-    }
-  }
-  componentDidUpdate() {
-    // console.log("Modal Updated")
-  }
-
+class Modal extends PureComponent {
   render() {
     return (
       <Aux>

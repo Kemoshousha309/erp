@@ -1,8 +1,7 @@
 import React from "react";
 import style from "./SelectDrop.module.scss";
-import Select from '@material-ui/core/Select';
-import { makeStyles } from '@material-ui/core/styles';
-import FormControl from '@material-ui/core/FormControl';
+import {makeStyles } from "@mui/styles";
+import { Select, FormControl } from '@mui/material';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -16,10 +15,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 const SelectDrop = props => {
-  // console.log("SelectDrop render")
     const classes = useStyles();
     return(
-        <FormControl className={classes.formControl}>
+        <FormControl variant="filled" className={classes.formControl}>
             <Select
             className={style.selectDrop}
             labelId="TabLabel"

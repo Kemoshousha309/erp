@@ -1,16 +1,16 @@
-import React, { Component } from "react";
+import React, { Component, Suspense } from "react";
 import SelectDrop from "../../../Components/UI/SelectDrop/SelectDrop";
-import MenuItem from "@material-ui/core/MenuItem";
+import {MenuItem} from "@mui/material";
 import { t } from "../../../utilities/lang";
 import { connect } from "react-redux";
-import asyncComponent from "../../../utilities/asyncComponent";
 import { withRouter } from "react-router";
+import SkeletonLoader from "../../../Components/UI/SkeletonLoader/SkeletonLoader";
 
-const AsyncCompaniesGroups = asyncComponent(() =>
+const CompaniesGroups = React.lazy(() =>
   import("./Taps/CompaniesGroups")
 );
-const AsyncComapnies = asyncComponent(() => import("./Taps/Comapnies"));
-const AsyncBranches = asyncComponent(() => import("./Taps/Branches"));
+const Comapnies = React.lazy(() => import("./Taps/Comapnies"));
+const Branches = React.lazy(() => import("./Taps/Branches"));
 
 class Companies_Branches extends Component {
   state = {
@@ -42,16 +42,25 @@ class Companies_Branches extends Component {
         })}
       </SelectDrop>
     );
+    let content = null;
     switch (this.state.currentTap) {
       case "company_groups":
-        return <AsyncCompaniesGroups {...this.props} dropDown={dropDown} />;
+        content = <CompaniesGroups {...this.props} dropDown={dropDown} />;
+        break;
       case "companys":
-        return <AsyncComapnies {...this.props} dropDown={dropDown} />;
+        content = <Comapnies {...this.props} dropDown={dropDown} />;
+        break;
       case "branches":
-        return <AsyncBranches {...this.props} dropDown={dropDown} />;
+        content = <Branches {...this.props} dropDown={dropDown} />;
+        break;
       default:
-        return <h1>Not Exist</h1>;
+        content = <h1>Not Exist</h1>;
     }
+    return (
+      <Suspense fallback={<SkeletonLoader type="Bp" />}>
+        {content}
+      </Suspense>
+    );
   }
 }
 

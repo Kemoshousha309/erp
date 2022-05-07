@@ -1,6 +1,5 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import { Component } from "react";
 import InputField from "./InputField/InputField";
 import SelectField from "./SelectField/SelectField";
 import CheckBoxField from "./CheckBoxField/CheckBoxField";
@@ -9,7 +8,7 @@ import TextArea from "./TextArea/TextArea";
 import FileField from "./FileField/FileField";
 import ChipsField from "./ChipsField/ChipsField";
 
-class Input extends Component {
+class Input extends PureComponent {
   selectInputHandler = () => {
     const field = this.props.field;
     switch (field.fieldType) {

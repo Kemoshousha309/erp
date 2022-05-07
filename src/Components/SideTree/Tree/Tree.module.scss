@@ -1,4 +1,4 @@
-@import "../../../utilities/styleUtility.scss";
+@import "../../../styles/styleUtility.scss";
 
 .treeContianer{
     min-height: 20rem;
@@ -6,19 +6,17 @@
 
 
 .tree{
-    overflow: hidden;
     color: white;
     text-align: start;
     list-style: none;
     max-height: 87vh;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding-left: 0rem;
-    padding-inline-end: 0px !important;
-    padding-inline-end: 0 !important;
     /* width */
     &::-webkit-scrollbar {
         width: 7px;
-        
+        display: none;
     }
     
     /* Track */
@@ -28,7 +26,7 @@
     
     /* Handle */
     &::-webkit-scrollbar-thumb {
-        background: #223344;
+        color: #223344;
         border-radius: 5px;
     }
     
@@ -49,7 +47,7 @@
     li{
         width: fit-content;
         align-self: center;
-        font-size: 2rem;
+        font-size: 1.8rem;
         cursor: pointer;
         transition: all .3s;    
         &:hover{

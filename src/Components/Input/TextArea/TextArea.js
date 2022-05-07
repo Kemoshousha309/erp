@@ -1,8 +1,7 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { t } from "../../../utilities/lang";
 import style from "./TextArea.module.scss";
-import { Component } from "react";
 import {
   changeHandler,
   label,
@@ -11,7 +10,7 @@ import {
   handlePassIcon,
 } from "../../../utilities/inputs";
 
-class TextArea extends Component {
+class TextArea extends PureComponent {
   state = {
     value: "",
     valid: true,

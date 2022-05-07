@@ -1,6 +1,6 @@
 import { Component } from "react";
 import style from "./SystemCommands.module.scss";
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { connect } from "react-redux";

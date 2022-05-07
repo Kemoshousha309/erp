@@ -1,8 +1,7 @@
-import React from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { t } from "../../../utilities/lang";
 import style from "./InputField.module.scss";
-import { Component } from "react";
 import {
   changeHandler,
   label,
@@ -11,7 +10,7 @@ import {
   handlePassIcon,
 } from "../../../utilities/inputs";
 
-class InputField extends Component {
+class InputField extends PureComponent {
   state = {
     value: "",
     valid: true,

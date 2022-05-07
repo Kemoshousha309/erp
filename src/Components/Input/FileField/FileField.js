@@ -1,13 +1,12 @@
-import React from "react"
+import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import { t } from "../../../utilities/lang"
 import style from "./FileField.module.scss"
-import { Component } from "react";
 import { changeHandler, label, checkInputValiditiy, reflectOuterState } from "../../../utilities/inputs"
 
 
 
-class FileField extends Component {
+class FileField extends PureComponent {
     state = {
         value: "", 
         valid: true,
@@ -33,7 +32,7 @@ class FileField extends Component {
         let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style)
 
         // style 
-        const classes = [style.fileinput, invalidInputStyle];
+        const classes = [style.fileinput, invalidInputStyle, style.innerLabel];
         if(!field.writability) {
             classes.push(style.disabled)
         }else{
@@ -43,8 +42,9 @@ class FileField extends Component {
         return (
             <div className={["form-group" ,style.FileField].join(' ')}>
                 <label 
+                
                 title={t(this.props.field.label, this.props.lanTable, this.props.lanState)} 
-                className="col-sm-4 col-form-label">{label(this)}</label>
+                className={["col-sm-4 col-form-label", style.outerLabel]}>{label(this)}</label>
                 <div className="col-sm-8">
                    <div className="position-relative">
                         {

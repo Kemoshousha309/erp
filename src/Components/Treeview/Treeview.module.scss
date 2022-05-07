@@ -1,4 +1,4 @@
-@import "../../utilities/styleUtility.scss";
+@import "../../styles/styleUtility.scss";
 
 .treeContianer{
     min-height: 20rem;
@@ -57,7 +57,7 @@
         cursor: pointer;
         transition: all .3s;    
         svg{
-            color: $primaryColor;
+            color: var(--primaryColor);
         }
         &:hover{
             svg{
