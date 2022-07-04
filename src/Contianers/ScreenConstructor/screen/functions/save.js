@@ -8,6 +8,8 @@ import { selectMessage } from "../../../../utilities/lang";
 import { getDetails } from "../Details/requestDetails";
 
 // save processes ***************************************************
+
+// save a normal screen
 export const handleSave = (thisK, func) => {
   const [valid, fieldsUpdate] = checkValidity(thisK);
   if (valid) {
@@ -82,6 +84,7 @@ const handleSaveRequest = (thisK, func) => {
     });
 };
 
+// save a screen with details
 export function handleDetailsScreensSave(callback) {
   const [valid, fieldsUpdate] = checkValidity(this);
   const detailsValid = checkDetailsValidity.call(this);
@@ -116,6 +119,7 @@ function handleDetailsScreensSaveRequest(callback) {
     ...detailsValues,
     ...fieldsValues,
   };
+  console.log(body);
   this.setState({ loading: true });
   axios({
     method: method,
@@ -228,5 +232,3 @@ function trackDetailsChange() {
   });
   return detailsToSave;
 }
-
-

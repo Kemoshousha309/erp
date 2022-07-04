@@ -1,0 +1,6 @@
+@import "../../../styles/styleUtility.scss";
+
+
+.inputfile {
+  @extend %inputfile;
+}

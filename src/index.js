@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import { authReducer } from "./store/reducers/auth";
 import axios from "./axios";
 import * as actionTypes from "./store/actions/actionTypes";
+import { appReducer } from "./store/reducers/app";
 // import Perf from 'react-addons-perf'; // ES6
 
 const composeEnhancers =
@@ -21,7 +22,9 @@ const composeEnhancers =
 const rootReducer = combineReducers({
   lang: languageReducer,
   auth: authReducer,
+  app: appReducer
 });
+
 
 export const store = createStore(
   rootReducer,

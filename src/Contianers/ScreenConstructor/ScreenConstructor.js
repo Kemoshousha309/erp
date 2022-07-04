@@ -36,10 +36,13 @@ import {
   removeHandler,
   detailsInputChangeHandler,
 } from "./screen/Details/handlers";
+import { ExcelServerSender } from "./screen/functions/excelSheet/serverSender";
+import { excelPageClose, resetExcelPage } from "./screen/functions/excelSheet/handlers";
 
 class ScreenConstructor extends PureComponent {
   constructor(props) {
     super(props);
+    // props.updateCurrentScreen(this)
     this.mounted = true;
     this.state = {
       tools: null,
@@ -58,7 +61,16 @@ class ScreenConstructor extends PureComponent {
       tapTools: [],
       searchFields: [],
       mainFields: [],
-      pks: []
+      pks: [],
+      excelPage: {
+        excelLoading: false,
+        serverValidate: {
+          validated: false,
+          validatedResult: null,
+          validateRes: null,
+        },
+        addMess: null
+      },
     };
   }
 
@@ -80,28 +92,26 @@ class ScreenConstructor extends PureComponent {
   // Handlers ************************************************
   closeList = () => handleCloseList(this);
   closeFkList = () => handleCloseFkList(this);
-  closeDetailsFkList = () => handleCloseDetailsFkList.call(this)
+  closeDetailsFkList = () => handleCloseDetailsFkList.call(this);
   recordClick = (record, i) => handleRecordClick(this, record, i);
   recordFkClick = (record, i) => fkRecordClickHandler(this, record);
-  recordDetailsClick = (record, i) => handleDetailsRecordClick.call(this, record, i)
+  recordDetailsClick = (record, i) =>
+    handleDetailsRecordClick.call(this, record, i);
   inputChange = (state, identifier) =>
     handleInputChange(this, state, identifier);
   deleteConfirmation = (res) => handleDeleteConfirmation(this, res);
   ShortCutsListCloseHandler = () => handleCloseShortCuts(this);
 
-  // Chips Handling
-  chipsAddHandler = (id, index) => handleChipsAdd.call(this, id, index)
-  chipsRemoveHandler = (id, index) => handleChipsRemove.call(this, id, index)
-  closeChipsList = () => handleChipsListClose.call(this)
-  chipsRecordClick = (record) => handleChipsRecordClick.call(this, record)
+  // Chips Handling **********************************************
+  chipsAddHandler = (id, index) => handleChipsAdd.call(this, id, index);
+  chipsRemoveHandler = (id, index) => handleChipsRemove.call(this, id, index);
+  closeChipsList = () => handleChipsListClose.call(this);
+  chipsRecordClick = (record) => handleChipsRecordClick.call(this, record);
 
-  // DETAILS HANDLERS
+  // DETAILS HANDLERS*************************************************
   navigateTabsHandler = (value) => tabsChangeHandler.call(this, value);
-
   detailsAddHandler = (e) => addHandler.call(this, e);
-
   detailsRemoveHandler = (index, e) => removeHandler.call(this, index, e);
-
   detailsInputChangeHandler = (event, index, serverValue, validationRules) =>
     detailsInputChangeHandler.call(
       this,
@@ -111,13 +121,18 @@ class ScreenConstructor extends PureComponent {
       validationRules
     );
 
+  // Excel sheet ******************************************************
+  excelPageClose = () => excelPageClose(this);
+  resetExcelPage = () => resetExcelPage(this);
+  excelSheetServerSender = (sheet) => new ExcelServerSender(this, sheet);
+
   // LifeCycle methods *******************************************
   componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
   }
   componentWillUnmount() {
-    this.mounted = false
+    this.mounted = false;
     functionsListenrs(this, false);
     this.props.changeLangSelectAcivity(true);
   }

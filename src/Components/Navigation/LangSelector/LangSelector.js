@@ -8,11 +8,10 @@ import { t } from "../../../utilities/lang";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 
-
 class LangSelector extends PureComponent {
   state = {
     show: false,
-    value: 1
+    value: 1,
   };
 
   close = () => this.setState({ show: !this.state.show });
@@ -25,22 +24,22 @@ class LangSelector extends PureComponent {
       value: parseInt(id),
     });
     // update lang_no in redux state
-    this.props.onLanguageChange(parseInt(id))
+    this.props.onLanguageChange(parseInt(id));
     this.close();
   };
 
-// refactor
+  // refactor
   selectorClickHandler = (e) => {
-    this.close()
-  }
+    this.close();
+  };
 
   componentDidMount() {
-    this.setState({value: this.props.lanState})
+    this.setState({ value: this.props.lanState });
   }
   render() {
     const {
       state: { show, value },
-      props: {lanState, langTable, langChangeActive}
+      props: { lanState, langTable, langChangeActive },
     } = this;
 
     let openStyle = style.hide;
@@ -50,33 +49,39 @@ class LangSelector extends PureComponent {
       arrowStyle = style.up;
     }
 
-    let disabled = {}
-    if(!langChangeActive){
-      disabled = {cursor: "initial"}
+    let disabledClass = [];
+    if (!langChangeActive) {
+      disabledClass.push(style.disabled);
     }
 
     let content = <p>loading ...</p>;
-    const langs = [1, 2]
-      content = (
-        <Aux>
-          <Backdrop show={show} click={this.close} opacity="0" />
-          <div className={style.Select}>
-            <button disabled={!langChangeActive} style={disabled} type="button" onClick={this.selectorClickHandler} value={value}>
-              {mapSymbol(value, "short", lanState, langTable)}
-              <FontAwesomeIcon className={arrowStyle} icon={faChevronUp} />
-            </button>
-            <ul className={openStyle}>
-              {langs.map((i) => {
-                return (
-                  <li key={i} onClick={this.updateValue} id={i}>
-                    {mapSymbol(i, "long", lanState, langTable)}
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </Aux>
-      );
+    const langs = [1, 2];
+    content = (
+      <Aux>
+        <Backdrop show={show} click={this.close} opacity="0" />
+        <div className={style.Select}>
+          <button
+            disabled={!langChangeActive}
+            className={disabledClass.join(" ")}
+            type="button"
+            onClick={this.selectorClickHandler}
+            value={value}
+          >
+            {mapSymbol(value, "short", lanState, langTable)}
+            <FontAwesomeIcon className={arrowStyle} icon={faChevronUp} />
+          </button>
+          <ul className={openStyle}>
+            {langs.map((i) => {
+              return (
+                <li key={i} onClick={this.updateValue} id={i}>
+                  {mapSymbol(i, "long", lanState, langTable)}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </Aux>
+    );
 
     return content;
   }
@@ -85,27 +90,34 @@ class LangSelector extends PureComponent {
 export const mapSymbol = (c, type, lanState, langTable) => {
   switch (parseInt(c)) {
     case 1:
-      return <span id={c}>{type === "short" ? "Ar" :  t("arabic", langTable, lanState) }</span>;
+      return (
+        <span id={c}>
+          {type === "short" ? "Ar" : t("arabic", langTable, lanState)}
+        </span>
+      );
     case 2:
-      return <span id={c}>{type === "short" ? "En" :  t("english", langTable, lanState)  }</span>;
+      return (
+        <span id={c}>
+          {type === "short" ? "En" : t("english", langTable, lanState)}
+        </span>
+      );
     default:
-      break
+      break;
   }
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-      lanState: state.lang.lan,
-      langTable: state.lang.langTables,
-      langChangeActive: state.lang.langChangeActive
-  }
-}
+    lanState: state.lang.lan,
+    langTable: state.lang.langTables,
+    langChangeActive: state.lang.langChangeActive,
+  };
+};
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-      onLanguageChange: (langValue) => dispatch(changeLnaguage(langValue))
-  }
-}
-
+    onLanguageChange: (langValue) => dispatch(changeLnaguage(langValue)),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(LangSelector);

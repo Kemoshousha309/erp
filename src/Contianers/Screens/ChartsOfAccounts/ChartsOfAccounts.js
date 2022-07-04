@@ -25,9 +25,16 @@ import { initDetials } from "../../ScreenConstructor/screen/Details/DetailsPanel
 import { handleDetailsScreensUndo } from "../../ScreenConstructor/screen/functions/undo";
 import { getDetails } from "../../ScreenConstructor/screen/Details/requestDetails";
 import _ from "lodash";
-import { handleDetailsScreensSave } from "../../ScreenConstructor/screen/functions/save";
+import {
+  handleDetailsScreensSave,
+} from "../../ScreenConstructor/screen/functions/save";
 import { handleDeleteConfirmation } from "../../ScreenConstructor/screen/functions/delete";
 import { getTree } from "../../ScreenConstructor/screen/async";
+import { faFileExcel } from "@fortawesome/free-regular-svg-icons";
+// import { prepareChartsOfAccountsExcelBody, validateChartsOfAccountsExcelSheet } from "./ChartsOfAccsXlsx/ChartsOfAccsXlsx";
+import ChartsExcelInstructions, { ChartsOfAccsXlsxPreparer, ChartsOfAccsXlsxValidator } from "./ChartsOfAccsXlsx/ChartsOfAccsXlsx"
+import { updateCurrentScreen } from "../../../store/actions/app";
+
 
 class ChartsOfAccounts extends ScreenConstructor {
   constructor(props) {
@@ -81,7 +88,7 @@ class ChartsOfAccounts extends ScreenConstructor {
           writability: false,
           value: "",
           autoIncrement: "/chartofaccounts/nextPK/",
-          autoIncrementValue: "parent_acc"
+          autoIncrementValue: "parent_acc",
         },
         acc_d_name: {
           fieldType: "input",
@@ -307,7 +314,36 @@ class ChartsOfAccounts extends ScreenConstructor {
           hide: true,
           value: "",
         },
+        add_excel_sheet_btn: {
+          fieldType: "button",
+          label: "add_excel_sheet",
+          icon: faFileExcel,
+          writability: false,
+          onClick: () => {
+            this.setState({ excelSheetOpen: !this.state.excelSheetOpen });
+          },
+        },
       },
+      excelSheetOpen: false,
+      ExcelSheetInstructions: ChartsExcelInstructions, 
+      recordPropNames: [
+        "acc_no",
+        "account_currency_list",
+        "acc_d_name",
+        "acc_f_name",
+        "parent_acc",
+        "level",
+        "sub",
+        "bs",
+        "acc_group",
+        "dr",
+        "acc_type",
+        "acc_dtl",
+        "cash_flow_type",
+        "cc_post",
+        "inactive",
+        "inactive_reason",
+      ],
       preAdd: {
         state: true,
         content: null,
@@ -329,6 +365,8 @@ class ChartsOfAccounts extends ScreenConstructor {
         delete: "chartofaccounts",
         preAdd: "chartofaccounts/preAdd",
         preModify: "chartofaccounts/preModify",
+        addExcel: "chartofaccounts/addExcel",
+        checkExcel: "chartofaccounts/validateExcel",
       },
       fks: ["parent_acc", "acc_group"],
       fkList: {
@@ -451,22 +489,18 @@ class ChartsOfAccounts extends ScreenConstructor {
   recordClick = (record, i) => handleRecordClick(this, record, i, getDetails);
   undo = () => handleDetailsScreensUndo.call(this);
   save = () =>
-    handleDetailsScreensSave.call(
-      this,
-      () => getTree.call(this, "chartofaccounts", getAccTreestructure)
+    handleDetailsScreensSave.call(this, () =>
+      getTree.call(this, "chartofaccounts", getAccTreestructure)
     );
   deleteConfirmation = (res) =>
-    handleDeleteConfirmation(
-      this,
-      res,
-      () => getTree.call(this, "chartofaccounts", getAccTreestructure)
+    handleDeleteConfirmation(this, res, () =>
+      getTree.call(this, "chartofaccounts", getAccTreestructure)
     );
-
 
   componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
-    getTree.call(this, "chartofaccounts", getAccTreestructure)
+    getTree.call(this, "chartofaccounts", getAccTreestructure);
 
     autoDisplay(this, "parent_acc", "chartofaccounts", {
       main: {
@@ -482,6 +516,17 @@ class ChartsOfAccounts extends ScreenConstructor {
       },
     });
   }
+
+
+  // retrun a new validator specific to this screen
+  excelPageValidator = (sheet, sheetColumnsNum) => {
+   return new ChartsOfAccsXlsxValidator(sheet, sheetColumnsNum);
+  }
+
+  // return a new preparer specific to this screen
+  excelPagePreparer = (recordPropNames, sheet) => {
+    return new ChartsOfAccsXlsxPreparer(recordPropNames, sheet);
+  };
 
   static getDerivedStateFromProps(props, state) {
     let newState = _.cloneDeep(state);
@@ -515,6 +560,7 @@ class ChartsOfAccounts extends ScreenConstructor {
     return displayContent(this, this.props.location, initDetials.call(this));
   }
 }
+
 const mapStateToProps = (state) => {
   return {
     lanState: state.lang.lan,
@@ -528,6 +574,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+    updateCurrentScreen: (screen) => dispatch(updateCurrentScreen(screen)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ChartsOfAccounts);

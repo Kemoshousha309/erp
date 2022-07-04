@@ -1,0 +1,41 @@
+@import "../../../styles/styleUtility.scss";
+
+.container {
+  .Btn {
+    outline: none;
+    padding: .5rem 1rem;
+  }
+}
+
+.center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.outline {
+  background-color: white;
+  color: var(--primaryColor);
+  border: 1px solid var(--primaryColor);
+  &:hover {
+    background-color: #5567cf00;
+  }
+}
+
+.contained {
+  background-color: var(--primaryColor);
+  border: none;
+  color: white;
+  &:hover {
+    background-color: #5567cffd;
+  }
+}
+
+.disabled {
+  background-color: #e9ecef;
+  opacity: .5;
+  &:hover {
+    background-color: #e9ecef !important;
+  }
+}

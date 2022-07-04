@@ -7,6 +7,7 @@ import AsyncSelectField from "./AsyncSelectField/AsyncSelectField";
 import TextArea from "./TextArea/TextArea";
 import FileField from "./FileField/FileField";
 import ChipsField from "./ChipsField/ChipsField";
+import PrimaryBtn from "../UI/PrimaryBtn/PrimaryBtn.component";
 
 class Input extends PureComponent {
   selectInputHandler = () => {
@@ -68,6 +69,14 @@ class Input extends PureComponent {
             thisK={this.props.thisK}
           />
         );
+        case "button":
+          return (
+            <PrimaryBtn
+              {...this.props.field}
+              center
+              variant="outline"
+            />
+          );
       case "holder":
         return <div style={{ height: "4.5rem" }}></div>;
       case "line":

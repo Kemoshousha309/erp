@@ -76,6 +76,7 @@ export const check_exist = (props, obj) => {
   });
   return contain;
 };
+
 // pipe
 export const pipe =
   (...funcs) =>
@@ -87,3 +88,4 @@ export const compose =
   (...funcs) =>
   (agrs) =>
     funcs.reduceRight((accum, func) => func(accum), agrs);
+

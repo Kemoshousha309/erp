@@ -29,9 +29,6 @@
   }
 }
 
-
-
-
 // inputs placeholders
 %labelOverflow {
   white-space: nowrap;
@@ -39,19 +36,18 @@
   text-overflow: ellipsis;
 }
 
-
 %invalidMess {
   color: red;
   display: block;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   background-color: rgba(243, 191, 191, 0.507);
   font-size: 1.5rem;
 }
 
 %invalidInput {
   border: 1px solid red;
-  &:focus{
-      box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.274);
+  &:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 0, 0, 0.274);
   }
 }
 
@@ -61,4 +57,62 @@
   inset-inline-end: 5%;
   color: #757575;
   cursor: pointer;
+}
+
+// hiding input file PLACEHOLDER
+%inputfile {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+%inputfile + label {
+  background-color: aqua;
+  position: relative;
+  font-size: 1.8rem;
+  font-weight: 100;
+  color: var(--gray-dark);
+  background-color: var(--white);
+  border: 1px solid var(--gray-light);
+  border-radius: 5px;
+  cursor: pointer;
+  // set the sizes
+  min-width: 30rem;
+  max-width: fit-content;
+  height: 3.5rem;
+  padding-inline-start: 8rem;
+  // positioning the content
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  &::before {
+    content: "Browse";
+    // set the sizes
+    height: 100%;
+    width: fit-content;
+    padding: 1rem;
+    border-inline-end: 1px solid var(--gray-light);
+    // poitioning the whole psudo element relative to the parent
+    position: absolute;
+    inset-inline-start: 0;
+    // positioning the content
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+%inputfile:focus + label {
+  outline: 1px solid var(--primaryColor-light);
+  -moz-outline-radius: 5px;
+}
+
+%inputfile + label:hover {
+    // background-color: var(--gray-light);
+  border: 1px solid var(--primaryColor-light);
+  box-shadow: 0 0 0 0.1rem var(--primaryColor-light);
+    // color: var(--white);
 }

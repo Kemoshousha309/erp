@@ -7,9 +7,11 @@ import { displayPattren, displayPattrenTree } from "../../../utilities/display";
 import ErrorPage from "../../../Components/UI/ErrorPage/ErrorPage";
 import { t } from "../../../utilities/lang";
 import { getParam } from "../../../utilities/utilities";
-
+import { Drawer } from "@mui/material";
+import ExcelPage from "../../ExcelPage/ExcelPage.component";
 
 export const displayContent = (screen, location, additional) => {
+  // this should be a component that use the the upper componet data to display the content
   let content = null;
   if (screen.state.tree === null || screen.state.tree) {
     content = displayPattrenTree(
@@ -41,6 +43,8 @@ export const displayContent = (screen, location, additional) => {
       {fkList(screen)}
       {detailsForeignListHandler.call(screen)}
       {chipsList.call(screen)}
+      {excelSheetPage.call(screen)}
+
       <Boilerplate
         gridType={screen.state.gridType}
         dropDown={screen.props.dropDown}
@@ -92,7 +96,7 @@ const fkList = (screen) => {
 };
 
 function detailsForeignListHandler() {
-    const {detailsForeignList, details} = this.state
+  const { detailsForeignList, details } = this.state;
   return detailsForeignList ? (
     <RecordDisplay
       urls={details.tabs[detailsForeignList].foreignURLs}
@@ -101,12 +105,11 @@ function detailsForeignListHandler() {
       fk
       mainFields={details.tabs[detailsForeignList].foreignMainFields}
     />
-  ) : null; 
+  ) : null;
 }
 
-
 function chipsList() {
-  const {chipsListShow, chipsList} = this.state
+  const { chipsListShow, chipsList } = this.state;
   return chipsListShow ? (
     <RecordDisplay
       urls={chipsList[chipsListShow].urls}
@@ -115,6 +118,38 @@ function chipsList() {
       fk
       mainFields={chipsList[chipsListShow].mainFields}
     />
-  ) : null; 
+  ) : null;
 }
 
+function excelSheetPage() {
+  const {
+    state: {
+      excelPage,
+      excelSheetOpen,
+      recordPropNames,
+      ExcelSheetInstructions, // component
+    },
+    excelPageClose,
+    saveExcelSheet,
+    excelPageValidator,
+    excelPagePreparer,
+    excelSheetServerSender,
+    resetExcelPage
+  } = this;
+  return (
+    <Drawer anchor="top" onClose={excelPageClose} open={excelSheetOpen}>
+      <ExcelPage
+        excelPageInfo={excelPage}
+        recordPropNames={recordPropNames}
+        excelPageValidator={excelPageValidator}
+        excelPagePreparer={excelPagePreparer}
+        saveExcelSheet={saveExcelSheet}
+        close={excelPageClose}
+        excelSheetServerSender={excelSheetServerSender}
+        resetExcelPage={resetExcelPage}
+      >
+        <ExcelSheetInstructions />
+      </ExcelPage>
+    </Drawer>
+  );
+}

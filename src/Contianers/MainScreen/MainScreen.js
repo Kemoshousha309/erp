@@ -41,6 +41,7 @@ class MainScreen extends PureComponent  {
                 <div className={classes} >
                     <Suspense fallback={<SkeletonLoader type="Bp"/>}>
                         <Switch>
+                {/* <ExcelPage /> */}
                             <Route path={rootPath +"/internal-coding"} exact component={InternalCoding} />
                             <Route path={rootPath +"/geographical-data"} exact component={GeographicalData} />
                             <Route path={rootPath +"/companies-barnches"} exact component={Companies_Branches} />

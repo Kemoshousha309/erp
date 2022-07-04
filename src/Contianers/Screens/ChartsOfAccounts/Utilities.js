@@ -2,8 +2,7 @@ import _ from "lodash";
 import axios from "../../../axios";
 import { parallel } from "../../ScreenConstructor/screen/async";
 
-
-// TREE 
+// TREE
 export function getAccTreestructure(accounts) {
   const rootParents = accounts.filter(({ parent_acc }) => parent_acc === 0);
   const tree = rootParents.map((parent) => getChildren(parent, accounts));
@@ -258,3 +257,4 @@ function update_ccPost_field(ccPost_field, report_type) {
       break;
   }
 }
+
