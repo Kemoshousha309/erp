@@ -30,8 +30,6 @@ import {
 } from "../../ScreenConstructor/screen/functions/save";
 import { handleDeleteConfirmation } from "../../ScreenConstructor/screen/functions/delete";
 import { getTree } from "../../ScreenConstructor/screen/async";
-import { faFileExcel } from "@fortawesome/free-regular-svg-icons";
-// import { prepareChartsOfAccountsExcelBody, validateChartsOfAccountsExcelSheet } from "./ChartsOfAccsXlsx/ChartsOfAccsXlsx";
 import ChartsExcelInstructions, { ChartsOfAccsXlsxPreparer, ChartsOfAccsXlsxValidator } from "./ChartsOfAccsXlsx/ChartsOfAccsXlsx"
 import { updateCurrentScreen } from "../../../store/actions/app";
 
@@ -314,15 +312,15 @@ class ChartsOfAccounts extends ScreenConstructor {
           hide: true,
           value: "",
         },
-        add_excel_sheet_btn: {
-          fieldType: "button",
-          label: "add_excel_sheet",
-          icon: faFileExcel,
-          writability: false,
-          onClick: () => {
-            this.setState({ excelSheetOpen: !this.state.excelSheetOpen });
-          },
-        },
+        // add_excel_sheet_btn: {
+        //   fieldType: "button",
+        //   label: "add_excel_sheet",
+        //   icon: faFileExcel,
+        //   writability: false,
+        //   onClick: () => {
+        //     this.setState({ excelSheetOpen: !this.state.excelSheetOpen });
+        //   },
+        // },
       },
       excelSheetOpen: false,
       ExcelSheetInstructions: ChartsExcelInstructions, 

@@ -20,7 +20,7 @@ export const handleMode = (mode, lang_no, langs, tools, changeLangSelectAcivity)
         case "d_record":
             changeLangSelectAcivity(false)
             activeList = [
-                toolsName.add.name, toolsName.list.name, 
+                toolsName.add.name, toolsName.excel.name, toolsName.list.name, 
                 toolsName.modify.name, toolsName.first.name, toolsName.last.name,
                 toolsName.next.name, toolsName.previous.name, toolsName.first.name,
                 toolsName.search.name, toolsName.delete.name, toolsName.copy.name,

@@ -11,6 +11,7 @@ import {
     faCopy, 
     faUndo,
     faTrashAlt,
+    faFileExcel
 } from "@fortawesome/free-solid-svg-icons";
 import { t } from "./lang";
 
@@ -19,6 +20,7 @@ import { t } from "./lang";
 export const toolsNameMap = (lang_dir) => {
     const toolsName = {
         add: {name: "add", icon: faPlusCircle},
+        excel: {name: "excel", icon: faFileExcel},
         copy: {name: "copy", icon: faCopy},
         search: {name: "search", icon: faSearch},
         list: {name: "list", icon: faClipboard},
@@ -46,6 +48,7 @@ export const startMode = (langDir, tools) => {
     const toolsName = toolsNameMap(langDir)
     const initTools = [
         {name: toolsName.add.name, state: true},
+        {name:  toolsName.excel.name, state: true},
         {name:  toolsName.copy.name, state: false},
         {name: toolsName.search.name, state: true, onMode: false},
         {name: toolsName.list.name, state: true},
@@ -88,7 +91,8 @@ export const toolSelectHandler = (identifier, thisKey) =>{
         save: thisKey.save,
         undo: thisKey.undo,
         copy: thisKey.copy,
-        delete: thisKey.delete
+        delete: thisKey.delete,
+        excel: thisKey.excel
     }
     toolmap[identifier]()
 }

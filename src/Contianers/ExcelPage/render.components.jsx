@@ -1,49 +1,145 @@
 import { Button, LinearProgress } from "@mui/material";
 import { selectMessage } from "../../utilities/lang";
 import style from "./ExcelPage.module.scss";
-import DisplayExcelSheet from "../../Components/DisplayExcelSheet/DisplayExcelSheet.component";
-import SendIcon from '@mui/icons-material/Send';
-import RuleIcon from '@mui/icons-material/Rule';
+import SendIcon from "@mui/icons-material/Send";
+import RuleIcon from "@mui/icons-material/Rule";
+import { useContext } from "react";
+import { ExeclPageContext } from "./ExcelPage.component";
 
 // RENDER COMPONENTS
-export function RenderErrorMessage({ errMessages }) {
-  // errMessages can be arr or matrix
-  if (errMessages) {
-    return (
-      <div className={style.errMessContainer}>
-        <p>Error</p>
-        {errMessages.map((errMess, indx) => {
-          if (typeof errMess === "object") {
-            // this means it's an array
-            return (
-              <ol key={indx}>
-                {errMess.slice(0, 5).map((errMessage, index) => {
-                  if (index === 4 && errMess.length > 4) {
-                    return (
-                      <div key={index}>
-                        <li> {errMessage}</li>
-                        <p>
-                          {" "}
-                          ..............There is more Errors in this columns
-                          your sheet and try again
-                        </p>
-                      </div>
-                    );
-                  }
-                  return <li> {errMessage}</li>;
-                })}
-              </ol>
-            );
-          }
-          return <div key={indx}>- {errMess}</div>;
-        })}
-      </div>
-    );
+export function ExcelPage({ children, ...restProps }) {
+  const { props } = useContext(ExeclPageContext);
+  const containerClassess = [style.container];
+  if (parseInt(props.lanState) === 1) {
+    containerClassess.push(style.rtl);
+  } else {
+    containerClassess.push(style.ltr);
   }
-  return null;
+
+  return <div className={containerClassess.join(" ")}>{children}</div>;
 }
 
-export function RenderErrorResponse({ responseData, langNo   }) {
+ExcelPage.CloseBtn = function CloseBtn({ children, ...restProps }) {
+  const { props } = useContext(ExeclPageContext);
+  return (
+    <div className={style.btnContainer}>
+      <Button onClick={props.close} variant="outlined" color="error">
+        {children}
+      </Button>
+    </div>
+  );
+};
+
+ExcelPage.Header = function Header({ children, ...restProps }) {
+  return <h1>{children}</h1>;
+};
+
+ExcelPage.Instructions = function Instructions({ children, ...restProps }) {
+  return <div className={style.instructions}>{children}</div>;
+};
+
+ExcelPage.InputsContainer = function InputsContainer({
+  children,
+  ...resProps
+}) {
+  return <div className={style.inputsContainer}>{children}</div>;
+};
+
+ExcelPage.InputErrMess = function InputErrMess({ children, ...restProps }) {
+  const {
+    state: { fileInputErrMes },
+  } = useContext(ExeclPageContext);
+  if (!fileInputErrMes) return null;
+  return <p className={style.error}>{fileInputErrMes.content}</p>;
+};
+
+ExcelPage.FunctionBtns = function FunctionBtns() {
+  const excelPage = useContext(ExeclPageContext);
+  const {
+    state: { renderButtons },
+    props: {
+      excelPageInfo: { serverValidate },
+    },
+    addExcelSheet,
+    validateExcelSheet,
+  } = excelPage;
+  if (!renderButtons) return null;
+  return (
+    <div className={style.buttonsContainer}>
+      <Button
+        onClick={validateExcelSheet}
+        variant="contained"
+        startIcon={<RuleIcon />}
+      >
+        Validate
+      </Button>
+      <Button
+        disabled={!serverValidate.addAvialabilty}
+        onClick={addExcelSheet}
+        variant="outlined"
+        endIcon={<SendIcon />}
+      >
+        Add
+      </Button>
+    </div>
+  );
+};
+
+ExcelPage.Loading = function Loading() {
+  const {
+    props: {
+      excelPageInfo: { excelLoading },
+    },
+  } = useContext(ExeclPageContext);
+  if (!excelLoading) return null;
+  return <LinearProgress />;
+};
+
+ExcelPage.ErrorMess = function ErrorMess() {
+  const {
+    state: { errMessages },
+  } = useContext(ExeclPageContext);
+  console.log(errMessages)
+  if (!errMessages) return null;
+  return (
+    <div className={style.errMessContainer}>
+      <p>Error</p>
+      {errMessages.map((errMess, indx) => {
+        if (typeof errMess === "object") {
+          // this means it's an array
+          return (
+            <ol key={indx}>
+              {errMess.slice(0, 5).map((errMessage, index) => {
+                if (index === 4 && errMess.length > 4) {
+                  return (
+                    <div key={index}>
+                      <li> {errMessage}</li>
+                      <p>
+                        {" "}
+                        ..............There is more Errors in this columns your
+                        sheet and try again
+                      </p>
+                    </div>
+                  );
+                }
+                return <li> {errMessage}</li>;
+              })}
+            </ol>
+          );
+        }
+        return <div key={indx}>- {errMess}</div>;
+      })}
+    </div>
+  );
+};
+
+ExcelPage.ServerErr = function ServerErr() {
+  const {
+    props: {
+      excelPageInfo: { serverValidate, lanState },
+    },
+  } = useContext(ExeclPageContext);
+  const responseData = serverValidate.validateRes;
   if (!responseData) return null;
   let serverErr = false;
   const errMessages = [];
@@ -72,7 +168,7 @@ export function RenderErrorResponse({ responseData, langNo   }) {
           <div key={index}>
             <li>
               {" "}
-              {selectMessage(err.mess, langNo)} in the primary key number{" "}
+              {selectMessage(err.mess, lanState)} in the primary key number{" "}
               {err.location}{" "}
             </li>
             <p>
@@ -85,7 +181,7 @@ export function RenderErrorResponse({ responseData, langNo   }) {
       return (
         <li key={index}>
           {" "}
-          {selectMessage(err.mess, langNo)} in the primary key number{" "}
+          {selectMessage(err.mess, lanState)} in the primary key number{" "}
           {err.location}
         </li>
       );
@@ -97,59 +193,22 @@ export function RenderErrorResponse({ responseData, langNo   }) {
       <ol>{content}</ol>
     </div>
   );
-}
+};
 
-export function RenderFileInputErrMess({ fileInputErrMes }) {
-  if (fileInputErrMes.state) {
-    return <p className={style.error}>{fileInputErrMes.content}</p>;
-  }
-  return null;
-}
+ExcelPage.AddMess = function AddMess() {
+  const {
+    props: {excelPageInfo: { addMess }}
+  } = useContext(ExeclPageContext);
+  if (!addMess) return null;
+  return <p className={style.validMess}>{addMess}</p>;
+};
 
-export function RenderExcelTable({ excelSheet }) {
-  return (
-    <div className={style.tableContainer}>
-      {excelSheet ? <DisplayExcelSheet sheet={excelSheet} /> : null}
-    </div>
-  );
-}
-
-export function RenderLoading({ loading }) {
-  if (loading) {
-    return <LinearProgress />;
-  }
-  return null;
-}
-
-export function RenderButtons({show, add, validate, addDisable}) {
-  if(!show) return null;
-  return (
-    <div className={style.buttonsContainer}>
-      <Button onClick={validate} variant="contained" startIcon={<RuleIcon />}>
-        Validate
-      </Button>
-      <Button disabled={!addDisable} onClick={add} variant="outlined" endIcon={<SendIcon />}>
-        Add
-      </Button>
-    </div>
-  );
-}
-
-export const RenderValidMess = ({show}) => {
-  if(!show) return null;
+ExcelPage.ValidMess = function ValidMess() {
+  const {props: {excelPageInfo: { serverValidate }}} = useContext(ExeclPageContext);
+  if (!serverValidate.addAvialabilty) return null;
   return (
     <p className={style.validMess}>
       The sheet is valid click Add button to save it.
     </p>
-  )
-}
-
-
-export const RenderAddMess = ({mess}) => {
-  if(!mess) return null;
-  return (
-    <p className={style.validMess}>
-      {mess}
-    </p>
-  )
-}
+  );
+};

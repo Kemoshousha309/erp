@@ -77,13 +77,15 @@ export const handleValidateExcelSheet = (excelSheet) => {
     },
     state: { rawExcelSheet, sheetColumnsNum },
   } = excelSheet;
+  
   // match
   const preparer = excelPagePreparer(recordPropNames, rawExcelSheet);
   preparer.prepareRawSheet();
-
+  console.log(preparer)
   // validate the number
   const validator = excelPageValidator(sheetColumnsNum);
   validator.checkNumber();
+  console.log(validator)
 
   if (validator.result.columnsNum.valid) {
     // handle types
@@ -104,7 +106,7 @@ export const handleValidateExcelSheet = (excelSheet) => {
     sender.validate(); 
     // update the server validate in the screen then refelct here in the UI
   } else {
-    excelSheet.setState({ errMessages: validator.result.columnsNum.errMessages });
+    excelSheet.setState({ errMessages: validator.result.validity.errMessages });
   }
 }
 

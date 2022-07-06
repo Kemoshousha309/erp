@@ -88,6 +88,7 @@ class ScreenConstructor extends PureComponent {
   next = () => handleMove("next", this);
   first = () => handleMove("first", this);
   last = () => handleMove("last", this);
+  excel = () => this.setState({ excelSheetOpen: !this.state.excelSheetOpen });
 
   // Handlers ************************************************
   closeList = () => handleCloseList(this);
