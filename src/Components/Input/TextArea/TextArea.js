@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import { t } from "../../../utilities/lang";
+import { t } from "../../../Helpers/lang";
 import style from "./TextArea.module.scss";
 import {
   changeHandler,
@@ -8,7 +8,7 @@ import {
   checkInputValiditiy,
   reflectOuterState,
   handlePassIcon,
-} from "../../../utilities/inputs";
+} from "../../../Helpers/inputs";
 
 class TextArea extends PureComponent {
   state = {

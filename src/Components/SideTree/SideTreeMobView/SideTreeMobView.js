@@ -1,29 +1,27 @@
-import React from "react";
-import style from "./SideTreeMobView.module.scss";
-import logo from "../../../assests/logo.png"
-import Backdrop from "../../UI/Backdrop/Backdrop";
-import Aux from "../../../hoc/wrap";
-import Tree from "../Tree/Tree";
+import React from 'react';
+import style from './SideTreeMobView.module.scss';
+import logo from '../../../Assets/logo.png';
+import Backdrop from '../../UI/Backdrop/Backdrop';
+import Tree from '../Tree/Tree';
 
-
-const SideTreeMobView = props => {
-    // console.log("SideTreeMobView render")
-    let display;
-    display = props.SideTreeMobView ? "block" : "none";
-    return(
-        <Aux>
-            <Backdrop show={props.SideTreeMobView} click={props.clicked} />
-        <div style={{display: display}} className={style.SideTreeMobView}>
-            <div >
-                <span>
-                    <img className={style.sideImgLogo} alt='logo' src={logo}></img>
-                    Experts Vision
-                </span> 
-                <Tree sideNavActivity={props.SideTreeMobView} />
-            </div>
+function SideTreeMobView(props) {
+  // console.log("SideTreeMobView render")
+  let display;
+  display = props.SideTreeMobView ? 'block' : 'none';
+  return (
+    <>
+      <Backdrop show={props.SideTreeMobView} click={props.clicked} />
+      <div style={{ display }} className={style.SideTreeMobView}>
+        <div>
+          <span>
+            <img className={style.sideImgLogo} alt="logo" src={logo} />
+            Experts Vision
+          </span>
+          <Tree sideNavActivity={props.SideTreeMobView} />
         </div>
-        </Aux>
-    )
+      </div>
+    </>
+  );
 }
 
 export default SideTreeMobView;

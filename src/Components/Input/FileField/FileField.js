@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
-import { t } from "../../../utilities/lang"
+import { t } from "../../../Helpers/lang"
 import style from "./FileField.module.scss"
-import { changeHandler, label, checkInputValiditiy, reflectOuterState } from "../../../utilities/inputs"
+import { changeHandler, label, checkInputValiditiy, reflectOuterState } from "../../../Helpers/inputs"
 
 
 

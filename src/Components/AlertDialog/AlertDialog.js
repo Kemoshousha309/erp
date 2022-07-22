@@ -1,8 +1,9 @@
 import React from 'react';
-import {DialogTitle, Button, Dialog, DialogActions, DialogContent, DialogContentText} from '@mui/material';
+import {
+  DialogTitle, Button, Dialog, DialogActions, DialogContent, DialogContentText,
+} from '@mui/material';
 import { connect } from 'react-redux';
-import { t } from '../../utilities/lang';
-
+import { t } from '../../Helpers/lang';
 
 function AlertDialog(props) {
   return (
@@ -20,10 +21,10 @@ function AlertDialog(props) {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => props.handleClose(true)} color="secondary">
-            {t("yes", props.lanTable, props.lanState)}
+            {t('yes', props.lanTable, props.lanState)}
           </Button>
           <Button onClick={() => props.handleClose(false)} color="primary" autoFocus>
-            {t("no", props.lanTable, props.lanState)}  
+            {t('no', props.lanTable, props.lanState)}
           </Button>
         </DialogActions>
       </Dialog>
@@ -31,14 +32,11 @@ function AlertDialog(props) {
   );
 }
 
-const mapStateToProps = state => {
-  return {
-      lanState: state.lang.lan,
-      lanTable: state.lang.langTables,
-      token: state.auth.authData.token,
-      languages: state.lang.langInfo
-  }
-}
+const mapStateToProps = (state) => ({
+  lanState: state.lang.lan,
+  lanTable: state.lang.langTables,
+  token: state.auth.authData.token,
+  languages: state.lang.langInfo,
+});
 
 export default connect(mapStateToProps, null)(AlertDialog);
-

@@ -3,13 +3,14 @@
 .SideTree{
     height: 100vh;
     color: white;
-    transition: all .3s;
+    transition: all .4s;
     margin: 0; 
     background: linear-gradient(-45deg,#dddddd, #222831, #3F51B5, #f05454);
     animation: gradient 15s ease infinite;
     background-size: 400% 400%;
     text-align: center;
     padding: 1rem 0rem;
+
     
     @include respond(tablet_landscape) {
         display: none;
@@ -30,7 +31,6 @@
         }
     }
     div>span{
-        
         &:last-child{
             i{
                 width: fit-content;
@@ -81,7 +81,11 @@
     width: 30rem;
 }
 .inActive{
-    width: fit-content; 
+    width: 3rem; 
+    min-width: fit-content;
+}
+.sideNavHeader{
+    white-space: nowrap;
 }
 
 

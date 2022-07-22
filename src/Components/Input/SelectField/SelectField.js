@@ -1,13 +1,13 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import { t } from "../../../utilities/lang";
+import { t } from "../../../Helpers/lang";
 import style from "./SelectField.module.scss";
 import {
   changeHandler,
   label,
   checkInputValiditiy,
   reflectOuterState,
-} from "../../../utilities/inputs";
+} from "../../../Helpers/inputs";
 
 class SelectField extends PureComponent {
   state = {

@@ -1,0 +1,35 @@
+import React from "react";
+
+    function NewComp({setState}) {
+      return (<div className={[style.infoColumn, "col-md-6"].join(" ")}>
+          <div>
+            <h1 className="">{lables["1"]}</h1>
+            <button onClick={() => props.history.push("/login")} style={{
+      fontSize: "2rem"
+    }} className="btn btn-outline-primary ">
+              {lables["2"]}
+            </button>
+            <br></br>
+
+            <button style={{
+      fontSize: "2rem"
+    }} onClick={() => setState({
+      boxShow: !state.boxShow
+    })} className="btn btn-outline-secondary">
+              {lables["7"]}
+            </button>
+
+            <div className={[style.collapseBox, state.boxShow ? style.show : style.hidden].join(" ")}>
+              <p>
+                {lables["3"]} <br></br>
+                1- {lables["4"]}
+                <br></br>
+                2- {lables["5"]} <br></br>
+                3- {lables["6"]}
+              </p>
+            </div>
+          </div>
+        </div>);
+    }
+  
+  

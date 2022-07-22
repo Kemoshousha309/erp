@@ -1,21 +1,21 @@
-import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-import style from "./Tree.module.scss";
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { CircularProgress } from '@mui/material';
+import style from './Tree.module.scss';
 import {
   getRelatedIcon,
   iconMap,
   getRelatedRoute,
   routeMap,
-} from "../../../utilities/tree";
-import ParentNode from "./ParentNode/ParentNonde";
-import { treeRequest } from "../../../store";
-import { CircularProgress } from "@mui/material";
+} from '../../../Helpers/tree';
+import ParentNode from './ParentNode/ParentNonde';
+import { treeRequest } from '../../../store';
 
 class Tree extends PureComponent {
   render() {
     const padding = this.props.sideNavActivity
-      ? { padding: "2rem" }
-      : { padding: "1rem" };
+      ? { padding: '2rem' }
+      : { padding: '1rem' };
     let treeContent = this.props.sideNavActivity ? (
       <CircularProgress className="m-5" />
     ) : (
@@ -52,18 +52,14 @@ class Tree extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    isAuthed: !(state.auth.authData == null),
-    tree: state.auth.authData.main_tree,
-  };
-};
+const mapStateToProps = (state) => ({
+  lanState: state.lang.lan,
+  isAuthed: !(state.auth.authData == null),
+  tree: state.auth.authData.main_tree,
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    getTree: () => dispatch(treeRequest()),
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  getTree: () => dispatch(treeRequest()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tree);

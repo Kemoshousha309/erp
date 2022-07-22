@@ -1,8 +1,8 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import style from "./CheckBoxField.module.scss"
-import {  label, reflectOuterState } from "../../../utilities/inputs"
-import { t } from "../../../utilities/lang";
+import {  label, reflectOuterState } from "../../../Helpers/inputs"
+import { t } from "../../../Helpers/lang";
 import { Checkbox } from "@mui/material";
 
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { t } from "../../../utilities/lang";
+import { t } from "../../../Helpers/lang";
 import Btn from "../Btn/Btn.component"
 
 // layer to connect the reusable Btn component to our App

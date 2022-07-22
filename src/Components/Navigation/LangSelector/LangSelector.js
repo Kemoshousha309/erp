@@ -2,11 +2,11 @@ import style from "./LangSelector.module.scss";
 import { connect } from "react-redux";
 import { PureComponent } from "react";
 import Backdrop from "../../UI/Backdrop/Backdrop";
-import Aux from "../../../hoc/wrap";
 import { changeLnaguage } from "../../../store";
-import { t } from "../../../utilities/lang";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
+import { t } from "../../../Helpers/lang";
+
 
 class LangSelector extends PureComponent {
   state = {
@@ -57,7 +57,7 @@ class LangSelector extends PureComponent {
     let content = <p>loading ...</p>;
     const langs = [1, 2];
     content = (
-      <Aux>
+      <>
         <Backdrop show={show} click={this.close} opacity="0" />
         <div className={style.Select}>
           <button
@@ -80,7 +80,7 @@ class LangSelector extends PureComponent {
             })}
           </ul>
         </div>
-      </Aux>
+      </>
     );
 
     return content;

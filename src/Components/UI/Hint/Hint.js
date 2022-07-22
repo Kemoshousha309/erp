@@ -1,18 +1,20 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import style from "./Hint.module.scss";
-import {faLightbulb} from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { faLightbulb } from '@fortawesome/free-regular-svg-icons';
+import style from './Hint.module.scss';
 
-
-const Hint = props => {
-    return (
-       <div className={style.container}>
-           <div className={style.hint}>
-            <span><FontAwesomeIcon icon={faLightbulb} /> </span>
-            <p>{props.message}</p>
-           </div>
-       </div>
-    )
+function Hint(props) {
+  return (
+    <div className={style.container}>
+      <div className={style.hint}>
+        <span>
+          <FontAwesomeIcon icon={faLightbulb} />
+          {' '}
+        </span>
+        <p>{props.message}</p>
+      </div>
+    </div>
+  );
 }
 
-export default Hint
+export default Hint;

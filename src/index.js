@@ -1,40 +1,40 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./styles/bootstrap.min.css";
-import "./index.scss";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
-import { createStore, applyMiddleware, compose, combineReducers } from "redux";
-import { languageReducer } from "./store";
-import thunk from "redux-thunk";
-import { Provider } from "react-redux";
-import { authReducer } from "./store/reducers/auth";
-import axios from "./axios";
-import * as actionTypes from "./store/actions/actionTypes";
-import { appReducer } from "./store/reducers/app";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './styles/bootstrap.min.css';
+import './index.scss';
+import {
+  createStore, applyMiddleware, compose, combineReducers,
+} from 'redux';
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+import { languageReducer } from './store';
+import { authReducer } from './store/reducers/auth';
+import axios from './axios';
+import * as actionTypes from './store/actions/actionTypes';
+import { appReducer } from './store/reducers/app';
 // import Perf from 'react-addons-perf'; // ES6
 
-const composeEnhancers =
-  process.env.NODE_ENV === "development"
-    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    : null || compose;
+const composeEnhancers = process.env.NODE_ENV === 'development'
+  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  : null || compose;
 
 const rootReducer = combineReducers({
   lang: languageReducer,
   auth: authReducer,
-  app: appReducer
+  app: appReducer,
 });
-
 
 export const store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
+  composeEnhancers(applyMiddleware(thunk)),
 );
 
 // set axios interceptors
 axios.interceptors.request.use((req) => {
   if (store.getState().auth.authData) {
-    const token = store.getState().auth.authData.token;
+    const { token } = store.getState().auth.authData;
     req.headers.Authorization = `Bearer ${token}`;
   }
   return req;
@@ -51,7 +51,7 @@ axios.interceptors.response.use(
     } else {
       throw err;
     }
-  }
+  },
 );
 
 ReactDOM.render(
@@ -62,7 +62,7 @@ ReactDOM.render(
     </React.StrictMode>
   </Provider>,
   // </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

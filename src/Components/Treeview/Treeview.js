@@ -1,23 +1,25 @@
-import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-import style from "./Treeview.module.scss";
+import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import style from './Treeview.module.scss';
 import {
   getRelatedIcon,
   iconMap,
   getRelatedRoute,
   routeMap,
-} from "../../utilities/tree";
-import TreeNode from "./TreeNode/TreeNode";
+} from '../../Helpers/tree';
+import TreeNode from './TreeNode/TreeNode';
 
 class Treeview extends PureComponent {
   render() {
-    const {tree, loading, thisK, lanState, lanTable, sideNavClick, sideNavActivity} = this.props
-      let treeContent = loading;
-      if (tree) {
-        const content = tree.map((ele) => {
-        let key = ele.form_no
-        if(thisK.state.treeInfo){
-          key = ele[thisK.state.treeInfo.nodeIdentifier]
+    const {
+      tree, loading, thisK, lanState, lanTable, sideNavClick, sideNavActivity,
+    } = this.props;
+    let treeContent = loading;
+    if (tree) {
+      const content = tree.map((ele) => {
+        let key = ele.form_no;
+        if (thisK.state.treeInfo) {
+          key = ele[thisK.state.treeInfo.nodeIdentifier];
         }
         const icon = getRelatedIcon(ele.form_no, iconMap);
         const route = getRelatedRoute(ele.form_no, routeMap);
@@ -44,12 +46,10 @@ class Treeview extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
-    isAuthed: !(state.auth.authData == null),
-  };
-};
+const mapStateToProps = (state) => ({
+  lanState: state.lang.lan,
+  lanTable: state.lang.langTables,
+  isAuthed: !(state.auth.authData == null),
+});
 
 export default connect(mapStateToProps, null)(Treeview);

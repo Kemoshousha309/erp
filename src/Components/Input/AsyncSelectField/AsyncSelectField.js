@@ -1,14 +1,13 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
-import { t } from "../../../utilities/lang"
+import { t } from "../../../Helpers/lang"
 import style from "./AsyncSelectField.module.scss"
-import { label, checkInputValiditiy, reflectOuterState } from "../../../utilities/inputs"
+import { label, checkInputValiditiy, reflectOuterState } from "../../../Helpers/inputs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faAngleDown} from "@fortawesome/free-solid-svg-icons";
 import Backdrop from "../../UI/Backdrop/Backdrop";
-import Aux from "../../../hoc/wrap";
 import { CircularProgress } from "@mui/material";
-import { isValid } from "../../../Contianers/ScreenConstructor/screen/validation";
+import { isValid } from "../../../Validation/validation";
 
 
 class AsyncSelectField extends PureComponent {
@@ -62,14 +61,14 @@ class AsyncSelectField extends PureComponent {
             })
         }
         const dropList = (
-            <Aux>
+            <>
                 <div  className={dropListClasses(this)} >
                     <ul>
                         {options}
                     </ul>
                 </div>
                 <Backdrop show opacity={0} click={this.handleClose} />
-            </Aux>
+            </>
         )
         // style 
         const classes = ["form-control", invalidInputStyle];
