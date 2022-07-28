@@ -5,7 +5,7 @@ import PrivDisplay from "./PrivDisplay";
 import Hint from "../../../Components/UI/Hint/Hint";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
 import { deepClone } from "../../../Validation/validation";
-import { fields } from "../../ScreenConstructor/screen/fields";
+import { handleFields } from "../../ScreenConstructor/screen/fields";
 import { timer } from "../../ScreenConstructor/screen/utilities";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { handleDrivedState } from "../../ScreenConstructor/screen/handlers";
@@ -85,7 +85,7 @@ class ScreenPrivs extends ScreenConstructor {
             }
           });
         }
-        fields(this.state.fields, "close", false);
+        handleFields(this.state.fields, "close", false);
         const message = {
           content: selectMessage(res.data.message, this.props.lanState),
           type: "success",
@@ -100,7 +100,7 @@ class ScreenPrivs extends ScreenConstructor {
         timer(this);
       })
       .catch((err) => {
-        fields(this.state.fields, "open", false);
+        handleFields(this.state.fields, "open", false);
         const message = {
           content: selectMessage(
             err.response.data.message,

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: screen/functions/save.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: screen/functions/save.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { getDtailsPropnams, timer } from "../utilities";
+import { getValues, fields, getHeaders } from "../fields";
+import {
+  checkDetailsValidity,
+  checkValidity,
+} from "../../../../Validation/validation";
+import axios from "../../../../axios";
+import { logout } from "../../../../store";
+import { store } from "../../../../index";
+import { getDetails } from "../Details/requestDetails";
+import { selectMessage } from "../../../../Helpers/lang";
+
+// save processes ***************************************************
+
+/**
+ * Responsilable for save funcion of the screen
+ */
+
+export class Saver {
+  constructor(screen) {
+    this.screen = screen;
+  }
+
+  /**
+   * check the validity and decide to stop or continue saving
+   * @returns {object} object represent the state
+   */
+  hanleSave() {
+    const [valid, fieldsUpdate] = checkValidity(this.screen);
+    if (!valid) return fieldsUpdate;
+    handleSaveRequest();
+  }
+
+  handleSaveRequest() {
+    const {
+      props: { lanState },
+      state: { mode, urls },
+    } = this.screen;
+
+    let method = null;
+    let url = null;
+    if (mode === "modify") {
+      method = "put";
+      url = urls.modify;
+    } else {
+      method = "post";
+      url = urls.add;
+    }
+    // this.screen.setState({ loading: true });
+    return new Promise((resolve, reject) => {
+      //**if there is special fields need some headers this funcion handle this */
+      axios({
+        method,
+        url,
+        data: getValues(fields),
+        headers: getHeaders(this.screen),
+      })
+        .then((res) => {
+          // if (func) {
+          //   func(this.screen);
+          // }
+          fields(fields, "close", false);
+          const message = {
+            content: selectMessage(res.data.message, lanState),
+            type: "success",
+          };
+          this.screen.setState({
+            mode: "d_record",
+            loading: false,
+            message,
+            recordIndex: null,
+          });
+          timer(this.screen);
+        })
+        .catch((err) => {
+          fields(fields, "open", false);
+          // if (func) {
+          //   func(this.screen);
+          // }
+          let message = null;
+          if (err.response) {
+            // update the previlliges
+            if (err.response.status === 401) {
+              store.dispatch(logout());
+            }
+            message = {
+              content: selectMessage(err.response.data.message, lanState),
+              type: "error",
+            };
+            if (err.response.data.error) {
+              message.content = err.response.data.error;
+            }
+          }
+          this.screen.setState({
+            loading: false,
+            message,
+            recordIndex: null,
+          });
+          timer(this.screen);
+        });
+    });
+  }
+}
+
+// save a normal screen
+export const handleSave = (thisK, func) => {
+  const [valid, fieldsUpdate] = checkValidity(thisK);
+  if (valid) {
+    handleSaveRequest(thisK, func);
+  } else {
+    thisK.setState({ fields: fieldsUpdate });
+  }
+};
+
+const handleSaveRequest = (thisK, func) => {
+  let method = null;
+  let url = null;
+  if (thisK.state.mode === "modify") {
+    method = "put";
+    url = thisK.state.urls.modify;
+  } else {
+    method = "post";
+    url = thisK.state.urls.add;
+  }
+  thisK.setState({ loading: true });
+  console.log(getValues(thisK.state.fields));
+  axios({
+    method,
+    url,
+    data: getValues(thisK.state.fields),
+    headers: getHeaders(thisK),
+  })
+    .then((res) => {
+      if (func) {
+        func(thisK);
+      }
+      fields(thisK.state.fields, "close", false);
+      const message = {
+        content: selectMessage(res.data.message, thisK.props.lanState),
+        type: "success",
+      };
+      thisK.setState({
+        mode: "d_record",
+        loading: false,
+        message,
+        recordIndex: null,
+      });
+      timer(thisK);
+    })
+    .catch((err) => {
+      fields(thisK.state.fields, "open", false);
+      if (func) {
+        func(thisK);
+      }
+      let message = null;
+      if (err.response) {
+        // update the previlliges
+        if (err.response.status === 401) {
+          store.dispatch(logout());
+        }
+        message = {
+          content: selectMessage(
+            err.response.data.message,
+            thisK.props.lanState
+          ),
+          type: "error",
+        };
+        if (err.response.data.error) {
+          message.content = err.response.data.error;
+        }
+      }
+      thisK.setState({
+        loading: false,
+        message,
+        recordIndex: null,
+      });
+      timer(thisK);
+    });
+};
+
+// save a screen with details
+export function handleDetailsScreensSave(callback) {
+  const [valid, fieldsUpdate] = checkValidity(this);
+  const detailsValid = checkDetailsValidity.call(this);
+  if (valid &amp;&amp; detailsValid) {
+    handleDetailsScreensSaveRequest.call(this, callback);
+  } else {
+    this.setState({ fields: fieldsUpdate });
+  }
+}
+
+function handleDetailsScreensSaveRequest(callback) {
+  const {
+    mode,
+    urls,
+    fields: masterfields,
+    record,
+    details: { tabs },
+  } = this.state;
+  let method = null;
+  let url = null;
+  if (mode === "modify") {
+    method = "put";
+    url = urls.modify;
+  } else {
+    method = "post";
+    url = urls.add;
+  }
+  // prepare the body
+  const detailsValues = trackDetailsChange.call(this);
+  const fieldsValues = getValues(masterfields);
+  const body = {
+    ...detailsValues,
+    ...fieldsValues,
+  };
+
+  this.setState({ loading: true });
+  axios({
+    method,
+    url,
+    data: body,
+  })
+    .then((res) => {
+      if (callback) {
+        callback();
+      }
+      const message = {
+        content: selectMessage(res.data.message, this.props.lanState),
+        type: "success",
+      };
+      this.setState({
+        mode: "d_record",
+        loading: false,
+        message,
+        recordIndex: null,
+        fields: fields(masterfields, "close", false),
+      });
+      if (mode === "add") {
+        // prepare a record for getDetails function as in add mode the record is null
+        const detailsPagesURLs = Object.keys(tabs).map((key) => {
+          tabs[key].pageURL.id = key;
+          return tabs[key].pageURL;
+        });
+        const preparedRecord = {};
+        detailsPagesURLs.forEach((pageURL) => {
+          const { master } = pageURL;
+          preparedRecord[master] = masterfields[master].value;
+        });
+        getDetails.call(this, preparedRecord);
+      } else {
+        getDetails.call(this, record);
+      }
+      timer(this);
+    })
+    .catch((err) => {
+      fields(masterfields, "open", false);
+      let message = null;
+      if (err.response) {
+        // update the previlliges
+        if (err.response.status === 401) {
+          store.dispatch(logout());
+        }
+        message = {
+          content: selectMessage(
+            err.response.data.message,
+            this.props.lanState
+          ),
+          type: "error",
+        };
+        if (err.response.data.error) {
+          message.content = err.response.data.error;
+        }
+      }
+      this.setState({
+        loading: false,
+        message,
+        recordIndex: null,
+      });
+      timer(this);
+    });
+}
+
+function trackDetailsChange() {
+  const {
+    record,
+    details: { tabs },
+    mode,
+  } = this.state;
+  const properties = getDtailsPropnams(tabs, true);
+  const detailsToSave = {};
+  properties.forEach((prop) => {
+    if (prop) {
+      const { recordDetailPropName, headers } = prop;
+      detailsToSave[recordDetailPropName] = [];
+      if (record) {
+        const pages = record[recordDetailPropName];
+        if (pages) {
+          if (mode === "copy") {
+            pages.forEach((page) => {
+              const updatedPage = {};
+              Object.values(headers).forEach((header) => {
+                updatedPage[header.propName] = page[header.propName];
+              });
+              updatedPage.action = "add";
+              detailsToSave[recordDetailPropName].push(updatedPage);
+            });
+          } else {
+            pages.forEach((page) => {
+              if (page.action) {
+                const updatedPage = {};
+                Object.values(headers).forEach((header) => {
+                  updatedPage[header.propName] = page[header.propName];
+                });
+                updatedPage.action = page.action;
+                if (page.action !== "delete") {
+                  detailsToSave[recordDetailPropName].push(updatedPage);
+                } else if (page.action === "delete" &amp;&amp; !page.frontRow) {
+                  detailsToSave[recordDetailPropName].push(updatedPage);
+                }
+              }
+            });
+          }
+        }
+      }
+    }
+  });
+  return detailsToSave;
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Saver.html">Saver</a></li><li><a href="ScreenConstructor.html">ScreenConstructor</a></li></ul><h3>Global</h3><ul><li><a href="global.html#fillRecord">fillRecord</a></li><li><a href="global.html#getDetails">getDetails</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Mon Jul 25 2022 02:01:09 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

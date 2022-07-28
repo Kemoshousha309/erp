@@ -2,18 +2,19 @@ import { timer, toolsPriv } from './utilities';
 import { handleMode } from './mode';
 import { t } from '../../../Helpers/lang';
 import { getParam } from '../../../Helpers/utilities';
+import _ from 'lodash';
 
 // input change handler ******************************
 export const handleInputChange = (thisK, state, identifier) => {
-  const fields = { ...thisK.state.fields };
-  if (!fields[identifier].readOnly) {
-    fields[identifier].value = state.value;
+  const fieldsUpdate = _.cloneDeep(thisK.state.fields);
+  if (!fieldsUpdate[identifier].readOnly) {
+    fieldsUpdate[identifier].value = state.value;
   }
-  if (fields[identifier].validity) {
-    fields[identifier].validity.valid = state.valid;
-    fields[identifier].validity.message = state.invalidFeedBack;
+  if (fieldsUpdate[identifier].validity) {
+    fieldsUpdate[identifier].validity.valid = state.valid;
+    fieldsUpdate[identifier].validity.message = state.invalidFeedBack;
   }
-  thisK.setState({ fields });
+  thisK.setState({ fields: fieldsUpdate });
 };
 
 // shortcuts list close Handler **************************
@@ -42,12 +43,13 @@ export function handleChipsRemove(id, index) {
     state: { fields },
     props: { lanTable, lanState },
   } = this;
-  fields[id].value.splice(index, 1);
-  if (fields[id].value.length === 0 && fields[id].validation.requiered) {
-    fields[id].validity.valid = false;
-    fields[id].validity.message = t('required_field', lanTable, lanState);
+  const fieldsUpdate = _.cloneDeep(fields)
+  fieldsUpdate[id].value.splice(index, 1);
+  if (fieldsUpdate[id].value.length === 0 && fieldsUpdate[id].validation.requiered) {
+    fieldsUpdate[id].validity.valid = false;
+    fieldsUpdate[id].validity.message = t('required_field', lanTable, lanState);
   }
-  this.setState({ fields });
+  this.setState({ fields: fieldsUpdate });
 }
 
 export function handleChipsAdd(id) {

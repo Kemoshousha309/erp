@@ -8,8 +8,8 @@ import {
 import { handleDrivedState } from "../../../ScreenConstructor/screen/handlers";
 import { displayContent } from "../../../ScreenConstructor/screen/displayContent";
 import { langChangeActivity } from "../../../../store/actions/lang";
-import { fields } from "../../../ScreenConstructor/screen/fields";
 import { handleAsyncLangNoOpts } from "../../../ScreenConstructor/screen/async"
+import { handleFields } from "../../../ScreenConstructor/screen/fields";
 
 class Flags extends ScreenConstructor {
   constructor() {
@@ -167,6 +167,7 @@ class Flags extends ScreenConstructor {
     setlastIndex(this);
     functionsListenrs(this, true);
     this.setState({ mode: "list" });
+    
 
     autoDisplay(this, "flag_code", "public/flagMaster", {
       main: {
@@ -199,7 +200,7 @@ class Flags extends ScreenConstructor {
       };
     } else {
       mode = "list";
-      fieldsClone = fields(state.fields, "close", true);
+      fieldsClone = handleFields(state.fields, "close", true);
     }
     const { tools } = handleDrivedState(props, state);
     return {

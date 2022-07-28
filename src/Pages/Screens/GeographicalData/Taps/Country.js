@@ -6,9 +6,9 @@ import {
   autoDisplay,
   changePropName,
 } from '../../../ScreenConstructor/screen/inputsHandlers';
-import { handleDrivedState } from '../../../ScreenConstructor/screen/handlers';
 import { displayContent } from '../../../ScreenConstructor/screen/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
+import { updateMode } from '../../../ScreenConstructor/screen/mode';
 
 class Country extends ScreenConstructor {
   constructor() {
@@ -160,7 +160,8 @@ class Country extends ScreenConstructor {
   componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
-
+    const {tools} = updateMode("start", this.state, this.props)
+    this.setState({tools})
     autoDisplay(this, 'region_no', 'region', {
       main: {
         d: { recordProp: 'region_d_name', stateProp: 'region_no_d_name' },
@@ -176,9 +177,7 @@ class Country extends ScreenConstructor {
       'region_no_name',
       'region_no',
     );
-    const { tools } = handleDrivedState(props, state);
     return {
-      tools,
       fields: fieldsUpdate,
     };
   }

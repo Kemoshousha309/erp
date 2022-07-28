@@ -5,13 +5,12 @@ import ScreenConstructor from "../../../ScreenConstructor/ScreenConstructor";
 import {
   autoDisplay, changePropName,
 } from "../../../ScreenConstructor/screen/inputsHandlers"
-import { handleDrivedState } from "../../../ScreenConstructor/screen/handlers";
 import { displayContent } from "../../../ScreenConstructor/screen/displayContent";
 import { langChangeActivity } from "../../../../store/actions/lang";
 import { CircularProgress } from "@mui/material";
-import { handleRecordClick } from "../../../ScreenConstructor/screen/functions/list";
 import { getTree } from "../../../ScreenConstructor/screen/async";
 import { getTreeStructure } from "../../../../Helpers/tree";
+import { updateMode } from "../../../ScreenConstructor/screen/mode";
 
 
 class Forms extends ScreenConstructor {
@@ -210,11 +209,13 @@ class Forms extends ScreenConstructor {
       treeLoading: <CircularProgress className="m-5" />,
     };
   }
-  treeNodeClick = (record) => handleRecordClick(this, record);
+  treeNodeClick = (record) => this.recordClick(record, null);
   componentDidMount() {
     getTree.call(this, "forms/mainTree", getTreeStructure);
     setlastIndex(this);
     functionsListenrs(this, true);
+    const {tools} = updateMode("start", this.state, this.props)
+    this.setState({tools})
 
     // inputs handlers
     autoDisplay(this, "parent_form", "forms", {
@@ -253,9 +254,7 @@ class Forms extends ScreenConstructor {
       "parent_form",
       "parent_form"
     );
-    const { tools } = handleDrivedState(props, state);
     return {
-      tools: tools,
       fields: fieldsUpdate,
     };
   }

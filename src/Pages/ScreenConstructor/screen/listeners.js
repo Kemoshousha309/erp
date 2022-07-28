@@ -48,27 +48,22 @@ const handleF4 = (event, thisK) => {
       tools,
       fks,
       details,
-      details: { current_tab },
     },
   } = thisK;
+  let currentDetailsFks = null;
+  if(details) {
+    currentDetailsFks = details.tabs[details.current_tab].foreignKeys;
+  }
   const state = getToolState(tools, 'list');
   const activeFk = isFk(fks);
-  const currentDetailsFks = details.tabs[current_tab].foreignKeys;
   const activeDtlFk = isFk(currentDetailsFks);
 
   if (activeFk) {
     event.preventDefault();
-    thisK.setState({ fkListShow: activeFk });
+    thisK.openFkList(activeFk)
   } else if (activeDtlFk) {
     event.preventDefault();
-    let currentElement = document.activeElement;
-    while (currentElement.tagName !== 'TR') {
-      currentElement = currentElement.parentElement;
-    }
-    const detailsRowIndex = currentElement.dataset.rowindex;
-    details.tabs[current_tab].activeForeignList = activeDtlFk;
-    details.tabs[current_tab].detailsRowIndex = detailsRowIndex;
-    thisK.setState({ details });
+    thisK.openDtlFkList(activeDtlFk);
   } else if (state) {
     event.preventDefault();
     thisK.list();

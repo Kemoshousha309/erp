@@ -1,22 +1,23 @@
-import { hash, hash_back } from '../../../Helpers/utilities';
+import { hash, hash_back } from "../../../Helpers/utilities";
 
 let lastTimer = null;
-export const timer = (thisK) => {
-  const timerId = setTimeout(() => {
-    thisK.setState({ message: false });
-  }, 3000);
-
-  if (!(lastTimer === timerId)) {
-    if (lastTimer) {
-      clearTimeout(lastTimer);
+export const timer = (time=3000) => {
+  return new Promise((resolve, reject) => {
+    const timerId = setTimeout(() => {
+      resolve(true)
+    }, time);
+    if (!(lastTimer === timerId)) {
+      if (lastTimer) {
+        clearTimeout(lastTimer);
+      }
     }
-  }
-  lastTimer = timerId;
+    lastTimer = timerId;
+  });
 };
 
 export const trigerEnterButton = (id, func) => {
   const input = document.getElementById(id);
-  input.addEventListener('keyup', (event) => {
+  input.addEventListener("keyup", (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
       input.blur();
@@ -26,16 +27,16 @@ export const trigerEnterButton = (id, func) => {
 };
 
 export const toolsPriv = (formPrivs, tools) => {
-  const tools_hash = hash(tools, 'name');
+  const tools_hash = hash(tools, "name");
   for (const key in formPrivs) {
-    if (key === 'add_priv' && !formPrivs[key]) {
+    if (key === "add_priv" && !formPrivs[key]) {
       delete tools_hash.add;
       delete tools_hash.copy;
     }
-    if (key === 'modify_priv' && !formPrivs[key]) {
+    if (key === "modify_priv" && !formPrivs[key]) {
       delete tools_hash.modify;
     }
-    if (key === 'view_priv' && !formPrivs[key]) {
+    if (key === "view_priv" && !formPrivs[key]) {
       delete tools_hash.list;
       delete tools_hash.previous;
       delete tools_hash.next;
@@ -43,7 +44,7 @@ export const toolsPriv = (formPrivs, tools) => {
       delete tools_hash.last;
       delete tools_hash.search;
     }
-    if (key === 'delete_priv' && !formPrivs[key]) {
+    if (key === "delete_priv" && !formPrivs[key]) {
       delete tools_hash.delete;
     }
   }

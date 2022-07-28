@@ -1,5 +1,4 @@
 import axios from '../../../axios';
-import { handleSave } from './functions/save';
 
 export const handleAsyncLangNoOpts = (thisK, mode) => {
   if (mode) {
@@ -50,20 +49,21 @@ export const add_lan_dir_options = (thisK) => {
 };
 
 export function getTree(url, structure) {
-  this.setState({ tree: null });
-  axios
-    .get(url)
-    .then((res) => {
-      const tree = structure(res.data);
-      this.setState({ tree });
-    })
-    .catch((err) => console.log(err));
+  return new Promise((resovle, reject) => {
+    axios
+      .get(url)
+      .then((res) => {
+        const tree = structure(res.data);
+        resovle(tree)
+      })
+      .catch((err) => console.log(err));
+  })
 }
 
-export const asyncTreeSave = (thisK) => {
-  thisK.setState({ tree: null });
-  handleSave(thisK, getTree);
-};
+// export const asyncTreeSave = (thisK) => {
+//   thisK.setState({ tree: null });
+//   handleSave(thisK, getTree);
+// };
 
 // parallel to send a bunch of requests at the same time
 export const parallel = (...Promises) => Promise.all(Promises);

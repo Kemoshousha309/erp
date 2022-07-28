@@ -1,72 +1,43 @@
-import { fields } from "../fields";
+import _ from "lodash";
+import { handleFields } from "../fields";
+import { updateMode } from "../mode";
 import { getDtailsPropnams } from "../utilities";
+import { FuncConstructor } from "./funcConstructor";
 
 // undo handle ******************************
-export class UndoHandler {
-  constructor(screen) {
-    this.screen = screen;
-  }
+export class UndoHandler extends FuncConstructor {
 
   handleUndo = () => {
-    const { fields: fieldsClone, mode, preModify, preAdd } = this.screen.state;
+    const { fields, mode, record } = this.screen.state;
+    let fieldsUpdate = null;
     switch (mode) {
       case "modify":
-        fields(fieldsClone, "close", false);
-        if (preModify || preAdd) {
-          this.screen.setState({
-            mode: "d_record",
-            preModify: { ...preModify, content: null },
-            preAdd: { ...preAdd, content: null },
-          });
-        } else {
-          this.screen.setState({ mode: "d_record" });
-        }
-        break;
+        fieldsUpdate = handleFields(fields, "close", false);
+        return {fieldsUpdate, mode: "d_record", record}
       case "copy":
-        fields(fieldsClone, "close", false);
-        if (preModify || preAdd) {
-          this.screen.setState({
-            mode: "d_record",
-            preModify: { ...preModify, content: null },
-            preAdd: { ...preAdd, content: null },
-          });
-        } else {
-          this.screen.setState({ mode: "d_record" });
-        }
-        break;
+        fieldsUpdate = handleFields(fields, "close", false);
+        return {fieldsUpdate, mode: "d_record", record};
       default:
         // undo to start mode
-        fields(fieldsClone, "close");
-        if (preModify || preAdd) {
-          this.screen.setState({
-            mode: "start",
-            record: null,
-            preModify: { ...preModify, content: null },
-            preAdd: { ...preAdd, content: null },
-          });
-        } else {
-          this.screen.setState({ mode: "start", record: null });
-        }
-        break;
+        fieldsUpdate = handleFields(fields, "close");
+        return {fieldsUpdate, mode: "start", record: null};
     }
   };
-
- 
-
 }
 
 
 export class DetailsUndoHandler extends UndoHandler {
 
-  handleDetailsScreensUndo() {
+  handleDtlRecordUndo() {
     const {
       record,
       details: { tabs },
     } = this.screen.state;
+    const recordClone = _.cloneDeep(record);
     const properties = getDtailsPropnams(tabs);
     properties.forEach((prop) => {
-      if (prop && record) {
-        const pages = record[prop];
+      if (prop && recordClone) {
+        const pages = recordClone[prop];
         let index = 0;
         if (pages) {
           while (index < pages.length) {
@@ -85,7 +56,7 @@ export class DetailsUndoHandler extends UndoHandler {
         }
       }
     });
-    this.handleUndo();
+    return recordClone;
   }
 
 
@@ -102,5 +73,35 @@ export class DetailsUndoHandler extends UndoHandler {
 }
 
 
+
+export async function handleUndoModel() {
+  const { detials } = this.state;
+  if (!detials) return handleNormalUndoModel.call(this);
+  handleDtlUndoModel.call(this);
+}
+
+export async function handleNormalUndoModel() {
+  const {
+    state: { preAdd, preModify },
+  } = this;
+  const { fieldsUpdate, mode, record } = this.undoHandler.handleUndo();
+  const {tools} = updateMode(mode, this.state, this.props)
+  if (!preAdd || !preModify)
+    return this.setState({ fields: fieldsUpdate, mode, record, tools });
+  this.setState({
+    fields: fieldsUpdate,
+    mode,
+    record,
+    preAdd: { ...preAdd, content: null },
+    preModify: { ...preModify, content: null },
+    tools
+  });
+}
+
+export async function handleDtlUndoModel() {
+  const {recordUpdate} = this.dtlUndoHandler.handleDtlRecordUndo();
+    this.normalUndo();
+    this.setState({record: recordUpdate})
+}
 
 

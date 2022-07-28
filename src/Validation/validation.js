@@ -1,5 +1,6 @@
-import { t } from '../Helpers/lang';
-import { getDtailsPropnams } from '../Pages/ScreenConstructor/screen/utilities';
+import _ from "lodash";
+import { t } from "../Helpers/lang";
+import { getDtailsPropnams } from "../Pages/ScreenConstructor/screen/utilities";
 
 export const setValidity = (fields) => {
   const fieldsClone = { ...fields };
@@ -8,11 +9,11 @@ export const setValidity = (fields) => {
     if (!fieldsClone[key].readOnly) {
       const [valid, message] = isValid(
         fieldsClone[key].value,
-        fieldsClone[key].validation,
+        fieldsClone[key].validation
       );
       fieldsClone[key].validity.valid = valid;
-      if (message === 'max_length') {
-        fieldsClone[key].value = '';
+      if (message === "max_length") {
+        fieldsClone[key].value = "";
       }
       fieldsClone[key].validity.message = message;
       validState = fieldsClone[key].validity.valid && validState;
@@ -28,38 +29,34 @@ export const isValid = (value, rule, thisK) => {
   if (rule) {
     if (rule.requiered) {
       if (value !== undefined) {
-        isValid = value.toString().trim() !== '' && isValid;
+        isValid = value.toString().trim() !== "" && isValid;
       }
       if (!isValid && !message) {
-        message = t(
-          'required_field',
-          lanTable,
-          lanState,
-        );
+        message = t("required_field", lanTable, lanState);
       }
     }
-    if (rule.size && value !== '') {
+    if (rule.size && value !== "") {
       isValid = parseInt(value) <= parseInt(rule.size) && isValid;
       if (!isValid && !message) {
-        message = t('max_size', lanTable, lanState);
+        message = t("max_size", lanTable, lanState);
       }
     }
     if (rule.length) {
       isValid = parseInt(value.length) <= parseInt(rule.length) && isValid;
       if (!isValid && !message) {
-        message = t('max_length', lanTable, lanState);
+        message = t("max_length", lanTable, lanState);
       }
     }
     if (rule.int) {
       isValid = Number.isInteger(Number(value)) && isValid;
       if (!isValid && !message) {
-        message = t('must_integer', lanTable, lanState);
+        message = t("must_integer", lanTable, lanState);
       }
     }
     if (rule.point6Format) {
       isValid = point6Format(value) && isValid;
       if (!isValid && !message) {
-        message = t('not_accept_intput', lanTable, lanState);
+        message = t("not_accept_intput", lanTable, lanState);
       }
     }
   }
@@ -74,31 +71,26 @@ export const deepClone = (l) => {
   return list;
 };
 
-export const checkValidity = (thisK) => {
-  const fieldsClone = { ...thisK.state.fields };
+export const checkValidity = (screen) => {
+  const {
+    props: { lanState, lanTable },
+    state: { fields },
+  } = screen;
+  const fieldsClone = _.cloneDeep(fields);
   let isValid = true;
   for (const key in fieldsClone) {
     const f = fieldsClone[key];
     if (!f.readOnly && f.writability && f.validity && f.validation) {
       if (f.value.length === 0 && f.validation.requiered) {
         f.validity.valid = false;
-        f.validity.message = t(
-          'required_field',
-          thisK.props.lanTable,
-          thisK.props.lanState,
-        );
+        f.validity.message = t("required_field", lanTable, lanState);
       }
-      if (key === 'confirm_password') {
-        console.log(fieldsClone.password);
+      if (key === "confirm_password") {
         const passValue = fieldsClone.password.value;
         const confimValue = fieldsClone.confirm_password.value;
         if (passValue !== confimValue) {
           f.validity.valid = false;
-          f.validity.message = t(
-            'pass_not_identical',
-            thisK.props.lanTable,
-            thisK.props.lanState,
-          );
+          f.validity.message = t("pass_not_identical", lanTable, lanState);
         }
       }
       isValid = f.validity.valid && isValid;
@@ -122,22 +114,23 @@ export function checkDetailsValidity() {
     record,
     details: { tabs },
   } = this.state;
+  const recordClone = _.cloneDeep(record);
   const properties = getDtailsPropnams(tabs, true);
   let detailsValid = true;
-  if (record) {
+  if (recordClone) {
     properties.forEach((prop) => {
       if (prop) {
-        const pages = record[prop.recordDetailPropName];
+        const pages = recordClone[prop.recordDetailPropName];
         const { headers } = prop;
         if (pages) {
           pages.forEach((page) => {
-            if (page.action !== 'delete') {
+            if (page.action !== "delete") {
               Object.values(headers).forEach((header) => {
                 if (header.validationRules) {
                   const [valid, message] = isValid(
                     page[header.propName],
                     header.validationRules,
-                    this,
+                    this
                   );
                   detailsValid = valid && detailsValid;
                   page[`${header.propName}#validity`] = {
@@ -152,13 +145,12 @@ export function checkDetailsValidity() {
       }
     });
   }
-  this.setState({ record });
-  return detailsValid;
+  return [detailsValid, recordClone];
 }
 
 function point6Format(str) {
-  if (str.includes('.')) {
-    const arr = str.split('.');
+  if (str.includes(".")) {
+    const arr = str.split(".");
     if (arr.length > 2) {
       return false;
     }

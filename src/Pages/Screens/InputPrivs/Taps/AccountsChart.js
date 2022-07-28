@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import {
   chipsRecordClickHandler,
-  handleDrivedState,
 } from '../../../ScreenConstructor/screen/handlers';
 import { displayContent } from '../../../ScreenConstructor/screen/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
@@ -366,9 +365,7 @@ class AccountsChart extends InputPrivsConstructor {
     if (mode === 'start') {
       input_privs = null;
     }
-    const { tools } = handleDrivedState(props, state);
     return {
-      tools,
       input_privs,
     };
   }

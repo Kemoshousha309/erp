@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { isValid } from '../../../../../Validation/validation';
 
 // HANDLERS
@@ -14,7 +15,9 @@ export function detailsInputChangeHandler(event, index, serverValue, validationR
     mode,
   } = this.state;
 
-  const row = record[tabs[current_tab].recordDetailPropName][index];
+  const recordClone = _.cloneDeep(record);
+
+  const row = recordClone[tabs[current_tab].recordDetailPropName][index];
   const [valid, message] = isValid(value, validationRules, this);
   row[`${id}#validity`] = {
     valid,
@@ -27,13 +30,7 @@ export function detailsInputChangeHandler(event, index, serverValue, validationR
   if (mode === 'modify' && !row.action) {
     row.action = 'update';
   }
-  this.setState({ record });
+  return recordClone;
 }
 
-export function tabsChangeHandler(value) {
-  const {
-    state: { details },
-  } = this;
-  details.current_tab = value;
-  this.setState({ details });
-}
+

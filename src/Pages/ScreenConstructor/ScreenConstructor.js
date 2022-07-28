@@ -1,36 +1,23 @@
 import { PureComponent } from "react";
 import { toolSelectHandler } from "../../Helpers/tools";
-import {
-  handleDelete,
-  handleDeleteConfirmation,
-} from "./screen/functions/delete";
-import { handleSearch } from "./screen/functions/search";
-import { handleSave } from "./screen/functions/save";
-import { handleMove, setlastIndex } from "./screen/functions/moves";
+import { Deleter, handleDeleteConfirmModel } from "./screen/functions/delete";
+import { handleSearchModel, Searcher } from "./screen/functions/search";
+import { handleSaveModel, Saver } from "./screen/functions/save";
+import { handleMoveModel, Mover, setlastIndex } from "./screen/functions/moves";
 import { functionsListenrs } from "./screen/listeners";
-import {
-  fkRecordClickHandler,
-  handleCloseFkList,
-  handleCloseList,
-  handleList,
-  handleRecordClick,
-} from "./screen/functions/list";
-import { handleAdd } from "./screen/functions/add";
-import { handleModify } from "./screen/functions/modify";
-import { handleCopy } from "./screen/functions/copy";
+import { handleRecordClickModel } from "./screen/functions/list";
+import { Adder, handleAddModel } from "./screen/functions/add";
+import { handleModifyModel, Modifier } from "./screen/functions/modify";
+import { Copyer, handleCopyModel } from "./screen/functions/copy";
 import {
   handleChipsAdd,
   handleChipsListClose,
   handleChipsRecordClick,
   handleChipsRemove,
   handleCloseShortCuts,
-  handleDrivedState,
   handleInputChange,
 } from "./screen/handlers";
-import {
-  tabsChangeHandler,
-  detailsInputChangeHandler,
-} from "./screen/Details/handlers/handlers";
+import { detailsInputChangeHandler } from "./screen/Details/handlers/handlers";
 import { ExcelServerSender } from "./screen/functions/excelSheet/serverSender";
 import {
   excelPageClose,
@@ -38,10 +25,28 @@ import {
 } from "./screen/functions/excelSheet/handlers";
 import { XlsxValidator } from "./screen/functions/excelSheet/XlsxValidator";
 import { XlsxPreparer } from "./screen/functions/excelSheet/XlsxPreparer";
-import { DetialsAdder } from "./screen/Details/handlers/add";
-import { DetailsRemover } from "./screen/Details/handlers/remove";
-import { UndoHandler } from "./screen/functions/undo";
-import { DetailsList, DetailsList_ADD } from "./screen/Details/handlers/list";
+import { DetialsAdder, handleDtlAddModel } from "./screen/Details/handlers/add";
+import {
+  DetailsRemover,
+  handleDtlRemoveModel,
+} from "./screen/Details/handlers/remove";
+import {
+  DetailsUndoHandler,
+  handleUndoModel,
+  UndoHandler,
+} from "./screen/functions/undo";
+import {
+  DetailsList,
+  DetailsList_ADD,
+  handelDtlFkListClickADDModel,
+  handleDtlFkListCloseModel,
+  handleDtlFkListRecordClickModel,
+  handleOpenFkListModel,
+} from "./screen/Details/handlers/list";
+import { List } from "./screen/functions/list";
+import { FkList } from "./screen/functions/fkList";
+import { updateMode } from "./screen/mode";
+import _ from "lodash";
 
 /**
  * this is a consructor for the screen
@@ -75,7 +80,7 @@ class ScreenConstructor extends PureComponent {
       pks: [],
       custimizedList: {
         open: false,
-        render: null
+        render: null,
       },
       excelSheetOpen: false,
       excelPage: {
@@ -88,78 +93,124 @@ class ScreenConstructor extends PureComponent {
         addMess: null,
       },
     };
-    // Detials objects
+
+    // functions init
+    this.listHandler = new List(this);
+    this.saveHandler = new Saver(this);
+    this.addHandler = new Adder(this);
+    this.copyHandler = new Copyer(this);
+    this.searchHandler = new Searcher(this);
+    this.fkListHandler = new FkList(this);
+    this.modifyHandler = new Modifier(this);
+    this.deleteHandler = new Deleter(this);
+    this.undoHandler = new UndoHandler(this);
+    this.dtlUndoHandler = new DetailsUndoHandler(this);
+    this.moveHandler = new Mover(this);
+
+    // Detials init
+    this.dtlAdder = new DetialsAdder(this);
+    this.dtlRemover = new DetailsRemover(this);
     this.detailsList = new DetailsList(this);
     this.detailsList_ADD = new DetailsList_ADD(this);
   }
 
-  // Tools Handle *********************************************
+  // BASIC FUNCTIONS *********************************************
   toolsClickedHandler = (identifier) => toolSelectHandler(identifier, this);
-  modify = () => handleModify(this);
-  add = () => handleAdd(this);
-  undo = () => {
-    const undoHandler = new UndoHandler(this);
-    undoHandler.handleUndo();
+  add = () => handleAddModel.call(this);
+  copy = () => handleCopyModel.call(this);
+  search = () => handleSearchModel.call(this);
+  modify = () => handleModifyModel.call(this);
+  save = () => handleSaveModel.call(this);
+  undo = () => handleUndoModel.call(this);
+
+  // delete
+  delete = () => this.setState({ deleteConfirm: true });
+  deleteConfirmation = (res) => handleDeleteConfirmModel.call(this, res);
+
+  // moves
+  previous = () => handleMoveModel.call(this, "previous");
+  next = () => handleMoveModel.call(this, "next");
+  first = () => handleMoveModel.call(this, "first");
+  last = () => handleMoveModel.call(this, "last");
+
+  // list
+  list = () => {
+    const { currentMode, listShow, mode } = this.listHandler.open();
+    const { tools } = updateMode(mode, this.state, this.props);
+    this.setState({ prevMode: currentMode, listShow, mode, tools });
   };
-  save = () => handleSave(this);
-  copy = () => handleCopy.call(this);
-  list = () => handleList(this);
-  delete = () => handleDelete(this);
-  search = () => handleSearch(this);
-  previous = () => handleMove("previous", this);
-  next = () => handleMove("next", this);
-  first = () => handleMove("first", this);
-  last = () => handleMove("last", this);
-  excel = () => this.setState({ excelSheetOpen: !this.state.excelSheetOpen });
-
-  // Handlers ************************************************
-  closeCustmizedList = () => this.setState({custimizedList: {render: null, open: false}})
-  closeList = () => handleCloseList(this);
-  closeFkList = () => handleCloseFkList(this);
-  // close the list opened from add button in details
-  closeDetailsFkList_ADD = () =>
-    this.detailsList_ADD.handleCloseDetailsFkList_ADD();
-  recordClick = (record, i) => handleRecordClick(this, record, i);
-  recordFkClick = (record, i) => fkRecordClickHandler(this, record);
-  // record clicked on the list opened from add button in details
-  recordDetailsClick_ADD = (record, i) => {
-    this.detailsList_ADD.handleDetailsRecordClick_ADD(record);
+  closeList = () => {
+    const { listShow, prevMode } = this.listHandler.close();
+    const { tools } = updateMode(prevMode, this.state, this.props);
+    this.setState({ listShow, mode: prevMode, tools });
   };
-  closeDetailsFkList = () => this.detailsList.handleCloseDtlFkList();
-  recordDetailsClick = (record) => this.detailsList.handleRecordClick(record);
+  recordClick = (record, i) => handleRecordClickModel.call(this, record, i);
 
+  // fk list
+  openFkList = (activeFk) => this.setState({ fkListShow: activeFk });
+  closeFkList = () => this.setState({ fkListShow: null });
+  recordFkClick = (record) => {
+    const fieldsClone = this.fkListHandler.recordClick(record);
+    this.setState({
+      fkListShow: null,
+      fields: fieldsClone,
+      fkRecord: record,
+    });
+  };
 
-  inputChange = (state, identifier) =>
-    handleInputChange(this, state, identifier);
-  deleteConfirmation = (res) => handleDeleteConfirmation(this, res);
+  // shortcut list
+  // open in the listeners
   ShortCutsListCloseHandler = () => handleCloseShortCuts(this);
 
-  // Chips Handling **********************************************
-  chipsAddHandler = (id, index) => handleChipsAdd.call(this, id, index);
-  chipsRemoveHandler = (id, index) => handleChipsRemove.call(this, id, index);
-  closeChipsList = () => handleChipsListClose.call(this);
-  chipsRecordClick = (record) => handleChipsRecordClick.call(this, record);
+  // custimized list
+  closeCustmizedList = () =>
+    this.setState({ custimizedList: { render: null, open: false } });
 
-  // DETAILS HANDLERS*************************************************
-  navigateTabsHandler = (value) => tabsChangeHandler.call(this, value);
-  detailsAddHandler = (e) => {
-    const adder = new DetialsAdder(this);
-    adder.addHandler(e);
+  // DETAILS HANDLEING **********************************************
+  navigateTabsHandler = (value) => {
+    const { details } = this.state;
+    const detailsUpdate = _.cloneDeep(details);
+    detailsUpdate.current_tab = value;
+    this.setState({ details: detailsUpdate });
   };
-  detailsRemoveHandler = (index, e) => {
-    const remover = new DetailsRemover(this);
-    remover.removeHandler(index, e);
-  };
-  detailsInputChangeHandler = (event, index, serverValue, validationRules) =>
-    detailsInputChangeHandler.call(
+  detailsInputChangeHandler = (event, index, serverValue, validationRules) => {
+    const recordUpdate = detailsInputChangeHandler.call(
       this,
       event,
       index,
       serverValue,
       validationRules
     );
+    this.setState({ record: recordUpdate });
+  };
 
-  // Excel sheet ******************************************************
+  detailsAddHandler = (e) => handleDtlAddModel.call(this, e);
+  detailsRemoveHandler = (index, e) =>
+    handleDtlRemoveModel.call(this, index, e);
+
+  // dtl add list
+  closeDetailsFkList_ADD = () => this.setState({ addDtlForeignList: null });
+  recordDetailsClick_ADD = (record) =>
+    handelDtlFkListClickADDModel.call(this, record);
+
+  // dtl fk list using F4
+  openDtlFkList = (activeDtlFk) =>
+    handleOpenFkListModel.call(this, activeDtlFk);
+  closeDetailsFkList = () => handleDtlFkListCloseModel.call(this);
+  recordDetailsClick = (record) =>
+    handleDtlFkListRecordClickModel.call(this, record);
+
+  // TREE HANDLING *******************************************************
+  treeNodeClick = (record) => handleRecordClickModel.call(this, record);
+
+  // CHIPS HANDLING ******************************************************
+  chipsAddHandler = (id, index) => handleChipsAdd.call(this, id, index);
+  chipsRemoveHandler = (id, index) => handleChipsRemove.call(this, id, index);
+  closeChipsList = () => handleChipsListClose.call(this);
+  chipsRecordClick = (record) => handleChipsRecordClick.call(this, record);
+
+  // EXCEL HANDLING ******************************************************
+  excel = () => this.setState({ excelSheetOpen: !this.state.excelSheetOpen });
   excelPageClose = () => excelPageClose(this);
   resetExcelPage = () => resetExcelPage(this);
   excelSheetServerSender = (sheet) => new ExcelServerSender(this, sheet);
@@ -167,25 +218,31 @@ class ScreenConstructor extends PureComponent {
   excelPageValidator = (sheet, sheetColumnsNum) => {
     return new XlsxValidator(sheet, sheetColumnsNum);
   };
-
   // return a new preparer specific to this screen
   excelPagePreparer = (recordPropNames, sheet) => {
     return new XlsxPreparer(recordPropNames, sheet);
   };
 
+  // Handlers ************************************************
+  inputChange = (state, identifier) =>
+    handleInputChange(this, state, identifier);
+
   // LifeCycle methods *******************************************
   componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
+    const { tools } = updateMode("start", this.state, this.props);
+    this.setState({ tools });
   }
   componentWillUnmount() {
     this.mounted = false;
+    this.setState = (state, callback) => {
+      return;
+    };
     functionsListenrs(this, false);
     this.props.changeLangSelectAcivity(true);
   }
-  static getDerivedStateFromProps(props, state) {
-    return handleDrivedState(props, state);
-  }
+
   render() {
     return false;
   }

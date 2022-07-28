@@ -6,9 +6,9 @@ import {
   autoDisplay,
   changePropName,
 } from '../../../ScreenConstructor/screen/inputsHandlers';
-import { handleDrivedState } from '../../../ScreenConstructor/screen/handlers';
 import { displayContent } from '../../../ScreenConstructor/screen/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
+import { updateMode } from '../../../ScreenConstructor/screen/mode';
 
 class Zone extends ScreenConstructor {
   constructor() {
@@ -260,7 +260,8 @@ class Zone extends ScreenConstructor {
   componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
-
+    const {tools} = updateMode("start", this.state, this.props)
+    this.setState({tools})
     autoDisplay(this, 'city_no', 'city', {
       main: {
         d: { recordProp: 'city_d_name', stateProp: 'city_no_d_name' },
@@ -333,9 +334,7 @@ class Zone extends ScreenConstructor {
       'city_no',
     );
 
-    const { tools } = handleDrivedState(props, state);
     return {
-      tools,
       fields: fieldsUpdate,
     };
   }

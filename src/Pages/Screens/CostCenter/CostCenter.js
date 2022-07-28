@@ -2,28 +2,19 @@ import { CircularProgress } from "@mui/material";
 import { connect } from "react-redux";
 import { langChangeActivity } from "../../../store/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
-import {
-  fkRecordClickHandler,
-  handleRecordClick,
-} from "../../ScreenConstructor/screen/functions/list";
 import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
-import { handleDrivedState } from "../../ScreenConstructor/screen/handlers";
 import {
   autoDisplay,
   changePropName,
 } from "../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
-import {
-  getCCTreestructure,
-  parentccHandler,
-} from "./Utilities";
+import { getCCTreestructure, parentccHandler } from "./Utilities";
 import _ from "lodash";
-import {
-  handleSave,
-} from "../../ScreenConstructor/screen/functions/save";
-import { handleDeleteConfirmation } from "../../ScreenConstructor/screen/functions/delete";
 import { getTree } from "../../ScreenConstructor/screen/async";
+import { checkValidity } from "../../../Validation/validation";
+import { timer } from "../../ScreenConstructor/screen/utilities";
+import { updateMode } from "../../ScreenConstructor/screen/mode";
 
 class CostCenter extends ScreenConstructor {
   constructor(props) {
@@ -75,8 +66,8 @@ class CostCenter extends ScreenConstructor {
           },
           writability: false,
           value: "",
-          autoIncrement: "/costcenters/nextPK/",
-          autoIncrementValue: "parent_cc",
+          // autoIncrement: "/costcenters/nextPK/",
+          // autoIncrementValue: "parent_cc",
         },
         cc_d_name: {
           fieldType: "input",
@@ -240,26 +231,63 @@ class CostCenter extends ScreenConstructor {
       treeLoading: <CircularProgress className="m-5" />,
     };
   }
-  recordFkClick = (record) => fkRecordClickHandler(this, record);
-  treeNodeClick = (record) => handleRecordClick(this, record, null);
-  recordClick = (record, i) => handleRecordClick(this, record, i);
-  save = () =>
-    handleSave(
-      this,
-      () => getTree.call(this, "costcenters", getCCTreestructure)
-    );
-  deleteConfirmation = (res) =>
-    handleDeleteConfirmation(
-      this,
-      res,
-      () => getTree.call(this, "costcenters", getCCTreestructure)
-    );
+  treeNodeClick = (record) => this.recordClick(record, null);
+  save = async () => {
+    const [valid, fieldsUpdate] = checkValidity(this);
+    if (!valid) return this.setState({ fields: fieldsUpdate });
+    this.setState({ loading: true, tree: null });
+    try {
+      const res = await this.saveHandler.handleSaveRequest();
+      const tree = await getTree.call(this, "costcenters", getCCTreestructure);
+      const { message, fieldsUpdate } = res;
+      this.setState({
+        mode: "d_record",
+        loading: false,
+        message,
+        recordIndex: null,
+        fields: fieldsUpdate,
+        tree
+      });
+      timer().then((res) => this.setState({ message: false }));
+    } catch (err) {
+      const tree = await getTree.call(this, "costcenters", getCCTreestructure);
+      const { message, fieldsUpdate } = err;
+      this.setState({
+        loading: false,
+        message: message,
+        recordIndex: null,
+        fields: fieldsUpdate,
+        tree
+      });
+      timer().then((res) => this.setState({ message: false }));
+    }
+  };
+  
+  deleteConfirmation = async (res) => {
+    if (!res) return this.setState({ deleteConfirm: false });
+    const { fieldsUpdate, message } = await this.deleteHandler.handleRequest();
+    this.setState({
+      mode: "start",
+      loading: false,
+      message,
+      recordIndex: null,
+      record: null,
+      fields: fieldsUpdate,
+      deleteConfirm: false,
+      tree: null
+    });
+    timer().then((res) => this.setState({ message: false }));
+    const tree = await getTree.call(this, "costcenters", getCCTreestructure)
+    this.setState({tree})
+  }
 
-  componentDidMount() {
+  async componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
-    getTree.call(this, "costcenters", getCCTreestructure);
-
+    const {tools} = updateMode("start", this.state, this.props)
+    this.setState({tools})
+    const tree = await getTree.call(this, "costcenters", getCCTreestructure);
+    this.setState({tree})
     autoDisplay(this, "parent_cc", "costcenters", {
       main: {
         d: { recordProp: "cc_d_name", stateProp: "parent_cc_d_name" },
@@ -298,8 +326,6 @@ class CostCenter extends ScreenConstructor {
         newState.fields.inactive.value;
     }
 
-    const { tools } = handleDrivedState(props, newState);
-    newState.tools = tools;
     return newState;
   }
   render() {

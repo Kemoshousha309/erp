@@ -1,9 +1,9 @@
+import _ from "lodash";
+import { dtlFuncConstructor } from "./dtlFuncConstructor";
+
 // DETIAL ADD HANDLERS **********************************************************
-export class DetialsAdder {
+export class DetialsAdder extends dtlFuncConstructor {
   // this class is responsible for the default add process of details
-  constructor(screen) {
-    this.screen = screen;
-  }
 
   // ADD HANDLERS
   addHandler(e) {
@@ -20,6 +20,7 @@ export class DetialsAdder {
         break;
     }
   }
+
 
   primaryAddHandler(e) {
     // Add rows to details from the same screen
@@ -47,16 +48,17 @@ export class DetialsAdder {
       else row[propName] = '';
     });
 
+    let recordClone = _.cloneDeep(record);
     // add the record to the state
-    if (!record) { // if there is no record
-      record = {};
-      record[tabs[current_tab].recordDetailPropName] = [row];
-    } else if (!record[tabs[current_tab].recordDetailPropName]) {
+    if (!recordClone) { // if there is no record
+      recordClone = {};
+      recordClone[tabs[current_tab].recordDetailPropName] = [row];
+    } else if (!recordClone[tabs[current_tab].recordDetailPropName]) {
       // if there is record but with no details
-      record[tabs[current_tab].recordDetailPropName] = [row];
+      recordClone[tabs[current_tab].recordDetailPropName] = [row];
     } else {
       // if there is a record with details add our row at the top off the detials list
-      record[tabs[current_tab].recordDetailPropName].unshift(row);
+      recordClone[tabs[current_tab].recordDetailPropName].unshift(row);
     }
     // move the scroll bar to the top (UI EFFECT)
     document.getElementById('detailsTableContainer').scrollTo({
@@ -64,13 +66,7 @@ export class DetialsAdder {
       behavior: 'smooth',
     });
     // update the record in the state
-    this.screen.setState({ record });
-  }
-
-  foreignAddHandler(e) {
-    // open the details list from foreign table
-    const { details } = this.screen.state;
-    this.screen.setState({ addDtlForeignList: details.current_tab });
+    return recordClone
   }
 }
 
@@ -78,7 +74,7 @@ export class DetialsAdder {
 export class LimitAdder extends DetialsAdder {
   constructor(screen, recordsNum) {
     super(screen);
-    this.recordsNum = recordsNum;
+    this.recordsNum = screen.state.details.tabs.bnk_dtl_list.recordsNum;
   }
 
   limitAddHandler(e) {
@@ -86,16 +82,19 @@ export class LimitAdder extends DetialsAdder {
     const {
       details,
       details: { current_tab },
+      record
     } = this.screen.state;
 
-    // this will add a details row in the record in state which will reflect on the UI
-    this.primaryAddHandler(e);
-
+    let addState = details.tabs[current_tab].addState;
+    let recordUpdate = _.cloneDeep(record)
     // update the add button state
     if (this.isExceedMaxRecordNum()) {
-      details.tabs[current_tab].addState = false;
+      addState = false;
+    }else {
+      // this will add a details row in the record in state which will reflect on the UI
+      recordUpdate = this.primaryAddHandler(e);
     }
-    this.screen.setState({ details });
+    return {addState, recordUpdate}
   }
 
   isExceedMaxRecordNum() {
@@ -118,5 +117,18 @@ export class LimitAdder extends DetialsAdder {
     }
     if (notDeletedActionRecords < this.recordsNum) return false;
     return true;
+  }
+}
+
+
+export async function handleDtlAddModel(e) {
+  switch (this.state.details.type) {
+    case 'PRIMARY':
+      return this.setState({ record:  this.dtlAdder.primaryAddHandler(e)});
+    case 'FOREIGN':
+      const { details } = this.state;
+      return this.setState({ addDtlForeignList: details.current_tab });
+    default:
+      break;
   }
 }

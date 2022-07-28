@@ -2,17 +2,12 @@ import { connect } from "react-redux";
 import { langChangeActivity } from "../../../store/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { fieldListner } from "../../ScreenConstructor/screen/fields";
-import { handleRecordClick } from "../../ScreenConstructor/screen/functions/list";
-import { handleModify } from "../../ScreenConstructor/screen/functions/modify";
+import {  handleModifyModel } from "../../ScreenConstructor/screen/functions/modify";
 import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
-import { handleDetailsScreensSave } from "../../ScreenConstructor/screen/functions/save";
-import { handleDrivedState } from "../../ScreenConstructor/screen/handlers";
 import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
 import { initDetials } from "../../ScreenConstructor/screen/Details/DetailsPanel";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
-import { getDetails } from "../../ScreenConstructor/screen/Details/requestDetails";
-import { DetailsUndoHandler } from "../../ScreenConstructor/screen/functions/undo";
-
+import { updateMode } from "../../ScreenConstructor/screen/mode";
 
 class Currency extends ScreenConstructor {
   constructor() {
@@ -274,16 +269,15 @@ class Currency extends ScreenConstructor {
       },
     };
   }
-  modify = () => handleModify(this, { local_currency_update: true });
-  undo = () => {
-    const undoHandler = new DetailsUndoHandler(this);
-    undoHandler.handleDetailsScreensUndo()
+  modify = async () => {
+    handleModifyModel.call(this);
+    this.setState({local_currency_update: true})
   };
-  save = () => handleDetailsScreensSave.call(this);
-  recordClick = (record, i) => handleRecordClick(this, record, i, getDetails);
   componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
+    const {tools} = updateMode("start", this.state, this.props)
+    this.setState({tools})
     fieldListner.call(this, "local_currency", rateValidtaion);
   }
 
@@ -291,27 +285,25 @@ class Currency extends ScreenConstructor {
     // open local currency field when the local currency field is open
     const {
       fields,
-      preAdd: { content: preAddContent },
-      preModify: { content: preModifyContent },
-      mode,
+      // preAdd: { content: preAddContent },
+      // preModify: { content: preModifyContent },
+      // mode,
     } = state;
-    const content = mode === "add" ? preAddContent : preModifyContent;
-    if (content) {
-      const {
-        info: { local_currency },
-      } = content;
-      if (local_currency) {
-        if (
-          local_currency.currency_code === fields.currency_code.value &&
-          !fields.local_currency.writability
-        ) {
-          fields.local_currency.writability = true;
-        }
-      }
-    }
-    const { tools } = handleDrivedState(props, state);
+    // const content = mode === "add" ? preAddContent : preModifyContent;
+    // if (content) {
+    //   const {
+    //     info: { local_currency },
+    //   } = content;
+    //   if (local_currency) {
+    //     if (
+    //       local_currency.currency_code === fields.currency_code.value &&
+    //       !fields.local_currency.writability
+    //     ) {
+    //       fields.local_currency.writability = true;
+    //     }
+    //   }
+    // }
     return {
-      tools: tools,
       fields: fields,
     };
   }

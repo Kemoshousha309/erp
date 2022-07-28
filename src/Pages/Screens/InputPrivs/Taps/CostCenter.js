@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { handleDrivedState } from '../../../ScreenConstructor/screen/handlers';
 import { displayContent } from '../../../ScreenConstructor/screen/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
 import InputPrivsConstructor from '../InputPrivsConstructor/InputPrivsConstructor';
@@ -301,9 +300,7 @@ class Branches extends InputPrivsConstructor {
     if (mode === 'start') {
       input_privs = null;
     }
-    const { tools } = handleDrivedState(props, state);
     return {
-      tools,
       input_privs,
     };
   }

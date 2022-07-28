@@ -1,6 +1,8 @@
 import { startMode, toolsNameMap } from '../../../Helpers/tools';
 import { getSelectLangDir } from '../../../Helpers/lang';
 import { deepClone } from '../../../Validation/validation';
+import { getParam } from '../../../Helpers/utilities';
+import { toolsPriv } from './utilities';
 
 // mode processes *******************************************************
 export const handleMode = (mode, lang_no, langs, tools, changeLangSelectAcivity) => {
@@ -63,3 +65,20 @@ const activate = (activeList, mode = null, lang_dir, tools) => {
   }
   return modeClone;
 };
+
+
+
+export const updateMode = (mode, state, props) => {
+  let tools = handleMode(
+    mode,
+    props.lanState,
+    props.languages,
+    state.tapTools,
+    props.changeLangSelectAcivity,
+  );
+  const formPrivs = props.forms_privs_hash[getParam(props.location.search, 'no')];
+  tools = toolsPriv(formPrivs, tools);
+  return { tools };
+}
+
+

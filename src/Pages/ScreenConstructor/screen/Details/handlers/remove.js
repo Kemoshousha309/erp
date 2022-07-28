@@ -1,8 +1,8 @@
+import _ from "lodash";
+import { dtlFuncConstructor } from "./dtlFuncConstructor";
+
 // REOMVE HANDLERS ************************************************************************
-export class DetailsRemover {
-  constructor(screen) {
-    this.screen = screen;
-  }
+export class DetailsRemover extends dtlFuncConstructor {
 
   removeHandler(index, e) {
     e.preventDefault();
@@ -10,22 +10,23 @@ export class DetailsRemover {
       record,
       details: { current_tab, tabs },
     } = this.screen.state;
-    const row = record[tabs[current_tab].recordDetailPropName][index];
+    const recordClone = _.cloneDeep(record);
+    const row = recordClone[tabs[current_tab].recordDetailPropName][index];
     // saving the previous action to use later in the row at the record
     if (row.action) {
       row.prevAction = row.action;
     }
     // set the delete action to reflect later on the UI
     row.action = 'delete';
-    this.screen.setState({ record });
+    return recordClone
   }
 }
 
 export class LimitDetialsRomver extends DetailsRemover {
   /// this class handles the removing of limited number of records
-  constructor(screen, recordsNum) {
+  constructor(screen) {
     super(screen);
-    this.recordsNum = recordsNum;
+    this.recordsNum = screen.state.details.tabs.bnk_dtl_list.recordsNum;
   }
 
   limitRemover(index, e) {
@@ -34,13 +35,13 @@ export class LimitDetialsRomver extends DetailsRemover {
       details,
     } = this.screen.state;
 
-    this.removeHandler(index, e);
-
+    const recordUpdate = this.removeHandler(index, e);
+    let addState = details.tabs[current_tab].addState;
     if (!this.isExceedMaxRecordNum()) {
       // activate the add button
-      details.tabs[current_tab].addState = true;
-      this.screen.setState({ details });
+      addState = true;
     }
+    return {addState, recordUpdate};
   }
 
   isExceedMaxRecordNum() {
@@ -60,4 +61,10 @@ export class LimitDetialsRomver extends DetailsRemover {
     if (notDeletedActionRecords <= this.recordsNum) return false;
     return true;
   }
+}
+
+
+export async function handleDtlRemoveModel(index, e) {
+  const recordUpdate = this.dtlRemover.removeHandler(index, e);
+  this.setState({record: recordUpdate});
 }

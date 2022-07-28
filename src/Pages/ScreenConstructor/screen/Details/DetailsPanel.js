@@ -30,10 +30,11 @@ class DetailsPanel extends PureComponent {
     let details_exist = false;
     if (record) {
       details_exist = properties.reduce(
-        (accum, cur) => record[cur] && accum,
-        true,
+        (accum, cur) => record[cur] || accum,
+        false,
       );
     }
+
 
     let output = null;
 

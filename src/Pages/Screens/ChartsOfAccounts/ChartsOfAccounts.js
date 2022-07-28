@@ -2,12 +2,7 @@ import { CircularProgress } from "@mui/material";
 import { connect } from "react-redux";
 import { langChangeActivity } from "../../../store/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
-import {
-  fkRecordClickHandler,
-  handleRecordClick,
-} from "../../ScreenConstructor/screen/functions/list";
 import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
-import { handleDrivedState } from "../../ScreenConstructor/screen/handlers";
 import {
   autoDisplay,
   changePropName,
@@ -22,17 +17,15 @@ import {
 } from "./Utilities";
 import axios from "../../../axios";
 import { initDetials } from "../../ScreenConstructor/screen/Details/DetailsPanel";
-import { getDetails } from "../../ScreenConstructor/screen/Details/requestDetails";
 import _ from "lodash";
-import { handleDetailsScreensSave } from "../../ScreenConstructor/screen/functions/save";
-import { handleDeleteConfirmation } from "../../ScreenConstructor/screen/functions/delete";
 import { getTree } from "../../ScreenConstructor/screen/async";
 import ChartsExcelInstructions, {
   ChartsOfAccsXlsxPreparer,
   ChartsOfAccsXlsxValidator,
 } from "./ChartsOfAccsXlsx/ChartsOfAccsXlsx";
 import { updateCurrentScreen } from "../../../store/actions/app";
-import { DetailsUndoHandler } from "../../ScreenConstructor/screen/functions/undo";
+import { timer } from "../../ScreenConstructor/screen/utilities";
+import { updateMode } from "../../ScreenConstructor/screen/mode";
 
 class ChartsOfAccounts extends ScreenConstructor {
   constructor(props) {
@@ -85,8 +78,8 @@ class ChartsOfAccounts extends ScreenConstructor {
           },
           writability: false,
           value: "",
-          autoIncrement: "/chartofaccounts/nextPK/",
-          autoIncrementValue: "parent_acc",
+          // autoIncrement: "/chartofaccounts/nextPK/",
+          // autoIncrementValue: "parent_acc",
         },
         acc_d_name: {
           fieldType: "input",
@@ -483,27 +476,43 @@ class ChartsOfAccounts extends ScreenConstructor {
       },
     };
   }
-  recordFkClick = (record) => fkRecordClickHandler(this, record, updateFields);
-  treeNodeClick = (record) => handleRecordClick(this, record, null, getDetails);
-  recordClick = (record, i) => handleRecordClick(this, record, i, getDetails);
-  undo = () => {
-    const undoHandler = new DetailsUndoHandler(this);
-    undoHandler.handleDetailsScreensUndo();
+  recordFkClick = async (record) => {
+    let fieldsUpdate = this.fkListHandler.recordClick(record);
+    this.setState({
+      fkListShow: null,
+      fields: fieldsUpdate,
+      fkRecord: record,
+    });
+    fieldsUpdate = await updateFields.call(this, fieldsUpdate ,record);
+    this.setState({fields: fieldsUpdate})
   };
-  save = () =>
-    handleDetailsScreensSave.call(this, () =>
-      getTree.call(this, "chartofaccounts", getAccTreestructure)
-    );
-  deleteConfirmation = (res) =>
-    handleDeleteConfirmation(this, res, () =>
-      getTree.call(this, "chartofaccounts", getAccTreestructure)
-    );
 
-  componentDidMount() {
+
+  deleteConfirmation = async (res) => {
+    if (!res) return this.setState({ deleteConfirm: false });
+    const { fieldsUpdate, message } = await this.deleteHandler.handleRequest();
+    this.setState({
+      mode: "start",
+      loading: false,
+      message,
+      recordIndex: null,
+      record: null,
+      fields: fieldsUpdate,
+      deleteConfirm: false,
+      tree: null
+    });
+    timer().then((res) => this.setState({ message: false }));
+    const tree = await getTree.call(this, "chartofaccounts", getAccTreestructure);
+    this.setState({tree})
+  }
+
+  async componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
-    getTree.call(this, "chartofaccounts", getAccTreestructure);
-
+    const {tools} = updateMode("start", this.state, this.props)
+    this.setState({tools})
+    const tree = await getTree.call(this, "chartofaccounts", getAccTreestructure);
+    this.setState({tree})
     autoDisplay(this, "parent_acc", "chartofaccounts", {
       main: {
         d: { recordProp: "acc_d_name", stateProp: "parent_acc_d_name" },
@@ -553,8 +562,6 @@ class ChartsOfAccounts extends ScreenConstructor {
     }
 
     newState = subUpdate(newState);
-    const { tools } = handleDrivedState(props, newState);
-    newState.tools = tools;
     return newState;
   }
   render() {
@@ -580,17 +587,14 @@ const mapDispatchToProps = (dispatch) => {
 };
 export default connect(mapStateToProps, mapDispatchToProps)(ChartsOfAccounts);
 
-function updateFields(record) {
-  axios
+function updateFields(fieldsUpdate, record) {
+  return new Promise((resolve, reject) => {
+    axios
     .get(`chartofaccounts/nextPK/${record.acc_no}`)
     .then((res) => {
-      this.setState((state, props) => {
-        const { fields } = state;
-        fields.acc_no.value = res.data.next_PK ? res.data.next_PK : "";
-        return {
-          fields: updateOnParentAcc.call(this, fields, record, "PRESENT"),
-        };
-      });
+      fieldsUpdate.acc_no.value = res.data.next_PK ? res.data.next_PK : "";
+      resolve(updateOnParentAcc.call(this, fieldsUpdate, record, "PRESENT"))
     })
     .catch((err) => console.log(err));
+  })
 }

@@ -3,9 +3,9 @@ import { store } from "../../../..";
 import { logout } from "../../../../store";
 import { functionsListenrs } from "../../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../../ScreenConstructor/ScreenConstructor";
-import { handleDrivedState } from "../../../ScreenConstructor/screen/handlers";
 import { timer } from "../../../ScreenConstructor/screen/utilities";
 import { selectMessage } from "../../../../Helpers/lang";
+import { updateMode } from "../../../ScreenConstructor/screen/mode";
 
 class InputPrivsConstructor extends ScreenConstructor {
   constructor() {
@@ -28,6 +28,8 @@ class InputPrivsConstructor extends ScreenConstructor {
   }
   componentDidMount() {
     functionsListenrs(this, true);
+    const {tools} = updateMode("start", this.state, this.props)
+    this.setState({tools})
   }
 
   save = () => {
@@ -207,9 +209,7 @@ class InputPrivsConstructor extends ScreenConstructor {
     if (mode === "start") {
       input_privs = null;
     }
-    const { tools } = handleDrivedState(props, state);
     return {
-      tools: tools,
       input_privs: input_privs,
     };
   }

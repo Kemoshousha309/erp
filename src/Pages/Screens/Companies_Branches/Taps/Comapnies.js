@@ -6,9 +6,9 @@ import {
   autoDisplay,
   changePropName,
 } from '../../../ScreenConstructor/screen/inputsHandlers';
-import { handleDrivedState } from '../../../ScreenConstructor/screen/handlers';
 import { displayContent } from '../../../ScreenConstructor/screen/displayContent';
 import { langChangeActivity } from '../../../../store/actions/lang';
+import { updateMode } from '../../../ScreenConstructor/screen/mode';
 
 class Companies extends ScreenConstructor {
   constructor() {
@@ -254,7 +254,8 @@ class Companies extends ScreenConstructor {
   componentDidMount() {
     setlastIndex(this);
     functionsListenrs(this, true);
-
+    const {tools} = updateMode("start", this.state, this.props)
+    this.setState({tools})
     autoDisplay(this, 'company_group', 'companyGroup', {
       main: {
         d: { recordProp: 'group_d_name', stateProp: 'group_d_name' },
@@ -283,9 +284,7 @@ class Companies extends ScreenConstructor {
       'country',
     );
 
-    const { tools } = handleDrivedState(props, state);
     return {
-      tools,
       fields: fieldsUpdate,
     };
   }

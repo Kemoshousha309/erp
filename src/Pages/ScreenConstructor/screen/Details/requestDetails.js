@@ -1,29 +1,34 @@
+import _, { cloneDeep } from 'lodash';
 import axios from '../../../../axios';
 
-export function getDetails(record, i) {
-  const {
-    details: { tabs },
-    details,
-  } = this.state;
-  const detailsPagesURLs = Object.keys(tabs).map((key) => {
-    tabs[key].pageURL.id = key;
-    return tabs[key].pageURL;
-  });
-  detailsPagesURLs.forEach((pageURL) => {
-    const { master, temp, id } = pageURL;
-    const url = `${temp}/${record[master]}`;
-    this.setState({ details: { ...details, loading: true } });
-    axios
-      .get(url)
-      .then((res) => {
-        record[tabs[id].recordDetailPropName] = res.data[tabs[id].recordDetailPropName];
-        this.setState({
-          record,
-          details: { ...details, loading: false },
-        });
-      })
-      .catch((err) => console.log(err));
-  });
+
+/**
+ * This funtion should return a promise
+ * 
+ * @returns {Promise} This promise should resolve a record with requested dtl
+ */
+export function getDetails(record, screen) {
+  return new Promise((resolve, reject) => {
+    const {
+      details: { tabs },
+    } = screen.state;
+    const detailsPagesURLs = Object.keys(tabs).map((key) => {
+      tabs[key].pageURL.id = key;
+      return tabs[key].pageURL;
+    });
+    detailsPagesURLs.forEach((pageURL) => {
+      const { master, temp, id } = pageURL;
+      const url = `${temp}/${record[master]}`;
+      axios
+        .get(url)
+        .then((res) => {
+          const recordClone = _.cloneDeep(record)
+          recordClone[tabs[id].recordDetailPropName] = res.data[tabs[id].recordDetailPropName];
+          resolve(cloneDeep(recordClone))
+        })
+        .catch((err) => console.log(err.response));
+    });
+  })
 }
 
 // this function transform the data get form forieng screen to look like the current details
