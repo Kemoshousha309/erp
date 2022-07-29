@@ -47,6 +47,7 @@ import { List } from "./screen/functions/list";
 import { FkList } from "./screen/functions/fkList";
 import { updateMode } from "./screen/mode";
 import _ from "lodash";
+import { initialState } from "./screen/state";
 
 /**
  * this is a consructor for the screen
@@ -60,39 +61,7 @@ class ScreenConstructor extends PureComponent {
     /**
      * the state contian all the information about the process
      */
-    this.state = {
-      tools: null,
-      mode: "start",
-      fkListShow: null,
-      prevMode: null,
-      recordIndex: null,
-      lastIndex: null,
-      message: null,
-      loading: false,
-      listShow: false,
-      deleteConfirm: false,
-      ShortCutsList: false,
-      record: null,
-      addDtlForeignList: null,
-      tapTools: ["excel"], // to be deleted and view the others
-      searchFields: [],
-      mainFields: [],
-      pks: [],
-      custimizedList: {
-        open: false,
-        render: null,
-      },
-      excelSheetOpen: false,
-      excelPage: {
-        excelLoading: false,
-        serverValidate: {
-          validated: false,
-          validatedResult: null,
-          validateRes: null,
-        },
-        addMess: null,
-      },
-    };
+    this.state = _.cloneDeep(initialState);
 
     // functions init
     this.listHandler = new List(this);

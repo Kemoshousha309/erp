@@ -101,6 +101,9 @@ export class DetailsList {
     if (!stateRecordClone) throw new Error("there is no record in the state");
     detailsFillFields.forEach((fieldName) => {
       row[fieldName] = choosedRecord[fieldName];
+      if(row[fieldName]) {
+        row[`${fieldName}#validity`] = {valid: true, message: null};
+      }
       row.action = mode === "add" ? "add" : "update"
     });
     this.choosedRecords.push(choosedRecord);
@@ -137,7 +140,6 @@ export function handleDtlFkListRecordClickModel(choosedRecord) {
     details: { current_tab },
   } = this.state;
   const recordUpdate = this.detailsList.handleRecordClick(choosedRecord);
-  console.log(recordUpdate)
   const dtlUpdate = _.cloneDeep(details);
   // clsoe the list
   dtlUpdate.tabs[current_tab].activeForeignList = null;

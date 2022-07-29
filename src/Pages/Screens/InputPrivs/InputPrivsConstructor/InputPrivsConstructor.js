@@ -59,7 +59,7 @@ class InputPrivsConstructor extends ScreenConstructor {
           message: message,
           recordIndex: null,
         });
-        timer(this);
+        timer().then((res) => this.setState({ message: false }));
       })
       .catch((err) => {
         let message = null;
@@ -84,7 +84,7 @@ class InputPrivsConstructor extends ScreenConstructor {
           message: message,
           recordIndex: null,
         });
-        timer(this);
+            timer().then((res) => this.setState({ message: false }));
       });
   };
 
@@ -130,7 +130,7 @@ class InputPrivsConstructor extends ScreenConstructor {
             message: message,
             loading: false,
           });
-          timer(this);
+              timer().then((res) => this.setState({ message: false }));
         }
       });
   };

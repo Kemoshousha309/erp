@@ -97,7 +97,7 @@ class ScreenPrivs extends ScreenConstructor {
           recordIndex: null,
           user_formPrivs: user_formPrivs_clone,
         });
-        timer(this);
+            timer().then((res) => this.setState({ message: false }));
       })
       .catch((err) => {
         handleFields(this.state.fields, "open", false);
@@ -116,7 +116,7 @@ class ScreenPrivs extends ScreenConstructor {
           message: message,
           recordIndex: null,
         });
-        timer(this);
+            timer().then((res) => this.setState({ message: false }));
       });
   };
   treeNodeClick = (record) => {

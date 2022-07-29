@@ -20,13 +20,13 @@ class SystemCommands extends Component {
     message: null,
     genUngenPriv: "false",
     displayedCommands: [],
-    allCommands: ["ReloadServerCache", "GenUngenPriv", "ReloadClientCache"]
+    allCommands: ["ReloadServerCache", "GenUngenPriv", "ReloadClientCache"],
   };
   reloadServerCache = () => {
     request(this, "/systemcommands/server/reloadServerCache", "post");
   };
-   reloadClientCache = () => {
-    this.props.clearBrowserData()
+  reloadClientCache = () => {
+    this.props.clearBrowserData();
   };
   genUngenPrivRadioHandler = (e) => {
     this.setState({ genUngenPriv: e.target.value });
@@ -40,30 +40,30 @@ class SystemCommands extends Component {
   };
   filterCommands = (e) => {
     const {
-      props: {lanState, lanTable},
+      props: { lanState, lanTable },
     } = this;
-    const input = (e.target.value).toLowerCase()
+    const input = e.target.value.toLowerCase();
     const commands = {
       ReloadServerCache: "reload_server_cash",
       ReloadClientCache: "reload_client_cache",
       GenUngenPriv: "generate_ungenerated_priv",
-    }
-    Object.keys(commands).forEach(key => {
+    };
+    Object.keys(commands).forEach((key) => {
       commands[key] = t(commands[key], lanTable, lanState);
-    })
+    });
     const displayedCommands = [];
-    for(const key in commands){
+    for (const key in commands) {
       const item = commands[key].toLowerCase();
-      if(item.includes(input)){
-        displayedCommands.push(key)
+      if (item.includes(input)) {
+        displayedCommands.push(key);
       }
     }
-    this.setState({displayedCommands: displayedCommands})
+    this.setState({ displayedCommands: displayedCommands });
   };
-  componentDidMount () {
-    const displayedCommands = []
-    this.state.allCommands.forEach(i => displayedCommands.push(i))
-    this.setState({displayedCommands: displayedCommands})
+  componentDidMount() {
+    const displayedCommands = [];
+    this.state.allCommands.forEach((i) => displayedCommands.push(i));
+    this.setState({ displayedCommands: displayedCommands });
   }
   render() {
     const {
@@ -73,7 +73,7 @@ class SystemCommands extends Component {
       genUngenPrivRadioHandler,
       genUngenPrivExcuteHandler,
       filterCommands,
-      reloadClientCache
+      reloadClientCache,
     } = this;
 
     const statusBar = (
@@ -100,7 +100,7 @@ class SystemCommands extends Component {
       ),
       ReloadClientCache: (
         <ReloadClientCache reloadClientCache={reloadClientCache} />
-      )
+      ),
     };
 
     return (
@@ -117,8 +117,10 @@ class SystemCommands extends Component {
               onChange={filterCommands}
             />
           </div>
-        </div>  
-        {displayedCommands.map(i => <div key={i}>{commandsComponents[i]}</div>)}
+        </div>
+        {displayedCommands.map((i) => (
+          <div key={i}>{commandsComponents[i]}</div>
+        ))}
         <div className={style.statusBar}>{statusBar}</div>
       </div>
     );
@@ -137,7 +139,6 @@ const mapDispatchToProps = (dispatch) => {
     clearBrowserData: () => dispatch(clearlangData()),
   };
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(SystemCommands);
 
@@ -164,7 +165,7 @@ const request = (thisK, url, method) => {
         statusLoading: false,
         message: messageContent,
       });
-      timer(thisK);
+      timer().then((res) => thisK.setState({ message: false }));
     })
     .catch((err) => {
       let message = null;
@@ -187,6 +188,6 @@ const request = (thisK, url, method) => {
         statusLoading: false,
         message: message,
       });
-      timer(thisK);
+      timer().then((res) => thisK.setState({ message: false }));
     });
 };

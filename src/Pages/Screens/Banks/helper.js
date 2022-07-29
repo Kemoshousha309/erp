@@ -15,27 +15,27 @@ import Page from "../../ScreenConstructor/screen/RecordDisplay/Page/Page";
 import _ from "lodash";
 
 export class BanksSave extends Saver {
-  handleBanksSave() {
+  async handleBanksSave() {
     const { fields: masterfields } = this.screen.state;
     const { url, method } = this.getRequestInfo();
 
     // prepare the body
-    const detailsValues = trackDetailsChange(this.screen);
-    console.log(detailsValues)
+    const detailsValues = await this.prepareDtlValues();
     const fieldsValues = getValues(masterfields);
     // add the accout number of details to the master
-    if (detailsValues.bnk_dtl_list[0]) {
-      fieldsValues.account_no = detailsValues.bnk_dtl_list[0].acc_no;
-    }else {
-      const {record} = this.screen.state;
+
+
+    const { record } = this.screen.state;
+    if (record) {
       fieldsValues.account_no = record.bnk_dtl_list[0].acc_no;
     }
+
     const body = {
       ...detailsValues,
       ...fieldsValues,
     };
-    
-    console.log(body);
+
+    console.log({ body });
     return new Promise((resolve, reject) => {
       axios({
         method,
@@ -47,12 +47,35 @@ export class BanksSave extends Saver {
     });
   }
 
-
   prepareDtlValues() {
-    // const { record, details: {tabs}, mode } = this.screen.state;
-    // const detailsValues = trackDetailsChange(this.screen);
-    // if(mode !== "modify") return detailsValues;
-
+    const { mode, fields } = this.screen.state;
+    const detialsChange = trackDetailsChange(this.screen);
+    return new Promise((resolve, reject) => {
+      if (mode === "add" || mode === "copy") resolve(detialsChange);
+      // modify
+      if (detialsChange.bnk_dtl_list.length > 0) {
+        // make the trick of update
+        const addPage = detialsChange.bnk_dtl_list[0]; // action update
+        addPage.action = "add";
+        // make a request to get the the dtl record to be deleted
+        return axios
+          .get(`/banks/${fields.bank_no.value}`)
+          .then((res) => {
+            const fetchedPage = res.data.bnk_dtl_list[0];
+            const deletePage = {};
+            Object.keys(addPage).forEach((key) => {
+              deletePage[key] = fetchedPage[key];
+            });
+            deletePage.action = "delete";
+            resolve({bnk_dtl_list: [addPage, deletePage]});
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      console.log("// should handle by server");
+      return;
+    });
   }
 }
 
@@ -203,7 +226,6 @@ function prepareData(screen, rowIndex) {
   });
 }
 
-
 export function disableDtlRecords(value) {
   const {
     state: {
@@ -213,8 +235,8 @@ export function disableDtlRecords(value) {
   } = this;
 
   const detailsUpdate = _.cloneDeep(details);
-  Object.values(detailsUpdate.tabs[current_tab].headers).forEach(header => {
+  Object.values(detailsUpdate.tabs[current_tab].headers).forEach((header) => {
     header.disabled = value;
-  })
-  this.setState({details: detailsUpdate})
+  });
+  this.setState({ details: detailsUpdate });
 }

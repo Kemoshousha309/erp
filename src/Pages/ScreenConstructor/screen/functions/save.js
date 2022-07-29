@@ -56,7 +56,7 @@ export class Saver extends FuncConstructor {
 
     // prepare the body
     const detailsValues = trackDetailsChange(this.screen);
-    console.log(detailsValues)
+    console.log({detailsValues})
     const fieldsValues = getValues(masterfields);
     const body = {
       ...detailsValues,

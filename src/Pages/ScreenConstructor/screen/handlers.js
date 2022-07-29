@@ -91,6 +91,6 @@ export function chipsRecordClickHandler(record, propName) {
       type: 'error',
     };
     this.setState({ chipsListShow: null, message });
-    timer(this);
+    timer().then((res) => this.setState({ message: false }));
   }
 }
