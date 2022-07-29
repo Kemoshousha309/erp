@@ -225,6 +225,7 @@ class Banks extends ScreenConstructor {
     handleCopyModel.call(this);
     setAccCurListener.call(this);
   }
+  
 
   detailsAddHandler = (e) => {
     // hanle add details rows with limit numbers
