@@ -5,7 +5,7 @@ import Backdrop from "../../UI/Backdrop/Backdrop";
 import { changeLnaguage } from "../../../store";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import { t } from "../../../Helpers/lang";
+import { t } from "../../../Languages/languages";
 
 
 class LangSelector extends PureComponent {
@@ -39,7 +39,7 @@ class LangSelector extends PureComponent {
   render() {
     const {
       state: { show, value },
-      props: { lanState, langTable, langChangeActive },
+      props: { langTable, langChangeActive },
     } = this;
 
     let openStyle = style.hide;
@@ -67,14 +67,14 @@ class LangSelector extends PureComponent {
             onClick={this.selectorClickHandler}
             value={value}
           >
-            {mapSymbol(value, "short", lanState, langTable)}
+            {mapSymbol(value, "short", langTable)}
             <FontAwesomeIcon className={arrowStyle} icon={faChevronUp} />
           </button>
           <ul className={openStyle}>
             {langs.map((i) => {
               return (
                 <li key={i} onClick={this.updateValue} id={i}>
-                  {mapSymbol(i, "long", lanState, langTable)}
+                  {mapSymbol(i, "long", langTable)}
                 </li>
               );
             })}
@@ -87,18 +87,18 @@ class LangSelector extends PureComponent {
   }
 }
 
-export const mapSymbol = (c, type, lanState, langTable) => {
+export const mapSymbol = (c, type) => {
   switch (parseInt(c)) {
     case 1:
       return (
         <span id={c}>
-          {type === "short" ? "Ar" : t("arabic", langTable, lanState)}
+          {type === "short" ? "Ar" : t("arabic")}
         </span>
       );
     case 2:
       return (
         <span id={c}>
-          {type === "short" ? "En" : t("english", langTable, lanState)}
+          {type === "short" ? "En" : t("english")}
         </span>
       );
     default:

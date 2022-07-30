@@ -1,5 +1,6 @@
-import $ from 'jquery';
-import { getSelectLangDir } from '../../../Helpers/lang';
+import $ from "jquery";
+import { getSelectLangDir } from "../../../Languages/languages";
+import { checkActiveList } from "./functions/list";
 
 // function listners *******************************************
 const getToolState = (tools, name) => {
@@ -27,12 +28,12 @@ const isFk = (fks) => {
 
 const handleListenrClick = (event, tools, name, func) => {
   const state = getToolState(tools, name);
-  if (name === 'next' || name === 'previous') {
+  if (name === "next" || name === "previous") {
     // no blur
   } else {
     const inputs = document
-      .getElementById('tap')
-      .querySelectorAll('input, select');
+      .getElementById("tap")
+      .querySelectorAll("input, select");
     inputs.forEach((ele) => ele.blur());
   }
   if (state) {
@@ -44,23 +45,19 @@ const handleListenrClick = (event, tools, name, func) => {
 const handleF4 = (event, thisK) => {
   // know the tool is disabled or not
   const {
-    state: {
-      tools,
-      fks,
-      details,
-    },
+    state: { tools, fks, details },
   } = thisK;
   let currentDetailsFks = null;
-  if(details) {
+  if (details) {
     currentDetailsFks = details.tabs[details.current_tab].foreignKeys;
   }
-  const state = getToolState(tools, 'list');
+  const state = getToolState(tools, "list");
   const activeFk = isFk(fks);
   const activeDtlFk = isFk(currentDetailsFks);
 
   if (activeFk) {
     event.preventDefault();
-    thisK.openFkList(activeFk)
+    thisK.openFkList(activeFk);
   } else if (activeDtlFk) {
     event.preventDefault();
     thisK.openDtlFkList(activeDtlFk);
@@ -71,73 +68,62 @@ const handleF4 = (event, thisK) => {
 };
 
 const setListenrs = (event, thisK) => {
-  const dir = getSelectLangDir(thisK.props.languages, thisK.props.lanState);
+  const dir = getSelectLangDir(thisK.props.languages);
   const { tools } = thisK.state;
   switch (event.key) {
-    case 'Delete':
-      handleListenrClick(event, tools, 'delete', thisK.delete);
+    case "Delete":
+      handleListenrClick(event, tools, "delete", thisK.delete);
       break;
-    case 'F12':
-      handleListenrClick(event, tools, 'delete', thisK.delete);
+    case "F12":
+      handleListenrClick(event, tools, "delete", thisK.delete);
       break;
-    case 'F2':
-      handleListenrClick(event, tools, 'add', thisK.add);
+    case "F2":
+      handleListenrClick(event, tools, "add", thisK.add);
       break;
-    case 'Insert':
-      handleListenrClick(event, tools, 'add', thisK.add);
+    case "Insert":
+      handleListenrClick(event, tools, "add", thisK.add);
       break;
-    case 'F3':
-      handleListenrClick(event, tools, 'copy', thisK.copy);
+    case "F3":
+      handleListenrClick(event, tools, "copy", thisK.copy);
       break;
-    case 'F5':
-      handleListenrClick(event, tools, 'search', thisK.search);
+    case "F5":
+      handleListenrClick(event, tools, "search", thisK.search);
       break;
-    case 'F7':
-      handleListenrClick(event, tools, 'modify', thisK.modify);
+    case "F7":
+      handleListenrClick(event, tools, "modify", thisK.modify);
       break;
-    case 'Home':
-      handleListenrClick(event, tools, 'first', thisK.first);
+    case "Home":
+      handleListenrClick(event, tools, "first", thisK.first);
       break;
-    case 'End':
-      handleListenrClick(event, tools, 'last', thisK.last);
+    case "End":
+      handleListenrClick(event, tools, "last", thisK.last);
       break;
-    case 'Escape':
-      handleListenrClick(event, tools, 'undo', thisK.undo);
-      const {
-        state: {
-          prevMode, fkListShow, listShow, ShortCutsList, mode,
-        },
-      } = thisK;
-      if (fkListShow || listShow || ShortCutsList) {
-        if (ShortCutsList) {
-          thisK.setState({ ShortCutsList: false });
-        } else {
-          thisK.setState({ fkListShow: null, listShow: false, mode: prevMode || mode });
-        }
-      }
+    case "Escape":
+      if(checkActiveList(thisK)) return thisK.clearLists();
+      handleListenrClick(event, tools, "undo", thisK.undo);
       break;
-    case 'F10':
-      handleListenrClick(event, tools, 'save', thisK.save);
+    case "F10":
+      handleListenrClick(event, tools, "save", thisK.save);
       break;
-    case 'ArrowRight':
+    case "ArrowRight":
       if (parseInt(dir) === 2) {
-        handleListenrClick(event, tools, 'next', thisK.next);
+        handleListenrClick(event, tools, "next", thisK.next);
       } else {
-        handleListenrClick(event, tools, 'previous', thisK.previous);
+        handleListenrClick(event, tools, "previous", thisK.previous);
       }
       break;
-    case 'ArrowLeft':
+    case "ArrowLeft":
       if (parseInt(dir) === 2) {
-        handleListenrClick(event, tools, 'previous', thisK.previous);
+        handleListenrClick(event, tools, "previous", thisK.previous);
       } else {
-        handleListenrClick(event, tools, 'next', thisK.next);
+        handleListenrClick(event, tools, "next", thisK.next);
       }
       break;
-    case 'F8': // should be f1
+    case "F8": // should be f1
       event.preventDefault();
       thisK.ShortCutsListCloseHandler();
       break;
-    case 'F4':
+    case "F4":
       handleF4(event, thisK);
       break;
     default:
@@ -147,14 +133,14 @@ const setListenrs = (event, thisK) => {
 
 export const functionsListenrs = (thisK, mode) => {
   function callbackFunc(e) {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       const self = $(this);
-      const form = self.parents('form:eq(0)');
+      const form = self.parents("form:eq(0)");
       let focusable;
       let next;
       focusable = form
-        .find('input,a,select,button,textarea')
-        .filter(':visible');
+        .find("input,a,select,button,textarea")
+        .filter(":visible");
       next = focusable.eq(focusable.index(this) + 1);
       if (next.length) {
         next.focus();
@@ -163,10 +149,10 @@ export const functionsListenrs = (thisK, mode) => {
     }
   }
   if (mode) {
-    $('body').on('keydown', 'input, select', callbackFunc);
+    $("body").on("keydown", "input, select", callbackFunc);
     document.onkeydown = (e) => setListenrs(e, thisK);
   } else {
-    $('body').off('keydown', 'input, select', callbackFunc);
+    $("body").off("keydown", "input, select", callbackFunc);
     document.onkeydown = null;
   }
 };

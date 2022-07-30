@@ -3,9 +3,9 @@ import axios from "../../../../axios";
 import { logout } from "../../../../store";
 import { store } from "../../../../index";
 import { timer } from "../utilities";
-import { t } from "../../../../Helpers/lang";
 import { FuncConstructor } from "./funcConstructor";
 import { updateMode } from "../mode";
+import { t } from "../../../../Languages/languages";
 
 // moves processes ***********************************************
 
@@ -72,7 +72,6 @@ export class Mover extends FuncConstructor {
   handleRes = (res, newIndex) => {
     let {
       state: { fields: fieldsUpdate, lastIndex, recordIndex },
-      props: { lanTable, lanState },
     } = this.screen;
     let record;
     let indexUpdate = recordIndex;
@@ -86,7 +85,7 @@ export class Mover extends FuncConstructor {
       index = "last index";
     }
     const message = {
-      content: t("record_no", lanTable, lanState, index),
+      content: t("record_no", index),
       type: "info",
     };
     return { fieldsUpdate, record, message, indexUpdate };

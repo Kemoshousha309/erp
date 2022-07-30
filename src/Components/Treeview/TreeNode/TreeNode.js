@@ -8,7 +8,7 @@ import {
   getRelatedRoute,
   routeMap,
 } from '../../../Helpers/tree';
-import { getAvialableValue, t } from '../../../Helpers/lang';
+import { getAvialableValue, t } from '../../../Languages/languages';
 
 function TreeNode(props) {
   let children = null;
@@ -63,7 +63,7 @@ function TreeNode(props) {
       contain,
     } = props.thisK.state.treeInfo;
 
-    output = getAvialableValue(props.config[d], props.config[f], props.lang);
+    output = getAvialableValue(props.config[d], props.config[f]);
     if (propToAddToLabel) {
       output = output + delimiter + contain(props.config[propToAddToLabel]);
     }
@@ -72,7 +72,7 @@ function TreeNode(props) {
       ? props.config.form_d_name
       : props.config.form_f_name;
     if (!props.config.form_d_name) {
-      output = t(props.config.label_code, props.lanTable, props.lang);
+      output = t(props.config.label_code);
     }
   }
   const itemContent = (

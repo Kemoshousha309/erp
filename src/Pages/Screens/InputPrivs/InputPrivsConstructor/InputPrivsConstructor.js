@@ -4,8 +4,8 @@ import { logout } from "../../../../store";
 import { functionsListenrs } from "../../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../../ScreenConstructor/ScreenConstructor";
 import { timer } from "../../../ScreenConstructor/screen/utilities";
-import { selectMessage } from "../../../../Helpers/lang";
 import { updateMode } from "../../../ScreenConstructor/screen/mode";
+import { selectMessage } from "../../../../Languages/languages";
 
 class InputPrivsConstructor extends ScreenConstructor {
   constructor() {
@@ -22,14 +22,14 @@ class InputPrivsConstructor extends ScreenConstructor {
         "previous",
         "last",
         "first",
-        "excel"
+        "excel",
       ],
     };
   }
   componentDidMount() {
     functionsListenrs(this, true);
-    const {tools} = updateMode("start", this.state, this.props)
-    this.setState({tools})
+    const { tools } = updateMode("start", this.state, this.props);
+    this.setState({ tools });
   }
 
   save = () => {
@@ -41,7 +41,7 @@ class InputPrivsConstructor extends ScreenConstructor {
         body.push(pickProps(propsNames, item));
       }
     });
-    
+
     this.setState({ loading: true });
     axios({
       method: "put",
@@ -50,7 +50,7 @@ class InputPrivsConstructor extends ScreenConstructor {
     })
       .then((res) => {
         const message = {
-          content: selectMessage(res.data.message, this.props.lanState),
+          content: selectMessage(res.data.message),
           type: "success",
         };
         this.setState({
@@ -69,10 +69,7 @@ class InputPrivsConstructor extends ScreenConstructor {
             store.dispatch(logout());
           }
           message = {
-            content: selectMessage(
-              err.response.data.message,
-              this.props.lanState
-            ),
+            content: selectMessage(err.response.data.message),
             type: "error",
           };
           if (err.response.data.error) {
@@ -84,7 +81,7 @@ class InputPrivsConstructor extends ScreenConstructor {
           message: message,
           recordIndex: null,
         });
-            timer().then((res) => this.setState({ message: false }));
+        timer().then((res) => this.setState({ message: false }));
       });
   };
 
@@ -116,10 +113,7 @@ class InputPrivsConstructor extends ScreenConstructor {
             store.dispatch(logout());
           }
           message = {
-            content: selectMessage(
-              err.response.data.message,
-              this.props.lanState
-            ),
+            content: selectMessage(err.response.data.message),
             type: "error",
           };
           if (err.response.data.error) {
@@ -130,7 +124,7 @@ class InputPrivsConstructor extends ScreenConstructor {
             message: message,
             loading: false,
           });
-              timer().then((res) => this.setState({ message: false }));
+          timer().then((res) => this.setState({ message: false }));
         }
       });
   };
@@ -195,8 +189,8 @@ class InputPrivsConstructor extends ScreenConstructor {
           !item.admin_group
         ) {
           controls.forEach((i) => {
-            item[i] = value
-            item.edited = true
+            item[i] = value;
+            item.edited = true;
           });
         }
       });

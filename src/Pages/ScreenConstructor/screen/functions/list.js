@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { getDetails } from "../Details/requestDetails";
 import { fillRecord, handleFields } from "../fields";
 import { updateMode } from "../mode";
@@ -57,8 +58,8 @@ export const extractName = (propName) => {
 export async function handleRecordClickModel(record, i) {
   const fields = this.listHandler.recordClick(record);
   const { tools } = updateMode("d_record", this.state, this.props);
-  const {details} = this.state;
-  if(details) {
+  const { details } = this.state;
+  if (details) {
     this.setState({
       listShow: false,
       mode: "d_record",
@@ -82,4 +83,52 @@ export async function handleRecordClickModel(record, i) {
     fields,
     tools,
   });
+}
+
+export function handleClearListsModel() {
+  const {
+    prevMode,
+    mode,
+    listShow,
+    details: { current_tab },
+    details
+  } = this.state;
+  const { tools } = updateMode(prevMode || mode, this.state, this.props);
+  if (listShow) {
+    return this.setState({ listShow: false, mode: prevMode || mode, tools });
+  }
+  const dtlClone = _.cloneDeep(details); 
+  dtlClone.tabs[current_tab].activeForeignList = null;
+  this.setState({
+    fkListShow: null,
+    addDtlForeignList: null,
+    custimizedList: { open: false, render: null },
+    ShortCutsList: false,
+    details: dtlClone
+  });
+}
+
+export function checkActiveList(screen) {
+  const {
+    state: {
+      details: { current_tab, tabs },
+      fkListShow,
+      listShow,
+      ShortCutsList,
+      addDtlForeignList,
+      custimizedList: { open: custimizedListActive },
+    },
+  } = screen;
+  const activeForeignList = tabs[current_tab].activeForeignList;
+  const lists = [
+    fkListShow,
+    listShow,
+    ShortCutsList,
+    addDtlForeignList,
+    custimizedListActive,
+    activeForeignList,
+  ];
+  return lists.reduce((previousValue, currentValue) => {
+    return previousValue || currentValue;
+  }, false);
 }

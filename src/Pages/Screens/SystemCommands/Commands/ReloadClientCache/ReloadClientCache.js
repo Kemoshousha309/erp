@@ -1,24 +1,14 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { t } from '../../../../../Helpers/lang';
-import Command from '../../Command';
+import React from "react";
+import { t } from "../../../../../Languages/languages";
+import Command from "../../Command";
 
 function ReloadClientCache(props) {
-  const {
-    lanTable,
-    lanState,
-    reloadClientCache,
-  } = props;
+  const { reloadClientCache } = props;
   return (
     <Command excute={reloadClientCache}>
-      <p>{t('reload_client_cache', lanTable, lanState)}</p>
+      <p>{t("reload_client_cache")}</p>
     </Command>
   );
 }
 
-const mapStateToProps = (state) => ({
-  lanState: state.lang.lan,
-  lanTable: state.lang.langTables,
-});
-
-export default connect(mapStateToProps, null)(ReloadClientCache);
+export default ReloadClientCache;

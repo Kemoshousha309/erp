@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { t } from '../../Helpers/lang';
+import { t } from '../../Languages/languages';
 import Modal from '../UI/Modal/Modal';
 
 function ShortCutsList(props) {
@@ -10,8 +9,8 @@ function ShortCutsList(props) {
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">{t('key', props.lanTable, props.lanState)}</th>
-            <th scope="col">{t('function', props.lanTable, props.lanState)}</th>
+            <th scope="col">{t('key')}</th>
+            <th scope="col">{t('function')}</th>
           </tr>
         </thead>
         <tbody>
@@ -44,9 +43,5 @@ const tableBody = (p) => (shortcuts.map((row, i) => (
     <td>{t(row[1], p.lanTable, p.lanState)}</td>
   </tr>
 )));
-const mapStateToProps = (state) => ({
-  lanState: state.lang.lan,
-  lanTable: state.lang.langTables,
-});
 
-export default connect(mapStateToProps, null)(ShortCutsList);
+export default (ShortCutsList);

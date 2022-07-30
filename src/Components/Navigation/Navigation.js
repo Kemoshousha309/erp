@@ -1,31 +1,25 @@
-import React, { PureComponent } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { PureComponent } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
   faEllipsisH,
   faSignInAlt,
-} from '@fortawesome/free-solid-svg-icons';
-import { Tooltip } from '@mui/material';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import style from './Navigation.module.scss';
-import { logout } from '../../store';
-import { t } from '../../Helpers/lang';
-import LangSelector from './LangSelector/LangSelector';
-import BreadcrumbConstructor from './BreadcrumbConstructor/BreadcrumbConstructor';
+} from "@fortawesome/free-solid-svg-icons";
+import { Tooltip } from "@mui/material";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import style from "./Navigation.module.scss";
+import { logout } from "../../store";
+import LangSelector from "./LangSelector/LangSelector";
+import BreadcrumbConstructor from "./BreadcrumbConstructor/BreadcrumbConstructor";
+import { t } from "../../Languages/languages";
 
 class Navigation extends PureComponent {
   render() {
-    const {
-      listIconClicked,
-      lanTable,
-      lanState,
-      location,
-      SideTreeMobViewHandler,
-      logout,
-    } = this.props;
+    const { listIconClicked, location, SideTreeMobViewHandler, logout } =
+      this.props;
     return (
-      <nav className={[style.Nav].join(' ')}>
+      <nav className={[style.Nav].join(" ")}>
         <div className="d-flex ">
           <i className={style.sideBarIcon}>
             <FontAwesomeIcon onClick={SideTreeMobViewHandler} icon={faBars} />
@@ -41,11 +35,11 @@ class Navigation extends PureComponent {
             <LangSelector />
           </div>
 
-          <Tooltip enterDelay={800} title={t('logout', lanTable, lanState)}>
+          <Tooltip enterDelay={800} title={t("logout")}>
             <div>
-              {' '}
+              {" "}
               <i>
-                {' '}
+                {" "}
                 <FontAwesomeIcon onClick={logout} icon={faSignInAlt} />
               </i>
             </div>
@@ -56,16 +50,8 @@ class Navigation extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => ({
-  lanState: state.lang.lan,
-  lanTable: state.lang.langTables,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   logout: () => dispatch(logout()),
 });
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(withRouter(Navigation));
+export default connect(null, mapDispatchToProps)(withRouter(Navigation));

@@ -1,6 +1,4 @@
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-import { t } from "../../../Helpers/lang";
 import style from "./InputField.module.scss";
 import {
   changeHandler,
@@ -9,6 +7,7 @@ import {
   reflectOuterState,
   handlePassIcon,
 } from "../../../Helpers/inputs";
+import { t } from "../../../Languages/languages";
 
 class InputField extends PureComponent {
   state = {
@@ -36,12 +35,12 @@ class InputField extends PureComponent {
 
   render() {
     // console.log(`[InputSelectField] render`, this.state)
-    const { field, lanTable, lanState } = this.props;
+    const { field } = this.props;
     let { value } = this.state;
     if (field.capitalize) {
       value = value.toUpperCase()
     }
-    const placeholder = t(field.label, lanTable, lanState);
+    const placeholder = t(field.label);
     let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style);
     const passIcon = handlePassIcon(this, style);
 
@@ -54,7 +53,7 @@ class InputField extends PureComponent {
     return (
       <div className={["form-group", style.inputField].join(" ")}>
         <label
-          title={t(field.label, lanTable, lanState)}
+          title={t(field.label)}
           htmlFor={field.id}
           className="col-sm-4 col-form-label"
         >
@@ -82,12 +81,5 @@ class InputField extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
-    languages: state.lang.langInfo,
-  };
-};
 
-export default connect(mapStateToProps, null)(InputField);
+export default InputField;

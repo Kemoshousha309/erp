@@ -1,10 +1,10 @@
 import { Button, LinearProgress } from "@mui/material";
-import { selectMessage } from "../../Helpers/lang";
 import style from "./ExcelPage.module.scss";
 import SendIcon from "@mui/icons-material/Send";
 import RuleIcon from "@mui/icons-material/Rule";
 import { useContext } from "react";
 import { ExeclPageContext } from "./ExcelPage.component";
+import { selectMessage } from "../../Languages/languages";
 
 // RENDER COMPONENTS
 export function ExcelPage({ children, ...restProps }) {
@@ -136,7 +136,7 @@ ExcelPage.ErrorMess = function ErrorMess() {
 ExcelPage.ServerErr = function ServerErr() {
   const {
     props: {
-      excelPageInfo: { serverValidate, lanState },
+      excelPageInfo: { serverValidate },
     },
   } = useContext(ExeclPageContext);
   const responseData = serverValidate.validateRes;
@@ -168,7 +168,7 @@ ExcelPage.ServerErr = function ServerErr() {
           <div key={index}>
             <li>
               {" "}
-              {selectMessage(err.mess, lanState)} in the primary key number{" "}
+              {selectMessage(err.mess)} in the primary key number{" "}
               {err.location}{" "}
             </li>
             <p>
@@ -181,7 +181,7 @@ ExcelPage.ServerErr = function ServerErr() {
       return (
         <li key={index}>
           {" "}
-          {selectMessage(err.mess, lanState)} in the primary key number{" "}
+          {selectMessage(err.mess)} in the primary key number{" "}
           {err.location}
         </li>
       );

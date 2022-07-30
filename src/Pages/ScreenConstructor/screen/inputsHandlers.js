@@ -1,6 +1,6 @@
 import { isValid } from '../../../Validation/validation';
 import axios from '../../../axios';
-import { selectMessage, t } from '../../../Helpers/lang';
+import { selectMessage, t } from '../../../Languages/languages';
 
 // AUTO DISPLAY FUNCTIONS
 
@@ -37,7 +37,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
     const { main, others } = fillFields;
     let {
       state: { fields },
-      props: { lanState, lanTable },
+      props: { lanState },
     } = thisK;
     const {
       target: { value },
@@ -46,7 +46,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
     // set loading ui untill the response is fulfiled
     fields = setMainField(
       main,
-      t('loading', lanTable, lanState),
+      t('loading'),
       fields,
       lanState,
     );
@@ -69,7 +69,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
             const {
               data: { message },
             } = err.response;
-            errorMess = selectMessage(message, lanState);
+            errorMess = selectMessage(message);
           }
           // put the err message
           fields = setMainField(main, errorMess, fields, lanState);
@@ -172,8 +172,6 @@ export const checkPassConfirm = (thisK) => {
       fieldClone.valid = false;
       fieldClone.invalidFeedBack = t(
         'pass_not_identical',
-        thisK.props.lanTable,
-        thisK.props.lanState,
       );
     } else {
       const [valid, message] = isValid(

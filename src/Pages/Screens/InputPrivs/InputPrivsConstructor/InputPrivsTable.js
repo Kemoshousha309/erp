@@ -1,5 +1,5 @@
 import React from 'react';
-import { t } from '../../../../Helpers/lang';
+import { t } from '../../../../Languages/languages';
 import style from './InputPrivs.module.scss';
 
 function InputPrivsTable(
@@ -14,7 +14,7 @@ function InputPrivsTable(
   privControlIpnputHandler,
 ) {
   const { header, propsName } = content;
-  let table = t('no_match', lanTable, lanState);
+  let table = t('no_match');
   const controlInputclasses = [style.privControlInput];
   if (mode !== 'modify') {
     controlInputclasses.push(style.hidden);
@@ -55,7 +55,7 @@ function InputPrivsTable(
                 return (
                   <th key={index} scope="col">
                     <div className={style.privControlContainer}>
-                      <span>{t(label, lanTable, lanState)}</span>
+                      <span>{t(label)}</span>
                       {controlInput}
                     </div>
                   </th>

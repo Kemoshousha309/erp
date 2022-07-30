@@ -2,11 +2,11 @@ import { getValues, getPkUrl, fillRecord, handleFields } from "../fields";
 import axios from "../../../../axios";
 import { logout } from "../../../../store";
 import { store } from "../../../../index";
-import { selectMessage } from "../../../../Helpers/lang";
 import { FuncConstructor } from "./funcConstructor";
 import { checkValidity } from "../../../../Validation/validation";
 import { timer } from "../utilities";
 import { updateMode } from "../mode";
+import { selectMessage } from "../../../../Languages/languages";
 
 // Handle search ******************************************************
 export class Searcher extends FuncConstructor {
@@ -19,7 +19,6 @@ export class Searcher extends FuncConstructor {
   searchRequest() {
     const {
       state: { fields, pks, urls, searchFields },
-      props: { lanState },
     } = this.screen;
     const values = getValues(fields);
     const pkUrl = getPkUrl(pks, values);
@@ -30,7 +29,7 @@ export class Searcher extends FuncConstructor {
         .then((res) => {
           let fieldsUpdate = fillRecord(fields, res.data);
           fieldsUpdate = handleFields(fieldsUpdate, "close", false);
-          resolve({fieldsUpdate,  fetchedRecord: res.data})
+          resolve({ fieldsUpdate, fetchedRecord: res.data });
         })
         .catch((err) => {
           let message = null;
@@ -40,17 +39,21 @@ export class Searcher extends FuncConstructor {
               store.dispatch(logout());
             }
             message = {
-              content: selectMessage(err.response.data.message, lanState),
+              content: selectMessage(err.response.data.message),
               type: "error",
             };
           }
-          const fieldsUpdate = handleFields(fields, "open", false, searchFields);
-          reject({fieldsUpdate, message})
+          const fieldsUpdate = handleFields(
+            fields,
+            "open",
+            false,
+            searchFields
+          );
+          reject({ fieldsUpdate, message });
         });
-    })
+    });
   }
 }
-
 
 export async function handleSearchModel() {
   const {
@@ -60,7 +63,7 @@ export async function handleSearchModel() {
     const [valid, fieldsUpdate] = checkValidity(this);
     if (!valid) return this.setState({ fields: fieldsUpdate });
     this.setState({ loading: true });
-    const {tools} = updateMode("d_record", this.state, this.props)
+    const { tools } = updateMode("d_record", this.state, this.props);
     try {
       const { fieldsUpdate, fetchedRecord } =
         await this.searchHandler.searchRequest();
@@ -70,7 +73,7 @@ export async function handleSearchModel() {
         recordIndex: null,
         record: fetchedRecord,
         fields: fieldsUpdate,
-        tools
+        tools,
       });
       timer().then((res) => this.setState({ message: false }));
     } catch ({ fieldsUpdate, message }) {
@@ -84,7 +87,7 @@ export async function handleSearchModel() {
     }
   } else {
     const fieldsUpdate = this.searchHandler.prepare();
-    const {tools} = updateMode("search", this.state, this.props)
+    const { tools } = updateMode("search", this.state, this.props);
     this.setState({ fields: fieldsUpdate, mode: "search", tools });
   }
 }

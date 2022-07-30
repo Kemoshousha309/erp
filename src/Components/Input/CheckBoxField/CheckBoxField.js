@@ -1,9 +1,8 @@
 import React, { PureComponent } from "react"
-import { connect } from "react-redux"
 import style from "./CheckBoxField.module.scss"
 import {  label, reflectOuterState } from "../../../Helpers/inputs"
-import { t } from "../../../Helpers/lang";
 import { Checkbox } from "@mui/material";
+import { t } from "../../../Languages/languages";
 
 
 
@@ -33,7 +32,7 @@ class CheckBoxField extends PureComponent {
         return (
             <div className={["form-group" ,style.checkboxField].join(' ')}>
                 <label 
-                title={t(this.props.field.label, this.props.lanTable, this.props.lanState)} 
+                title={t(this.props.field.label)} 
                   htmlFor={field.id} 
                   className="col-sm-4 col-form-label">{label(this)}</label>
                 <div className="col-sm-8">
@@ -52,13 +51,5 @@ class CheckBoxField extends PureComponent {
     }
 }   
 
-const mapStateToProps = state => {
-    return {
-        lanState: state.lang.lan,
-        lanTable: state.lang.langTables,
-        languages: state.lang.langInfo
-    }
-}
 
-
-export default connect(mapStateToProps, null)(CheckBoxField);
+export default CheckBoxField;

@@ -1,6 +1,6 @@
 import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { t } from './lang';
+import { t } from '../Languages/languages';
 import { isValid } from '../Validation/validation';
 
 const getBase64 = (file) => new Promise((resolve, reject) => {
@@ -41,8 +41,6 @@ export const changeHandler = (e, thisK, handler1, handler2) => {
 export const label = (thisK) => {
   const label = t(
     thisK.props.field.label,
-    thisK.props.lanTable,
-    thisK.props.lanState,
   );
   if (thisK.props.field.validation) {
     if (thisK.props.field.validation.requiered) {

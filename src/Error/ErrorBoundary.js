@@ -1,8 +1,7 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import ErrorFallback from './ErrorFallback/ErrorFallback';
 import warning from '../Assets/warning.png';
-import { t } from '../Helpers/lang';
+import { t } from '../Languages/languages';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -17,7 +16,7 @@ class ErrorBoundary extends React.Component {
 
   render() {
     const {
-      props: { lanState, lanTable, children },
+      props: { children },
       state: { errorInfo, hasError },
     } = this;
     if (hasError) {
@@ -25,7 +24,7 @@ class ErrorBoundary extends React.Component {
       return (
         <ErrorFallback
           imgSrc={warning}
-          message={t('unexpected_error', lanTable, lanState)}
+          message={t('unexpected_error')}
           details={errorInfo}
           reload
         />
@@ -36,9 +35,5 @@ class ErrorBoundary extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  lanState: state.lang.lan,
-  lanTable: state.lang.langTables,
-});
 
-export default connect(mapStateToProps, null)(ErrorBoundary);
+export default (ErrorBoundary);

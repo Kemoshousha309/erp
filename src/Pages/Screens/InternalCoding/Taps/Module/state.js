@@ -1,0 +1,105 @@
+export const moduleInitState = {
+  fields: {
+    module_no: {
+      fieldType: 'input',
+      type: 'number',
+      label: 'module_no',
+      validation: {
+        requiered: true,
+        length: 30,
+      },
+      validity: {
+        valid: true,
+        touched: false,
+        message: null,
+      },
+      writability: false,
+      value: '',
+    },
+    shortcut: {
+      fieldType: 'input',
+      type: 'text',
+      label: 'shortcut',
+      validation: {
+        requiered: true,
+        length: 200,
+      },
+      validity: {
+        valid: true,
+        touched: false,
+        message: null,
+      },
+      writability: false,
+      value: '',
+    },
+    module_d_name: {
+      fieldType: 'input',
+      type: 'text',
+      label: 'name',
+      validation: {
+        requiered: true,
+      },
+      validity: {
+        valid: true,
+        touched: false,
+        message: null,
+      },
+      writability: false,
+      value: '',
+    },
+    module_f_name: {
+      fieldType: 'input',
+      type: 'text',
+      label: 'foreign_name',
+      validation: {
+        requiered: true,
+      },
+      validity: {
+        valid: true,
+        touched: false,
+        message: null,
+      },
+      writability: false,
+      value: '',
+    },
+    order_no: {
+      fieldType: 'input',
+      type: 'number',
+      label: 'order_no',
+      validation: {
+        requiered: true,
+        length: 30,
+      },
+      validity: {
+        valid: true,
+        touched: false,
+        message: null,
+      },
+      writability: false,
+      value: '',
+    },
+    active: {
+      fieldType: 'checkbox',
+      type: 'checkbox',
+      label: 'active',
+      writability: false,
+      value: false,
+    },
+  },
+  pks: ['module_no'],
+  tapTools: ['delete', 'add', 'copy'],
+  mainFields: ['module_no', 'shortcut', 'module_d_name'],
+  tapName: 'modules',
+  searchFields: ['module_no'],
+  urls: {
+    add: 'modules',
+    modify: 'modules',
+    search: 'modules',
+    pages: 'modules/pages',
+    page: 'modules/page',
+    lastPage: 'modules/lastPage',
+    filter: 'modules/filteredPages',
+    pageNo: 'modules/pageNo',
+    delete: 'modules',
+  },
+}

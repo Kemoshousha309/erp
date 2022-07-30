@@ -7,9 +7,9 @@ import ShortCutsList from '../../../Components/ShortCutsList/ShortCutsList';
 import ErrorMess from '../../../Error/ErrorMess/ErrorMess';
 import ExcelPage from '../../ExcelPage/ExcelPage.component';
 import Modal from '../../../Components/UI/Modal/Modal';
-import { t } from '../../../Helpers/lang';
 import { getParam } from '../../../Helpers/utilities';
 import { displayPattren, displayPattrenTree } from '../../../Helpers/display';
+import { t } from '../../../Languages/languages';
 
 export const displayContent = (screen, location, additional) => {
   // this should be a component that use the the upper componet data to display the content
@@ -62,7 +62,7 @@ export const displayContent = (screen, location, additional) => {
         open={screen.state.deleteConfirm}
         handleClose={screen.deleteConfirmation}
       >
-        {t('delete_confirm', screen.props.lanTable, screen.props.lanState)}
+        {t('delete_confirm')}
       </AlertDialog>
       {screen.state.ShortCutsList ? (
         <ShortCutsList close={screen.ShortCutsListCloseHandler} />
@@ -76,7 +76,7 @@ export const displayContent = (screen, location, additional) => {
   }
   return (
     <ErrorMess
-      message={t('not_allowed', screen.props.lanTable, screen.props.lanState)}
+      message={t('not_allowed')}
     />
   );
 };
@@ -85,7 +85,6 @@ function renderCustimzedList(screen) {
   const {
     state: { custimizedList },
     closeCustmizedList,
-    props: { lanTable, lanState },
   } = screen;
   if (!custimizedList.open) return;
   return (
@@ -100,7 +99,7 @@ function renderCustimzedList(screen) {
             onClick={closeCustmizedList}
             color="secondary"
           >
-            {t('close', lanTable, lanState)}
+            {t('close')}
           </Button>
         </div>
       </div>

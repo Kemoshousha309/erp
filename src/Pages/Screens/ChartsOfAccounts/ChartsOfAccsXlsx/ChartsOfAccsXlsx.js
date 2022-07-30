@@ -3,10 +3,9 @@
 // charts of acc validator, preparer extend from general validator, preparer for xlsx
 
 import _ from 'lodash';
-import { connect } from 'react-redux';
 import { XlsxValidator } from '../../../ScreenConstructor/screen/functions/excelSheet/XlsxValidator';
 import { XlsxPreparer } from '../../../ScreenConstructor/screen/functions/excelSheet/XlsxPreparer';
-import { t } from '../../../../Helpers/lang';
+import { t } from '../../../../Languages/languages';
 
 // this columns info is unique for each screen contain xlsx
 const columnsInfo = [
@@ -73,117 +72,113 @@ export class ChartsOfAccsXlsxPreparer extends XlsxPreparer {
 }
 
 // instructions
-function ChartsExcelInstructions({ lanTable, lanState }) {
+function ChartsExcelInstructions() {
   return (
     <div>
-      <h3>{t('instruction_before_load_excel', lanTable, lanState)}</h3>
+      <h3>{t('instruction_before_load_excel')}</h3>
       <ul>
         <li>
           <span>
-            {t('file_order', lanTable, lanState)}
+            {t('file_order')}
             {' '}
             :
           </span>
           <br />
-          {t('acc_no', lanTable, lanState)}
+          {t('acc_no')}
           {' '}
           (
-          {t('number', lanTable, lanState)}
+          {t('number')}
           )
           -
-          {t('currency', lanTable, lanState)}
+          {t('currency')}
           {' '}
           (
-          {t('text', lanTable, lanState)}
+          {t('text')}
           {' '}
-          {t('with', lanTable, lanState)}
+          {t('with')}
           {' '}
           ,
-          {t('dilimter', lanTable, lanState)}
+          {t('dilimter')}
           )
           -
-          {t('name', lanTable, lanState)}
+          {t('name')}
           {' '}
           (
-          {t('text', lanTable, lanState)}
+          {t('text')}
           ) -
-          {t('foreign_name', lanTable, lanState)}
+          {t('foreign_name')}
           {' '}
           (
-          {t('text', lanTable, lanState)}
+          {t('text')}
           ) -
-          {t('parent_acc', lanTable, lanState)}
+          {t('parent_acc')}
           {' '}
           (
-          {t('number', lanTable, lanState)}
+          {t('number')}
           ) -
-          {t('acc_level', lanTable, lanState)}
+          {t('acc_level')}
           {' '}
           (
-          {t('number', lanTable, lanState)}
+          {t('number')}
           ) -
-          {t('type', lanTable, lanState)}
+          {t('type')}
           {' '}
           (
-          {t('boolean', lanTable, lanState)}
+          {t('boolean')}
           ) -
-          {t('report_type', lanTable, lanState)}
+          {t('report_type')}
           {' '}
           (
-          {t('boolean', lanTable, lanState)}
+          {t('boolean')}
           ) -
-          {t('group', lanTable, lanState)}
+          {t('group')}
           {' '}
           (
-          {t('number', lanTable, lanState)}
+          {t('number')}
           ) -
-          {t('acc_nature', lanTable, lanState)}
+          {t('acc_nature')}
           {' '}
           (
-          {t('boolean', lanTable, lanState)}
+          {t('boolean')}
           ) -
-          {t('acc_type', lanTable, lanState)}
+          {t('acc_type')}
           {' '}
           (
-          {t('number', lanTable, lanState)}
+          {t('number')}
           ) -
-          {t('acc_dtl', lanTable, lanState)}
+          {t('acc_dtl')}
           {' '}
           (
-          {t('number', lanTable, lanState)}
+          {t('number')}
           )-
-          {t('cash_flow_type', lanTable, lanState)}
+          {t('cash_flow_type')}
           {' '}
           (
-          {t('number', lanTable, lanState)}
+          {t('number')}
           ) -
-          {t('cc_post', lanTable, lanState)}
+          {t('cc_post')}
           {' '}
           (
-          {t('number', lanTable, lanState)}
+          {t('number')}
           ) -
-          {t('inactive', lanTable, lanState)}
+          {t('inactive')}
           {' '}
           (
-          {t('boolean', lanTable, lanState)}
+          {t('boolean')}
           ) -
-          {t('inactive_reason', lanTable, lanState)}
+          {t('inactive_reason')}
           {' '}
           (
-          {t('text', lanTable, lanState)}
+          {t('text')}
           )
         </li>
-        <li>{t('read_excel_from_second_line', lanTable, lanState)}</li>
-        <li>{t('file_extention_xlsx', lanTable, lanState)}</li>
-        <li>{t('read_from_first_sheet', lanTable, lanState)}</li>
+        <li>{t('read_excel_from_second_line')}</li>
+        <li>{t('file_extention_xlsx')}</li>
+        <li>{t('read_from_first_sheet')}</li>
       </ul>
     </div>
   );
 }
 
-const mapStateToProps = (state) => ({
-  lanState: state.lang.lan,
-  lanTable: state.lang.langTables,
-});
 
-export default connect(mapStateToProps, null)(ChartsExcelInstructions);
+export default ChartsExcelInstructions;

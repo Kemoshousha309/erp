@@ -1,5 +1,5 @@
+import { decideName } from '../Languages/languages';
 import { extractName } from '../Pages/ScreenConstructor/screen/functions/list';
-import { decideName } from './lang';
 
 export const getParam = (searchParam, paramName) => {
   const string = searchParam.replace(`?${paramName}=`, '');
@@ -11,7 +11,7 @@ export const getF = (f, mode = null, lang_no) => {
   const outPut = typeof f === 'object' ? f[mode] : f;
   if (mode === 'propName' && scanNameLang(outPut)) {
     const nakeName = extractName(outPut);
-    return decideName(nakeName, lang_no);
+    return decideName(nakeName);
   }
   if (outPut === 'name') {
     return parseInt(lang_no) === 1 ? 'name' : 'foreign_name';

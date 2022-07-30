@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@mui/material';
 import InputPrivsTable from './InputPrivsTable';
-import { t } from '../../../../Helpers/lang';
+import { t } from '../../../../Languages/languages';
 
 function InputPrivsView(props) {
   const {
@@ -26,7 +26,7 @@ function InputPrivsView(props) {
         color="primary"
         style={{ marginBottom: '2rem' }}
       >
-        {t('view', lanTable, lanState)}
+        {t('view')}
       </Button>
       {input_privs
         ? InputPrivsTable(
@@ -72,23 +72,21 @@ const inputsControl = (
   i,
   propName,
   cursor,
-  lanState,
-  lanTable,
   logged_user_id,
 ) => {
   let message = null;
   let newCursor = cursor;
   if (!i[`can_change_${propName}`]) {
     disabled = true;
-    message = t('donot_have_privileges', lanTable, lanState, ' ');
+    message = t('donot_have_privileges', ' ');
   }
   if (i.admin_group) {
     disabled = true;
-    message = t('group_admin_cannot_change_privs', lanTable, lanState);
+    message = t('group_admin_cannot_change_privs');
   }
   if (i.user_id === logged_user_id) {
     disabled = true;
-    message = t('you_logged_user', lanTable, lanState);
+    message = t('you_logged_user');
   }
   if (message) {
     newCursor = 'help';

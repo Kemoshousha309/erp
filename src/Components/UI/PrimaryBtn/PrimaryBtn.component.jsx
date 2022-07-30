@@ -1,6 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
-import { t } from "../../../Helpers/lang";
+import { t } from "../../../Languages/languages";
 import Btn from "../Btn/Btn.component"
 
 // layer to connect the reusable Btn component to our App
@@ -11,7 +10,7 @@ const PrimaryBtn = ({ label, lanState, lanTable, writability, ...other }) => {
   return (
     <Btn
       label={
-        t(label, lanTable, lanState) ? t(label, lanTable, lanState) : label
+        t(label) ? t(label) : label
       }
       disabled={!writability}
       {...other}
@@ -19,12 +18,6 @@ const PrimaryBtn = ({ label, lanState, lanTable, writability, ...other }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
-  };
-};
 
-export default connect(mapStateToProps, null)(PrimaryBtn);
+export default (PrimaryBtn);
 

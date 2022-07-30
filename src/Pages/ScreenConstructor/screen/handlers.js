@@ -1,8 +1,8 @@
-import { timer, toolsPriv } from './utilities';
-import { handleMode } from './mode';
-import { t } from '../../../Helpers/lang';
-import { getParam } from '../../../Helpers/utilities';
-import _ from 'lodash';
+import { timer, toolsPriv } from "./utilities";
+import { handleMode } from "./mode";
+import { getParam } from "../../../Helpers/utilities";
+import _ from "lodash";
+import { t } from "../../../Languages/languages";
 
 // input change handler ******************************
 export const handleInputChange = (thisK, state, identifier) => {
@@ -27,12 +27,12 @@ export const handleCloseShortCuts = (thisK) => {
 export const handleDrivedState = (props, state) => {
   let tools = handleMode(
     state.mode,
-    props.lanState,
     props.languages,
     state.tapTools,
-    props.changeLangSelectAcivity,
+    props.changeLangSelectAcivity
   );
-  const formPrivs = props.forms_privs_hash[getParam(props.location.search, 'no')];
+  const formPrivs =
+    props.forms_privs_hash[getParam(props.location.search, "no")];
   tools = toolsPriv(formPrivs, tools);
   return { tools };
 };
@@ -41,13 +41,15 @@ export const handleDrivedState = (props, state) => {
 export function handleChipsRemove(id, index) {
   const {
     state: { fields },
-    props: { lanTable, lanState },
   } = this;
-  const fieldsUpdate = _.cloneDeep(fields)
+  const fieldsUpdate = _.cloneDeep(fields);
   fieldsUpdate[id].value.splice(index, 1);
-  if (fieldsUpdate[id].value.length === 0 && fieldsUpdate[id].validation.requiered) {
+  if (
+    fieldsUpdate[id].value.length === 0 &&
+    fieldsUpdate[id].validation.requiered
+  ) {
     fieldsUpdate[id].validity.valid = false;
-    fieldsUpdate[id].validity.message = t('required_field', lanTable, lanState);
+    fieldsUpdate[id].validity.message = t("required_field");
   }
   this.setState({ fields: fieldsUpdate });
 }
@@ -72,7 +74,6 @@ export function handleChipsRecordClick(record) {
 export function chipsRecordClickHandler(record, propName) {
   const {
     state: { fields, chipsListShow },
-    props: { lanState, lanTable },
   } = this;
   const chipsField = fields[chipsListShow];
   let present = false;
@@ -87,8 +88,8 @@ export function chipsRecordClickHandler(record, propName) {
     this.setState({ chipsListShow: null, fields });
   } else {
     const message = {
-      content: t('item_exist', lanTable, lanState),
-      type: 'error',
+      content: t("item_exist"),
+      type: "error",
     };
     this.setState({ chipsListShow: null, message });
     timer().then((res) => this.setState({ message: false }));

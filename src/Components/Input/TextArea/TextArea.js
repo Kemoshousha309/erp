@@ -1,6 +1,4 @@
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-import { t } from "../../../Helpers/lang";
 import style from "./TextArea.module.scss";
 import {
   changeHandler,
@@ -9,6 +7,7 @@ import {
   reflectOuterState,
   handlePassIcon,
 } from "../../../Helpers/inputs";
+import { t } from "../../../Languages/languages";
 
 class TextArea extends PureComponent {
   state = {
@@ -37,11 +36,7 @@ class TextArea extends PureComponent {
   render() {
     // console.log(`[InputSelectField] render`, this.state)
     const field = this.props.field;
-    const placeholder = t(
-      this.props.field.label,
-      this.props.lanTable,
-      this.props.lanState
-    );
+    const placeholder = t(this.props.field.label);
     let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style);
     const passIcon = handlePassIcon(this, style);
     // style
@@ -52,11 +47,7 @@ class TextArea extends PureComponent {
     return (
       <div className={["form-group", style.inputField].join(" ")}>
         <label
-          title={t(
-            this.props.field.label,
-            this.props.lanTable,
-            this.props.lanState
-          )}
+          title={t(this.props.field.label)}
           htmlFor={field.id}
           className="col-sm-4 col-form-label"
         >
@@ -84,12 +75,4 @@ class TextArea extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
-    languages: state.lang.langInfo,
-  };
-};
-
-export default connect(mapStateToProps, null)(TextArea);
+export default TextArea;

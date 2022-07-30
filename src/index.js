@@ -54,6 +54,8 @@ axios.interceptors.response.use(
   },
 );
 
+
+
 ReactDOM.render(
   // <React.StrictMode> this gives us some warning to improve our app you  can use it at the end of devolopment
   <Provider store={store}>

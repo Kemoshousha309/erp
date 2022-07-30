@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { t } from '../../../../../Helpers/lang';
 import { getF } from '../../../../../Helpers/utilities';
+import { t } from '../../../../../Languages/languages';
 import style from './Page.module.scss';
 
 class Page extends PureComponent {
@@ -17,7 +16,7 @@ class Page extends PureComponent {
     const body = displayBody(page, fields, recordClick, lanState);
     const noMatch = (
       <div className={style.noMatch}>
-        {t('no_match', this.props.lanTable, this.props.lanState)}
+        {t('no_match')}
       </div>
     );
     return (
@@ -36,12 +35,8 @@ class Page extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => ({
-  lanState: state.lang.lan,
-  lanTable: state.lang.langTables,
-});
 
-export default connect(mapStateToProps, null)(Page);
+export default Page;
 
 const displayHead = (fields, lanTable, lanState) => {
   const head = fields.map((fName, i) => {

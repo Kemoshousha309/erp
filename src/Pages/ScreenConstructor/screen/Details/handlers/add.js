@@ -72,7 +72,7 @@ export class DetialsAdder extends dtlFuncConstructor {
 
 // Other sepcial add handlers
 export class LimitAdder extends DetialsAdder {
-  constructor(screen, recordsNum) {
+  constructor(screen) {
     super(screen);
     this.recordsNum = screen.state.details.tabs.bnk_dtl_list.recordsNum;
   }

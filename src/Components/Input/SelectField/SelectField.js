@@ -1,6 +1,4 @@
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
-import { t } from "../../../Helpers/lang";
 import style from "./SelectField.module.scss";
 import {
   changeHandler,
@@ -8,6 +6,7 @@ import {
   checkInputValiditiy,
   reflectOuterState,
 } from "../../../Helpers/inputs";
+import { t } from "../../../Languages/languages";
 
 class SelectField extends PureComponent {
   state = {
@@ -26,18 +25,14 @@ class SelectField extends PureComponent {
   render() {
     // console.log(`[selectField] render`, this.state)
     const field = this.props.field;
-    const placeholder = t(
-      this.props.field.label,
-      this.props.lanTable,
-      this.props.lanState
-    );
+    const placeholder = t(this.props.field.label);
     let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style);
     let options = null;
     if (field.options) {
       options = field.options.map((op) => {
         return (
           <option key={op.value} value={op.value}>
-            {t(op.template, this.props.lanTable, this.props.lanState)}
+            {t(op.template)}
           </option>
         );
       });
@@ -50,11 +45,7 @@ class SelectField extends PureComponent {
     return (
       <div className={["form-group", style.inputField].join(" ")}>
         <label
-          title={t(
-            this.props.field.label,
-            this.props.lanTable,
-            this.props.lanState
-          )}
+          title={t(this.props.field.label)}
           htmlFor={field.id}
           className="col-sm-4 col-form-label"
         >
@@ -83,12 +74,4 @@ class SelectField extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
-    languages: state.lang.langInfo,
-  };
-};
-
-export default connect(mapStateToProps, null)(SelectField);
+export default SelectField;

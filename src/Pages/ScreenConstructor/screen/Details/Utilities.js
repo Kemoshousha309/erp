@@ -3,8 +3,8 @@ import { faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Field } from './detailFields';
 import { detialFieldValidity } from '../../../../Validation/validation';
 import style from './style.module.scss';
-import { decideName, t } from '../../../../Helpers/lang';
 import { formatDate } from '../../../../Helpers/date';
+import { decideName, t } from '../../../../Languages/languages';
 
 // UTILITIES =>
 export function addIcon(viewOnly, mode, addHandler, state) {
@@ -28,7 +28,7 @@ export function addIcon(viewOnly, mode, addHandler, state) {
   return <div />;
 }
 
-export const tableHead = (headers, lanTable, lanState) => {
+export const tableHead = (headers) => {
   headers = Object.values(headers);
   return (
     <thead>
@@ -38,7 +38,7 @@ export const tableHead = (headers, lanTable, lanState) => {
           const { label } = i;
           return (
             <th key={index} scope="col">
-              {t(label, lanTable, lanState)}
+              {t(label)}
             </th>
           );
         })}
@@ -91,7 +91,7 @@ export function tableBody(
                 disabled = false;
               }
               if (changeOnLang) {
-                propName = decideName(propName, lanState);
+                propName = decideName(propName);
               }
               let value = page[propName] === null || page[propName] === undefined ? '-' : page[propName];
               if (type === 'date') {

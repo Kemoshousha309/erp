@@ -1,13 +1,13 @@
 import { startMode, toolsNameMap } from '../../../Helpers/tools';
-import { getSelectLangDir } from '../../../Helpers/lang';
 import { deepClone } from '../../../Validation/validation';
 import { getParam } from '../../../Helpers/utilities';
 import { toolsPriv } from './utilities';
+import { getSelectLangDir } from '../../../Languages/languages';
 
 // mode processes *******************************************************
-export const handleMode = (mode, lang_no, langs, tools, changeLangSelectAcivity) => {
+export const handleMode = (mode, langs, tools, changeLangSelectAcivity) => {
   let activeList = null;
-  const lang_dir = getSelectLangDir(langs, lang_no);
+  const lang_dir = getSelectLangDir(langs);
   const toolsName = toolsNameMap(lang_dir);
   switch (mode) {
     case 'start':
@@ -71,7 +71,6 @@ const activate = (activeList, mode = null, lang_dir, tools) => {
 export const updateMode = (mode, state, props) => {
   let tools = handleMode(
     mode,
-    props.lanState,
     props.languages,
     state.tapTools,
     props.changeLangSelectAcivity,

@@ -1,6 +1,5 @@
 import { Component } from "react";
 import style from "./SystemCommands.module.scss";
-import { selectMessage, t } from "../../../Helpers/lang";
 import { connect } from "react-redux";
 import axios from "../../../axios";
 import Spinner from "../../../Components/UI/Spinner/Spinner";
@@ -13,6 +12,7 @@ import { TextField } from "@mui/material";
 import ReloadClientCache from "./Commands/ReloadClientCache/ReloadClientCache";
 import { clearlangData } from "../../../store/actions/lang";
 import { timer } from "../../ScreenConstructor/screen/utilities";
+import { selectMessage, t } from "../../../Languages/languages";
 
 class SystemCommands extends Component {
   state = {
@@ -39,9 +39,6 @@ class SystemCommands extends Component {
     );
   };
   filterCommands = (e) => {
-    const {
-      props: { lanState, lanTable },
-    } = this;
     const input = e.target.value.toLowerCase();
     const commands = {
       ReloadServerCache: "reload_server_cash",
@@ -49,7 +46,7 @@ class SystemCommands extends Component {
       GenUngenPriv: "generate_ungenerated_priv",
     };
     Object.keys(commands).forEach((key) => {
-      commands[key] = t(commands[key], lanTable, lanState);
+      commands[key] = t(commands[key]);
     });
     const displayedCommands = [];
     for (const key in commands) {
@@ -68,7 +65,6 @@ class SystemCommands extends Component {
   render() {
     const {
       state: { statusLoading, message, genUngenPriv, displayedCommands },
-      props: { lanState, lanTable },
       reloadServerCache,
       genUngenPrivRadioHandler,
       genUngenPrivExcuteHandler,
@@ -106,14 +102,14 @@ class SystemCommands extends Component {
     return (
       <div className={style.container}>
         <div className={style.header}>
-          <h1>{t("system_commands", lanTable, lanState)}</h1>
+          <h1>{t("system_commands")}</h1>
           <div className={style.filter}>
             <TextField
               type="text"
               autoComplete="off"
               variant="standard"
               fullWidth
-              label={t("find_command", lanTable, lanState)}
+              label={t("find_command")}
               onChange={filterCommands}
             />
           </div>
@@ -127,20 +123,13 @@ class SystemCommands extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
-  };
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
     clearBrowserData: () => dispatch(clearlangData()),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SystemCommands);
+export default connect(null, mapDispatchToProps)(SystemCommands);
 
 // this function is related only to this commpont and would be unexpect in other components....
 const request = (thisK, url, method) => {
@@ -153,12 +142,9 @@ const request = (thisK, url, method) => {
       const {
         data: { message },
       } = res;
-      const {
-        props: { lanState },
-      } = thisK;
 
       const messageContent = {
-        content: selectMessage(message, lanState),
+        content: selectMessage(message),
         type: "success",
       };
       thisK.setState({
@@ -174,10 +160,7 @@ const request = (thisK, url, method) => {
           store.dispatch(logout());
         }
         message = {
-          content: selectMessage(
-            err.response.data.message,
-            thisK.props.lanState
-          ),
+          content: selectMessage(err.response.data.message),
           type: "error",
         };
         if (err.response.data.error) {

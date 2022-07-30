@@ -4,11 +4,11 @@ import {MenuItem} from "@mui/material";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import SkeletonLoader from "../../../Components/UI/SkeletonLoader/SkeletonLoader";
-import { t } from "../../../Helpers/lang";
+import { t } from "../../../Languages/languages";
 
 
-const AccountsGroup = React.lazy(() => import("./Taps/AccountsGroup"));
-const CostCenterGroup = React.lazy(() => import("./Taps/CostCenterGroup"));
+const AccountsGroup = React.lazy(() => import("./Taps/AccountsGroup/AccountsGroup"));
+const CostCenterGroup = React.lazy(() => import("./Taps/CostCenterGroup/CostCenterGroup"));
 
 
 class InternalCoding extends Component {
@@ -23,7 +23,7 @@ class InternalCoding extends Component {
 
   render() {
       const {
-        props: {flag_details, lanState, lanTable},
+        props: {flag_details},
         state: {currentTap}
       } = this
     const flags = flag_details.filter(
@@ -39,7 +39,7 @@ class InternalCoding extends Component {
         {flagLabels.map((ele) => {
           return (
             <MenuItem key={ele} value={ele}>
-              {t(ele, lanTable, lanState).toUpperCase()}
+              {t(ele).toUpperCase()}
             </MenuItem>
           );
         })}
@@ -64,8 +64,6 @@ class InternalCoding extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
     token: state.auth.authData.token,
     languages: state.lang.langInfo,
     flag_details: state.auth.authData.flag_detail_main_tree,

@@ -8,9 +8,9 @@ import axios from "../../../../axios";
 import { logout } from "../../../../store";
 import { store } from "../../../../index";
 import { getDetails } from "../Details/requestDetails";
-import { selectMessage } from "../../../../Helpers/lang";
 import { FuncConstructor } from "./funcConstructor";
 import { updateMode } from "../mode";
+import { selectMessage } from "../../../../Languages/languages";
 
 // save processes ***************************************************
 
@@ -27,7 +27,6 @@ export class Saver extends FuncConstructor {
 
   handleSaveRequest() {
     const {
-      props: { lanState },
       state: { fields },
     } = this.screen;
     const { url, method } = this.getRequestInfo();
@@ -41,7 +40,7 @@ export class Saver extends FuncConstructor {
         .then((res) => {
           const fieldsUpdate = handleFields(fields, "close", false);
           const message = {
-            content: selectMessage(res.data.message, lanState),
+            content: selectMessage(res.data.message),
             type: "success",
           };
           resolve({ message, fieldsUpdate });
@@ -56,7 +55,7 @@ export class Saver extends FuncConstructor {
 
     // prepare the body
     const detailsValues = trackDetailsChange(this.screen);
-    console.log({detailsValues})
+    console.log({ detailsValues });
     const fieldsValues = getValues(masterfields);
     const body = {
       ...detailsValues,
@@ -99,7 +98,7 @@ export class Saver extends FuncConstructor {
       details: { tabs },
     } = this.screen.state;
     const message = {
-      content: selectMessage(res.data.message, this.screen.props.lanState),
+      content: selectMessage(res.data.message),
       type: "success",
     };
     let record = null;
@@ -135,10 +134,7 @@ export class Saver extends FuncConstructor {
         store.dispatch(logout());
       }
       message = {
-        content: selectMessage(
-          err.response.data.message,
-          this.screen.props.lanState
-        ),
+        content: selectMessage(err.response.data.message),
         type: "error",
       };
       if (err.response.data.error) {

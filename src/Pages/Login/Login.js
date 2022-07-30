@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { Button, CircularProgress, TextField } from "@mui/material";
 import LangSelector from "../../Components/Navigation/LangSelector/LangSelector";
-import { t } from "../../Helpers/lang";
+import { t } from "../../Languages/languages";
 
 class Login extends PureComponent {
   state = {
@@ -90,8 +90,6 @@ class Login extends PureComponent {
                     fullWidth
                     label={t(
                       "user_no",
-                      this.props.langTable,
-                      this.props.lanState
                     )}
                   />
                 </div>
@@ -106,8 +104,6 @@ class Login extends PureComponent {
                     fullWidth
                     label={t(
                       "password",
-                      this.props.langTable,
-                      this.props.lanState
                     )}
                   />
                 </div>
@@ -121,7 +117,7 @@ class Login extends PureComponent {
                     color="primary"
                     className={style.loginBtn}
                   >
-                    {t("login", this.props.langTable, this.props.lanState)}
+                    {t("login")}
                   </Button>
                 </div>
               </form>

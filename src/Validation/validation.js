@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { t } from "../Helpers/lang";
+import { t } from "../Languages/languages";
 import { getDtailsPropnams } from "../Pages/ScreenConstructor/screen/utilities";
 
 export const setValidity = (fields) => {
@@ -23,7 +23,6 @@ export const setValidity = (fields) => {
 };
 
 export const isValid = (value, rule, thisK) => {
-  const { lanState, lanTable } = thisK.props;
   let message = null;
   let isValid = true;
   if (rule) {
@@ -32,31 +31,31 @@ export const isValid = (value, rule, thisK) => {
         isValid = value.toString().trim() !== "" && isValid;
       }
       if (!isValid && !message) {
-        message = t("required_field", lanTable, lanState);
+        message = t("required_field");
       }
     }
     if (rule.size && value !== "") {
       isValid = parseInt(value) <= parseInt(rule.size) && isValid;
       if (!isValid && !message) {
-        message = t("max_size", lanTable, lanState);
+        message = t("max_size");
       }
     }
     if (rule.length) {
       isValid = parseInt(value.length) <= parseInt(rule.length) && isValid;
       if (!isValid && !message) {
-        message = t("max_length", lanTable, lanState);
+        message = t("max_length");
       }
     }
     if (rule.int) {
       isValid = Number.isInteger(Number(value)) && isValid;
       if (!isValid && !message) {
-        message = t("must_integer", lanTable, lanState);
+        message = t("must_integer");
       }
     }
     if (rule.point6Format) {
       isValid = point6Format(value) && isValid;
       if (!isValid && !message) {
-        message = t("not_accept_intput", lanTable, lanState);
+        message = t("not_accept_intput");
       }
     }
   }
@@ -73,7 +72,6 @@ export const deepClone = (l) => {
 
 export const checkValidity = (screen) => {
   const {
-    props: { lanState, lanTable },
     state: { fields },
   } = screen;
   const fieldsClone = _.cloneDeep(fields);
@@ -83,14 +81,14 @@ export const checkValidity = (screen) => {
     if (!f.readOnly && f.writability && f.validity && f.validation) {
       if (f.value.length === 0 && f.validation.requiered) {
         f.validity.valid = false;
-        f.validity.message = t("required_field", lanTable, lanState);
+        f.validity.message = t("required_field");
       }
       if (key === "confirm_password") {
         const passValue = fieldsClone.password.value;
         const confimValue = fieldsClone.confirm_password.value;
         if (passValue !== confimValue) {
           f.validity.valid = false;
-          f.validity.message = t("pass_not_identical", lanTable, lanState);
+          f.validity.message = t("pass_not_identical");
         }
       }
       isValid = f.validity.valid && isValid;

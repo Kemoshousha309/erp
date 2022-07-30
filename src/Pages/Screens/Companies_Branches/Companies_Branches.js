@@ -4,14 +4,14 @@ import {MenuItem} from "@mui/material";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import SkeletonLoader from "../../../Components/UI/SkeletonLoader/SkeletonLoader";
-import { t } from "../../../Helpers/lang";
+import { t } from "../../../Languages/languages";
 
 
 const CompaniesGroups = React.lazy(() =>
-  import("./Taps/CompaniesGroups")
+  import("./Taps/CompaniesGroup/CompaniesGroups")
 );
-const Comapnies = React.lazy(() => import("./Taps/Comapnies"));
-const Branches = React.lazy(() => import("./Taps/Branches"));
+const Comapnies = React.lazy(() => import("./Taps/Companies/Comapnies"));
+const Branches = React.lazy(() => import("./Taps/Branches/Branches"));
 
 class Companies_Branches extends Component {
   state = {
@@ -37,7 +37,7 @@ class Companies_Branches extends Component {
         {flagLabels.map((ele) => {
           return (
             <MenuItem key={ele} value={ele}>
-              {t(ele, this.props.lanTable, this.props.lanState).toUpperCase()}
+              {t(ele).toUpperCase()}
             </MenuItem>
           );
         })}
@@ -67,8 +67,6 @@ class Companies_Branches extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
     token: state.auth.authData.token,
     languages: state.lang.langInfo,
     flag_details: state.auth.authData.flag_detail_main_tree,

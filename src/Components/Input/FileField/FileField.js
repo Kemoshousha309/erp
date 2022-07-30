@@ -1,8 +1,7 @@
 import React, { PureComponent } from "react"
-import { connect } from "react-redux"
-import { t } from "../../../Helpers/lang"
 import style from "./FileField.module.scss"
 import { changeHandler, label, checkInputValiditiy, reflectOuterState } from "../../../Helpers/inputs"
+import { t } from "../../../Languages/languages"
 
 
 
@@ -28,7 +27,7 @@ class FileField extends PureComponent {
     render() {
         // console.log(`[InputSelectField] render`, this.state)
         const field = this.props.field
-        const placeholder = t(this.props.field.label, this.props.lanTable, this.props.lanState)
+        const placeholder = t(this.props.field.label)
         let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style)
 
         // style 
@@ -43,14 +42,14 @@ class FileField extends PureComponent {
             <div className={["form-group" ,style.FileField].join(' ')}>
                 <label 
                 
-                title={t(this.props.field.label, this.props.lanTable, this.props.lanState)} 
+                title={t(this.props.field.label)} 
                 className={["col-sm-4 col-form-label", style.outerLabel]}>{label(this)}</label>
                 <div className="col-sm-8">
                    <div className="position-relative">
                         {
                             this.state.value ? <img src={this.state.value} alt={this.state.value}></img> : null
                         }
-                       <label  title={t(this.props.field.label, this.props.lanTable, this.props.lanState)} 
+                       <label  title={t(this.props.field.label)} 
                             htmlFor={field.id} 
                             className={classes.join(" ")}> 
                             select file
@@ -71,13 +70,5 @@ class FileField extends PureComponent {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        lanState: state.lang.lan,
-        lanTable: state.lang.langTables,
-        languages: state.lang.langInfo
-    }
-}
 
-
-export default connect(mapStateToProps, null)(FileField);
+export default FileField;

@@ -1,7 +1,7 @@
 import { getSheet } from '../../../../ExcelPage/fileProcess';
 
-export const excelPageClose = (screen) => {
-  screen.setState({
+export const excelPageCloseModal = () => {
+  this.setState({
     excelSheetOpen: false,
     excelPage: {
       excelLoading: false,
@@ -14,8 +14,8 @@ export const excelPageClose = (screen) => {
   });
 };
 
-export const resetExcelPage = (screen) => {
-  screen.setState({
+export const resetExcelPageModal = () => {
+  this.setState({
     excelPage: {
       excelLoading: false,
       serverValidate: {

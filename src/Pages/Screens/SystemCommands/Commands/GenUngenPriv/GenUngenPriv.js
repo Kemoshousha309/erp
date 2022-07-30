@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import {
   createMuiTheme,
   ThemeProvider,
@@ -10,12 +9,10 @@ import {
 } from '@mui/material';
 import Command from '../../Command';
 import style from './GenUngenPriv.module.scss';
-import { t } from '../../../../../Helpers/lang';
+import { t } from '../../../../../Languages/languages';
 
 function GenUngenPriv(props) {
   const {
-    lanTable,
-    lanState,
     genUngenPrivExcuteHandler,
     genUngenPrivRadioHandler,
     value,
@@ -28,10 +25,10 @@ function GenUngenPriv(props) {
   return (
     <Command excute={genUngenPrivExcuteHandler}>
       <div className={style.head}>
-        <p>{t('generate_ungenerated_priv', lanTable, lanState)}</p>
+        <p>{t('generate_ungenerated_priv')}</p>
         <div className={style.subCommand}>
           <span className={style.note}>
-            {t('generated_privs_will_be', lanTable, lanState)}
+            {t('generated_privs_will_be')}
           </span>
           <FormControl component="fieldset">
             <ThemeProvider theme={theme}>
@@ -61,9 +58,5 @@ function GenUngenPriv(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  lanState: state.lang.lan,
-  lanTable: state.lang.langTables,
-});
 
-export default connect(mapStateToProps, null)(GenUngenPriv);
+export default GenUngenPriv;

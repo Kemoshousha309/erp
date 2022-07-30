@@ -1,10 +1,10 @@
 import React from 'react';
-import { t } from '../../../Helpers/lang';
+import { t } from '../../../Languages/languages';
 import style from './TabPanel.module.scss';
 
 function TabPanel(props) {
   const {
-    children, tabs, current_tab, changeHandler, lanTable, lanState,
+    children, tabs, current_tab, changeHandler
   } = props;
 
   return (
@@ -19,7 +19,7 @@ function TabPanel(props) {
             }
             return (
               <li key={index} className={classes} id={key} onClick={() => { changeHandler(key); }}>
-                {t(i.label, lanTable, lanState)}
+                {t(i.label)}
               </li>
             );
           })}

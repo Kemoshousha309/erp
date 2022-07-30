@@ -4,13 +4,12 @@ import Page from "./Page/Page";
 import style from "./RecordDisplay.module.scss";
 import Spinner from "../../../../Components/UI/Spinner/Spinner";
 import axios from "../../../../axios";
-import { connect } from "react-redux";
 import { Button, Pagination } from "@mui/material";
 import Modal from "../../../../Components/UI/Modal/Modal";
 import { store } from "../../../../index";
 import { logout } from "../../../../store";
 import { getPkUrl } from "../fields";
-import { t } from "../../../../Helpers/lang";
+import { t } from "../../../../Languages/languages";
 
 
 class RecordDisply extends PureComponent {
@@ -158,7 +157,7 @@ class RecordDisply extends PureComponent {
   render() {
     const {
       state: { pages, loading, page_no, networkError },
-      props: { mainFields, modalClose, lanState, lanTable },
+      props: { mainFields, modalClose },
       searchClickHandler,
       inputValueChangeHandler,
       recordClick,
@@ -192,7 +191,7 @@ class RecordDisply extends PureComponent {
           </div>
           <div className={style.closeContainer}>
             <Button onClick={modalClose} color="secondary">
-              {t("close", lanTable, lanState)}
+              {t("close")}
             </Button>
           </div>
         </div>
@@ -215,12 +214,6 @@ class RecordDisply extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
-  };
-};
 
 const isEmpty = (obj) => {
   let empty = true;
@@ -230,7 +223,7 @@ const isEmpty = (obj) => {
   return empty;
 };
 
-export default connect(mapStateToProps, null)(RecordDisply);
+export default RecordDisply;
 
 
 function applayFilterBody(filterBody, values) {

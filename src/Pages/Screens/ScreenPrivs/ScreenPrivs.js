@@ -9,57 +9,16 @@ import { handleFields } from "../../ScreenConstructor/screen/fields";
 import { timer } from "../../ScreenConstructor/screen/utilities";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { handleDrivedState } from "../../ScreenConstructor/screen/handlers";
-import { selectMessage, t } from "../../../Helpers/lang";
+import _ from "lodash";
+import { screenPrivInitState } from "./state";
+import { selectMessage, t } from "../../../Languages/languages";
 
 class ScreenPrivs extends ScreenConstructor {
   constructor() {
     super();
     this.state = {
       ...this.state,
-      fields: {
-        user_id: {
-          fieldType: "input",
-          type: "number",
-          label: "user_no",
-          validation: {
-            requiered: false,
-            length: 30,
-          },
-          validity: {
-            valid: true,
-            touched: false,
-            message: null,
-          },
-          writability: false,
-          value: "",
-        },
-      },
-      pks: ["user_id"],
-      tapTools: ["delete", "add", "copy", "excel"],
-      mainFields: [
-        { label: "user_no", propName: "user_id" },
-        { propName: "direct_mang", label: "direct_manager" },
-        "group_no",
-        { label: "name", propName: "user_d_name" },
-      ],
-      tapName: "screenPriv",
-      searchFields: ["user_id"],
-      urls: {
-        add: "users",
-        modify: "users",
-        search: "users",
-        pages: "users/pages",
-        page: "users/page",
-        lastPage: "users/lastPage",
-        filter: "users/filteredPages",
-        pageNo: "users/pageNo",
-        delete: "users",
-      },
-      record: null,
-      treeLoading: "wait",
-      user_formPrivs: null,
-      currentForm: null,
-      formPriv: null,
+      ..._.cloneDeep(screenPrivInitState)
     };
   }
   save = () => {
@@ -87,7 +46,7 @@ class ScreenPrivs extends ScreenConstructor {
         }
         handleFields(this.state.fields, "close", false);
         const message = {
-          content: selectMessage(res.data.message, this.props.lanState),
+          content: selectMessage(res.data.message),
           type: "success",
         };
         this.setState({
@@ -104,7 +63,7 @@ class ScreenPrivs extends ScreenConstructor {
         const message = {
           content: selectMessage(
             err.response.data.message,
-            this.props.lanState
+
           ),
           type: "error",
         };
@@ -143,7 +102,7 @@ class ScreenPrivs extends ScreenConstructor {
     // get the state form the store when user is selected
     let tree = null;
     let treeLoading = (
-      <Hint message={t("select_user", props.lanTable, props.lanState)} />
+      <Hint message={t("select_user")} />
     );
     if (state.record && state.user_formPrivs) {
       if (state.record.user_id !== props.logged_user_id) {
@@ -153,8 +112,6 @@ class ScreenPrivs extends ScreenConstructor {
           <Hint
             message={t(
               "select_not_logged_user",
-              props.lanTable,
-              props.lanState
             )}
           />
         );

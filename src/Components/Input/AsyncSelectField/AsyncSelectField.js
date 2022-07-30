@@ -1,6 +1,5 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
-import { t } from "../../../Helpers/lang"
 import style from "./AsyncSelectField.module.scss"
 import { label, checkInputValiditiy, reflectOuterState } from "../../../Helpers/inputs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,6 +7,7 @@ import {faAngleDown} from "@fortawesome/free-solid-svg-icons";
 import Backdrop from "../../UI/Backdrop/Backdrop";
 import { CircularProgress } from "@mui/material";
 import { isValid } from "../../../Validation/validation";
+import { t } from "../../../Languages/languages";
 
 
 class AsyncSelectField extends PureComponent {
@@ -52,7 +52,7 @@ class AsyncSelectField extends PureComponent {
     render() {
         // console.log(`[InputSelectField] render`, this.state)
         const field = this.props.field
-        const placeholder = t(this.props.field.label, this.props.lanTable, this.props.lanState)
+        const placeholder = t(this.props.field.label)
         let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style)
         let options = <div className="text-center"> <CircularProgress className="m-5" /></div>
         if(field.options){
@@ -77,7 +77,7 @@ class AsyncSelectField extends PureComponent {
         }
         return (
             <div className={["form-group" ,style.inputField].join(' ')}>
-                <label title={t(this.props.field.label, this.props.lanTable, this.props.lanState)} 
+                <label title={t(this.props.field.label)} 
                   htmlFor={field.id} 
                   className="col-sm-4 col-form-label">{label(this)}</label>
                 <div className="col-sm-8">

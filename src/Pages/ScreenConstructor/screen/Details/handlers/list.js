@@ -1,7 +1,8 @@
 import _ from "lodash";
-import { t } from "../../../../../Helpers/lang";
+import { t } from "../../../../../Languages/languages";
 import { timer } from "../../utilities";
 import { transformForiegnDetailsData } from "../requestDetails";
+
 
 export class DetailsList_ADD {
   // handle the details lists coming from add button
@@ -17,7 +18,6 @@ export class DetailsList_ADD {
         record: stateRecord,
         details: { tabs, current_tab },
       },
-      props: { lanState, lanTable },
     } = this.screen;
     let stateRecordClone = _.cloneDeep(stateRecord);
     // if the state has record check if it has a Dtl property else create a record
@@ -49,7 +49,7 @@ export class DetailsList_ADD {
       });
       if (present) {
         const message = {
-          content: t("item_exist", lanTable, lanState),
+          content: t("item_exist"),
           type: "error",
         };
         return { message, stateRecordClone };

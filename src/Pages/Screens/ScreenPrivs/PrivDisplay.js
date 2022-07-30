@@ -1,12 +1,10 @@
 import React from 'react';
 import { Avatar } from '@mui/material';
 import style from './PrivDisplay.module.scss';
-import { decideName, t } from '../../../Helpers/lang';
 import { hash, split_arr } from '../../../Helpers/utilities';
+import { decideName, t } from '../../../Languages/languages';
 
 function PrivDisplay(thisK) {
-  const lang_no = thisK.props.lanState;
-  const lang_table = thisK.props.lanTable;
   const formPrivs = thisK.state.user_formPrivs;
   const user = thisK.state.record;
   const { currentForm } = thisK.state;
@@ -32,12 +30,12 @@ function PrivDisplay(thisK) {
           />
         </div>
         <div className={style.userName}>
-          {t('name', lang_table, lang_no)}
+          {t('name')}
           :
-          {user[decideName('user', lang_no)]}
+          {user[decideName('user')]}
         </div>
         <div className={style.userId}>
-          {t('user_no', lang_table, lang_no)}
+          {t('user_no')}
           :
           {user.user_id}
         </div>
@@ -55,7 +53,7 @@ function PrivDisplay(thisK) {
 
   let privTable = (
     <p className="text-center">
-      {t('prepare_privs', lang_table, lang_no)}
+      {t('prepare_privs')}
       ....
       {' '}
     </p>
@@ -66,9 +64,9 @@ function PrivDisplay(thisK) {
     const { currentNode } = thisK.state;
 
     // get the name
-    let form_name = formPrivs_hash[form_no][decideName('form', lang_no)];
+    let form_name = formPrivs_hash[form_no][decideName('form')];
     if (currentNode.label_code) {
-      form_name = t(currentNode.label_code, lang_table, lang_no);
+      form_name = t(currentNode.label_code);
     }
 
     // get the right privs
@@ -111,7 +109,7 @@ function PrivDisplay(thisK) {
             <thead>
               <tr>
                 {priv_arr1.map((i) => (
-                  <th scope="col">{t(i.title, lang_table, lang_no)}</th>
+                  <th scope="col">{t(i.title)}</th>
                 ))}
               </tr>
             </thead>
@@ -137,7 +135,7 @@ function PrivDisplay(thisK) {
             <thead>
               <tr>
                 {priv_arr2.map((i) => (
-                  <th scope="col">{t(i.title, lang_table, lang_no)}</th>
+                  <th scope="col">{t(i.title)}</th>
                 ))}
               </tr>
             </thead>
@@ -170,7 +168,7 @@ function PrivDisplay(thisK) {
             <thead>
               <tr>
                 {priv_arr.map((i) => (
-                  <th scope="col">{t(i.title, lang_table, lang_no)}</th>
+                  <th scope="col">{t(i.title)}</th>
                 ))}
               </tr>
             </thead>

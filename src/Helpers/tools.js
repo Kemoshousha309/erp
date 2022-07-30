@@ -13,7 +13,7 @@ import {
   faTrashAlt,
   faFileExcel,
 } from '@fortawesome/free-solid-svg-icons';
-import { t } from './lang';
+import { t } from '../Languages/languages';
 
 export const toolsNameMap = (lang_dir) => {
   const toolsName = {
@@ -67,9 +67,9 @@ export const startMode = (langDir, tools) => {
   return initTools;
 };
 
-export const getRelatedIcon = (name, lanTable, lanState, langDir) => {
+export const getRelatedIcon = (name, langDir) => {
   const toolsName = toolsNameMap(langDir);
-  return [toolsName[name].icon, t(name, lanTable, lanState) ? t(name, lanTable, lanState) : 'placeHolder'];
+  return [toolsName[name].icon, t(name) ? t(name) : 'placeHolder'];
 };
 
 export const toolSelectHandler = (identifier, thisKey) => {

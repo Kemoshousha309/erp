@@ -1,7 +1,6 @@
 import React, { PureComponent } from "react";
-import { connect } from "react-redux";
 import InputFile from "../../Components/UI/InputFile/InputFile.component";
-import { t } from "../../Helpers/lang";
+import { t } from "../../Languages/languages";
 import {
   handleFileChange,
   handleValidateExcelSheet,
@@ -32,21 +31,15 @@ class ExcelPageWrapper extends PureComponent {
 
   render() {
     const {
-      props: {
-        lanState,
-        lanTable,
-        children,
-      },
-      state: {selectedFile },
+      props: { children },
+      state: { selectedFile },
     } = this;
 
     return (
       <ExeclPageContext.Provider value={this}>
         <ExcelPage>
           <ExcelPage.CloseBtn>Close</ExcelPage.CloseBtn>
-          <ExcelPage.Header>
-            {t("add_excel_sheet", lanTable, lanState)} :
-          </ExcelPage.Header>
+          <ExcelPage.Header>{t("add_excel_sheet")} :</ExcelPage.Header>
           <ExcelPage.Instructions>{children}</ExcelPage.Instructions>
           <ExcelPage.InputsContainer>
             <InputFile
@@ -55,13 +48,13 @@ class ExcelPageWrapper extends PureComponent {
               ref={this.excelFileInput}
               onChange={this.fileChangeHandler}
             />
-          <ExcelPage.InputErrMess />
+            <ExcelPage.InputErrMess />
           </ExcelPage.InputsContainer>
           <ExcelPage.FunctionBtns />
           <ExcelPage.Loading />
           <ExcelPage.ErrorMess />
           <ExcelPage.ServerErr />
-          <ExcelPage.AddMess /> 
+          <ExcelPage.AddMess />
           <ExcelPage.ValidMess />
         </ExcelPage>
       </ExeclPageContext.Provider>
@@ -69,12 +62,4 @@ class ExcelPageWrapper extends PureComponent {
   }
 }
 export const ExeclPageContext = React.createContext(null);
-
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
-  };
-};
-
-export default connect(mapStateToProps, null)(ExcelPageWrapper);
+export default ExcelPageWrapper;

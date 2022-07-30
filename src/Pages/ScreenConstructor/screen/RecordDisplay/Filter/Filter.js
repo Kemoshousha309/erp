@@ -5,8 +5,8 @@ import { TextField } from '@mui/material';
 import { connect } from 'react-redux';
 import style from './Filter.module.scss';
 import { trigerEnterButton } from '../../utilities';
-import { t } from '../../../../../Helpers/lang';
 import { getF } from '../../../../../Helpers/utilities';
+import { t } from '../../../../../Languages/languages';
 
 class Filter extends PureComponent {
   componentDidMount() {
@@ -22,7 +22,6 @@ class Filter extends PureComponent {
       props: {
         fields,
         lanState,
-        lanTable,
         inputValueChangeHandler,
         searchClick,
       },
@@ -46,7 +45,7 @@ class Filter extends PureComponent {
             autoComplete="off"
             variant="standard"
             fullWidth
-            label={t(getF(f, 'label', lanState), lanTable, lanState)}
+            label={t(getF(f, 'label', lanState))}
           />
         </div>
       );
@@ -64,7 +63,6 @@ class Filter extends PureComponent {
 }
 
 const mapStateToProps = (state) => ({
-  lanState: state.lang.lan,
   lanTable: state.lang.langTables,
 });
 

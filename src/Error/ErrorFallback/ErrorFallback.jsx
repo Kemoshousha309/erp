@@ -2,18 +2,9 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import style from "./ErrorFallback.module.scss";
 import ReplayIcon from "@mui/icons-material/Replay";
-import { connect } from "react-redux";
-import { t } from "../../Helpers/lang";
+import { t } from "../../Languages/languages";
 
-function ErrorFallback({
-  children,
-  details,
-  imgSrc,
-  reload,
-  message,
-  lanState,
-  lanTable,
-}) {
+function ErrorFallback({ children, details, imgSrc, reload, message }) {
   const [showDtl, setShowDtl] = useState(false);
   const toggleDtl = () => setShowDtl((showDtl) => !showDtl);
   return (
@@ -29,12 +20,12 @@ function ErrorFallback({
             endIcon={<ReplayIcon />}
             onClick={() => document.location.reload()}
           >
-            {t("reload", lanTable, lanState)}
+            {t("reload")}
           </Button>
         ) : null}
         {details ? (
           <div className={style.details}>
-            <Button onClick={toggleDtl}> {t("more_dtl", lanTable, lanState)}</Button>
+            <Button onClick={toggleDtl}> {t("more_dtl")}</Button>
             {showDtl ? <p>{details.toString()}</p> : null}
           </div>
         ) : null}
@@ -46,11 +37,4 @@ function ErrorFallback({
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    lanState: state.lang.lan,
-    lanTable: state.lang.langTables,
-  };
-};
-
-export default connect(mapStateToProps, null)(ErrorFallback);
+export default ErrorFallback;

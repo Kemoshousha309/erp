@@ -1,6 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { t } from '../../../../../Helpers/lang';
+import { t } from '../../../../../Languages/languages';
 import Command from '../../Command';
 
 function ReloadServerCache(props) {
@@ -16,9 +15,5 @@ function ReloadServerCache(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  lanState: state.lang.lan,
-  lanTable: state.lang.langTables,
-});
 
-export default connect(mapStateToProps, null)(ReloadServerCache);
+export default ReloadServerCache;

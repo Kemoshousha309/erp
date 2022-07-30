@@ -10,9 +10,9 @@ import {
 } from "../../../Validation/validation";
 import { updateMode } from "../../ScreenConstructor/screen/mode";
 import { timer } from "../../ScreenConstructor/screen/utilities";
-import { selectMessage } from "../../../Helpers/lang";
 import Page from "../../ScreenConstructor/screen/RecordDisplay/Page/Page";
 import _ from "lodash";
+import { selectMessage } from "../../../Languages/languages";
 
 export class BanksSave extends Saver {
   async handleBanksSave() {
@@ -149,7 +149,7 @@ export function setAccCurListener() {
             })
             .catch((errMess) => {
               const message = {
-                content: selectMessage(errMess, this.props.lanState),
+                content: selectMessage(errMess),
                 type: "error",
               };
               this.setState({ message, loading: false });

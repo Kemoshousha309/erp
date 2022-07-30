@@ -3,9 +3,9 @@ import { getValues, getPkUrl, handleFields } from "../fields";
 import axios from "../../../../axios";
 import { logout } from "../../../../store";
 import { store } from "../../../../index";
-import { selectMessage } from "../../../../Helpers/lang";
 import { FuncConstructor } from "./funcConstructor";
 import { updateMode } from "../mode";
+import { selectMessage } from "../../../../Languages/languages";
 
 // delete ******************************************************
 
@@ -26,7 +26,7 @@ export class Deleter extends FuncConstructor {
         .then((res) => {
           const fieldsUpdate = handleFields(fields, "close", true);
           const message = {
-            content: selectMessage(res.data.message, lanState),
+            content: selectMessage(res.data.message),
             type: "success",
           };
           resolve({ fieldsUpdate, message });
