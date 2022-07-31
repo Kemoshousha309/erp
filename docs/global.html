@@ -160,12 +160,26 @@
 
         
             
-<h4 class="name" id="initialState"><span class="type-signature">(constant) </span>initialState<span class="type-signature"></span></h4>
+<h4 class="name" id="initialState"><span class="type-signature">(constant) </span>initialState<span class="type-signature"> :<a href="global.html#State">State</a></span></h4>
 
 
 
 
+<div class="description">
+    <p>The initial state used to init the state of the screen constructor</p>
+</div>
 
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type"><a href="global.html#State">State</a></span>
+
+
+        </li>
+    </ul>
 
 
 
@@ -200,7 +214,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Pages_ScreenConstructor_screen_state.js.html">Pages/ScreenConstructor/screen/state.js</a>, <a href="Pages_ScreenConstructor_screen_state.js.html#line7">line 7</a>
+        <a href="Pages_ScreenConstructor_screen_state.js.html">Pages/ScreenConstructor/screen/state.js</a>, <a href="Pages_ScreenConstructor_screen_state.js.html#line45">line 45</a>
     </li></ul></dd>
     
 
@@ -462,7 +476,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Languages_languages.js.html">Languages/languages.js</a>, <a href="Languages_languages.js.html#line11">line 11</a>
+        <a href="Languages_languages.js.html">Languages/languages.js</a>, <a href="Languages_languages.js.html#line23">line 23</a>
     </li></ul></dd>
     
 
@@ -520,6 +534,600 @@
     
 
     
+        <h3 class="subsection-title">Type Definitions</h3>
+
+        
+                
+<h4 class="name" id="State">State</h4>
+
+
+
+
+<div class="description">
+    <p>State</p>
+</div>
+
+
+
+    <h5>Type:</h5>
+    <ul>
+        <li>
+            
+<span class="param-type">Object</span>
+
+
+        </li>
+    </ul>
+
+
+
+
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    
+
+<table class="props">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>tools</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>list of tools that should be displays with its tool state</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>mode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>state the mode of action in the screen</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fkListShow</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>state the fk list that should be didplayed</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>prevMode</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>state store the previus mode of screen</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>recordIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><ul>
+<li>state the index of the record(page)</li>
+<li>used it in the moves and other places</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>lastIndex</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>state the last index</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>object that have the type and content of the message</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>loading</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>state the loading that uses with functions</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>listShow</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>show list</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>deleteConfirm</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>show the confirmation dialog of delete</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ShortCutsList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>show shortcut list</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>record</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>contain the record</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>addDtlForeignList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">null</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>control the show of the list that add the entire
+detials row from another table(screen)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>tapTools</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>indicate the tools to be deleted from the screen</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>searchFields</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>indicate the fields that should be used in search process</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>mainFields</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>indicate the fields that usesd in RecordDisplay filter and more places</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pks</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>primary keys of the database tabel(screen)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>custimizedList</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><ul>
+<li>object that have the type and content of the message</li>
+<li>have open and render props</li>
+</ul></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>excelSheetOpen</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>constrol show of excel page drop page</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Pages_ScreenConstructor_screen_state.js.html">Pages/ScreenConstructor/screen/state.js</a>, <a href="Pages_ScreenConstructor_screen_state.js.html#line3">line 3</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+            
+    
 
     
 </article>
@@ -532,13 +1140,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FuncConstructor.html">FuncConstructor</a></li><li><a href="Saver.html">Saver</a></li><li><a href="ScreenConstructor.html">ScreenConstructor</a></li></ul><h3>Global</h3><ul><li><a href="global.html#fillRecord">fillRecord</a></li><li><a href="global.html#getDetails">getDetails</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#t">t</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FuncConstructor.html">FuncConstructor</a></li><li><a href="List.html">List</a></li><li><a href="Saver.html">Saver</a></li><li><a href="ScreenConstructor.html">ScreenConstructor</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-my-tutorial.html">Language</a></li></ul><h3>Global</h3><ul><li><a href="global.html#fillRecord">fillRecord</a></li><li><a href="global.html#getDetails">getDetails</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#t">t</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sun Jul 31 2022 11:44:30 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sun Jul 31 2022 15:33:59 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

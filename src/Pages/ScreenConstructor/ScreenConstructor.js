@@ -53,20 +53,26 @@ import _ from "lodash";
 import { initialState } from "./screen/state";
 
 /**
- * this is a consructor for the screen
+ * This is a screen constructor 
+ * - used to contian all the sharabe functionalitiy of the screens
  */
 
 class ScreenConstructor extends PureComponent {
+  /**
+   * construct the screenContructor component
+   * - used to set the mount and state
+   * - set the funcion classes 
+   * @param {any} props Props of react
+   */
   constructor(props) {
     super(props);
-    // props.updateCurrentScreen(this)
+    /** contian the mount info used in component will unmount */
     this.mounted = true;
-    /**
-     * the state contian all the information about the process
-     */
+    /**@type {Object} - used contian all the info about the screen */
     this.state = _.cloneDeep(initialState);
 
     // functions init
+    /** list object see the class {@link List} */
     this.listHandler = new List(this);
     this.saveHandler = new Saver(this);
     this.addHandler = new Adder(this);

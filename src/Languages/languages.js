@@ -1,3 +1,12 @@
+/**
+ * Handle languages functions  
+ * @module language
+ * @tutorial my-tutorial
+ */
+
+
+
+
 import {store} from "../index";
 
 

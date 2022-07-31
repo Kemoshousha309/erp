@@ -1,3 +1,10 @@
+/**
+ * @file index.js to handle the langs
+ * @author kareem shousha
+ * @see <a href="#">google</a>
+ */
+
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './Styles/bootstrap.min.css';
