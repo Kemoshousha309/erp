@@ -2,7 +2,7 @@ import style from "./LangSelector.module.scss";
 import { connect } from "react-redux";
 import { PureComponent } from "react";
 import Backdrop from "../../UI/Backdrop/Backdrop";
-import { changeLnaguage } from "../../../store";
+import { changeLnaguage } from "../../../Context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { t } from "../../../Languages/languages";

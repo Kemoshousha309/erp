@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { langChangeActivity } from "../../../store/actions/lang";
+import { langChangeActivity } from "../../../Context/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import {

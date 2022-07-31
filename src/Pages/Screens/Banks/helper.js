@@ -73,8 +73,7 @@ export class BanksSave extends Saver {
             console.log(err);
           });
       }
-      console.log("// should handle by server");
-      return;
+      resolve([])
     });
   }
 }

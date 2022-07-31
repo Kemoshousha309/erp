@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import Spinner from "../../Components/UI/Spinner/Spinner";
 import style from "./Layout.module.scss";
 import SideTreeMobView from "../../Components/SideTree/SideTreeMobView/SideTreeMobView";
-import { checkAuthLocalStorage } from "../../store";
+import { checkAuthLocalStorage } from "../../Context";
 import LogoutPage from "../../Components/UI/LogoutPage/LogoutPage";
 import ErrorBoundary from "../../Error/ErrorBoundary";
 

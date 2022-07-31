@@ -1,6 +1,6 @@
 import axios from "../../../../axios";
 import { store } from "../../../..";
-import { logout } from "../../../../store";
+import { logout } from "../../../../Context";
 import { functionsListenrs } from "../../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../../ScreenConstructor/ScreenConstructor";
 import { timer } from "../../../ScreenConstructor/screen/utilities";

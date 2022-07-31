@@ -4,13 +4,13 @@ import { connect } from "react-redux";
 import axios from "../../../axios";
 import Spinner from "../../../Components/UI/Spinner/Spinner";
 import StatusBar from "../../../Components/StatusBar/StatusBar";
-import { logout } from "../../../store";
+import { logout } from "../../../Context";
 import { store } from "../../..";
 import ReloadServerCache from "./Commands/ReloadServerCache/ReloadServerCache";
 import GenUngenPriv from "./Commands/GenUngenPriv/GenUngenPriv";
 import { TextField } from "@mui/material";
 import ReloadClientCache from "./Commands/ReloadClientCache/ReloadClientCache";
-import { clearlangData } from "../../../store/actions/lang";
+import { clearlangData } from "../../../Context/actions/lang";
 import { timer } from "../../ScreenConstructor/screen/utilities";
 import { selectMessage, t } from "../../../Languages/languages";
 

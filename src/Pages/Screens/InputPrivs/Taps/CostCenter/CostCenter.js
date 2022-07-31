@@ -4,7 +4,7 @@ import { initInputPrivsView } from "../../InputPrivsConstructor/InputPrivsView";
 import _ from "lodash";
 import { costCenterPrivInitState } from "./state";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
-import { langChangeActivity } from "../../../../../store/actions/lang";
+import { langChangeActivity } from "../../../../../Context/actions/lang";
 
 class Branches extends InputPrivsConstructor {
   constructor() {

@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { langChangeActivity } from "../../../store/actions/lang";
+import { langChangeActivity } from "../../../Context/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import {
@@ -17,7 +17,7 @@ import {
   ChartsOfAccsXlsxPreparer,
   ChartsOfAccsXlsxValidator,
 } from "./ChartsOfAccsXlsx/ChartsOfAccsXlsx";
-import { updateCurrentScreen } from "../../../store/actions/app";
+import { updateCurrentScreen } from "../../../Context/actions/app";
 import { timer } from "../../ScreenConstructor/screen/utilities";
 import { updateMode } from "../../ScreenConstructor/screen/mode";
 import { ChartsOfAccountsInitState } from "./state";

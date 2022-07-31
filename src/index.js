@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles/bootstrap.min.css';
+import './Styles/bootstrap.min.css';
 import './index.scss';
 import {
   createStore, applyMiddleware, compose, combineReducers,
@@ -9,11 +9,11 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { languageReducer } from './store';
-import { authReducer } from './store/reducers/auth';
+import { languageReducer } from './Context';
+import { authReducer } from './Context/reducers/auth';
 import axios from './axios';
-import * as actionTypes from './store/actions/actionTypes';
-import { appReducer } from './store/reducers/app';
+import * as actionTypes from './Context/actions/actionTypes';
+import { appReducer } from './Context/reducers/app';
 // import Perf from 'react-addons-perf'; // ES6
 
 const composeEnhancers = process.env.NODE_ENV === 'development'

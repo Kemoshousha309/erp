@@ -5,7 +5,7 @@ import {
   checkValidity,
 } from "../../../../Validation/validation";
 import axios from "../../../../axios";
-import { logout } from "../../../../store";
+import { logout } from "../../../../Context";
 import { store } from "../../../../index";
 import { getDetails } from "../Details/requestDetails";
 import { FuncConstructor } from "./funcConstructor";

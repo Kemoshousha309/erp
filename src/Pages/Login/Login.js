@@ -6,7 +6,7 @@ import {
   authRequest,
   langRequestFailure,
   storeLanguagesTable,
-} from "../../store";
+} from "../../Context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { Button, CircularProgress, TextField } from "@mui/material";

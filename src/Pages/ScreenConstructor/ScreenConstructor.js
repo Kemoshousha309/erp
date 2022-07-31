@@ -5,7 +5,10 @@ import { handleSearchModel, Searcher } from "./screen/functions/search";
 import { handleSaveModel, Saver } from "./screen/functions/save";
 import { handleMoveModel, Mover, setlastIndex } from "./screen/functions/moves";
 import { functionsListenrs } from "./screen/listeners";
-import { handleClearListsModel, handleRecordClickModel } from "./screen/functions/list";
+import {
+  handleClearListsModel,
+  handleRecordClickModel,
+} from "./screen/functions/list";
 import { Adder, handleAddModel } from "./screen/functions/add";
 import { handleModifyModel, Modifier } from "./screen/functions/modify";
 import { Copyer, handleCopyModel } from "./screen/functions/copy";
@@ -20,9 +23,7 @@ import {
 import { detailsInputChangeHandler } from "./screen/Details/handlers/handlers";
 import { ExcelServerSender } from "./screen/functions/excelSheet/serverSender";
 import {
-  excelPageClose,
   excelPageCloseModal,
-  resetExcelPage,
   resetExcelPageModal,
 } from "./screen/functions/excelSheet/handlers";
 import { XlsxValidator } from "./screen/functions/excelSheet/XlsxValidator";
@@ -129,16 +130,15 @@ class ScreenConstructor extends PureComponent {
     });
   };
 
-  
   // shortcut list
   ShortCutsListCloseHandler = () => handleCloseShortCuts(this);
-  
+
   // custimized list
   closeCustmizedList = () =>
-  this.setState({ custimizedList: { render: null, open: false } });
+    this.setState({ custimizedList: { render: null, open: false } });
 
   clearLists = () => handleClearListsModel.call(this);
-  
+
   // DETAILS HANDLEING **********************************************
   navigateTabsHandler = (value) => {
     const { details } = this.state;
@@ -177,7 +177,7 @@ class ScreenConstructor extends PureComponent {
   treeNodeClick = (record) => handleRecordClickModel.call(this, record);
 
   // CHIPS HANDLING ******************************************************
-  // these methods is consider models 
+  // these methods is consider models
   chipsAddHandler = (id, index) => handleChipsAdd.call(this, id, index);
   chipsRemoveHandler = (id, index) => handleChipsRemove.call(this, id, index);
   closeChipsList = () => handleChipsListClose.call(this);

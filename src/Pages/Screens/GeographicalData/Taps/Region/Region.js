@@ -2,7 +2,7 @@ import { regionInitState } from './state';
 import _ from 'lodash';
 import ScreenConstructor from '../../../../ScreenConstructor/ScreenConstructor';
 import { displayContent } from '../../../../ScreenConstructor/screen/displayContent';
-import { langChangeActivity } from '../../../../../store/actions/lang';
+import { langChangeActivity } from '../../../../../Context/actions/lang';
 import { connect } from 'react-redux';
 
 class Region extends ScreenConstructor {

@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { langChangeActivity } from "../../../store/actions/lang";
+import { langChangeActivity } from "../../../Context/actions/lang";
 import axios from "../../../axios";
 import PrivDisplay from "./PrivDisplay";
 import Hint from "../../../Components/UI/Hint/Hint";

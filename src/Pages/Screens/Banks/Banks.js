@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import { langChangeActivity } from "../../../store/actions/lang";
+import { langChangeActivity } from "../../../Context/actions/lang";
 import { initDetials } from "../../ScreenConstructor/screen/Details/DetailsPanel";
 import { LimitAdder } from "../../ScreenConstructor/screen/Details/handlers/add";
 import { LimitDetialsRomver } from "../../ScreenConstructor/screen/Details/handlers/remove";

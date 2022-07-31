@@ -9,7 +9,7 @@ import {
   changePropName,
 } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
-import { langChangeActivity } from "../../../../../store/actions/lang";
+import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { connect } from "react-redux";
 
 class City extends ScreenConstructor {

@@ -4,7 +4,7 @@ import { labelInitState } from "./state";
 import ScreenConstructor from "../../../../ScreenConstructor/ScreenConstructor";
 import { handleAsyncLangNoOpts } from "../../../../ScreenConstructor/screen/async";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
-import { langChangeActivity } from "../../../../../store/actions/lang";
+import { langChangeActivity } from "../../../../../Context/actions/lang";
 
 class Label extends ScreenConstructor {
   constructor() {

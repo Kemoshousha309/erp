@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { connect } from "react-redux";
 import { getTreeStructure } from "../../../../../Helpers/tree";
-import { langChangeActivity } from "../../../../../store/actions/lang";
+import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { getTree } from "../../../../ScreenConstructor/screen/async";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { setlastIndex } from "../../../../ScreenConstructor/screen/functions/moves";

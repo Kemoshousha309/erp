@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: Saver</title>
+    <title>JSDoc: Source: Pages/ScreenConstructor/screen/state.js</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,137 +17,59 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: Saver</h1>
+    <h1 class="page-title">Source: Pages/ScreenConstructor/screen/state.js</h1>
 
     
 
 
 
-
-<section>
-
-<header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>Saver<span class="signature">()</span><span class="type-signature"></span></h2>
-        
-            <div class="class-description"><p>Responsilable for save funcion of the screen</p></div>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
-        
-
-    
-    <h2>Constructor</h2>
-    
-
-    
-    <h4 class="name" id="Saver"><span class="type-signature"></span>new Saver<span class="signature">()</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="Pages_ScreenConstructor_screen_functions_save.js.html">Pages/ScreenConstructor/screen/functions/save.js</a>, <a href="Pages_ScreenConstructor_screen_functions_save.js.html#line21">line 21</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// @ts-check
+
+/**
+
+ */
+
+export const initialState = {
+  tools: null,
+  mode: "start",
+  fkListShow: null,
+  prevMode: null,
+  recordIndex: null,
+  lastIndex: null,
+  message: null,
+  loading: false,
+  listShow: false,
+  deleteConfirm: false,
+  ShortCutsList: false,
+  record: null,
+  addDtlForeignList: null,
+  tapTools: ["excel"], // to be deleted and view the others
+  searchFields: [],
+  mainFields: [],
+  pks: [],
+  custimizedList: {
+    open: false,
+    render: null,
+  },
+  excelSheetOpen: false,
+  excelPage: {
+    excelLoading: false,
+    serverValidate: {
+      validated: false,
+      validatedResult: null,
+      validateRes: null,
+    },
+    addMess: null,
+  },
+};
+
+
+</code></pre>
+        </article>
+    </section>
 
 
 

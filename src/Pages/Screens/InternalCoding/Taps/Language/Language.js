@@ -5,7 +5,7 @@ import { add_lan_dir_options } from '../../../../ScreenConstructor/screen/async'
 import { setlastIndex } from '../../../../ScreenConstructor/screen/functions/moves';
 import { functionsListenrs } from '../../../../ScreenConstructor/screen/listeners';
 import { displayContent } from '../../../../ScreenConstructor/screen/displayContent';
-import { langChangeActivity } from '../../../../../store/actions/lang';
+import { langChangeActivity } from '../../../../../Context/actions/lang';
 import ScreenConstructor from '../../../../ScreenConstructor/ScreenConstructor';
 
 class Language extends ScreenConstructor {

@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
 import { companiesGroupInitState } from './state';
-import { langChangeActivity } from '../../../../../store/actions/lang';
+import { langChangeActivity } from '../../../../../Context/actions/lang';
 import ScreenConstructor from '../../../../ScreenConstructor/ScreenConstructor';
 import { displayContent } from '../../../../ScreenConstructor/screen/displayContent';
 import { connect } from 'react-redux';

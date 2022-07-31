@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { langChangeActivity } from '../../../../../store/actions/lang';
+import { langChangeActivity } from '../../../../../Context/actions/lang';
 import { displayContent } from '../../../../ScreenConstructor/screen/displayContent';
 import { accChartPricInitSate } from './state';
 import InputPrivsConstructor from "../../InputPrivsConstructor/InputPrivsConstructor";

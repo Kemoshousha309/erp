@@ -1,6 +1,6 @@
 import { getValues, fillRecord, getPkUrl } from "../fields";
 import axios from "../../../../axios";
-import { logout } from "../../../../store";
+import { logout } from "../../../../Context";
 import { store } from "../../../../index";
 import { timer } from "../utilities";
 import { FuncConstructor } from "./funcConstructor";

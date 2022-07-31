@@ -9,7 +9,7 @@ import { Tooltip } from "@mui/material";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import style from "./Navigation.module.scss";
-import { logout } from "../../store";
+import { logout } from "../../Context";
 import LangSelector from "./LangSelector/LangSelector";
 import BreadcrumbConstructor from "./BreadcrumbConstructor/BreadcrumbConstructor";
 import { t } from "../../Languages/languages";

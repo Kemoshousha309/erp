@@ -7,7 +7,7 @@ import axios from "../../../../axios";
 import { Button, Pagination } from "@mui/material";
 import Modal from "../../../../Components/UI/Modal/Modal";
 import { store } from "../../../../index";
-import { logout } from "../../../../store";
+import { logout } from "../../../../Context";
 import { getPkUrl } from "../fields";
 import { t } from "../../../../Languages/languages";
 

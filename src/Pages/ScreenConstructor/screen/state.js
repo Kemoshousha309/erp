@@ -1,3 +1,9 @@
+// @ts-check
+
+/**
+
+ */
+
 export const initialState = {
   tools: null,
   mode: "start",

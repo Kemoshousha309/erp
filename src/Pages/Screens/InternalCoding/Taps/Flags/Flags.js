@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { connect } from "react-redux";
-import { langChangeActivity } from "../../../../../store/actions/lang";
+import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { handleAsyncLangNoOpts } from "../../../../ScreenConstructor/screen/async";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { handleFields } from "../../../../ScreenConstructor/screen/fields";

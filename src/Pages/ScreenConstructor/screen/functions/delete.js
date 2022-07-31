@@ -1,7 +1,7 @@
 import { timer } from "../utilities";
 import { getValues, getPkUrl, handleFields } from "../fields";
 import axios from "../../../../axios";
-import { logout } from "../../../../store";
+import { logout } from "../../../../Context";
 import { store } from "../../../../index";
 import { FuncConstructor } from "./funcConstructor";
 import { updateMode } from "../mode";

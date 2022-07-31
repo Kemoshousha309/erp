@@ -9,7 +9,7 @@ import {
   routeMap,
 } from '../../../Helpers/tree';
 import ParentNode from './ParentNode/ParentNonde';
-import { treeRequest } from '../../../store';
+import { treeRequest } from '../../../Context';
 
 class Tree extends PureComponent {
   render() {
