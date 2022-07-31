@@ -73,7 +73,7 @@ export class BanksSave extends Saver {
             console.log(err);
           });
       }
-      resolve([])
+      resolve({bnk_dtl_list: []})
     });
   }
 }
