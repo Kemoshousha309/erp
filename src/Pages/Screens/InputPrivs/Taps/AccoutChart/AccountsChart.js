@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { langChangeActivity } from '../../../../../Context/actions/lang';
 import { displayContent } from '../../../../ScreenConstructor/screen/displayContent';
-import { accChartPricInitSate } from './state';
+import { accChartPrivInitSate } from './state';
 import InputPrivsConstructor from "../../InputPrivsConstructor/InputPrivsConstructor";
 import { initInputPrivsView } from "../../InputPrivsConstructor/InputPrivsView";
 
@@ -11,7 +11,7 @@ class AccountsChart extends InputPrivsConstructor {
     super();
     this.state = {
       ...this.state,
-      ..._.cloneDeep(accChartPricInitSate)
+      ..._.cloneDeep(accChartPrivInitSate)
     };
   }
 
@@ -44,7 +44,7 @@ const mapStateToProps = (state) => ({
   logged_user_id: state.auth.authData.user_id,
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+  changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountsChart);

@@ -5,7 +5,7 @@ export const regionInitState = {
       type: 'number',
       label: 'region_no',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -21,7 +21,7 @@ export const regionInitState = {
       type: 'text',
       label: 'name',
       validation: {
-        requiered: true,
+        required: true,
         length: 50,
       },
       validity: {
@@ -37,7 +37,7 @@ export const regionInitState = {
       type: 'text',
       label: 'foreign_name',
       validation: {
-        requiered: true,
+        required: true,
         length: 50,
       },
       validity: {
@@ -53,7 +53,7 @@ export const regionInitState = {
       type: 'text',
       label: 'shortcut',
       validation: {
-        requiered: true,
+        required: true,
         length: 50,
       },
       validity: {

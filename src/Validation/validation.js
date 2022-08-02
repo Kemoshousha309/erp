@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { t } from "../Languages/languages";
-import { getDtailsPropnams } from "../Pages/ScreenConstructor/screen/utilities";
+import { getDetailsPropanes } from "../Pages/ScreenConstructor/screen/utilities";
 
 export const setValidity = (fields) => {
   const fieldsClone = { ...fields };
@@ -28,7 +28,7 @@ export const isValid = (value, rule, thisK) => {
   let message = null;
   let isValid = true;
   if (rule) {
-    if (rule.requiered) {
+    if (rule.required) {
       if (value !== undefined) {
         isValid = value.toString().trim() !== "" && isValid;
       }
@@ -57,7 +57,7 @@ export const isValid = (value, rule, thisK) => {
     if (rule.point6Format) {
       isValid = point6Format(value) && isValid;
       if (!isValid && !message) {
-        message = t("not_accept_intput");
+        message = t("not_accept_input");
       }
     }
   }
@@ -81,14 +81,14 @@ export const checkValidity = (screen) => {
   for (const key in fieldsClone) {
     const f = fieldsClone[key];
     if (!f.readOnly && f.writability && f.validity && f.validation) {
-      if (f.value.length === 0 && f.validation.requiered) {
+      if (f.value.length === 0 && f.validation.required) {
         f.validity.valid = false;
         f.validity.message = t("required_field");
       }
       if (key === "confirm_password") {
         const passValue = fieldsClone.password.value;
-        const confimValue = fieldsClone.confirm_password.value;
-        if (passValue !== confimValue) {
+        const confirmValue = fieldsClone.confirm_password.value;
+        if (passValue !== confirmValue) {
           f.validity.valid = false;
           f.validity.message = t("pass_not_identical");
         }
@@ -99,7 +99,7 @@ export const checkValidity = (screen) => {
   return [isValid, fieldsClone];
 };
 
-export const detialFieldValidity = (page, id) => {
+export const detailFieldValidity = (page, id) => {
   let valid = true;
   let message = null;
   if (page[`${id}#validity`]) {
@@ -115,7 +115,7 @@ export function checkDetailsValidity() {
     details: { tabs },
   } = this.state;
   const recordClone = _.cloneDeep(record);
-  const properties = getDtailsPropnams(tabs, true);
+  const properties = getDetailsPropanes(tabs, true);
   let detailsValid = true;
   if (recordClone) {
     properties.forEach((prop) => {

@@ -5,7 +5,7 @@ export const currencyInitState = {
       type: "text",
       label: "currency_code",
       validation: {
-        requiered: true,
+        required: true,
         length: 10,
       },
       validity: {
@@ -22,7 +22,7 @@ export const currencyInitState = {
       type: "text",
       label: "name",
       validation: {
-        requiered: true,
+        required: true,
         length: 50,
       },
       validity: {
@@ -38,7 +38,7 @@ export const currencyInitState = {
       type: "text",
       label: "foreign_name",
       validation: {
-        requiered: true,
+        required: true,
         length: 50,
       },
       validity: {
@@ -54,7 +54,7 @@ export const currencyInitState = {
       type: "number",
       label: "ex_rate",
       validation: {
-        requiered: true,
+        required: true,
         point6Format: true,
       },
       validity: {
@@ -100,7 +100,7 @@ export const currencyInitState = {
       type: "text",
       label: "fraction_foreign_name",
       validation: {
-        requiered: false,
+        required: false,
         length: 20,
       },
       validity: {
@@ -116,7 +116,7 @@ export const currencyInitState = {
       type: "number",
       label: "max_ex_rate",
       validation: {
-        requiered: false,
+        required: false,
         point6Format: true,
       },
       validity: {
@@ -132,7 +132,7 @@ export const currencyInitState = {
       type: "number",
       label: "min_ex_rate",
       validation: {
-        requiered: false,
+        required: false,
         point6Format: true,
       },
       validity: {
@@ -148,7 +148,7 @@ export const currencyInitState = {
       type: "number",
       label: "pos_ex_rate",
       validation: {
-        requiered: false,
+        required: false,
         point6Format: true,
       },
       validity: {
@@ -164,7 +164,7 @@ export const currencyInitState = {
       type: "checkbox",
       label: "local_currency",
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -222,7 +222,7 @@ export const currencyInitState = {
             disabled: true,
             type: "number",
             validationRules: {
-              requiered: true,
+              required: true,
             },
           },
         },

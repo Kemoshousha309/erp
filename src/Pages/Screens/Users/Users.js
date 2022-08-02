@@ -3,12 +3,12 @@ import { connect } from 'react-redux';
 import { formatDate } from '../../../Helpers/date';
 import { langChangeActivity } from '../../../Context/actions/lang';
 import { displayContent } from '../../ScreenConstructor/screen/displayContent';
-import { setlastIndex } from '../../ScreenConstructor/screen/functions/moves';
-import { handleDrivedState } from '../../ScreenConstructor/screen/handlers';
+import { setLastIndex } from '../../ScreenConstructor/screen/functions/moves';
+import { handleDerivedState } from '../../ScreenConstructor/screen/handlers';
 import {
   autoDisplay, changePropName, checkPassConfirm, onlyActiveField,
 } from '../../ScreenConstructor/screen/inputsHandlers';
-import { functionsListenrs } from '../../ScreenConstructor/screen/listeners';
+import { functionsListeners } from '../../ScreenConstructor/screen/listeners';
 import ScreenConstructor from '../../ScreenConstructor/ScreenConstructor';
 import { usersInitState } from './state';
 
@@ -22,9 +22,8 @@ class Users extends ScreenConstructor {
   }
 
   componentDidMount() {
-    // getTree(this)
-    setlastIndex(this);
-    functionsListenrs(this, true);
+    setLastIndex(this);
+    functionsListeners(this, true);
 
     // // inputs handlers on Auto display
     autoDisplay(this, 'direct_mang', 'users', {
@@ -53,8 +52,8 @@ class Users extends ScreenConstructor {
     });
     checkPassConfirm(this);
 
-    // special fields hanlde
-    hanldeInactiveFields(this);
+    // special fields handle
+    handleInactiveFields(this);
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -86,7 +85,7 @@ class Users extends ScreenConstructor {
         state.mode,
       );
     }
-    const { tools } = handleDrivedState(props, state);
+    const { tools } = handleDerivedState(props, state);
 
     return {
       tools,
@@ -110,12 +109,12 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+  changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Users);
 
-const hanldeInactiveFields = (thisK) => {
+const handleInactiveFields = (thisK) => {
   thisK.state.fields.inactive.changeHandler = (state) => {
     const fieldsClone = { ...thisK.state.fields };
     const flag = !state.value;

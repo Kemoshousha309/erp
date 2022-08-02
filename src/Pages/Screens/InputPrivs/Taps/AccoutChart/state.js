@@ -1,6 +1,6 @@
 import { chipsRecordClickHandler } from "../../../../ScreenConstructor/screen/handlers";
 
-export const accChartPricInitSate = {
+export const accChartPrivInitSate = {
   fields: {
     from_account_no: {
       fieldType: 'input',
@@ -154,7 +154,7 @@ export const accChartPricInitSate = {
       type: 'text',
       label: 'currency_list',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,

@@ -169,7 +169,7 @@ export const getRelatedIcon = (form_no, iconMap) => {
   return relatedIcon;
 };
 
-const ordereList = (list) => {
+const orderList = (list) => {
   if (list.length <= 1) {
     return list;
   }
@@ -179,20 +179,20 @@ const ordereList = (list) => {
   for (const el of list.slice(0, list.length - 1)) {
     el.form_order > pivot.form_order ? rightArr.push(el) : leftArr.push(el);
   }
-  return [...ordereList(leftArr), pivot, ...ordereList(rightArr)];
+  return [...orderList(leftArr), pivot, ...orderList(rightArr)];
 };
 
-const getChildren = (parent, WholetreeArr) => {
+const getChildren = (parent, WholeTreeArr) => {
   parent.children = [];
-  WholetreeArr.forEach((ele) => {
+  WholeTreeArr.forEach((ele) => {
     if (ele.parent_form === parent.form_no) {
       parent.children.push(ele);
     }
   });
-  parent.children = ordereList(parent.children);
+  parent.children = orderList(parent.children);
   parent.children.forEach((child) => {
     if (child.main) {
-      getChildren(child, WholetreeArr);
+      getChildren(child, WholeTreeArr);
     }
   });
 };
@@ -204,7 +204,7 @@ export const getTreeStructure = (treeArr) => {
       rootParents.push(ele);
     }
   });
-  rootParents = ordereList(rootParents);
+  rootParents = orderList(rootParents);
   rootParents.forEach((parent) => {
     getChildren(parent, treeArr);
   });
@@ -224,7 +224,7 @@ export const getRelatedRoute = (form_no, routeMap) => {
   return relatedRoute;
 };
 
-export const treehandler = (event, sideNavActivity) => {
+export const treeHandler = (event, sideNavActivity) => {
   if (sideNavActivity) {
     sideNavActivity();
   }
@@ -408,6 +408,6 @@ export const routeMap = [
   },
   {
     form_no: 1305,
-    route: 'empolyee-info?no=1305',
+    route: 'employee-info?no=1305',
   },
 ];

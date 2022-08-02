@@ -20,7 +20,7 @@ class Page extends PureComponent {
       </div>
     );
     return (
-      <div id="pageContianer" className={style.container}>
+      <div id="pageContainer" className={style.container}>
         <table className="table table-bordered text-center  table-hover">
           <thead>
             <tr>

@@ -47,7 +47,7 @@ class ChipsField extends React.PureComponent {
                 p: 0.5,
                 m: 0,
               }}
-              // title={writability ? t("ctlick_to_add") : null}
+              // title={writability ? t("click_to_add") : null}
               component="ul"
               onClick={() => addHandler()}
             >

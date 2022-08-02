@@ -2,11 +2,12 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { langInitState } from './state';
 import { add_lan_dir_options } from '../../../../ScreenConstructor/screen/async';
-import { setlastIndex } from '../../../../ScreenConstructor/screen/functions/moves';
-import { functionsListenrs } from '../../../../ScreenConstructor/screen/listeners';
+import { setLastIndex } from '../../../../ScreenConstructor/screen/functions/moves';
+import { functionsListeners } from '../../../../ScreenConstructor/screen/listeners';
 import { displayContent } from '../../../../ScreenConstructor/screen/displayContent';
 import { langChangeActivity } from '../../../../../Context/actions/lang';
 import ScreenConstructor from '../../../../ScreenConstructor/ScreenConstructor';
+import { updateMode } from '../../../../ScreenConstructor/screen/mode';
 
 class Language extends ScreenConstructor {
   constructor() {
@@ -19,8 +20,10 @@ class Language extends ScreenConstructor {
 
   componentDidMount() {
     add_lan_dir_options(this);
-    setlastIndex(this);
-    functionsListenrs(this, true);
+    setLastIndex(this);
+    functionsListeners(this, true);
+    const {tools} = updateMode("start", this.state, this.props)
+    this.setState({tools})
   }
 
   render() {
@@ -36,7 +39,7 @@ const mapStateToProps = (state) => ({
   forms_privs_hash: state.auth.authData.forms_privs_hash,
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+  changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Language);

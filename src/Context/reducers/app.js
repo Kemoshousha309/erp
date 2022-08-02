@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateState } from '../../Helpers/reducre';
+import { updateState } from '../../Helpers/reduce';
 
 const initState = {
   currentScreen: null,

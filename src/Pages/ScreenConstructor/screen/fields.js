@@ -61,10 +61,7 @@ export const handleFields = (fields, mode, empty = true, specific) => {
   return fieldsClone;
 };
 
-/**
- * fill the fields with record data
- * @returns {object} fields update
- */
+
 
 export const fillRecord = (fields, record) => {
   const fieldsClone = _.cloneDeep(fields);
@@ -150,7 +147,7 @@ export const setDefaultValues = (fields, defaultValues) => {
   return fieldsClone;
 };
 
-export function fieldListner(fieldName, handler) {
+export function fieldListener(fieldName, handler) {
   const { fields } = this.state;
   // handle Args => event or value in case of checkbox, field this keyword, screen this keyword
   fields[fieldName].changeHandler = (e, fieldThisK) =>

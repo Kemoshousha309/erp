@@ -5,7 +5,7 @@ export const zoneInitState = {
       type: 'number',
       label: 'zone_no',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -21,7 +21,7 @@ export const zoneInitState = {
       type: 'text',
       label: 'name',
       validation: {
-        requiered: true,
+        required: true,
         length: 50,
       },
       validity: {
@@ -37,7 +37,7 @@ export const zoneInitState = {
       type: 'text',
       label: 'foreign_name',
       validation: {
-        requiered: true,
+        required: true,
         length: 50,
       },
       validity: {
@@ -49,14 +49,14 @@ export const zoneInitState = {
       value: '',
     },
     hold: {
-      fieldType: 'holde',
+      fieldType: 'hold',
     },
     city_no: {
       fieldType: 'input',
       type: 'number',
       label: 'city_no',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,

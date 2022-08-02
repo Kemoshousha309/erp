@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react";
 import style from "./Login.module.scss";
-import companyLogo from "../../Assets/campanyLogoPlaceholder.png";
+import companyLogo from "../../Assets/companyLogoPlaceholder.png";
 import { connect } from "react-redux";
 import {
   authRequest,
@@ -19,7 +19,7 @@ class Login extends PureComponent {
     password: "",
   };
 
-  onChanageHandler = (event, identifier) => {
+  onChangeHandler = (event, identifier) => {
     const value = event.target.value;
     this.setState({ [identifier]: value });
   };
@@ -84,7 +84,7 @@ class Login extends PureComponent {
                   <TextField
                     value={this.state.user_no}
                     onChange={(event) =>
-                      this.onChanageHandler(event, "user_no")
+                      this.onChangeHandler(event, "user_no")
                     }
                     variant="standard"
                     fullWidth
@@ -98,7 +98,7 @@ class Login extends PureComponent {
                     type="password"
                     value={this.state.password}
                     onChange={(event) =>
-                      this.onChanageHandler(event, "password")
+                      this.onChangeHandler(event, "password")
                     }
                     variant="standard"
                     fullWidth
@@ -128,7 +128,7 @@ class Login extends PureComponent {
         login = (
           <p>
             Something went wrong, please check out you network connection and
-            try agian . . .
+            try again . . .
           </p>
         );
       }
@@ -139,7 +139,7 @@ class Login extends PureComponent {
         </div>
       );
     }
-    if (this.props.authloading) {
+    if (this.props.authLoading) {
       login = (
         <div className={style.spinner}>
           <CircularProgress />
@@ -156,8 +156,8 @@ const mapStateToProps = (state) => {
     lanState: state.lang.lan,
     langTable: state.lang.langTables,
     langLoading: state.lang.langLoading,
-    authloading: state.auth.authloading,
-    authError: state.auth.autherror,
+    authLoading: state.auth.authLoading,
+    authError: state.auth.authError,
     isAuthed: !(state.auth.authData == null),
   };
 };

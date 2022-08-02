@@ -5,22 +5,22 @@ import { toolsPriv } from './utilities';
 import { getSelectLangDir } from '../../../Languages/languages';
 
 // mode processes *******************************************************
-export const handleMode = (mode, langs, tools, changeLangSelectAcivity) => {
+export const handleMode = (mode, langs, tools, changeLangSelectActivity) => {
   let activeList = null;
   const lang_dir = getSelectLangDir(langs);
   const toolsName = toolsNameMap(lang_dir);
   switch (mode) {
     case 'start':
-      changeLangSelectAcivity(true);
+      changeLangSelectActivity(true);
       return startMode(lang_dir, tools);
     case 'add':
-      changeLangSelectAcivity(false);
+      changeLangSelectActivity(false);
       return activate([toolsName.undo.name, toolsName.save.name], null, lang_dir, tools);
     case 'copy':
-      changeLangSelectAcivity(false);
+      changeLangSelectActivity(false);
       return activate([toolsName.undo.name, toolsName.save.name], null, lang_dir, tools);
     case 'd_record':
-      changeLangSelectAcivity(false);
+      changeLangSelectActivity(false);
       activeList = [
         toolsName.add.name, toolsName.excel.name, toolsName.list.name,
         toolsName.modify.name, toolsName.first.name, toolsName.last.name,
@@ -30,15 +30,15 @@ export const handleMode = (mode, langs, tools, changeLangSelectAcivity) => {
       ];
       return activate(activeList, null, lang_dir, tools);
     case 'modify':
-      changeLangSelectAcivity(false);
+      changeLangSelectActivity(false);
       activeList = [toolsName.save.name, toolsName.undo.name];
       return activate(activeList, null, lang_dir, tools);
     case 'search':
-      changeLangSelectAcivity(false);
+      changeLangSelectActivity(false);
       activeList = [toolsName.search.name, toolsName.undo.name];
       return activate(activeList, 'search', lang_dir, tools);
     case 'list':
-      changeLangSelectAcivity(true);
+      changeLangSelectActivity(true);
       activeList = [];
       return activate(activeList, null, lang_dir, tools);
     default:
@@ -73,7 +73,7 @@ export const updateMode = (mode, state, props) => {
     mode,
     props.languages,
     state.tapTools,
-    props.changeLangSelectAcivity,
+    props.changeLangSelectActivity,
   );
   const formPrivs = props.forms_privs_hash[getParam(props.location.search, 'no')];
   tools = toolsPriv(formPrivs, tools);

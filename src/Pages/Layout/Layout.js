@@ -13,7 +13,7 @@ import ErrorBoundary from "../../Error/ErrorBoundary";
 class Layout extends PureComponent {
   state = {
     sideNavActivity: false,
-    moblieNav: false, // to handle the responsive design
+    mobileNav: false, // to handle the responsive design
     SideTreeMobView: false,
   };
   sideNavHandler = () => {
@@ -22,8 +22,8 @@ class Layout extends PureComponent {
   };
 
   mobileNavHandler = () => {
-    const current = this.state.moblieNav;
-    this.setState({ moblieNav: !current });
+    const current = this.state.mobileNav;
+    this.setState({ mobileNav: !current });
   };
   SideTreeMobViewHandler = () => {
     const current = this.state.SideTreeMobView;
@@ -39,7 +39,7 @@ class Layout extends PureComponent {
       if (this.props.langTable) {
         layout = (
           <>
-            <div className={style.contianer}>
+            <div className={style.container}>
               {this.state.SideTreeMobView ? (
                 <SideTreeMobView
                   SideTreeMobView={this.state.SideTreeMobView}
@@ -55,7 +55,7 @@ class Layout extends PureComponent {
                 />
               ) : null}
               <div className={style.right}>
-                <div className={style.navContianer}>
+                <div className={style.navContainer}>
                   <Navigation
                     sideNavClick={this.sideNavHandler}
                     listIconClicked={this.mobileNavHandler}
@@ -75,7 +75,7 @@ class Layout extends PureComponent {
         layout = (
           <h1>
             Something went wrong, please check out you network connection and
-            try agian . . .
+            try again . . .
           </h1>
         );
       }

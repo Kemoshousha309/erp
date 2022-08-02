@@ -5,7 +5,7 @@ export const labelInitState = {
       type: "text",
       label: "label_code",
       validation: {
-        requiered: true,
+        required: true,
         length: 30,
       },
       validity: {
@@ -21,7 +21,7 @@ export const labelInitState = {
       type: "text",
       label: "label_desc",
       validation: {
-        requiered: true,
+        required: true,
         length: 200,
       },
       validity: {
@@ -37,7 +37,7 @@ export const labelInitState = {
       type: "number",
       label: "lang_no",
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,

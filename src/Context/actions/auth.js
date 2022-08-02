@@ -1,6 +1,6 @@
 import axios from '../../axios';
 import { deepClone } from '../../Validation/validation';
-import { isExpire, storeLocally } from '../../Helpers/reducre';
+import { isExpire, storeLocally } from '../../Helpers/reduce';
 import { getTreeStructure } from '../../Helpers/tree';
 import { hash } from '../../Helpers/utilities';
 import * as actionTypes from './actionTypes';

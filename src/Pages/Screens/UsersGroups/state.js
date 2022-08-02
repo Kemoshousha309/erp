@@ -5,7 +5,7 @@ export const usersGroupInitState = {
       type: 'number',
       label: 'group_no',
       validation: {
-        requiered: true,
+        required: true,
         size: 2147483647,
       },
       validity: {
@@ -21,7 +21,7 @@ export const usersGroupInitState = {
       type: 'text',
       label: 'name',
       validation: {
-        requiered: true,
+        required: true,
         length: 50,
       },
       validity: {
@@ -37,7 +37,7 @@ export const usersGroupInitState = {
       type: 'text',
       label: 'foreign_name',
       validation: {
-        requiered: true,
+        required: true,
         length: 50,
       },
       validity: {

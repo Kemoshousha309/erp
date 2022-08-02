@@ -3,7 +3,7 @@ import style from "./InputField.module.scss";
 import {
   changeHandler,
   label,
-  checkInputValiditiy,
+  checkInputValidity,
   reflectOuterState,
   handlePassIcon,
 } from "../../../Helpers/inputs";
@@ -41,7 +41,7 @@ class InputField extends PureComponent {
       value = value.toUpperCase()
     }
     const placeholder = t(field.label);
-    let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style);
+    let [invalidMessage, invalidInputStyle] = checkInputValidity(this, style);
     const passIcon = handlePassIcon(this, style);
 
     // style

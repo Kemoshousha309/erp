@@ -1,0 +1,73 @@
+@import "../../Styles/styleUtility.scss";
+
+.treeContainer{
+    min-height: 20rem;
+    min-width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding-inline-start: 4rem;
+}
+
+
+.tree{
+    color: black;
+    text-align: start;
+    list-style: none;
+    max-height: 60vh;
+    overflow-y: scroll;
+    padding-left: 0rem;
+    padding-inline-end: 0px !important;
+    /* width */
+    &::-webkit-scrollbar {
+        width: 7px;
+        
+    }
+    
+    /* Track */
+    &::-webkit-scrollbar-track {
+        opacity: 0;
+    }
+    
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: #223344;
+        border-radius: 5px;
+    }
+    
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: #555;
+    }
+  
+    ul{
+        padding-inline-end: 0px !important;
+        padding-inline-start: 2rem !important;
+        list-style: none;
+    }   
+    &>li{
+        margin: 2rem 1rem !important;
+    }
+    
+    li{
+        i{
+            font-style: normal;
+        }
+        width: fit-content;
+        align-self: center;
+        font-size: 2rem;
+        cursor: pointer;
+        transition: all .3s;    
+        svg{
+            color: var(--primaryColor);
+        }
+        &:hover{
+            svg{
+                @include wobbleTopRight;
+            }
+            text-shadow: 0 1px 2px #333;
+        }
+        &:active{
+            text-shadow: 0 2px 2px #333;
+        }
+    }
+}

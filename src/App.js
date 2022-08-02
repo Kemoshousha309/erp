@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Component } from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import Login from "./Pages/Login/Login";
-import { checkLabelesLocalStorage } from "./Context";
+import {  checkLabelsLocalStorage } from "./Context";
 import { Redirect } from "react-router";
 import Modal from "./Components/UI/Modal/Modal";
 import * as actionsTypes from "./Context/actions/actionTypes";
@@ -91,7 +91,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLoadApp: () => dispatch(checkLabelesLocalStorage()),
+    onLoadApp: () => dispatch(checkLabelsLocalStorage()),
     close_networkError: () =>
       dispatch({ type: actionsTypes.CLOSE_NETWORK_ERROR }),
   };

@@ -3,7 +3,7 @@ import style from "./SelectField.module.scss";
 import {
   changeHandler,
   label,
-  checkInputValiditiy,
+  checkInputValidity,
   reflectOuterState,
 } from "../../../Helpers/inputs";
 import { t } from "../../../Languages/languages";
@@ -26,7 +26,7 @@ class SelectField extends PureComponent {
     // console.log(`[selectField] render`, this.state)
     const field = this.props.field;
     const placeholder = t(this.props.field.label);
-    let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style);
+    let [invalidMessage, invalidInputStyle] = checkInputValidity(this, style);
     let options = null;
     if (field.options) {
       options = field.options.map((op) => {

@@ -10,8 +10,8 @@ export const getF = (f, mode = null, lang_no) => {
   // get the correct name of a property based on the current language
   const outPut = typeof f === 'object' ? f[mode] : f;
   if (mode === 'propName' && scanNameLang(outPut)) {
-    const nakeName = extractName(outPut);
-    return decideName(nakeName);
+    const nakedName = extractName(outPut);
+    return decideName(nakedName);
   }
   if (outPut === 'name') {
     return parseInt(lang_no) === 1 ? 'name' : 'foreign_name';

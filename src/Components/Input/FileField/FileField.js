@@ -1,6 +1,6 @@
 import React, { PureComponent } from "react"
 import style from "./FileField.module.scss"
-import { changeHandler, label, checkInputValiditiy, reflectOuterState } from "../../../Helpers/inputs"
+import { changeHandler, label, checkInputValidity, reflectOuterState } from "../../../Helpers/inputs"
 import { t } from "../../../Languages/languages"
 
 
@@ -28,10 +28,10 @@ class FileField extends PureComponent {
         // console.log(`[InputSelectField] render`, this.state)
         const field = this.props.field
         const placeholder = t(this.props.field.label)
-        let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style)
+        let [invalidMessage, invalidInputStyle] = checkInputValidity(this, style)
 
         // style 
-        const classes = [style.fileinput, invalidInputStyle, style.innerLabel];
+        const classes = [style.fileInput, invalidInputStyle, style.innerLabel];
         if(!field.writability) {
             classes.push(style.disabled)
         }else{

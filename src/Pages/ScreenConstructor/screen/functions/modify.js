@@ -1,10 +1,21 @@
+/**
+ * @module modify
+ */
+
 import { handleFields } from "../fields";
 import { updateMode } from "../mode";
 import { FuncConstructor } from "./funcConstructor";
 
-// modify hanle *******************************
+// modify handle *******************************
 
+/**
+ * Modifier manages the modify process in the screen
+ */
 export class Modifier extends FuncConstructor {
+  /**
+   * handle the local behavior of the modify process
+   * @returns {Object} fieldsUpdate 
+   */
   localHandle() {
     const { fields, pks, specialFields } = this.screen.state;
     // handle modify fields
@@ -21,11 +32,18 @@ export class Modifier extends FuncConstructor {
     return fieldsUpdate;
   }
 
+  /**
+   * handle the async behavior of the modify process
+   * @param {Object} fieldsUpdate the updated fields from local handle
+   * @returns {Object} object contains:
+   * - preModify data to be put to the pre modify content
+   * - fields update
+   */
   asyncHandle(fieldsUpdate) {
     const { preModify } = this.screen.state;
     if (!preModify) return null;
     return new Promise((resolve, reject) => {
-      this.preHanler("Modify", fieldsUpdate)
+      this.preHandler("Modify", fieldsUpdate)
         .then(({ data, fieldsUpdate }) =>
           resolve({ preData: data, fieldsUpdate })
         )
@@ -34,6 +52,8 @@ export class Modifier extends FuncConstructor {
   }
 }
 
+
+/** manages the modify model behavior */
 export async function handleModifyModel() {
   const fieldsUpdate = this.modifyHandler.localHandle();
   const {tools} = updateMode("modify", this.state, this.props)

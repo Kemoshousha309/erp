@@ -2,8 +2,8 @@ import axios from "../../../../axios";
 import { setDefaultValues, setReadOnlyFields } from "../fields";
 
 /**
- * This class contain the sharable data 
- * and methods from all function classes
+ * FuncConstructor contains the sharable data and 
+ * methods from all function classes
  */
 
 export class FuncConstructor {
@@ -11,15 +11,15 @@ export class FuncConstructor {
     this.screen = screen;
   }
 
-  // sharable methods
-
   /**
-   * To handle the pre add or modify behavoir
-   * @param {string} type to decide add or modify url  
-   * @param {object} fields refrence to state fields 
-   * @returns {preActionContent, fieldsUpdate} 
+   * To handle the pre add or modify behavior
+   * @param {string} type to decide add or modify url the  type => Modify | Add
+   * @param {Object} fields reference to state fields 
+   * @returns {Object} Object contains :
+   *  preActionContent to be set in the state
+   *  fieldsUpdate 
    */
-  preHanler(type, fields) {
+  preHandler(type, fields) {
     // type => Modify | Add
     const pre = `pre${type}`;
     let {

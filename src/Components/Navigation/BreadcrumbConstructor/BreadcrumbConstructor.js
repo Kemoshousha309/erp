@@ -38,8 +38,8 @@ class BreadcrumbConstructor extends PureComponent {
 
 function getPath(tree, formNo) {
   const path = [];
-  const pointsNums = [formNo[0], formNo[0] + formNo[1], formNo];
-  pointsNums.forEach((i) => {
+  const pointsNumbs = [formNo[0], formNo[0] + formNo[1], formNo];
+  pointsNumbs.forEach((i) => {
     path.push(tree[i]);
   });
   return path;

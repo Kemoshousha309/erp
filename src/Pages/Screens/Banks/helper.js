@@ -16,13 +16,13 @@ import { selectMessage } from "../../../Languages/languages";
 
 export class BanksSave extends Saver {
   async handleBanksSave() {
-    const { fields: masterfields } = this.screen.state;
+    const { fields: masterFields } = this.screen.state;
     const { url, method } = this.getRequestInfo();
 
     // prepare the body
     const detailsValues = await this.prepareDtlValues();
-    const fieldsValues = getValues(masterfields);
-    // add the accout number of details to the master
+    const fieldsValues = getValues(masterFields);
+    // add the account number of details to the master
 
 
     const { record } = this.screen.state;
@@ -49,13 +49,13 @@ export class BanksSave extends Saver {
 
   prepareDtlValues() {
     const { mode, fields } = this.screen.state;
-    const detialsChange = trackDetailsChange(this.screen);
+    const detailsChange = trackDetailsChange(this.screen);
     return new Promise((resolve, reject) => {
-      if (mode === "add" || mode === "copy") resolve(detialsChange);
+      if (mode === "add" || mode === "copy") resolve(detailsChange);
       // modify
-      if (detialsChange.bnk_dtl_list.length > 0) {
+      if (detailsChange.bnk_dtl_list.length > 0) {
         // make the trick of update
-        const addPage = detialsChange.bnk_dtl_list[0]; // action update
+        const addPage = detailsChange.bnk_dtl_list[0]; // action update
         addPage.action = "add";
         // make a request to get the the dtl record to be deleted
         return axios
@@ -123,8 +123,8 @@ export function setAccCurListener() {
   // set listeners to the account currency
   // set timeout function make sure to run the code after set the state
   setTimeout(() => {
-    const presentAccCurrFiels = document.querySelectorAll("#acc_curr");
-    presentAccCurrFiels.forEach((element) => {
+    const presentAccCurrFields = document.querySelectorAll("#acc_curr");
+    presentAccCurrFields.forEach((element) => {
       if (element.dataset.hasListener === "true") return;
       element.addEventListener("keydown", (event) => {
         event.preventDefault();
@@ -134,16 +134,16 @@ export function setAccCurListener() {
             currentElement = currentElement.parentElement;
           }
           const rowIndex = currentElement.dataset.rowindex;
-          const { custimizedList } = this.state;
+          const { customizedList } = this.state;
           this.setState({ loading: true });
           prepareData(this, rowIndex)
             .then((currList) => {
-              custimizedList.open = true;
-              custimizedList.render = renderCustomBanksDtlAccCurrList(
+              customizedList.open = true;
+              customizedList.render = renderCustomBanksDtlAccCurrList(
                 currList,
                 accCurRecordClick.bind(this, rowIndex)
               );
-              this.setState({ custimizedList, loading: false });
+              this.setState({ customizedList, loading: false });
               timer().then((res) => this.setState({ message: false }));
             })
             .catch((errMess) => {
@@ -188,7 +188,7 @@ function accCurRecordClick(rowIndex, event, recordIndex, choosedRecord) {
   stateRecordClone[recDtlPropName][rowIndex].action =
     mode === "add" ? "add" : "update";
   this.setState({
-    custimizedList: { open: false, render: null },
+    customizedList: { open: false, render: null },
     record: stateRecordClone,
   });
 }

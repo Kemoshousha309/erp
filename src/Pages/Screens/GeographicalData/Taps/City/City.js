@@ -1,8 +1,8 @@
 import { cityInitState } from "./state";
 import _ from "lodash";
 import ScreenConstructor from "../../../../ScreenConstructor/ScreenConstructor";
-import { setlastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
-import { functionsListenrs } from "../../../../ScreenConstructor/screen/listeners";
+import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
+import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
 import {
   autoDisplay,
@@ -22,8 +22,8 @@ class City extends ScreenConstructor {
   }
 
   componentDidMount() {
-    setlastIndex(this);
-    functionsListenrs(this, true);
+    setLastIndex(this);
+    functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
     this.setState({ tools });
     autoDisplay(this, "province_no", "province", {
@@ -96,7 +96,7 @@ const mapStateToProps = (state) => ({
   forms_privs_hash: state.auth.authData.forms_privs_hash,
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+  changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(City);

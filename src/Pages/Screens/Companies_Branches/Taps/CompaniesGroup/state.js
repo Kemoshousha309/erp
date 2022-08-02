@@ -5,7 +5,7 @@ export const companiesGroupInitState = {
       type: 'number',
       label: 'group_no',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -21,7 +21,7 @@ export const companiesGroupInitState = {
       type: 'text',
       label: 'name',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -36,7 +36,7 @@ export const companiesGroupInitState = {
       type: 'text',
       label: 'foreign_name',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,

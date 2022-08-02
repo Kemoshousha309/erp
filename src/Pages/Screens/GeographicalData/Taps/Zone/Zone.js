@@ -3,9 +3,9 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { langChangeActivity } from '../../../../../Context/actions/lang';
 import { displayContent } from '../../../../ScreenConstructor/screen/displayContent';
-import { setlastIndex } from '../../../../ScreenConstructor/screen/functions/moves';
+import { setLastIndex } from '../../../../ScreenConstructor/screen/functions/moves';
 import { autoDisplay, changePropName } from '../../../../ScreenConstructor/screen/inputsHandlers';
-import { functionsListenrs } from '../../../../ScreenConstructor/screen/listeners';
+import { functionsListeners } from '../../../../ScreenConstructor/screen/listeners';
 import { updateMode } from '../../../../ScreenConstructor/screen/mode';
 import ScreenConstructor from '../../../../ScreenConstructor/ScreenConstructor';
 import { zoneInitState } from './state';
@@ -20,8 +20,8 @@ class Zone extends ScreenConstructor {
   }
 
   componentDidMount() {
-    setlastIndex(this);
-    functionsListenrs(this, true);
+    setLastIndex(this);
+    functionsListeners(this, true);
     const {tools} = updateMode("start", this.state, this.props)
     this.setState({tools})
     autoDisplay(this, 'city_no', 'city', {
@@ -115,7 +115,7 @@ const mapStateToProps = (state) => ({
   forms_privs_hash: state.auth.authData.forms_privs_hash,
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+  changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Zone);

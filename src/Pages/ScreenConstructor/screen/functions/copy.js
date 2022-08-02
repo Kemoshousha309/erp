@@ -1,11 +1,20 @@
+/**
+ * @module copy 
+ */
 import { handleFields } from "../fields";
-import axois from "../../../../axios";
+import axios from "../../../../axios";
 import { FuncConstructor } from "./funcConstructor";
 import { updateMode } from "../mode";
 
 // copy handle ******************************
 
-export class Copyer extends FuncConstructor {
+/**
+ * Copier is responsible for copy process in the screen
+ * have a similar methods to {@link Adder} 
+ */
+
+export class Copier extends FuncConstructor {
+
 
   localHandle() {
     const { fields } = this.screen.state;
@@ -22,7 +31,7 @@ export class Copyer extends FuncConstructor {
           .then((fieldsUpdate) => resolve({ preData: null, fieldsUpdate }))
           .catch((err) => console.log(err));
       } else if (preAdd) {
-        this.preHanler("Add", fieldsUpdate)
+        this.preHandler("Add", fieldsUpdate)
           .then(({ data, fieldsUpdate }) =>
             resolve({ preData: data, fieldsUpdate })
           )
@@ -37,7 +46,7 @@ export class Copyer extends FuncConstructor {
       const autoIncrementValue = fieldsUpdate[pkPropName].autoIncrementValue
         ? fieldsUpdate[pkPropName].autoIncrementValue
         : "";
-      axois
+      axios
         .get(`${fieldsUpdate[pkPropName].autoIncrement + autoIncrementValue}`)
         .then((res) => {
           fieldsUpdate[pkPropName].value = res.data.next_PK
@@ -51,6 +60,9 @@ export class Copyer extends FuncConstructor {
 }
 
 
+/**
+ * manage the default state update in copy process
+ */
 export async function handleCopyModel() {
   const fieldsUpdate = this.copyHandler.localHandle();
   const {tools} = updateMode("copy", this.state, this.props)

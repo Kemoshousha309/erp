@@ -5,7 +5,7 @@ export const banksInitState = {
       type: "number",
       label: "bank_no",
       validation: {
-        requiered: true,
+        required: true,
         length: 30,
       },
       validity: {
@@ -21,7 +21,7 @@ export const banksInitState = {
       type: "text",
       label: "name",
       validation: {
-        requiered: true,
+        required: true,
         length: 200,
       },
       validity: {
@@ -37,7 +37,7 @@ export const banksInitState = {
       type: "text",
       label: "foreign_name",
       validation: {
-        requiered: false,
+        required: false,
         length: 200,
       },
       validity: {
@@ -118,9 +118,9 @@ export const banksInitState = {
             disabled: false,
             type: "number",
             validationRules: {
-              requiered: true,
+              required: true,
             },
-            foriegnPropName: "acc_no",
+            foreignPropName: "acc_no",
             fk: true,
             fillFields: ["acc_no"],
             foreignURLs: {
@@ -151,7 +151,7 @@ export const banksInitState = {
             disabled: false,
             type: "text",
             validationRules: {
-              requiered: true,
+              required: true,
             },
           },
           inactive: {
@@ -160,7 +160,7 @@ export const banksInitState = {
             disabled: false,
             type: "checkbox",
             validationRules: {
-              requiered: true,
+              required: true,
             },
             defaultValue: false,
           },

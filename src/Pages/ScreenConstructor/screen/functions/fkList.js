@@ -1,8 +1,15 @@
 import _ from "lodash";
 import { FuncConstructor } from "./funcConstructor";
 
-
+/**
+ * FkList manages the foreign key list behavior
+ */
 export class FkList extends FuncConstructor {
+  /**
+   * manages the foreign key list record click behavior
+   * @param {Object} record the record received from user click
+   * @returns {Object} fieldsUpdate
+   */
   recordClick(record) {
     const {
       state: { fields, fkListShow },

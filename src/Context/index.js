@@ -6,11 +6,11 @@ export {
 
 // actions
 export {
-  changeLnaguage,
+  changeLanguage,
   storeLanguagesTable,
   langRequestFailure,
   langRequest,
-  checkLabelesLocalStorage,
+ checkLabelsLocalStorage,
 } from './actions/lang';
 
 export {

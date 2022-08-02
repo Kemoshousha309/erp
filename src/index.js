@@ -1,31 +1,30 @@
 /**
- * @file index.js to handle the langs
+ * @file index.js The index file of the App
+ * - set the interceptors for the Axios
+ * - set the store for redux
+ * - render the app
  * @author kareem shousha
- * @see <a href="#">google</a>
  */
 
+import React from "react";
+import ReactDOM from "react-dom";
+import "./Styles/bootstrap.min.css";
+import "./index.scss";
+import { createStore, applyMiddleware, compose, combineReducers } from "redux";
+import thunk from "redux-thunk";
+import { Provider } from "react-redux";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { languageReducer } from "./Context";
+import { authReducer } from "./Context/reducers/auth";
+import axios from "./axios";
+import * as actionTypes from "./Context/actions/actionTypes";
+import { appReducer } from "./Context/reducers/app";
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './Styles/bootstrap.min.css';
-import './index.scss';
-import {
-  createStore, applyMiddleware, compose, combineReducers,
-} from 'redux';
-import thunk from 'redux-thunk';
-import { Provider } from 'react-redux';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { languageReducer } from './Context';
-import { authReducer } from './Context/reducers/auth';
-import axios from './axios';
-import * as actionTypes from './Context/actions/actionTypes';
-import { appReducer } from './Context/reducers/app';
-// import Perf from 'react-addons-perf'; // ES6
-
-const composeEnhancers = process.env.NODE_ENV === 'development'
-  ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  : null || compose;
+const composeEnhancers =
+  process.env.NODE_ENV === "development"
+    ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : null || compose;
 
 const rootReducer = combineReducers({
   lang: languageReducer,
@@ -35,7 +34,7 @@ const rootReducer = combineReducers({
 
 export const store = createStore(
   rootReducer,
-  composeEnhancers(applyMiddleware(thunk)),
+  composeEnhancers(applyMiddleware(thunk))
 );
 
 // set axios interceptors
@@ -58,20 +57,19 @@ axios.interceptors.response.use(
     } else {
       throw err;
     }
-  },
+  }
 );
 
-
-
 ReactDOM.render(
-  // <React.StrictMode> this gives us some warning to improve our app you  can use it at the end of devolopment
-  <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Provider>,
-  // </React.StrictMode>,
-  document.getElementById('root'),
+  // this gives us some warning to improve our app you  can use it at the end of development
+  <React.StrictMode>
+    <Provider store={store}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+    </Provider>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react"
 import { connect } from "react-redux"
 import style from "./AsyncSelectField.module.scss"
-import { label, checkInputValiditiy, reflectOuterState } from "../../../Helpers/inputs"
+import { label, checkInputValidity, reflectOuterState } from "../../../Helpers/inputs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faAngleDown} from "@fortawesome/free-solid-svg-icons";
 import Backdrop from "../../UI/Backdrop/Backdrop";
@@ -53,7 +53,7 @@ class AsyncSelectField extends PureComponent {
         // console.log(`[InputSelectField] render`, this.state)
         const field = this.props.field
         const placeholder = t(this.props.field.label)
-        let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style)
+        let [invalidMessage, invalidInputStyle] = checkInputValidity(this, style)
         let options = <div className="text-center"> <CircularProgress className="m-5" /></div>
         if(field.options){
             options = field.options.map(op => {
@@ -103,7 +103,7 @@ class AsyncSelectField extends PureComponent {
 }
 
 const dropListClasses = (thisK) => {
-    let classes = [style.droplist]
+    let classes = [style.dropList]
     if(parseInt(thisK.props.lanState) === 1){
         classes.push(style.arTrans)
     }else{

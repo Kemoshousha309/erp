@@ -36,7 +36,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+    changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
   };
 };
 

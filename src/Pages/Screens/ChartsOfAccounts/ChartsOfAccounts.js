@@ -1,21 +1,21 @@
 import { connect } from "react-redux";
 import { langChangeActivity } from "../../../Context/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
-import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
+import { setLastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import {
   autoDisplay,
   changePropName,
 } from "../../ScreenConstructor/screen/inputsHandlers";
-import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
+import { functionsListeners } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
-import { getAccTreestructure, subUpdate, updateOnParentAcc } from "./Utilities";
+import { getAccTreeStructure, subUpdate, updateOnParentAcc } from "./Utilities";
 import axios from "../../../axios";
-import { initDetials } from "../../ScreenConstructor/screen/Details/DetailsPanel";
+import { initDetails } from "../../ScreenConstructor/screen/Details/DetailsPanel";
 import _ from "lodash";
 import { getTree } from "../../ScreenConstructor/screen/async";
 import {
-  ChartsOfAccsXlsxPreparer,
-  ChartsOfAccsXlsxValidator,
+  ChartsOfAcctsXlsxPreparer,
+  ChartsOfAcctsXlsxValidator,
 } from "./ChartsOfAccsXlsx/ChartsOfAccsXlsx";
 import { updateCurrentScreen } from "../../../Context/actions/app";
 import { timer } from "../../ScreenConstructor/screen/utilities";
@@ -58,20 +58,20 @@ class ChartsOfAccounts extends ScreenConstructor {
     const tree = await getTree.call(
       this,
       "chartofaccounts",
-      getAccTreestructure
+      getAccTreeStructure
     );
     this.setState({ tree });
   };
 
   async componentDidMount() {
-    setlastIndex(this);
-    functionsListenrs(this, true);
+    setLastIndex(this);
+    functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
     this.setState({ tools });
     const tree = await getTree.call(
       this,
       "chartofaccounts",
-      getAccTreestructure
+      getAccTreeStructure
     );
     this.setState({ tree });
     autoDisplay(this, "parent_acc", "chartofaccounts", {
@@ -89,14 +89,14 @@ class ChartsOfAccounts extends ScreenConstructor {
     });
   }
 
-  // retrun a new validator specific to this screen
+  // return a new validator specific to this screen
   excelPageValidator = (sheet, sheetColumnsNum) => {
-    return new ChartsOfAccsXlsxValidator(sheet, sheetColumnsNum);
+    return new ChartsOfAcctsXlsxValidator(sheet, sheetColumnsNum);
   };
 
   // return a new preparer specific to this screen
   excelPagePreparer = (recordPropNames, sheet) => {
-    return new ChartsOfAccsXlsxPreparer(recordPropNames, sheet);
+    return new ChartsOfAcctsXlsxPreparer(recordPropNames, sheet);
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -118,7 +118,7 @@ class ChartsOfAccounts extends ScreenConstructor {
     if (["add", "modify", "copy"].includes(newState.mode)) {
       newState.fields.inactive_reason.writability =
         newState.fields.inactive.value;
-      newState.fields.inactive_reason.validation.requiered =
+      newState.fields.inactive_reason.validation.required =
         newState.fields.inactive.value;
     }
 
@@ -126,7 +126,7 @@ class ChartsOfAccounts extends ScreenConstructor {
     return newState;
   }
   render() {
-    return displayContent(this, this.props.location, initDetials.call(this));
+    return displayContent(this, this.props.location, initDetails.call(this));
   }
 }
 
@@ -142,7 +142,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+    changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
     updateCurrentScreen: (screen) => dispatch(updateCurrentScreen(screen)),
   };
 };

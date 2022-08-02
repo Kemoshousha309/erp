@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { dtlFuncConstructor } from "./dtlFuncConstructor";
 
-// REOMVE HANDLERS ************************************************************************
+// REMOVE HANDLERS ************************************************************************
 export class DetailsRemover extends dtlFuncConstructor {
 
   removeHandler(index, e) {
@@ -22,7 +22,7 @@ export class DetailsRemover extends dtlFuncConstructor {
   }
 }
 
-export class LimitDetialsRomver extends DetailsRemover {
+export class LimitDetailsRemover extends DetailsRemover {
   /// this class handles the removing of limited number of records
   constructor(screen) {
     super(screen);

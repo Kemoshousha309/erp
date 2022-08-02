@@ -1,3 +1,7 @@
+/**
+ * @module search
+ */
+
 import { getValues, getPkUrl, fillRecord, handleFields } from "../fields";
 import axios from "../../../../axios";
 import { logout } from "../../../../Context";
@@ -9,13 +13,27 @@ import { updateMode } from "../mode";
 import { selectMessage } from "../../../../Languages/languages";
 
 // Handle search ******************************************************
+
+/**
+ * Searcher manages the search process in the screen
+ */
 export class Searcher extends FuncConstructor {
+  /**
+   * prepare the fields and screen for search process by opening the 
+   * search fields 
+   */
   prepare() {
     const {
       state: { fields, searchFields },
     } = this.screen;
     return handleFields(fields, "open", true, searchFields);
   }
+  /**
+   * send the request to the server to get the record that we search for
+   * @returns {Promise} a promise that resolves
+   * - fields update 
+   * - fetched record (get by the search process)
+   */
   searchRequest() {
     const {
       state: { fields, pks, urls, searchFields },
@@ -34,7 +52,7 @@ export class Searcher extends FuncConstructor {
         .catch((err) => {
           let message = null;
           if (err.response) {
-            // update the previlliges
+            // update the previlleges
             if (err.response.status === 401) {
               store.dispatch(logout());
             }
@@ -55,6 +73,13 @@ export class Searcher extends FuncConstructor {
   }
 }
 
+/**
+ * manages the default behavior in search process 
+ * - check validity
+ * - update the mode (d_record)
+ * - set the index null
+ *  - update the fields and messages
+ */
 export async function handleSearchModel() {
   const {
     state: { mode },

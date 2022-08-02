@@ -3,7 +3,7 @@ import axios from '../../../axios';
 import { parallel } from '../../ScreenConstructor/screen/async';
 
 // TREE
-export function getAccTreestructure(accounts) {
+export function getAccTreeStructure(accounts) {
   const rootParents = accounts.filter(({ parent_acc }) => parent_acc === 0);
   const tree = rootParents.map((parent) => getChildren(parent, accounts));
   return tree;
@@ -86,7 +86,7 @@ function request(task1, task2, index) {
 }
 
 let counter = 0;
-const excuteRequests = () => {
+const executeRequests = () => {
   if (counter === 0) {
     requestsList[counter].req();
     counter++;
@@ -118,7 +118,7 @@ export function parentAccHandler(e, inputFiled) {
     status: 'PENDING',
   };
   requestsList.push(promise);
-  excuteRequests();
+  executeRequests();
 }
 
 // update other fields based on the parent account

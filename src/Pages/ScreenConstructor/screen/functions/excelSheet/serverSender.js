@@ -34,7 +34,7 @@ export class ExcelServerSender {
             excelLoading: false,
             serverValidate: {
               validated: true,
-              addAvialabilty: true,
+              addAvailability: true,
               validateRes: null,
             },
           },
@@ -46,7 +46,7 @@ export class ExcelServerSender {
             excelLoading: false,
             serverValidate: {
               validated: true,
-              addAvialabilty: false,
+              addAvailability: false,
               validateRes: err.response.data,
             },
           },
@@ -69,7 +69,7 @@ export class ExcelServerSender {
         excelPage.excelLoading = false;
         excelPage.serverValidate = {
           validated: false,
-          addAvialabilty: false,
+          addAvailability: false,
           validateRes: null,
         };
         excelPage.addMess = 'The Excel Sheet is added';

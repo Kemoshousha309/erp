@@ -29,4 +29,3 @@ const Btn = ({label, center, variant, icon, disabled, ...other}) => {
 export default Btn;
 
 
-// we used fontawsom to apply icons here

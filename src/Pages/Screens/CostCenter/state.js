@@ -8,7 +8,7 @@ export const constCenterInitState = {
       type: "number",
       label: "parent_cc",
       validation: {
-        requiered: true,
+        required: true,
         size: 2147483647,
       },
       validity: {
@@ -37,7 +37,7 @@ export const constCenterInitState = {
       type: "number",
       label: "cc_no",
       validation: {
-        requiered: true,
+        required: true,
         size: 2147483647,
       },
       validity: {
@@ -47,15 +47,13 @@ export const constCenterInitState = {
       },
       writability: false,
       value: "",
-      // autoIncrement: "/costcenters/nextPK/",
-      // autoIncrementValue: "parent_cc",
     },
     cc_d_name: {
       fieldType: "input",
       type: "text",
       label: "name",
       validation: {
-        requiered: true,
+        required: true,
         length: 100,
       },
       validity: {
@@ -86,7 +84,7 @@ export const constCenterInitState = {
       type: "select",
       label: "type",
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -124,7 +122,7 @@ export const constCenterInitState = {
       type: "number",
       label: "group",
       validation: {
-        requiered: true,
+        required: true,
         size: 2147483647,
       },
       validity: {
@@ -200,7 +198,7 @@ export const constCenterInitState = {
   searchFields: ["cc_no"],
   tree: null,
   treeInfo: {
-    treeLables: {
+    treeLabels: {
       d: "cc_d_name",
       f: "cc_f_name",
     },

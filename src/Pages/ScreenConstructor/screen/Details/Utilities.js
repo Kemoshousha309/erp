@@ -1,14 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import { Field } from './detailFields';
-import { detialFieldValidity } from '../../../../Validation/validation';
+import { detailFieldValidity } from '../../../../Validation/validation';
 import style from './style.module.scss';
 import { formatDate } from '../../../../Helpers/date';
 import { decideName, t } from '../../../../Languages/languages';
 
 // UTILITIES =>
 export function addIcon(viewOnly, mode, addHandler, state) {
-  // this function render the add button and indicate its status based on the addstate,
+  // this function render the add button and indicate its status based on the addState,
   // mode, and viewOnly properties from the screen state
   // NOTE => addState should be the only property to decide its state but this is a (design problem)
 
@@ -86,7 +86,7 @@ export function tableBody(
                 changeOnLang,
               } = i;
 
-              const [valid, message] = detialFieldValidity(page, propName);
+              const [valid, message] = detailFieldValidity(page, propName);
               if (page.action === 'add' && detailsType === 'PRIMARY') {
                 disabled = false;
               }

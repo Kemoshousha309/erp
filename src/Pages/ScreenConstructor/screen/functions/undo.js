@@ -1,40 +1,61 @@
+/**
+ * @module undo
+ */
+
 import _ from "lodash";
 import { handleFields } from "../fields";
 import { updateMode } from "../mode";
-import { getDtailsPropnams } from "../utilities";
+import { getDetailsPropanes } from "../utilities";
 import { FuncConstructor } from "./funcConstructor";
 
 // undo handle ******************************
-export class UndoHandler extends FuncConstructor {
 
+/**
+ * UndoHandler Manages the normal undo behaviors
+ */
+export class UndoHandler extends FuncConstructor {
+  /**
+   * manages the undo behavior
+   * @returns {Object} contains:
+   * - mode update
+   * - record update
+   * - fields update
+   */
   handleUndo = () => {
     const { fields, mode, record } = this.screen.state;
     let fieldsUpdate = null;
     switch (mode) {
       case "modify":
         fieldsUpdate = handleFields(fields, "close", false);
-        return {fieldsUpdate, mode: "d_record", record}
+        return { fieldsUpdate, mode: "d_record", record };
       case "copy":
         fieldsUpdate = handleFields(fields, "close", false);
-        return {fieldsUpdate, mode: "d_record", record};
+        return { fieldsUpdate, mode: "d_record", record };
       default:
         // undo to start mode
         fieldsUpdate = handleFields(fields, "close");
-        return {fieldsUpdate, mode: "start", record: null};
+        return { fieldsUpdate, mode: "start", record: null };
     }
   };
 }
 
-
+/**
+ * DetailsUndoHandler manages details undo behaviors
+ */
 export class DetailsUndoHandler extends UndoHandler {
-
+  /**
+   * go through all the details row and check: 
+   * - if this row is added in front end => remove it
+   * - if one of its values changed return it to the server value
+   * @returns {Object} record update
+   */
   handleDtlRecordUndo() {
     const {
       record,
       details: { tabs },
     } = this.screen.state;
     const recordClone = _.cloneDeep(record);
-    const properties = getDtailsPropnams(tabs);
+    const properties = getDetailsPropanes(tabs);
     properties.forEach((prop) => {
       if (prop && recordClone) {
         const pages = recordClone[prop];
@@ -58,34 +79,31 @@ export class DetailsUndoHandler extends UndoHandler {
     });
     return recordClone;
   }
-
-
-  LimitRecordsUnodHandler() {
-    let {
-      details,
-      details: { current_tab },
-    } = this.screen.state;
-    this.handleDetailsScreensUndo()
-    details.tabs[current_tab].addState = true;
-    this.screen.setState({details})
-  }
-
 }
 
 
-
+/**
+ * decide to use normal undo or dtl undo model
+ * @returns undefined
+ */
 export async function handleUndoModel() {
-  const { detials } = this.state;
-  if (!detials) return handleNormalUndoModel.call(this);
+  const { details } = this.state;
+  if (!details) return handleNormalUndoModel.call(this);
   handleDtlUndoModel.call(this);
 }
 
+
+/**
+ * - get the fieldsUpdate, mode and record 
+ * - update the state and remover the content of pre content
+ * @returns undefined
+ */
 export async function handleNormalUndoModel() {
   const {
     state: { preAdd, preModify },
   } = this;
   const { fieldsUpdate, mode, record } = this.undoHandler.handleUndo();
-  const {tools} = updateMode(mode, this.state, this.props)
+  const { tools } = updateMode(mode, this.state, this.props);
   if (!preAdd || !preModify)
     return this.setState({ fields: fieldsUpdate, mode, record, tools });
   this.setState({
@@ -94,14 +112,37 @@ export async function handleNormalUndoModel() {
     record,
     preAdd: { ...preAdd, content: null },
     preModify: { ...preModify, content: null },
-    tools
+    tools,
   });
 }
 
+/** manages the model of details undo behavior 
+ * - get the fieldsUpdate, mode (normal handle)
+ * - get the updated record from handleDtlRecordUndo (details handle)
+ * - update the state and remove the content of pre content if present
+ * @returns undefined (model => updating the state)
+ */
 export async function handleDtlUndoModel() {
-  const {recordUpdate} = this.dtlUndoHandler.handleDtlRecordUndo();
-    this.normalUndo();
-    this.setState({record: recordUpdate})
+  const {
+    state: { preAdd, preModify },
+  } = this;
+  const recordUpdate = this.dtlUndoHandler.handleDtlRecordUndo();
+  const { fieldsUpdate, mode, record } = this.undoHandler.handleUndo();
+  const { tools } = updateMode(mode, this.state, this.props);
+  const finalRecordUpdate = !record ? record : recordUpdate
+  if (!preAdd || !preModify)
+    return this.setState({
+      fields: fieldsUpdate,
+      mode,
+      record: finalRecordUpdate,
+      tools,
+    });
+  this.setState({
+    fields: fieldsUpdate,
+    mode,
+    record: finalRecordUpdate,
+    preAdd: { ...preAdd, content: null },
+    preModify: { ...preModify, content: null },
+    tools,
+  });
 }
-
-

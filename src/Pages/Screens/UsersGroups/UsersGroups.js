@@ -28,7 +28,7 @@ const mapStateToProps = (state) => ({
   forms_privs_hash: state.auth.authData.forms_privs_hash,
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+  changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersGroups);

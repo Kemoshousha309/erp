@@ -7,7 +7,7 @@ export const formsInitState = {
       type: "number",
       label: "module_no",
       validation: {
-        requiered: true,
+        required: true,
         length: 30,
       },
       validity: {
@@ -37,7 +37,7 @@ export const formsInitState = {
       type: "number",
       label: "form_no",
       validation: {
-        requiered: true,
+        required: true,
         length: 30,
       },
       validity: {
@@ -53,7 +53,7 @@ export const formsInitState = {
       type: "text",
       label: "name",
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -68,7 +68,7 @@ export const formsInitState = {
       type: "text",
       label: "foreign_name",
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -83,7 +83,7 @@ export const formsInitState = {
       type: "number",
       label: "parent_form",
       validation: {
-        requiered: true,
+        required: true,
         length: 30,
       },
       validity: {
@@ -117,7 +117,7 @@ export const formsInitState = {
       type: "number",
       label: "form_order",
       validation: {
-        requiered: true,
+        required: true,
         length: 30,
       },
       validity: {
@@ -187,7 +187,7 @@ export const formsInitState = {
       },
     },
   },
-  tapTools: ["delete", "add", "copy"],
+  tapTools: ["delete", "add", "copy", "excel"],
   tree: null,
   treeLoading: <CircularProgress className="m-5" />,
 }

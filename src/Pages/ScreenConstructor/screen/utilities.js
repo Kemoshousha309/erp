@@ -15,7 +15,7 @@ export const timer = (time=3000) => {
   });
 };
 
-export const trigerEnterButton = (id, func) => {
+export const triggerEnterButton = (id, func) => {
   const input = document.getElementById(id);
   input.addEventListener("keyup", (event) => {
     if (event.keyCode === 13) {
@@ -51,8 +51,8 @@ export const toolsPriv = (formPrivs, tools) => {
   return hash_back(tools_hash);
 };
 
-export const getDtailsPropnams = (tabs, headers) => {
-  // this funcion give you props names of record that is not viewOnly
+export const getDetailsPropanes = (tabs, headers) => {
+  // this function give you props names of record that is not viewOnly
   const properties = Object.keys(tabs).map((key) => {
     const tab = tabs[key];
     if (!tab.viewOnly) {

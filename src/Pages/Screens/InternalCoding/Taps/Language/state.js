@@ -5,7 +5,7 @@ export const langInitState = {
       type: 'number',
       label: 'lang_no',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -21,7 +21,7 @@ export const langInitState = {
       type: 'text',
       label: 'name',
       validation: {
-        requiered: true,
+        required: true,
         length: 50,
       },
       validity: {
@@ -37,7 +37,7 @@ export const langInitState = {
       type: 'number',
       label: 'lang_dir',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -52,7 +52,7 @@ export const langInitState = {
       type: 'text',
       label: 'report_ext',
       validation: {
-        requiered: true,
+        required: true,
         length: 10,
       },
       validity: {
@@ -68,7 +68,7 @@ export const langInitState = {
       type: 'text',
       label: 'lang_ext',
       validation: {
-        requiered: true,
+        required: true,
         length: 10,
       },
       validity: {
@@ -95,7 +95,7 @@ export const langInitState = {
     },
   },
   pks: ['lang_no'],
-  tapTools: ['delete'], // to be deleted and view the others
+  tapTools: [], // to be deleted and view the others
   mainFields: ['lang_no', 'lang_name', 'lang_dir'],
   tapName: 'language',
   searchFields: ['lang_no'],

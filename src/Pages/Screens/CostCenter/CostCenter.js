@@ -1,12 +1,12 @@
 import { connect } from "react-redux";
 import { langChangeActivity } from "../../../Context/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
-import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
+import { setLastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import {
   autoDisplay,
   changePropName,
 } from "../../ScreenConstructor/screen/inputsHandlers";
-import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
+import { functionsListeners } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
 import { getCCTreestructure } from "./Utilities";
 import _ from "lodash";
@@ -75,8 +75,8 @@ class CostCenter extends ScreenConstructor {
   }
 
   async componentDidMount() {
-    setlastIndex(this);
-    functionsListenrs(this, true);
+    setLastIndex(this);
+    functionsListeners(this, true);
     const {tools} = updateMode("start", this.state, this.props)
     this.setState({tools})
     const tree = await getTree.call(this, "costcenters", getCCTreestructure);
@@ -115,7 +115,7 @@ class CostCenter extends ScreenConstructor {
     if (["add", "modify", "copy"].includes(newState.mode)) {
       newState.fields.inactive_reason.writability =
         newState.fields.inactive.value;
-      newState.fields.inactive_reason.validation.requiered =
+      newState.fields.inactive_reason.validation.required =
         newState.fields.inactive.value;
     }
 
@@ -137,7 +137,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+    changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(CostCenter);

@@ -11,7 +11,7 @@ import {store} from "../index";
 
 
 /**
- * Produce the translation for lables and messages
+ * Produce the translation for labels and messages
  * @param {string}  code - the code of the label or message
  * @param {string}  placeholder - a hash value to put in specific place in the description
  * @returns {string} - description of the code in a specific language
@@ -77,14 +77,14 @@ export const getSelectLangDir = (langs) => {
 
 export const decideName = (fieldName) => {
   const {lan: langNo} = store.getState().lang;
-  let retrunName = `${fieldName}_f_name`;
+  let returnName = `${fieldName}_f_name`;
   if (parseInt(langNo) === 1) {
-    retrunName = `${fieldName}_d_name`;
+    returnName = `${fieldName}_d_name`;
   }
-  return retrunName;
+  return returnName;
 };
 
-export const getAvialableValue = (d_value, f_value) => {
+export const getAvailableValue = (d_value, f_value) => {
   const {lan: langNo} = store.getState().lang;
   let currentValue = d_value;
   let otherValue = f_value;

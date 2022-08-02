@@ -10,7 +10,7 @@ import ReloadServerCache from "./Commands/ReloadServerCache/ReloadServerCache";
 import GenUngenPriv from "./Commands/GenUngenPriv/GenUngenPriv";
 import { TextField } from "@mui/material";
 import ReloadClientCache from "./Commands/ReloadClientCache/ReloadClientCache";
-import { clearlangData } from "../../../Context/actions/lang";
+import { clearLangData } from "../../../Context/actions/lang";
 import { timer } from "../../ScreenConstructor/screen/utilities";
 import { selectMessage, t } from "../../../Languages/languages";
 
@@ -125,7 +125,7 @@ class SystemCommands extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    clearBrowserData: () => dispatch(clearlangData()),
+    clearBrowserData: () => dispatch(clearLangData()),
   };
 };
 

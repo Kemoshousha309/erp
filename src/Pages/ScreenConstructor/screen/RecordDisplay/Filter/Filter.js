@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { TextField } from '@mui/material';
 import { connect } from 'react-redux';
 import style from './Filter.module.scss';
-import { trigerEnterButton } from '../../utilities';
+import { triggerEnterButton } from '../../utilities';
 import { getF } from '../../../../../Helpers/utilities';
 import { t } from '../../../../../Languages/languages';
 
@@ -12,7 +12,7 @@ class Filter extends PureComponent {
   componentDidMount() {
     this.props.fields.map((f, i) => {
       const id = `${getF(f, 'label', this.props.lanState)}${i}100`;
-      trigerEnterButton(id, this.props.searchClick);
+      triggerEnterButton(id, this.props.searchClick);
       return null;
     });
   }

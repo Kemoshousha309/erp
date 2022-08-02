@@ -9,7 +9,7 @@ export const handleAsyncLangNoOpts = (thisK, mode) => {
     request_lan_no_options(thisK);
   }
 };
-const request_lan_no_options = (thisk) => {
+const request_lan_no_options = (think) => {
   // should be only active
   axios
     .get('public/language')
@@ -21,9 +21,9 @@ const request_lan_no_options = (thisk) => {
           options.push({ value: i.lang_no, template: itemTemp });
         }
       });
-      const fieldsClone = { ...thisk.state.fields };
+      const fieldsClone = { ...think.state.fields };
       fieldsClone.lang_no.options = options;
-      thisk.setState({ fields: fieldsClone });
+      think.setState({ fields: fieldsClone });
     })
     .catch((err) => console.log(err));
 };
@@ -43,18 +43,18 @@ export const add_lan_dir_options = (thisK) => {
     }
   });
   const fieldsClone = { ...thisK.state.fields };
-  const constoptions_noDub = [...new Set(options)];
-  fieldsClone.lang_dir.options = constoptions_noDub;
+  const options_noDub = [...new Set(options)];
+  fieldsClone.lang_dir.options = options_noDub;
   thisK.setState({ fields: fieldsClone });
 };
 
 export function getTree(url, structure) {
-  return new Promise((resovle, reject) => {
+  return new Promise((resolve, reject) => {
     axios
       .get(url)
       .then((res) => {
         const tree = structure(res.data);
-        resovle(tree)
+        resolve(tree)
       })
       .catch((err) => console.log(err));
   })

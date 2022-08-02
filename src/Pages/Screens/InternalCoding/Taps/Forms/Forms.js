@@ -4,9 +4,9 @@ import { getTreeStructure } from "../../../../../Helpers/tree";
 import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { getTree } from "../../../../ScreenConstructor/screen/async";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
-import { setlastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
+import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
 import { autoDisplay, changePropName } from "../../../../ScreenConstructor/screen/inputsHandlers";
-import { functionsListenrs } from "../../../../ScreenConstructor/screen/listeners";
+import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
 import ScreenConstructor from "../../../../ScreenConstructor/ScreenConstructor";
 import { formsInitState } from "./state";
@@ -20,13 +20,12 @@ class Forms extends ScreenConstructor {
       ..._.cloneDeep(formsInitState)
     };
   }
-  treeNodeClick = (record) => this.recordClick(record, null);
-  componentDidMount() {
-    getTree.call(this, "forms/mainTree", getTreeStructure);
-    setlastIndex(this);
-    functionsListenrs(this, true);
+  async componentDidMount() {
+    const tree = await getTree.call(this, "forms/mainTree", getTreeStructure);
+    setLastIndex(this);
+    functionsListeners(this, true);
     const {tools} = updateMode("start", this.state, this.props)
-    this.setState({tools})
+    this.setState({tools, tree})
 
     // inputs handlers
     autoDisplay(this, "parent_form", "forms", {
@@ -87,7 +86,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+    changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
   };
 };
 

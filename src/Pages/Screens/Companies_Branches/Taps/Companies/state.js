@@ -5,7 +5,7 @@ export const companiesInitState = {
       type: 'number',
       label: 'company_no',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -21,7 +21,7 @@ export const companiesInitState = {
       type: 'text',
       label: 'name',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -36,7 +36,7 @@ export const companiesInitState = {
       type: 'text',
       label: 'foreign_name',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -51,7 +51,7 @@ export const companiesInitState = {
       type: 'email',
       label: 'mail',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -66,7 +66,7 @@ export const companiesInitState = {
       type: 'text',
       label: 'website',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -81,7 +81,7 @@ export const companiesInitState = {
       type: 'text',
       label: 'shortcut',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -96,7 +96,7 @@ export const companiesInitState = {
       type: 'text',
       label: 'foreign_shortcut',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -112,7 +112,7 @@ export const companiesInitState = {
       type: 'number',
       label: 'group_no',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -151,7 +151,7 @@ export const companiesInitState = {
       type: 'number',
       label: 'country_no',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,

@@ -1,13 +1,13 @@
 import _ from "lodash";
 import { dtlFuncConstructor } from "./dtlFuncConstructor";
 
-// DETIAL ADD HANDLERS **********************************************************
-export class DetialsAdder extends dtlFuncConstructor {
+// DETAILS ADD HANDLERS **********************************************************
+export class DetailsAdder extends dtlFuncConstructor {
   // this class is responsible for the default add process of details
 
   // ADD HANDLERS
   addHandler(e) {
-    // this is a default details add hanlder which decide the way to handle add base on the
+    // this is a default details add handler which decide the way to handle add base on the
     // details type  PRIMARY OR FOREIGN
     switch (this.screen.state.details.type) {
       case 'PRIMARY':
@@ -25,7 +25,7 @@ export class DetialsAdder extends dtlFuncConstructor {
   primaryAddHandler(e) {
     // Add rows to details from the same screen
 
-    // prevent the default behavoir of the form
+    // prevent the default behavior of the form
     e.preventDefault();
 
     // destructure of the used date
@@ -57,7 +57,7 @@ export class DetialsAdder extends dtlFuncConstructor {
       // if there is record but with no details
       recordClone[tabs[current_tab].recordDetailPropName] = [row];
     } else {
-      // if there is a record with details add our row at the top off the detials list
+      // if there is a record with details add our row at the top off the details list
       recordClone[tabs[current_tab].recordDetailPropName].unshift(row);
     }
     // move the scroll bar to the top (UI EFFECT)
@@ -70,8 +70,8 @@ export class DetialsAdder extends dtlFuncConstructor {
   }
 }
 
-// Other sepcial add handlers
-export class LimitAdder extends DetialsAdder {
+// Other special add handlers
+export class LimitAdder extends DetailsAdder {
   constructor(screen) {
     super(screen);
     this.recordsNum = screen.state.details.tabs.bnk_dtl_list.recordsNum;
@@ -98,7 +98,7 @@ export class LimitAdder extends DetialsAdder {
   }
 
   isExceedMaxRecordNum() {
-    // check the number of records to enable or disabe the add button
+    // check the number of records to enable or disable the add button
     const {
       record,
       details: { current_tab, tabs },

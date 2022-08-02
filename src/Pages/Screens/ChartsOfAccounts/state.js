@@ -10,7 +10,7 @@ export const ChartsOfAccountsInitState = {
       type: "number",
       label: "parent_acc",
       validation: {
-        requiered: true,
+        required: true,
         size: 2147483647,
       },
       validity: {
@@ -40,7 +40,7 @@ export const ChartsOfAccountsInitState = {
       type: "number",
       label: "acc_no",
       validation: {
-        requiered: true,
+        required: true,
         size: 2147483647,
       },
       validity: {
@@ -58,7 +58,7 @@ export const ChartsOfAccountsInitState = {
       type: "text",
       label: "name",
       validation: {
-        requiered: true,
+        required: true,
         length: 100,
       },
       validity: {
@@ -133,7 +133,7 @@ export const ChartsOfAccountsInitState = {
         message: null,
       },
       options: [
-        { template: "mandatury", value: 1 },
+        { template: "mandatory", value: 1 },
         { template: "optional", value: 3 },
         { template: "not_used", value: 2 },
       ],
@@ -171,7 +171,7 @@ export const ChartsOfAccountsInitState = {
       type: "number",
       label: "group",
       validation: {
-        requiered: true,
+        required: true,
         size: 2147483647,
       },
       validity: {
@@ -267,9 +267,9 @@ export const ChartsOfAccountsInitState = {
         message: null,
       },
       options: [
-        { template: "cash_cash_equevilant", value: 1 },
+        { template: "cash_cash_equivalent", value: 1 },
         { template: "inventory", value: 2 },
-        { template: "acc_recievable", value: 3 },
+        { template: "acc_receivable", value: 3 },
         { template: "fixed_asset", value: 4 },
         { template: "Intangible_assets", value: 5 },
       ],
@@ -277,15 +277,6 @@ export const ChartsOfAccountsInitState = {
       hide: true,
       value: "",
     },
-    // add_excel_sheet_btn: {
-    //   fieldType: "button",
-    //   label: "add_excel_sheet",
-    //   icon: faFileExcel,
-    //   writability: false,
-    //   onClick: () => {
-    //     this.setState({ excelSheetOpen: !this.state.excelSheetOpen });
-    //   },
-    // },
   },
   excelSheetOpen: false,
   ExcelSheetInstructions: ChartsExcelInstructions,
@@ -373,7 +364,7 @@ export const ChartsOfAccountsInitState = {
   searchFields: ["acc_no"],
   tree: null,
   treeInfo: {
-    treeLables: {
+    treeLabels: {
       d: "acc_d_name",
       f: "acc_f_name",
     },
@@ -399,9 +390,9 @@ export const ChartsOfAccountsInitState = {
             disabled: true,
             type: "text",
             validationRules: {
-              requiered: true,
+              required: true,
             },
-            foriegnPropName: "currency_code",
+            foreignPropName: "currency_code",
             fk: true,
           },
           active: {
@@ -409,9 +400,9 @@ export const ChartsOfAccountsInitState = {
             label: "active",
             type: "checkbox",
             validationRules: {
-              requiered: true,
+              required: true,
             },
-            foriegnPropName: "active",
+            foreignPropName: "active",
             defaultValue: false,
           },
           used: {
@@ -419,9 +410,9 @@ export const ChartsOfAccountsInitState = {
             label: "used",
             type: "checkbox",
             validationRules: {
-              requiered: true,
+              required: true,
             },
-            foriegnPropName: "used",
+            foreignPropName: "used",
             defaultValue: true,
           },
         },

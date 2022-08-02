@@ -1,5 +1,5 @@
 import { XlsxMatcher } from './XlsxMatcher';
-import { XlsxTyper } from './XlsxTyper';
+import { XlsxTypier } from './XlsxTypier';
 
 export class XlsxPreparer {
   constructor(recordPropNames, data) {
@@ -17,8 +17,8 @@ export class XlsxPreparer {
   // under development ..
   prepareTypedSheet() {
     const { recordPropNames, columns, rawSheet } = this;
-    const typer = new XlsxTyper(recordPropNames, rawSheet, columns);
-    this.typedSheet = typer.type();
+    const typier = new XlsxTypier(recordPropNames, rawSheet, columns);
+    this.typedSheet = typier.type();
     return this.typedSheet;
   }
 }

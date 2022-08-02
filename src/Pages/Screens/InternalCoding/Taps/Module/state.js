@@ -5,7 +5,7 @@ export const moduleInitState = {
       type: 'number',
       label: 'module_no',
       validation: {
-        requiered: true,
+        required: true,
         length: 30,
       },
       validity: {
@@ -21,7 +21,7 @@ export const moduleInitState = {
       type: 'text',
       label: 'shortcut',
       validation: {
-        requiered: true,
+        required: true,
         length: 200,
       },
       validity: {
@@ -37,7 +37,7 @@ export const moduleInitState = {
       type: 'text',
       label: 'name',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -52,7 +52,7 @@ export const moduleInitState = {
       type: 'text',
       label: 'foreign_name',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -67,7 +67,7 @@ export const moduleInitState = {
       type: 'number',
       label: 'order_no',
       validation: {
-        requiered: true,
+        required: true,
         length: 30,
       },
       validity: {
@@ -87,7 +87,7 @@ export const moduleInitState = {
     },
   },
   pks: ['module_no'],
-  tapTools: ['delete', 'add', 'copy'],
+  tapTools: ['delete', 'add', 'copy', "excel"],
   mainFields: ['module_no', 'shortcut', 'module_d_name'],
   tapName: 'modules',
   searchFields: ['module_no'],

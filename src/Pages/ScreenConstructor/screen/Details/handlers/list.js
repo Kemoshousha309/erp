@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { t } from "../../../../../Languages/languages";
 import { timer } from "../../utilities";
-import { transformForiegnDetailsData } from "../requestDetails";
+import { transformForeignDetailsData } from "../requestDetails";
 
 
 export class DetailsList_ADD {
@@ -26,7 +26,7 @@ export class DetailsList_ADD {
       stateRecordClone = {};
       stateRecordClone[tabs[current_tab].recordDetailPropName] = [];
       stateRecordClone[tabs[current_tab].recordDetailPropName].unshift(
-        transformForiegnDetailsData(
+        transformForeignDetailsData(
           record,
           Object.values(tabs[current_tab].headers)
         )
@@ -38,7 +38,7 @@ export class DetailsList_ADD {
       // create a row then check if it's present or not
       const { fk } = tabs[current_tab];
       let present = false;
-      const newRow = transformForiegnDetailsData(
+      const newRow = transformForeignDetailsData(
         record,
         Object.values(tabs[current_tab].headers)
       );
@@ -60,7 +60,7 @@ export class DetailsList_ADD {
 
     stateRecordClone[tabs[current_tab].recordDetailPropName] = [];
     stateRecordClone[tabs[current_tab].recordDetailPropName].unshift(
-      transformForiegnDetailsData(
+      transformForeignDetailsData(
         record,
         Object.values(tabs[current_tab].headers)
       )
@@ -141,7 +141,7 @@ export function handleDtlFkListRecordClickModel(choosedRecord) {
   } = this.state;
   const recordUpdate = this.detailsList.handleRecordClick(choosedRecord);
   const dtlUpdate = _.cloneDeep(details);
-  // clsoe the list
+  // close the list
   dtlUpdate.tabs[current_tab].activeForeignList = null;
   this.setState({ record: recordUpdate, details: dtlUpdate });
 }

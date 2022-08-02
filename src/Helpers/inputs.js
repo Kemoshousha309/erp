@@ -43,7 +43,7 @@ export const label = (thisK) => {
     thisK.props.field.label,
   );
   if (thisK.props.field.validation) {
-    if (thisK.props.field.validation.requiered) {
+    if (thisK.props.field.validation.required) {
       return (
         <>
           {label}
@@ -56,7 +56,7 @@ export const label = (thisK) => {
   return label;
 };
 
-export const checkInputValiditiy = (thisK, style) => {
+export const checkInputValidity = (thisK, style) => {
   let invalidMessage = null;
   let invalidInputStyle = null;
   if (!thisK.state.valid) {

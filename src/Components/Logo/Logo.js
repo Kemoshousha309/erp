@@ -1,6 +1,6 @@
 import React from 'react';
 import style from './Logo.module.scss';
-import logo from '../../assests/logo.png';
+import logo from '../../Assets/logo.png';
 import Aux from '../../hoc/Aux';
 
 function Logo(props) {

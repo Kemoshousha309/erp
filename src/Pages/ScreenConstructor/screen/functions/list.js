@@ -1,3 +1,7 @@
+/**
+ * @module list
+ */
+
 import _ from "lodash";
 import { getDetails } from "../Details/requestDetails";
 import { fillRecord, handleFields } from "../fields";
@@ -6,7 +10,7 @@ import { FuncConstructor } from "./funcConstructor";
 
 
 /**
- * list class to contain all the functionality of the list 
+ * List manages the primary list behavior 
  */
 export class List extends FuncConstructor {
   open() {
@@ -52,13 +56,22 @@ export class List extends FuncConstructor {
   }
 }
 
-export const extractName = (propName) => {
-  // get the property name after remove d_name or f_name
+/**
+ * remove the d_name or f_name string from the property name
+ * @param {string} propName the property name 
+ * @returns {string}
+ */
+export function extractName(propName) {
   let newName = propName.replace("_d_name", "");
   newName = newName.replace("_f_name", "");
   return newName;
 };
 
+/**
+ * manages the primary list record click behavior
+ * @param {Object} record received from primary list 
+ * @param {Number} i the index of the record used in moves and many other places
+ */
 export async function handleRecordClickModel(record, i) {
   const fields = this.listHandler.recordClick(record);
   const { tools } = updateMode("d_record", this.state, this.props);
@@ -89,6 +102,9 @@ export async function handleRecordClickModel(record, i) {
   });
 }
 
+/**
+ * the model that manages the clearness of all lists
+ */
 export function handleClearListsModel() {
   const {
     prevMode,
@@ -106,12 +122,17 @@ export function handleClearListsModel() {
   this.setState({
     fkListShow: null,
     addDtlForeignList: null,
-    custimizedList: { open: false, render: null },
+    customizedList: { open: false, render: null },
     ShortCutsList: false,
     details: dtlClone
   });
 }
 
+/**
+ * check if there is any list render or not
+ * @param {Object} screen current render screen
+ * @returns {boolean}
+ */
 export function checkActiveList(screen) {
   const {
     state: {
@@ -120,7 +141,7 @@ export function checkActiveList(screen) {
       listShow,
       ShortCutsList,
       addDtlForeignList,
-      custimizedList: { open: custimizedListActive },
+      customizedList: { open: customizedListActive },
     },
   } = screen;
   const activeForeignList = tabs[current_tab].activeForeignList;
@@ -129,7 +150,7 @@ export function checkActiveList(screen) {
     listShow,
     ShortCutsList,
     addDtlForeignList,
-    custimizedListActive,
+    customizedListActive,
     activeForeignList,
   ];
   return lists.reduce((previousValue, currentValue) => {

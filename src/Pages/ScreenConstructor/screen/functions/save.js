@@ -1,4 +1,8 @@
-import { getDtailsPropnams, timer } from "../utilities";
+/**
+ * @module save
+ */
+
+import { getDetailsPropanes, timer } from "../utilities";
 import { getValues, getHeaders, handleFields } from "../fields";
 import {
   checkDetailsValidity,
@@ -15,16 +19,23 @@ import { selectMessage } from "../../../../Languages/languages";
 // save processes ***************************************************
 
 /**
- * Responsilable for save funcion of the screen
+ * Responsible for save behavior of the screen
  */
 
 export class Saver extends FuncConstructor {
+  /**
+   * decide which save process to be token
+   */
   save() {
     const { details } = this.screen.state;
     if (!details) return this.handleSaveRequest();
     return this.handleDtlSaveRequest();
   }
 
+  /**
+   * manages the normal save request
+   * @returns {Promise} a promise that resolves the message and the fieldsUpdate
+   */
   handleSaveRequest() {
     const {
       state: { fields },
@@ -49,14 +60,18 @@ export class Saver extends FuncConstructor {
     });
   }
 
+   /**
+   * manages the normal save request
+   * @returns {Promise} resolves either handleDtlResponse or handleCatch
+   */
   handleDtlSaveRequest() {
-    const { fields: masterfields } = this.screen.state;
+    const { fields: masterFields } = this.screen.state;
     const { url, method } = this.getRequestInfo();
 
     // prepare the body
     const detailsValues = trackDetailsChange(this.screen);
     console.log({ detailsValues });
-    const fieldsValues = getValues(masterfields);
+    const fieldsValues = getValues(masterFields);
     const body = {
       ...detailsValues,
       ...fieldsValues,
@@ -73,7 +88,10 @@ export class Saver extends FuncConstructor {
     });
   }
 
-  // utilities
+  /**
+   * handle some data to send the request
+   * @returns the url and the method which are used in the save request
+   */
   getRequestInfo() {
     const {
       state: { mode, urls },
@@ -90,10 +108,15 @@ export class Saver extends FuncConstructor {
     return { url, method };
   }
 
+  /**
+   * handle the response of the details request
+   * @param {Object} res the response fetched form details save request
+   * @param {Function} resolve used to resolve (fieldsUpdate, message, record) 
+   */
   handleDtlResponse(res, resolve) {
     const {
       mode,
-      fields: masterfields,
+      fields: masterFields,
       record: stateRecord,
       details: { tabs },
     } = this.screen.state;
@@ -111,16 +134,21 @@ export class Saver extends FuncConstructor {
       const preparedRecord = {};
       detailsPagesURLs.forEach((pageURL) => {
         const { master } = pageURL;
-        preparedRecord[master] = masterfields[master].value;
+        preparedRecord[master] = masterFields[master].value;
       });
       record = getDetails(preparedRecord, this.screen);
     } else {
       record = getDetails(stateRecord, this.screen);
     }
-    const fieldsUpdate = handleFields(masterfields, "close", false);
+    const fieldsUpdate = handleFields(masterFields, "close", false);
     record.then((rec) => resolve({ fieldsUpdate, message, rec }));
   }
 
+  /**
+   * handle the response of the details request
+   * @param {Object} err the error fetched form save request
+   * @param {Function} reject used to reject the promise with (fieldsUpdate, message) 
+   */
   handleCatch(err, reject) {
     const {
       state: { fields },
@@ -129,7 +157,7 @@ export class Saver extends FuncConstructor {
     const fieldsUpdate = handleFields(fields, "open", false);
     let message = null;
     if (err.response) {
-      // update the previlliges
+      // update the previlleges
       if (err.response.status === 401) {
         store.dispatch(logout());
       }
@@ -144,14 +172,18 @@ export class Saver extends FuncConstructor {
     reject({ fieldsUpdate, message });
   }
 }
-
+/**
+ * track all changes in the details so we can use them in save process
+ * @param {Object} screen the current screen
+ * @returns an object contain the dtl records that changed (have action property)
+ */
 export function trackDetailsChange(screen) {
   const {
     record,
     details: { tabs },
     mode,
   } = screen.state;
-  const properties = getDtailsPropnams(tabs, true);
+  const properties = getDetailsPropanes(tabs, true);
   const detailsToSave = {};
   properties.forEach((prop) => {
     if (prop) {
@@ -191,7 +223,10 @@ export function trackDetailsChange(screen) {
   });
   return detailsToSave;
 }
-
+/**
+ * The model that manages the behavior of the save process and update the state based on that 
+ * @returns undefined 
+ */
 export async function handleSaveModel() {
   const { details } = this.state;
   const [valid, fieldsUpdate] = checkValidity(this);

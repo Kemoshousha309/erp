@@ -15,7 +15,7 @@ const InputFile = React.forwardRef((props, ref) => {
         id={id}
         onChange={onChange}
         ref={ref}
-        className={style.inputfile}
+        className={style.inputFile}
       />
       <label htmlFor={props.id}>{labelContent}</label>
     </div>

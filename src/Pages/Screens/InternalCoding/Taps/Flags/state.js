@@ -1,4 +1,4 @@
-export const flagsinitState = {
+export const flagsInitState = {
   fields: {
     flag_code: {
       fieldType: "input",
@@ -47,7 +47,7 @@ export const flagsinitState = {
       type: "number",
       label: "flag_value",
       validation: {
-        requiered: true,
+        required: true,
         length: 30,
       },
       validity: {
@@ -63,7 +63,7 @@ export const flagsinitState = {
       type: "text",
       label: "label_code",
       validation: {
-        requiered: true,
+        required: true,
         length: 100,
       },
       validity: {
@@ -79,7 +79,7 @@ export const flagsinitState = {
       type: "number",
       label: "flag_sr",
       validation: {
-        requiered: true,
+        required: true,
         length: 200,
       },
       validity: {

@@ -3,24 +3,24 @@ import style from "./ExcelPage.module.scss";
 import SendIcon from "@mui/icons-material/Send";
 import RuleIcon from "@mui/icons-material/Rule";
 import { useContext } from "react";
-import { ExeclPageContext } from "./ExcelPage.component";
+import { ExcelPageContext } from "./ExcelPage.component";
 import { selectMessage } from "../../Languages/languages";
 
 // RENDER COMPONENTS
 export function ExcelPage({ children, ...restProps }) {
-  const { props } = useContext(ExeclPageContext);
-  const containerClassess = [style.container];
+  const { props } = useContext(ExcelPageContext);
+  const containerClasses = [style.container];
   if (parseInt(props.lanState) === 1) {
-    containerClassess.push(style.rtl);
+    containerClasses.push(style.rtl);
   } else {
-    containerClassess.push(style.ltr);
+    containerClasses.push(style.ltr);
   }
 
-  return <div className={containerClassess.join(" ")}>{children}</div>;
+  return <div className={containerClasses.join(" ")}>{children}</div>;
 }
 
 ExcelPage.CloseBtn = function CloseBtn({ children, ...restProps }) {
-  const { props } = useContext(ExeclPageContext);
+  const { props } = useContext(ExcelPageContext);
   return (
     <div className={style.btnContainer}>
       <Button onClick={props.close} variant="outlined" color="error">
@@ -48,13 +48,13 @@ ExcelPage.InputsContainer = function InputsContainer({
 ExcelPage.InputErrMess = function InputErrMess({ children, ...restProps }) {
   const {
     state: { fileInputErrMes },
-  } = useContext(ExeclPageContext);
+  } = useContext(ExcelPageContext);
   if (!fileInputErrMes) return null;
   return <p className={style.error}>{fileInputErrMes.content}</p>;
 };
 
 ExcelPage.FunctionBtns = function FunctionBtns() {
-  const excelPage = useContext(ExeclPageContext);
+  const excelPage = useContext(ExcelPageContext);
   const {
     state: { renderButtons },
     props: {
@@ -74,7 +74,7 @@ ExcelPage.FunctionBtns = function FunctionBtns() {
         Validate
       </Button>
       <Button
-        disabled={!serverValidate.addAvialabilty}
+        disabled={!serverValidate.addAvailability}
         onClick={addExcelSheet}
         variant="outlined"
         endIcon={<SendIcon />}
@@ -90,7 +90,7 @@ ExcelPage.Loading = function Loading() {
     props: {
       excelPageInfo: { excelLoading },
     },
-  } = useContext(ExeclPageContext);
+  } = useContext(ExcelPageContext);
   if (!excelLoading) return null;
   return <LinearProgress />;
 };
@@ -98,7 +98,7 @@ ExcelPage.Loading = function Loading() {
 ExcelPage.ErrorMess = function ErrorMess() {
   const {
     state: { errMessages },
-  } = useContext(ExeclPageContext);
+  } = useContext(ExcelPageContext);
   console.log(errMessages)
   if (!errMessages) return null;
   return (
@@ -138,7 +138,7 @@ ExcelPage.ServerErr = function ServerErr() {
     props: {
       excelPageInfo: { serverValidate },
     },
-  } = useContext(ExeclPageContext);
+  } = useContext(ExcelPageContext);
   const responseData = serverValidate.validateRes;
   if (!responseData) return null;
   let serverErr = false;
@@ -198,14 +198,14 @@ ExcelPage.ServerErr = function ServerErr() {
 ExcelPage.AddMess = function AddMess() {
   const {
     props: {excelPageInfo: { addMess }}
-  } = useContext(ExeclPageContext);
+  } = useContext(ExcelPageContext);
   if (!addMess) return null;
   return <p className={style.validMess}>{addMess}</p>;
 };
 
 ExcelPage.ValidMess = function ValidMess() {
-  const {props: {excelPageInfo: { serverValidate }}} = useContext(ExeclPageContext);
-  if (!serverValidate.addAvialabilty) return null;
+  const {props: {excelPageInfo: { serverValidate }}} = useContext(ExcelPageContext);
+  if (!serverValidate.addAvailability) return null;
   return (
     <p className={style.validMess}>
       The sheet is valid click Add button to save it.

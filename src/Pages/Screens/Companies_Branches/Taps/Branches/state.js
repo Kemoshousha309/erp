@@ -5,7 +5,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'company_no',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -40,7 +40,7 @@ export const branchesInitState = {
       type: 'number',
       label: 'branch_no',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -56,7 +56,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'name',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -71,7 +71,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'foreign_name',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -86,7 +86,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'shortcut',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -101,7 +101,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'foreign_shortcut',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -116,7 +116,7 @@ export const branchesInitState = {
       type: 'file',
       label: 'logo',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -137,7 +137,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'address',
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -152,7 +152,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'address_f',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -167,7 +167,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'report_header1',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -182,7 +182,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'report_header_f1',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -197,7 +197,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'report_header2',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -212,7 +212,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'report_header_f2',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -227,7 +227,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'report_header3',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -242,7 +242,7 @@ export const branchesInitState = {
       type: 'text',
       label: 'report_header_f3',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -257,7 +257,7 @@ export const branchesInitState = {
       type: 'number',
       label: 'tax_no',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -272,7 +272,7 @@ export const branchesInitState = {
       type: 'number',
       label: 'telephone_no',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -287,7 +287,7 @@ export const branchesInitState = {
       type: 'number',
       label: 'cr_no',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,
@@ -305,7 +305,7 @@ export const branchesInitState = {
       type: 'number',
       label: 'city_no',
       validation: {
-        requiered: false,
+        required: false,
       },
       validity: {
         valid: true,

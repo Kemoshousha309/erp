@@ -1,4 +1,4 @@
-import { storeLocally, updateState } from '../../Helpers/reducre';
+import { storeLocally, updateState } from '../../Helpers/reduce';
 import * as actionTypes from '../actions/actionTypes';
 
 const initState = {
@@ -41,12 +41,12 @@ const storeMessageTable = (state, action) => {
   });
 };
 
-const setlangInfo = (state, action) => updateState(state, {
+const setLangInfo = (state, action) => updateState(state, {
   ...state,
   langInfo: action.info,
 });
 
-const handleLangChangeAcivity = (state, action) => updateState(state, {
+const handleLangChangeActivity = (state, action) => updateState(state, {
   ...state,
   langChangeActive: action.mode,
 });
@@ -78,9 +78,9 @@ export const languageReducer = (state = initState, action) => {
     case actionTypes.STORE_MESSAGES:
       return storeMessageTable(state, action);
     case actionTypes.LANG_INFO:
-      return setlangInfo(state, action);
+      return setLangInfo(state, action);
     case actionTypes.LANG_CHANGE_ACTIVITY:
-      return handleLangChangeAcivity(state, action);
+      return handleLangChangeActivity(state, action);
     case actionTypes.CLEAR_LANG_DATA:
       return handleClearLangData(state);
     default:

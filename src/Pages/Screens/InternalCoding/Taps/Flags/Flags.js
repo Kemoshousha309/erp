@@ -4,19 +4,19 @@ import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { handleAsyncLangNoOpts } from "../../../../ScreenConstructor/screen/async";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { handleFields } from "../../../../ScreenConstructor/screen/fields";
-import { setlastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
-import { handleDrivedState } from "../../../../ScreenConstructor/screen/handlers";
+import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
+import { handleDerivedState } from "../../../../ScreenConstructor/screen/handlers";
 import { autoDisplay } from "../../../../ScreenConstructor/screen/inputsHandlers";
-import { functionsListenrs } from "../../../../ScreenConstructor/screen/listeners";
+import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../../../ScreenConstructor/ScreenConstructor";
-import { flagsinitState } from "./state";
+import { flagsInitState } from "./state";
 
 class Flags extends ScreenConstructor {
   constructor() {
     super();
     this.state = {
       ...this.state,
-      ..._.cloneDeep(flagsinitState)
+      ..._.cloneDeep(flagsInitState)
     };
   }
   // async handle
@@ -26,8 +26,8 @@ class Flags extends ScreenConstructor {
 
   // LifeCycle methods *******************************************
   componentDidMount() {
-    setlastIndex(this);
-    functionsListenrs(this, true);
+    setLastIndex(this);
+    functionsListeners(this, true);
     this.setState({ mode: "list" });
     
 
@@ -64,7 +64,7 @@ class Flags extends ScreenConstructor {
       mode = "list";
       fieldsClone = handleFields(state.fields, "close", true);
     }
-    const { tools } = handleDrivedState(props, state);
+    const { tools } = handleDerivedState(props, state);
     return {
       fields: fieldsClone,
       tools: tools,
@@ -90,7 +90,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+    changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
   };
 };
 

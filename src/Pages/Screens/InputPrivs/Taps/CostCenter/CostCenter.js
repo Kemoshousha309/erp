@@ -44,7 +44,7 @@ const mapStateToProps = (state) => ({
   logged_user_id: state.auth.authData.user_id,
 });
 const mapDispatchToProps = (dispatch) => ({
-  changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+  changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Branches);

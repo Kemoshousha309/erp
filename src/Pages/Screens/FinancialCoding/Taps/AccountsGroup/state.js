@@ -5,7 +5,7 @@ export const accGroupInitState = {
       type: 'number',
       label: 'group_no',
       validation: {
-        requiered: true,
+        required: true,
         size: 2147483647,
       },
       validity: {
@@ -21,7 +21,7 @@ export const accGroupInitState = {
       type: 'text',
       label: 'name',
       validation: {
-        requiered: true,
+        required: true,
         length: 100,
       },
       validity: {

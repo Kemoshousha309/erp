@@ -5,7 +5,7 @@ export const messInitSate = {
       type: "text",
       label: "message_code",
       validation: {
-        requiered: true,
+        required: true,
         length: 60,
       },
       validity: {
@@ -21,7 +21,7 @@ export const messInitSate = {
       type: "text",
       label: "message_desc",
       validation: {
-        requiered: true,
+        required: true,
         length: 200,
       },
       validity: {
@@ -37,7 +37,7 @@ export const messInitSate = {
       type: "number",
       label: "lang_no",
       validation: {
-        requiered: true,
+        required: true,
       },
       validity: {
         valid: true,
@@ -91,7 +91,7 @@ export const messInitSate = {
       },
     },
   },
-  tapTools: ["delete"], // to be deleted and view the others
+  tapTools: ["delete", "excel"], // to be deleted and view the others
   mainFields: ["message_code", "message_desc", "lang_no"],
   tapName: "messages",
   searchFields: ["message_code", "lang_no"],

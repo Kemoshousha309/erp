@@ -12,7 +12,7 @@ import { getPkUrl } from "../fields";
 import { t } from "../../../../Languages/languages";
 
 
-class RecordDisply extends PureComponent {
+class RecordDisplay extends PureComponent {
   state = {
     firstTime: true,
     pages: null,
@@ -29,7 +29,7 @@ class RecordDisply extends PureComponent {
   // IN CLIENT
   // page means the page of list of records
   static getDerivedStateFromProps(props, state) {
-    // attach the main fields defined in the parend screen to local state
+    // attach the main fields defined in the parent screen to local state
     if (state.firstTime) {
       const fields = {};
       props.mainFields.forEach((f) => {
@@ -70,7 +70,7 @@ class RecordDisply extends PureComponent {
     }
     let data = values
     if (filterBody) {
-      data = applayFilterBody(filterBody, values)
+      data = applyFilterBody(filterBody, values)
     }
     axios({
       method: "post",
@@ -100,7 +100,7 @@ class RecordDisply extends PureComponent {
       .catch((err) => {
         console.log(err);
         if (err.response) {
-          // update the previlliges
+          // update the previlleges
           if (err.response.status === 401) {
             store.dispatch(logout());
           }
@@ -111,7 +111,7 @@ class RecordDisply extends PureComponent {
   };
   paginationHandler = (page_no) => {
     if (this.state.mode === "d") {
-      document.getElementById("pageContianer").scrollTo({
+      document.getElementById("pageContainer").scrollTo({
         top: 0,
         behavior: "smooth",
       });
@@ -148,7 +148,7 @@ class RecordDisply extends PureComponent {
   };
   componentDidMount() {
     if (this.props.filterBody) {
-      // this means that there is some filteration should be applayed
+      // this means that there is some filtration should be applied
       this.filteredPagesRequest(1);
     } else {
       this.pagesRequest(1);
@@ -223,11 +223,11 @@ const isEmpty = (obj) => {
   return empty;
 };
 
-export default RecordDisply;
+export default RecordDisplay;
 
 
-function applayFilterBody(filterBody, values) {
-  // should retrun obj with values 
+function applyFilterBody(filterBody, values) {
+  // should return obj with values 
   Object.keys(values).forEach(key => {
     filterBody[key] = values[key];
   })

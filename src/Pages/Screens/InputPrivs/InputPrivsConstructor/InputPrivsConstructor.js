@@ -1,7 +1,7 @@
 import axios from "../../../../axios";
 import { store } from "../../../..";
 import { logout } from "../../../../Context";
-import { functionsListenrs } from "../../../ScreenConstructor/screen/listeners";
+import { functionsListeners } from "../../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../../ScreenConstructor/ScreenConstructor";
 import { timer } from "../../../ScreenConstructor/screen/utilities";
 import { updateMode } from "../../../ScreenConstructor/screen/mode";
@@ -27,7 +27,7 @@ class InputPrivsConstructor extends ScreenConstructor {
     };
   }
   componentDidMount() {
-    functionsListenrs(this, true);
+    functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
     this.setState({ tools });
   }
@@ -64,7 +64,7 @@ class InputPrivsConstructor extends ScreenConstructor {
       .catch((err) => {
         let message = null;
         if (err.response) {
-          // update the previlliges
+          // update the previlleges
           if (err.response.status === 401) {
             store.dispatch(logout());
           }
@@ -145,7 +145,7 @@ class InputPrivsConstructor extends ScreenConstructor {
     this.setState({ input_privs: input_privs });
   };
 
-  privControlIpnputHandler = (e, type, identifier) => {
+  privControlInputHandler = (e, type, identifier) => {
     const value = e.target.checked;
     const {
       state: {

@@ -36,7 +36,7 @@ class ExcelPageWrapper extends PureComponent {
     } = this;
 
     return (
-      <ExeclPageContext.Provider value={this}>
+      <ExcelPageContext.Provider value={this}>
         <ExcelPage>
           <ExcelPage.CloseBtn>Close</ExcelPage.CloseBtn>
           <ExcelPage.Header>{t("add_excel_sheet")} :</ExcelPage.Header>
@@ -57,9 +57,9 @@ class ExcelPageWrapper extends PureComponent {
           <ExcelPage.AddMess />
           <ExcelPage.ValidMess />
         </ExcelPage>
-      </ExeclPageContext.Provider>
+      </ExcelPageContext.Provider>
     );
   }
 }
-export const ExeclPageContext = React.createContext(null);
+export const ExcelPageContext = React.createContext(null);
 export default ExcelPageWrapper;

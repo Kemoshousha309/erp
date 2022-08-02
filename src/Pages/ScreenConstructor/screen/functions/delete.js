@@ -1,3 +1,7 @@
+/**
+ * @module delete 
+ */
+
 import { timer } from "../utilities";
 import { getValues, getPkUrl, handleFields } from "../fields";
 import axios from "../../../../axios";
@@ -8,8 +12,14 @@ import { updateMode } from "../mode";
 import { selectMessage } from "../../../../Languages/languages";
 
 // delete ******************************************************
-
+/**
+ * Deleter manages the delete process in the screen
+ */
 export class Deleter extends FuncConstructor {
+  /**
+   * send a request to delete the record
+   * @returns {Object} object - contains fields update and message to render
+   */
   handleRequest() {
     const {
       state: { fields, pks, urls },
@@ -32,7 +42,7 @@ export class Deleter extends FuncConstructor {
           resolve({ fieldsUpdate, message });
         })
         .catch((err) => {
-          // update the previlliges
+          // update the previlleges
           let message = null;
           if (err.response) {
             if (err.response.status === 401) {
@@ -49,6 +59,12 @@ export class Deleter extends FuncConstructor {
     });
   }
 }
+
+
+/**
+ *  manages the default behavior of the delete confirmations 
+ * @param {boolean} res - the response of the user of delete dialog
+ */
 
 export async function handleDeleteConfirmModel(res) {
   if (!res) return this.setState({ deleteConfirm: false });

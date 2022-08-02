@@ -5,7 +5,7 @@ export const usersInitState = {
       type: 'number',
       label: 'user_no',
       validation: {
-        requiered: true,
+        required: true,
         size: 2147483647,
       },
       validity: {
@@ -21,7 +21,7 @@ export const usersInitState = {
       type: 'text',
       label: 'name',
       validation: {
-        requiered: true,
+        required: true,
         length: 100,
       },
       validity: {
@@ -52,7 +52,7 @@ export const usersInitState = {
       type: 'number',
       label: 'direct_manager',
       validation: {
-        requiered: true,
+        required: true,
         size: 2147483647,
       },
       validity: {
@@ -106,7 +106,7 @@ export const usersInitState = {
       type: 'password',
       label: 'password',
       validation: {
-        requiered: true,
+        required: true,
         length: 100,
       },
       validity: {
@@ -122,7 +122,7 @@ export const usersInitState = {
       type: 'password',
       label: 'confirm_pass',
       validation: {
-        requiered: true,
+        required: true,
         length: 100,
       },
       validity: {

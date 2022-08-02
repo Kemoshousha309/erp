@@ -8,7 +8,7 @@ import {
   getRelatedRoute,
   routeMap,
 } from '../../../Helpers/tree';
-import ParentNode from './ParentNode/ParentNonde';
+import ParentNode from './ParentNode/ParentNode';
 import { treeRequest } from '../../../Context';
 
 class Tree extends PureComponent {
@@ -48,7 +48,7 @@ class Tree extends PureComponent {
         </ul>
       );
     }
-    return <div className={style.treeContianer}>{treeContent}</div>;
+    return <div className={style.treeContainer}>{treeContent}</div>;
   }
 }
 

@@ -24,9 +24,9 @@ const lang1 = {
 };
 
 function LogoutPage(props) {
-  let lables = lang1;
+  let labels = lang1;
   if (parseInt(props.lanState) === 2) {
-    lables = lang2;
+    labels = lang2;
   }
 
   const [state, setState] = useState({ boxShow: false });
@@ -34,18 +34,18 @@ function LogoutPage(props) {
   return (
     <div className={[style.container, 'container-fluid'].join(' ')}>
       <div className="row">
-        <div className={[style.colomn, 'col-md-6 p-4'].join(' ')}>
+        <div className={[style.column, 'col-md-6 p-4'].join(' ')}>
           <img src={secure_login} className="img-fluid " alt="warning" />
         </div>
         <div className={[style.infoColumn, 'col-md-6'].join(' ')}>
           <div>
-            <h1 className="">{lables['1']}</h1>
+            <h1 className="">{labels['1']}</h1>
             <button
               onClick={() => props.history.push('/login')}
               style={{ fontSize: '2rem' }}
               className="btn btn-outline-primary "
             >
-              {lables['2']}
+              {labels['2']}
             </button>
             <br />
 
@@ -54,7 +54,7 @@ function LogoutPage(props) {
               onClick={() => setState({ boxShow: !state.boxShow })}
               className="btn btn-outline-secondary"
             >
-              {lables['7']}
+              {labels['7']}
             </button>
 
             <div
@@ -64,21 +64,21 @@ function LogoutPage(props) {
               ].join(' ')}
             >
               <p>
-                {lables['3']}
+                {labels['3']}
                 {' '}
                 <br />
                 1-
                 {' '}
-                {lables['4']}
+                {labels['4']}
                 <br />
                 2-
                 {' '}
-                {lables['5']}
+                {labels['5']}
                 {' '}
                 <br />
                 3-
                 {' '}
-                {lables['6']}
+                {labels['6']}
               </p>
             </div>
           </div>

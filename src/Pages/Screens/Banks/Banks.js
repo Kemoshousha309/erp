@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
 import { langChangeActivity } from "../../../Context/actions/lang";
-import { initDetials } from "../../ScreenConstructor/screen/Details/DetailsPanel";
+import { initDetails } from "../../ScreenConstructor/screen/Details/DetailsPanel";
 import { LimitAdder } from "../../ScreenConstructor/screen/Details/handlers/add";
-import { LimitDetialsRomver } from "../../ScreenConstructor/screen/Details/handlers/remove";
+import { LimitDetailsRemover } from "../../ScreenConstructor/screen/Details/handlers/remove";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
 import _ from "lodash";
@@ -19,22 +19,22 @@ class Banks extends ScreenConstructor {
       ..._.cloneDeep(banksInitState)
     };
     this.limitAdder = new LimitAdder(this);
-    this.limitDtlRemover = new LimitDetialsRomver(this);
+    this.limitDtlRemover = new LimitDetailsRemover(this);
     this.banksSaver = new BanksSave(this);
   }
-  detailsRemoveHandler = (index, e) => {
-    const { addState, recordUpdate } = this.limitDtlRemover.limitRemover(
-      index,
-      e
-    );
-    const {
-      details,
-      details: { current_tab },
-    } = this.state;
-    const detailsClone = _.cloneDeep(details);
-    detailsClone.tabs[current_tab].addState = addState;
-    this.setState({ record: recordUpdate, details: detailsClone });
-  };
+detailsRemoveHandler = (index, e) => {
+  const { addState, recordUpdate } = this.limitDtlRemover.limitRemover(
+    index,
+    e
+  );
+  const {
+    details,
+    details: { current_tab },
+  } = this.state;
+  const detailsClone = _.cloneDeep(details);
+  detailsClone.tabs[current_tab].addState = addState;
+  this.setState({ record: recordUpdate, details: detailsClone });
+};
 
   modify = () => {
     handleModifyModel.call(this);
@@ -48,7 +48,7 @@ class Banks extends ScreenConstructor {
   
 
   detailsAddHandler = (e) => {
-    // hanle add details rows with limit numbers
+    // Handler add details rows with limit numbers
     const { addState, recordUpdate } = this.limitAdder.limitAddHandler(e);
     const {
       details,
@@ -64,7 +64,7 @@ class Banks extends ScreenConstructor {
   save = () => handleBanksSaveModel.call(this);
 
   render() {
-    return displayContent(this, this.props.location, initDetials.call(this));
+    return displayContent(this, this.props.location, initDetails.call(this));
   }
 }
 
@@ -80,7 +80,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+    changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
   };
 };
 

@@ -17,8 +17,8 @@ export function getSheet(fileInput) {
         // know we have work book with sheets name and content
 
         // getting the first sheet
-        const wsname = wb.SheetNames[0];
-        const ws = wb.Sheets[wsname];
+        const wsName = wb.SheetNames[0];
+        const ws = wb.Sheets[wsName];
 
         // converting to json
         const csv = utils.sheet_to_csv(ws);
@@ -27,11 +27,11 @@ export function getSheet(fileInput) {
         console.log(data);
 
         resolve({
-          readed: true, data, sheetColumnsNum, selectedFile,
+          read: true, data, sheetColumnsNum, selectedFile,
         });
       };
     } else {
-      reject({ readed: false, selectedFile });
+      reject({ read: false, selectedFile });
     }
   });
 }

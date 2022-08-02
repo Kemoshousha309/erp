@@ -3,15 +3,15 @@ import { toolSelectHandler } from "../../Helpers/tools";
 import { Deleter, handleDeleteConfirmModel } from "./screen/functions/delete";
 import { handleSearchModel, Searcher } from "./screen/functions/search";
 import { handleSaveModel, Saver } from "./screen/functions/save";
-import { handleMoveModel, Mover, setlastIndex } from "./screen/functions/moves";
-import { functionsListenrs } from "./screen/listeners";
+import { handleMoveModel, Mover, setLastIndex } from "./screen/functions/moves";
+import { functionsListeners } from "./screen/listeners";
 import {
   handleClearListsModel,
   handleRecordClickModel,
 } from "./screen/functions/list";
 import { Adder, handleAddModel } from "./screen/functions/add";
 import { handleModifyModel, Modifier } from "./screen/functions/modify";
-import { Copyer, handleCopyModel } from "./screen/functions/copy";
+import { Copier, handleCopyModel } from "./screen/functions/copy";
 import {
   handleChipsAdd,
   handleChipsListClose,
@@ -28,7 +28,7 @@ import {
 } from "./screen/functions/excelSheet/handlers";
 import { XlsxValidator } from "./screen/functions/excelSheet/XlsxValidator";
 import { XlsxPreparer } from "./screen/functions/excelSheet/XlsxPreparer";
-import { DetialsAdder, handleDtlAddModel } from "./screen/Details/handlers/add";
+import { DetailsAdder, handleDtlAddModel } from "./screen/Details/handlers/add";
 import {
   DetailsRemover,
   handleDtlRemoveModel,
@@ -54,41 +54,58 @@ import { initialState } from "./screen/state";
 
 /**
  * This is a screen constructor 
- * - used to contian all the sharabe functionalitiy of the screens
+ * - used to contain all the sharable functionality of the screens
+ * - the screen should have all the methods that update the state
+ * - as its methods responsible for updating the state it we call a model to do this for us
+ * 
+ * The model is function called with (this) of the screen manage the logic of set the state 
  */
 
 class ScreenConstructor extends PureComponent {
   /**
-   * construct the screenContructor component
+   * construct the screenConstructor component
    * - used to set the mount and state
-   * - set the funcion classes 
-   * @param {any} props Props of react
+   * - set the function classes 
+   * @param {Object} props Props of react
    */
   constructor(props) {
     super(props);
-    /** contian the mount info used in component will unmount */
+    /** @type {boolean} is component mounted or not */
     this.mounted = true;
-    /**@type {Object} - used contian all the info about the screen */
+    /** @type {Object} - state contains all the data to control the screen */
     this.state = _.cloneDeep(initialState);
 
-    // functions init
+    // INIT FUNCTIONS
+
     /** list object see the class {@link List} */
     this.listHandler = new List(this);
+    /** save object see the class {@link Saver} */
     this.saveHandler = new Saver(this);
+    /** Adder object see the constructor class {@link Adder} */
     this.addHandler = new Adder(this);
-    this.copyHandler = new Copyer(this);
+    /** Copier object see the constructor class {@link Copier} */
+    this.copyHandler = new Copier(this);
+    /** Searcher object see the constructor class {@link Searcher} */
     this.searchHandler = new Searcher(this);
+    /** FkList object see the constructor class {@link FkList} */
     this.fkListHandler = new FkList(this);
+    /** Modifier object see the constructor class {@link Modifier} */
     this.modifyHandler = new Modifier(this);
+    /** Deleter object see the constructor class {@link Deleter} */
     this.deleteHandler = new Deleter(this);
+    /** UndoHandler object see the constructor class {@link UndoHandler} */
     this.undoHandler = new UndoHandler(this);
+    /** DetailsUndoHandler object see the constructor class {@link DetailsUndoHandler} */
     this.dtlUndoHandler = new DetailsUndoHandler(this);
+    /** Mover object see the constructor class {@link Mover} */
     this.moveHandler = new Mover(this);
-
-    // Detials init
-    this.dtlAdder = new DetialsAdder(this);
+    /** DetailsAdder object see the constructor class {@link DetailsAdder} */
+    this.dtlAdder = new DetailsAdder(this);
+    /** DetailsRemover object see the constructor class {@link DetailsRemover} */
     this.dtlRemover = new DetailsRemover(this);
+    /** DetailsList object see the constructor class {@link DetailsList} */
     this.detailsList = new DetailsList(this);
+    /** DetailsList_ADD object see the constructor class {@link DetailsList_ADD} */
     this.detailsList_ADD = new DetailsList_ADD(this);
   }
 
@@ -139,13 +156,13 @@ class ScreenConstructor extends PureComponent {
   // shortcut list
   ShortCutsListCloseHandler = () => handleCloseShortCuts(this);
 
-  // custimized list
-  closeCustmizedList = () =>
-    this.setState({ custimizedList: { render: null, open: false } });
+  // customized list
+  closeCustomizedList = () =>
+    this.setState({ customizedList: { render: null, open: false } });
 
   clearLists = () => handleClearListsModel.call(this);
 
-  // DETAILS HANDLEING **********************************************
+  // DETAILS HANDLING **********************************************
   navigateTabsHandler = (value) => {
     const { details } = this.state;
     const detailsUpdate = _.cloneDeep(details);
@@ -194,9 +211,9 @@ class ScreenConstructor extends PureComponent {
   excelPageClose = () => excelPageCloseModal.call(this);
   resetExcelPage = () => resetExcelPageModal.call(this);
   excelSheetServerSender = (sheet) => new ExcelServerSender(this, sheet);
-  // retrun a new validator specific to this screen
+  // return a new validator specific to this screen
   excelPageValidator = (sheet, sheetColumnsNum) => {
-    return new XlsxValidator(sheet, sheetColumnsNum);
+    return new XlsxValidator(sheetColumnsNum);
   };
   // return a new preparer specific to this screen
   excelPagePreparer = (recordPropNames, sheet) => {
@@ -209,8 +226,8 @@ class ScreenConstructor extends PureComponent {
 
   // LifeCycle methods *******************************************
   componentDidMount() {
-    setlastIndex(this);
-    functionsListenrs(this, true);
+    setLastIndex(this);
+    functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
     this.setState({ tools });
   }
@@ -219,8 +236,8 @@ class ScreenConstructor extends PureComponent {
     this.setState = (state, callback) => {
       return;
     };
-    functionsListenrs(this, false);
-    this.props.changeLangSelectAcivity(true);
+    functionsListeners(this, false);
+    this.props.changeLangSelectActivity(true);
   }
 
   render() {

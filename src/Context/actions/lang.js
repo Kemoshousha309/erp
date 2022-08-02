@@ -1,14 +1,14 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios';
-import { storeLocally, isExpire } from '../../Helpers/reducre';
+import { storeLocally, isExpire } from '../../Helpers/reduce';
 
-export const changeLnaguage = (langValue) => ({ type: actionTypes.CHANGE_LANGUAGE, langValue });
+export const changeLanguage = (langValue) => ({ type: actionTypes.CHANGE_LANGUAGE, langValue });
 export const storeLanguagesTable = (langTable) => ({ type: actionTypes.GET_LANG_TABLE, langTable });
 export const storeMessages = (messages) => ({ type: actionTypes.STORE_MESSAGES, messages });
 export const langRequestFailure = () => ({ type: actionTypes.LANG_REQUEST_FAILURE });
 export const langChangeActivity = (mode) => ({ type: actionTypes.LANG_CHANGE_ACTIVITY, mode });
 const langData = (data) => ({ type: actionTypes.LANG_INFO, info: data });
-export const clearlangData = () => ({ type: actionTypes.CLEAR_LANG_DATA });
+export const clearLangData = () => ({ type: actionTypes.CLEAR_LANG_DATA });
 
 export const langRequest = () => (dispatch) => {
   axios.get('/public/labels')
@@ -62,7 +62,7 @@ const checkLang = (dispatch) => {
       localStorage.removeItem('lang_num');
       localStorage.removeItem('lang_num_storeTime');
     }
-    dispatch(changeLnaguage(lang_num));
+    dispatch(changeLanguage(lang_num));
   }
 };
 
@@ -75,7 +75,7 @@ const getLanguages = (dispatch) => {
     .catch((err) => console.log(err));
 };
 
-const checklangInfo = (dispatch) => {
+const checkLangInfo = (dispatch) => {
   const lang_info = localStorage.getItem('lang_info');
   if (lang_info) {
     if (isExpire('lang_info', 3600 * 1000 * 24)) {
@@ -88,8 +88,8 @@ const checklangInfo = (dispatch) => {
   }
 };
 
-export const checkLabelesLocalStorage = () => (dispatch) => {
-  checklangInfo(dispatch);
+export const checkLabelsLocalStorage = () => (dispatch) => {
+  checkLangInfo(dispatch);
   checkLabels(dispatch);
   checkLang(dispatch);
   checkMessages(dispatch);

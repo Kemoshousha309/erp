@@ -27,7 +27,7 @@ const columnsInfo = [
   { name: 'inactive_reason', mandatory: false, type: 'string' },
 ];
 
-export class ChartsOfAccsXlsxValidator extends XlsxValidator {
+export class ChartsOfAcctsXlsxValidator extends XlsxValidator {
   constructor(sheetColumnsNum) {
     super(sheetColumnsNum);
     this.columns = columnsInfo;
@@ -43,7 +43,7 @@ export class ChartsOfAccsXlsxValidator extends XlsxValidator {
   }
 }
 
-export class ChartsOfAccsXlsxPreparer extends XlsxPreparer {
+export class ChartsOfAcctsXlsxPreparer extends XlsxPreparer {
   constructor(recordPropNames, data) {
     super(recordPropNames, data);
     this.columns = columnsInfo;
@@ -98,7 +98,7 @@ function ChartsExcelInstructions() {
           {t('with')}
           {' '}
           ,
-          {t('dilimter')}
+          {t('delimiter')}
           )
           -
           {t('name')}

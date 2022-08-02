@@ -1,10 +1,10 @@
-import { updateState } from '../../Helpers/reducre';
+import { updateState } from '../../Helpers/reduce';
 import * as actionTypes from '../actions/actionTypes';
 
 const initState = {
-  autherror: null,
+  authError: null,
   authData: null,
-  authloading: false,
+  authLoading: false,
   tree: null,
   network_error: null,
 };
@@ -12,22 +12,22 @@ const initState = {
 const authSuccess = (state, action) => (
   updateState(state, {
     authData: action.authData,
-    authloading: false,
-    autherror: null,
+    authLoading: false,
+    authError: null,
   })
 );
 
 const authStart = (state, action) => (
   updateState(state, {
-    authloading: true,
-    autherror: null,
+    authLoading: true,
+    authError: null,
   })
 );
 
 const authFail = (state, action) => (
   updateState(state, {
-    autherror: action.error,
-    authloading: false,
+    authError: action.error,
+    authLoading: false,
   })
 );
 

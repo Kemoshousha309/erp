@@ -26,7 +26,11 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import { getDtailsPropnams, timer } from "../utilities";
+            <pre class="prettyprint source linenums"><code>/**
+ * @module save
+ */
+
+import { getDetailsPropanes, timer } from "../utilities";
 import { getValues, getHeaders, handleFields } from "../fields";
 import {
   checkDetailsValidity,
@@ -43,16 +47,23 @@ import { selectMessage } from "../../../../Languages/languages";
 // save processes ***************************************************
 
 /**
- * Responsilable for save funcion of the screen
+ * Responsible for save behavior of the screen
  */
 
 export class Saver extends FuncConstructor {
+  /**
+   * decide which save process to be token
+   */
   save() {
     const { details } = this.screen.state;
     if (!details) return this.handleSaveRequest();
     return this.handleDtlSaveRequest();
   }
 
+  /**
+   * manages the normal save request
+   * @returns {Promise} a promise that resolves the message and the fieldsUpdate
+   */
   handleSaveRequest() {
     const {
       state: { fields },
@@ -77,14 +88,18 @@ export class Saver extends FuncConstructor {
     });
   }
 
+   /**
+   * manages the normal save request
+   * @returns {Promise} resolves either handleDtlResponse or handleCatch
+   */
   handleDtlSaveRequest() {
-    const { fields: masterfields } = this.screen.state;
+    const { fields: masterFields } = this.screen.state;
     const { url, method } = this.getRequestInfo();
 
     // prepare the body
     const detailsValues = trackDetailsChange(this.screen);
     console.log({ detailsValues });
-    const fieldsValues = getValues(masterfields);
+    const fieldsValues = getValues(masterFields);
     const body = {
       ...detailsValues,
       ...fieldsValues,
@@ -101,7 +116,10 @@ export class Saver extends FuncConstructor {
     });
   }
 
-  // utilities
+  /**
+   * handle some data to send the request
+   * @returns the url and the method which are used in the save request
+   */
   getRequestInfo() {
     const {
       state: { mode, urls },
@@ -118,10 +136,15 @@ export class Saver extends FuncConstructor {
     return { url, method };
   }
 
+  /**
+   * handle the response of the details request
+   * @param {Object} res the response fetched form details save request
+   * @param {Function} resolve used to resolve (fieldsUpdate, message, record) 
+   */
   handleDtlResponse(res, resolve) {
     const {
       mode,
-      fields: masterfields,
+      fields: masterFields,
       record: stateRecord,
       details: { tabs },
     } = this.screen.state;
@@ -139,16 +162,21 @@ export class Saver extends FuncConstructor {
       const preparedRecord = {};
       detailsPagesURLs.forEach((pageURL) => {
         const { master } = pageURL;
-        preparedRecord[master] = masterfields[master].value;
+        preparedRecord[master] = masterFields[master].value;
       });
       record = getDetails(preparedRecord, this.screen);
     } else {
       record = getDetails(stateRecord, this.screen);
     }
-    const fieldsUpdate = handleFields(masterfields, "close", false);
+    const fieldsUpdate = handleFields(masterFields, "close", false);
     record.then((rec) => resolve({ fieldsUpdate, message, rec }));
   }
 
+  /**
+   * handle the response of the details request
+   * @param {Object} err the error fetched form save request
+   * @param {Function} reject used to reject the promise with (fieldsUpdate, message) 
+   */
   handleCatch(err, reject) {
     const {
       state: { fields },
@@ -157,7 +185,7 @@ export class Saver extends FuncConstructor {
     const fieldsUpdate = handleFields(fields, "open", false);
     let message = null;
     if (err.response) {
-      // update the previlliges
+      // update the previlleges
       if (err.response.status === 401) {
         store.dispatch(logout());
       }
@@ -172,14 +200,18 @@ export class Saver extends FuncConstructor {
     reject({ fieldsUpdate, message });
   }
 }
-
+/**
+ * track all changes in the details so we can use them in save process
+ * @param {Object} screen the current screen
+ * @returns an object contain the dtl records that changed (have action property)
+ */
 export function trackDetailsChange(screen) {
   const {
     record,
     details: { tabs },
     mode,
   } = screen.state;
-  const properties = getDtailsPropnams(tabs, true);
+  const properties = getDetailsPropanes(tabs, true);
   const detailsToSave = {};
   properties.forEach((prop) => {
     if (prop) {
@@ -219,7 +251,10 @@ export function trackDetailsChange(screen) {
   });
   return detailsToSave;
 }
-
+/**
+ * The model that manages the behavior of the save process and update the state based on that 
+ * @returns undefined 
+ */
 export async function handleSaveModel() {
   const { details } = this.state;
   const [valid, fieldsUpdate] = checkValidity(this);
@@ -267,13 +302,13 @@ export async function handleSaveModel() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="FuncConstructor.html">FuncConstructor</a></li><li><a href="List.html">List</a></li><li><a href="Saver.html">Saver</a></li><li><a href="ScreenConstructor.html">ScreenConstructor</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-my-tutorial.html">Language</a></li></ul><h3>Global</h3><ul><li><a href="global.html#fillRecord">fillRecord</a></li><li><a href="global.html#getDetails">getDetails</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#t">t</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-add.html">add</a></li><li><a href="module-copy.html">copy</a></li><li><a href="module-delete.html">delete</a></li><li><a href="module-language.html">language</a></li><li><a href="module-list.html">list</a></li><li><a href="module-modify.html">modify</a></li><li><a href="module-moves.html">moves</a></li><li><a href="module-save.html">save</a></li><li><a href="module-search.html">search</a></li><li><a href="module-undo.html">undo</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#FkList">FkList</a></li><li><a href="FuncConstructor.html">FuncConstructor</a></li><li><a href="module-add.Adder.html">Adder</a></li><li><a href="module-copy.Copier.html">Copier</a></li><li><a href="module-delete.Deleter.html">Deleter</a></li><li><a href="module-list.List.html">List</a></li><li><a href="module-modify.Modifier.html">Modifier</a></li><li><a href="module-moves.Mover.html">Mover</a></li><li><a href="module-save.Saver.html">Saver</a></li><li><a href="module-search.Searcher.html">Searcher</a></li><li><a href="module-undo.DetailsUndoHandler.html">DetailsUndoHandler</a></li><li><a href="module-undo.UndoHandler.html">UndoHandler</a></li><li><a href="ScreenConstructor.html">ScreenConstructor</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-doc-rules.html">Documentation standards</a></li></ul><h3><a href="global.html">Global</a></h3>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Sun Jul 31 2022 15:33:59 GMT+0200 (Eastern European Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Tue Aug 02 2022 23:16:39 GMT+0200 (Eastern European Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

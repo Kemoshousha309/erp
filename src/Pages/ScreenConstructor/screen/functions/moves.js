@@ -1,3 +1,7 @@
+/**
+ * @module moves
+ */
+
 import { getValues, fillRecord, getPkUrl } from "../fields";
 import axios from "../../../../axios";
 import { logout } from "../../../../Context";
@@ -9,8 +13,16 @@ import { t } from "../../../../Languages/languages";
 
 // moves processes ***********************************************
 
+/**
+ * Mover is responsible for handling moving between records
+ */
 export class Mover extends FuncConstructor {
-  handleMove = (type) => {
+  /**
+   * handle the move click
+   * @param {string} type indicate the type of move (next|last|previous, first)
+   * @returns { Object } object contains: fieldsUpdate, record, message, indexUpdate
+   */
+  handleMove(type) {
     const [url, newIndex] = this.handleUrlMove(type);
     if (newIndex)
       return new Promise((resolve, reject) => {
@@ -24,7 +36,7 @@ export class Mover extends FuncConstructor {
             }
           })
           .catch((err) => {
-            // update the previlliges
+            // update the privileges
             if (err.response) {
               if (err.response.status === 401) {
                 store.dispatch(logout());
@@ -37,12 +49,17 @@ export class Mover extends FuncConstructor {
     return this.handleIndex(type);
   };
 
-  handleIndex = (moveType) => {
+  /**
+   * used in case of lack of index
+   * @param {string} moveType 
+   * @returns the same as handleMove 
+   */
+  handleIndex(moveType)  {
     const { fields, pks, urls } = this.screen.state;
     let index = null;
     const recordData = getValues(fields);
-    const pkurl = getPkUrl(pks, recordData);
-    const url = `${urls.pageNo}${pkurl}`;
+    const pkUrl = getPkUrl(pks, recordData);
+    const url = `${urls.pageNo}${pkUrl}`;
     return new Promise((resolve, reject) => {
       axios
         .get(url)
@@ -54,14 +71,14 @@ export class Mover extends FuncConstructor {
             .then((res) => resolve(this.handleRes(res, newIndex)))
             .catch((err) => {
               console.log(err);
-              // update the previlliges
+              // update the privileges
               if (err.response.status === 401) {
                 store.dispatch(logout());
               }
             });
         })
         .catch((err) => {
-          // update the previlliges
+          // update the privileges
           if (err.response.status === 401) {
             store.dispatch(logout());
           }
@@ -69,7 +86,13 @@ export class Mover extends FuncConstructor {
     });
   };
 
-  handleRes = (res, newIndex) => {
+  /**
+   * handle the response of the request
+   * @param {object} res the response from request
+   * @param {number} newIndex the fetched index to be set in the state
+   * @returns { Object } object contains: fieldsUpdate, record, message, indexUpdate
+   */
+  handleRes(res, newIndex) {
     let {
       state: { fields: fieldsUpdate, lastIndex, recordIndex },
     } = this.screen;
@@ -91,8 +114,12 @@ export class Mover extends FuncConstructor {
     return { fieldsUpdate, record, message, indexUpdate };
   };
 
-  // urls handlers
-  handleUrlMove = (moveType) => {
+  /**
+   * get the url and index
+   * @param {string} moveType 
+   * @returns {Array} array contains index and the url
+   */
+  handleUrlMove(moveType) {
     const { recordIndex, urls } = this.screen.state;
     let url = null;
     let newIndex = null;
@@ -123,6 +150,12 @@ export class Mover extends FuncConstructor {
     return [url, newIndex];
   };
 
+   /**
+   * get the url and index but used in handleIndex function
+   * @param {string} moveType 
+   * @returns {Array} array contains index and the url
+   * @function
+   */
   handleUrlMove_ = (moveType, index) => {
     const { urls } = this.screen.state;
     let url = null;
@@ -150,7 +183,10 @@ export class Mover extends FuncConstructor {
     return [url, newIndex];
   };
 }
-
+/**
+ * manages the behavior of the move process
+ * @param {string} type 
+ */
 export async function handleMoveModel(type) {
   this.setState({ message: false, loading: true });
   const res = await this.moveHandler.handleMove(type);
@@ -168,7 +204,11 @@ export async function handleMoveModel(type) {
   timer().then((res) => this.setState({ message: false }));
 }
 
-export const setlastIndex = (thisK) => {
+/**
+ * update the state with the last index
+ * @param {Object} thisK the current screen
+ */
+export function setLastIndex(thisK) {
   axios
     .get(thisK.state.urls.lastPage)
     .then((res) => {

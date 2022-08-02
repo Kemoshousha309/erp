@@ -8,7 +8,7 @@ import { deepClone } from "../../../Validation/validation";
 import { handleFields } from "../../ScreenConstructor/screen/fields";
 import { timer } from "../../ScreenConstructor/screen/utilities";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
-import { handleDrivedState } from "../../ScreenConstructor/screen/handlers";
+import { handleDerivedState } from "../../ScreenConstructor/screen/handlers";
 import _ from "lodash";
 import { screenPrivInitState } from "./state";
 import { selectMessage, t } from "../../../Languages/languages";
@@ -87,7 +87,7 @@ class ScreenPrivs extends ScreenConstructor {
     this.setState({ currentForm: key, formPriv: null, currentNode: record });
   };
   static getDerivedStateFromProps(props, state) {
-    let { tools } = handleDrivedState(props, state);
+    let { tools } = handleDerivedState(props, state);
     const tools_clone = [...tools];
     tools_clone.forEach((i) => {
       if (i.name === "modify") {
@@ -190,7 +190,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+    changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
   };
 };
 
@@ -212,12 +212,12 @@ const privRequest = (thisK) => {
       if (thisK.state.user_formPrivs) {
         const privs_up = [
           ...thisK.state.user_formPrivs,
-          ...creat_unique_key(res.data, "flag_code", "flag_value", "form_no"),
+          ...create_unique_key(res.data, "flag_code", "flag_value", "form_no"),
         ];
         thisK.setState({ user_formPrivs: privs_up });
       } else {
         thisK.setState({
-          user_formPrivs: creat_unique_key(
+          user_formPrivs: create_unique_key(
             res.data,
             "flag_code",
             "flag_value",
@@ -229,7 +229,7 @@ const privRequest = (thisK) => {
     .catch((err) => console.log(err));
 };
 
-const creat_unique_key = (arr, key1, key2, propName) => {
+const create_unique_key = (arr, key1, key2, propName) => {
   // this function take an array of objs and give every one a unique key
   arr.forEach((i) => {
     const key = i[key1] + "_" + i[key2];

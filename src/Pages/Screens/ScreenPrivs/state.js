@@ -5,7 +5,7 @@ export const screenPrivInitState = {
       type: "number",
       label: "user_no",
       validation: {
-        requiered: false,
+        required: false,
         length: 30,
       },
       validity: {

@@ -15,7 +15,7 @@ const InputPrivs = React.lazy(() => import('../Screens/InputPrivs/InputPrivs'));
 const SystemCommands = React.lazy(() => import('../Screens/SystemCommands/SystemCommands.js'));
 const Currency = React.lazy(() => import('../Screens/Currency/Currency'));
 const ChartsOfAccounts = React.lazy(() => import('../Screens/ChartsOfAccounts/ChartsOfAccounts'));
-const EmployeeInformations = React.lazy(() => import('../Screens/EmployeeInformations/EmployeeInformations'));
+const EmployeeInformation = React.lazy(() => import('../Screens/EmployeeInformation/EmployeeInformation'));
 const CostCenter = React.lazy(() => import('../Screens/CostCenter/CostCenter'));
 const Banks = React.lazy(() => import('../Screens/Banks/Banks'));
 
@@ -49,7 +49,7 @@ class MainScreen extends PureComponent {
             <Route path={`${rootPath}/currency`} exact component={Currency} />
             <Route path={`${rootPath}/financial-coding`} exact component={FinancialCoding} />
             <Route path={`${rootPath}/accounts-charts`} exact component={ChartsOfAccounts} />
-            <Route path={`${rootPath}/empolyee-info`} exact component={EmployeeInformations} />
+            <Route path={`${rootPath}/employee-info`} exact component={EmployeeInformation} />
             <Route path={`${rootPath}/cost-center`} exact component={CostCenter} />
             <Route path={`${rootPath}/Banks`} exact component={Banks} />
           </Switch>

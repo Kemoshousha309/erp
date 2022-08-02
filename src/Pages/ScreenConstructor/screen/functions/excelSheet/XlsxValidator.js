@@ -31,7 +31,7 @@ export class XlsxValidator {
       columns.forEach((field) => {
         let errorObj;
         const value = row[field.name];
-        // chekc mandatory
+        // check mandatory
         if (field.mandatory && (value === undefined || value === null)) {
           valid = false;
           errorObj = {

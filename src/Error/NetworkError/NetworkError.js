@@ -4,7 +4,7 @@ import warning from "../../Assets/warning.png";
 import { t } from "../../Languages/languages";
 
 const lang2 = {
-  1: "You are not conneted to the internet.",
+  1: "You are not connected to the internet.",
   2: "please check your internet connection and try agian.",
 };
 
@@ -14,9 +14,9 @@ const lang1 = {
 };
 
 function NetworkError(props) {
-  let lables = lang1;
+  let labels = lang1;
   if (parseInt(props.lanState) === 2) {
-    lables = lang2;
+    labels = lang2;
   }
   return (
     <div className={style.container}>
@@ -24,9 +24,9 @@ function NetworkError(props) {
       <div className={style.info}>
         <h1>{t("network_error")}</h1>
         <p>
-          {lables["1"]}
+          {labels["1"]}
           <br />
-          {lables["2"]} <br />
+          {labels["2"]} <br />
         </p>
         <a
           target="blank"

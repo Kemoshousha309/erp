@@ -8,14 +8,14 @@ import ErrorMess from '../../../Error/ErrorMess/ErrorMess';
 import ExcelPage from '../../ExcelPage/ExcelPage.component';
 import Modal from '../../../Components/UI/Modal/Modal';
 import { getParam } from '../../../Helpers/utilities';
-import { displayPattren, displayPattrenTree } from '../../../Helpers/display';
+import { displayPattern, displayPatternTree } from '../../../Helpers/display';
 import { t } from '../../../Languages/languages';
 
 export const displayContent = (screen, location, additional) => {
-  // this should be a component that use the the upper componet data to display the content
+  // this should be a component that use the the upper component data to display the content
   let content = null;
   if (screen.state.tree === null || screen.state.tree) {
-    content = displayPattrenTree(
+    content = displayPatternTree(
       screen.state.fields,
       screen.inputChange,
       screen,
@@ -23,7 +23,7 @@ export const displayContent = (screen, location, additional) => {
       additional,
     );
   } else {
-    content = displayPattren(
+    content = displayPattern(
       screen.state.fields,
       screen.inputChange,
       screen,
@@ -46,7 +46,7 @@ export const displayContent = (screen, location, additional) => {
       {DtlForeignListHandler.call(screen)}
       {chipsList.call(screen)}
       {excelSheetPage.call(screen)}
-      {renderCustimzedList(screen)}
+      {renderCustomizedList(screen)}
 
       <Boilerplate
         gridType={screen.state.gridType}
@@ -81,22 +81,22 @@ export const displayContent = (screen, location, additional) => {
   );
 };
 
-function renderCustimzedList(screen) {
+function renderCustomizedList(screen) {
   const {
-    state: { custimizedList },
-    closeCustmizedList,
+    state: { customizedList },
+    closeCustomizedList,
   } = screen;
-  if (!custimizedList.open) return;
+  if (!customizedList.open) return;
   return (
-    <Modal show clicked={closeCustmizedList}>
+    <Modal show clicked={closeCustomizedList}>
       <div style={{ padding: '1.5rem' }}>
-        {custimizedList.render}
+        {customizedList.render}
         <div style={{
           display: 'flex', justifyContent: 'flex-end', alignItems: 'center', height: '5rem',
         }}
         >
           <Button
-            onClick={closeCustmizedList}
+            onClick={closeCustomizedList}
             color="secondary"
           >
             {t('close')}

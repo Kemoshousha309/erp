@@ -82,7 +82,7 @@ class DetailsPanel extends PureComponent {
   }
 }
 
-export function initDetials() {
+export function initDetails() {
   const {
     state: { details, record, mode },
     props: { lanState, lanTable },

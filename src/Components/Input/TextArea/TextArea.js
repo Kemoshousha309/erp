@@ -3,7 +3,7 @@ import style from "./TextArea.module.scss";
 import {
   changeHandler,
   label,
-  checkInputValiditiy,
+  checkInputValidity,
   reflectOuterState,
   handlePassIcon,
 } from "../../../Helpers/inputs";
@@ -37,7 +37,7 @@ class TextArea extends PureComponent {
     // console.log(`[InputSelectField] render`, this.state)
     const field = this.props.field;
     const placeholder = t(this.props.field.label);
-    let [invalidMessage, invalidInputStyle] = checkInputValiditiy(this, style);
+    let [invalidMessage, invalidInputStyle] = checkInputValidity(this, style);
     const passIcon = handlePassIcon(this, style);
     // style
     const classes = ["form-control", invalidInputStyle];

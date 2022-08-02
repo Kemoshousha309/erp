@@ -23,13 +23,13 @@ export const handleCloseShortCuts = (thisK) => {
   thisK.setState({ ShortCutsList: !currentState });
 };
 
-// drived state Handler ***************************************
-export const handleDrivedState = (props, state) => {
+// derived state Handler ***************************************
+export const handleDerivedState = (props, state) => {
   let tools = handleMode(
     state.mode,
     props.languages,
     state.tapTools,
-    props.changeLangSelectAcivity
+    props.changeLangSelectActivity
   );
   const formPrivs =
     props.forms_privs_hash[getParam(props.location.search, "no")];
@@ -46,7 +46,7 @@ export function handleChipsRemove(id, index) {
   fieldsUpdate[id].value.splice(index, 1);
   if (
     fieldsUpdate[id].value.length === 0 &&
-    fieldsUpdate[id].validation.requiered
+    fieldsUpdate[id].validation.required
   ) {
     fieldsUpdate[id].validity.valid = false;
     fieldsUpdate[id].validity.message = t("required_field");

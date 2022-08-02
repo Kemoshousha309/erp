@@ -1,11 +1,11 @@
 import { connect } from "react-redux";
 import { langChangeActivity } from "../../../Context/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
-import { fieldListner } from "../../ScreenConstructor/screen/fields";
+import { fieldListener } from "../../ScreenConstructor/screen/fields";
 import {  handleModifyModel } from "../../ScreenConstructor/screen/functions/modify";
-import { setlastIndex } from "../../ScreenConstructor/screen/functions/moves";
-import { functionsListenrs } from "../../ScreenConstructor/screen/listeners";
-import { initDetials } from "../../ScreenConstructor/screen/Details/DetailsPanel";
+import { setLastIndex } from "../../ScreenConstructor/screen/functions/moves";
+import { functionsListeners } from "../../ScreenConstructor/screen/listeners";
+import { initDetails } from "../../ScreenConstructor/screen/Details/DetailsPanel";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
 import { updateMode } from "../../ScreenConstructor/screen/mode";
 import _ from "lodash";
@@ -24,11 +24,11 @@ class Currency extends ScreenConstructor {
     this.setState({local_currency_update: true})
   };
   componentDidMount() {
-    setlastIndex(this);
-    functionsListenrs(this, true);
+    setLastIndex(this);
+    functionsListeners(this, true);
     const {tools} = updateMode("start", this.state, this.props)
     this.setState({tools})
-    fieldListner.call(this, "local_currency", rateValidtaion);
+    fieldListener.call(this, "local_currency", rateValidation);
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -60,10 +60,10 @@ class Currency extends ScreenConstructor {
   render() {
     const { mode, fields, local_currency_update } = this.state;
     if (mode === "modify" && local_currency_update) {
-      rateValidtaion(fields.local_currency.value, null, this);
+      rateValidation(fields.local_currency.value, null, this);
       this.setState({ local_currency_update: false });
     }
-    return displayContent(this, this.props.location, initDetials.call(this));
+    return displayContent(this, this.props.location, initDetails.call(this));
   }
 }
 
@@ -80,22 +80,22 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    changeLangSelectAcivity: (mode) => dispatch(langChangeActivity(mode)),
+    changeLangSelectActivity: (mode) => dispatch(langChangeActivity(mode)),
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Currency);
 
-function rateValidtaion(value, CheckBoxField, Currency) {
+function rateValidation(value, CheckBoxField, Currency) {
   const { fields } = Currency.state;
-  const effectedFeilds = [
+  const effectedFields = [
     "exchange_rate",
     "pos_ex_rate",
     "max_ex_rate",
     "min_ex_rate",
   ];
   if (value) {
-    effectedFeilds.forEach((i) => {
+    effectedFields.forEach((i) => {
       fields[i].writability = false;
       if (["max_ex_rate", "min_ex_rate"].includes(i)) {
         fields[i].value = "";
@@ -104,7 +104,7 @@ function rateValidtaion(value, CheckBoxField, Currency) {
       }
     });
   } else {
-    effectedFeilds.forEach((i) => {
+    effectedFields.forEach((i) => {
       fields[i].writability = true;
     });
   }

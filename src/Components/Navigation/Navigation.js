@@ -30,7 +30,7 @@ class Navigation extends PureComponent {
         <i className={style.ListIcon} onClick={listIconClicked}>
           <FontAwesomeIcon icon={faEllipsisH} />
         </i>
-        <div className={style.navitems}>
+        <div className={style.navItems}>
           <div className={style.langSelector}>
             <LangSelector />
           </div>

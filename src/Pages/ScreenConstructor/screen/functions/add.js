@@ -1,3 +1,7 @@
+/**
+ * @module add 
+ */
+
 import {
   handleFields,
 } from "../fields";
@@ -7,8 +11,16 @@ import { updateMode } from "../mode";
 
 // add handle ******************************
 
+/**
+ * Adder class is responsible for add process in the screen
+ */
+
 export class Adder extends FuncConstructor {
 
+  /**
+   * handle the local logic in add process 
+    @returns {Object} the updated fields after being opened to be ready for adding
+   */
   localHandle() {
     const { fields, specialFields} = this.screen.state;
     let fieldsUpdate = handleFields(fields, "open");
@@ -23,6 +35,13 @@ export class Adder extends FuncConstructor {
     return fieldsUpdate;
   }
 
+  /**
+   * handle the async request of pre add and auto increment
+   * @param {Object} fieldsUpdate this is the fields updated from localHandle
+   * @returns {Object} fieldsUpdate that contains: 
+   * - preAdd data to set to the content
+   * - fieldsUpdate 
+   */
   asyncHandle(fieldsUpdate) {
     const { pks, preAdd } = this.screen.state;
     return new Promise((resolve, reject) => {
@@ -33,7 +52,7 @@ export class Adder extends FuncConstructor {
           .then((fieldsUpdate) => resolve({ preData: null, fieldsUpdate }))
           .catch((err) => console.log(err));
       } else if (preAdd) {
-        this.preHanler("Add", fieldsUpdate)
+        this.preHandler("Add", fieldsUpdate)
           .then(({ data, fieldsUpdate }) =>
             resolve({ preData: data, fieldsUpdate })
           )
@@ -42,6 +61,12 @@ export class Adder extends FuncConstructor {
     });
   }
  
+  /**
+   * handle the auto increment that present in some screens
+   * @param {Object} fieldsUpdate 
+   * @param {Array} pks 
+   * @returns fieldsUpdate with auto increment value
+   */
   autoIncrementHandle(fieldsUpdate, pks) {
     return new Promise((resolve, reject) => {
       const pkPropName = pks[0];
@@ -59,6 +84,9 @@ export class Adder extends FuncConstructor {
 }
 
 
+/**
+ * manage default update of the state in add process
+ */
 export async function handleAddModel() {
   const fieldsUpdate = this.addHandler.localHandle();
   const {tools} = updateMode("add", this.state, this.props)

@@ -4,10 +4,10 @@ import { selectMessage, t } from '../../../Languages/languages';
 
 // AUTO DISPLAY FUNCTIONS
 
-// How auto Disply work??
-// the algorithem is based on the supply of prps names in each record and state throw the fillFields object =>
+// How auto Display work??
+// the algorithm is based on the supply of props names in each record and state throw the fillFields object =>
 // {
-//     main: { // the main auto dispay field usually next to the listen field
+//     main: { // the main auto display field usually next to the listen field
 //         d: { recordProp: "city_d_name", stateProp: "city_no_d_name" },
 //         f: { recordProp: "city_f_name", stateProp: "city_no_f_name" },
 //     },
@@ -43,7 +43,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
       target: { value },
     } = event;
 
-    // set loading ui untill the response is fulfiled
+    // set loading ui until the response is fulfilled
     fields = setMainField(
       main,
       t('loading'),
@@ -77,7 +77,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
           thisK.setState({ fields });
         });
     } else {
-      // empty the main field and other feildes
+      // empty the main field and other fielded
       fields = setMainField(main, '', fields, lanState);
       if (others) {
         fields = emptyOtherFields(others, fields, lanState);
@@ -109,7 +109,7 @@ const fill = (fields, stateProp, recordProp, record, recordPropO) => {
       fields[stateProp].value = record[recordProp];
       fields[stateProp].autoFilledSuccess = true;
     }
-    // if the f props is null we should display the f prop by useing recordPropO
+    // if the f props is null we should display the f prop by using recordPropO
     else if (record[recordPropO]) {
       fields[stateProp].value = record[recordPropO];
       fields[stateProp].autoFilledSuccess = true;
@@ -121,7 +121,7 @@ const fill = (fields, stateProp, recordProp, record, recordPropO) => {
 };
 
 const fillAutoDisplayFields = (record, fillFields, fields, thisK, lang_no) => {
-  // set the fillfields that are proivded form ther record
+  // set the fillFields that are provided form there record
   let lanState = 'd';
   let otherState = 'f';
   if (parseInt(lang_no) === 2) {
@@ -132,7 +132,7 @@ const fillAutoDisplayFields = (record, fillFields, fields, thisK, lang_no) => {
     const item = fillFields[key];
     if (key === 'main') {
       const { stateProp, recordProp } = item[lanState];
-      // other props names based on other statee
+      // other props names based on other state
       const { recordProp: recordPropO } = item[otherState];
       fill(fields, stateProp, recordProp, record, recordPropO);
     } else {
@@ -166,9 +166,9 @@ const emptyOtherFields = (otherFields, fields, lang_no) => {
 export const checkPassConfirm = (thisK) => {
   thisK.state.fields.confirm_password.changeHandler = (event, field) => {
     const passValue = thisK.state.fields.password.value;
-    const confimValue = event.target.value;
+    const confirmValue = event.target.value;
     const fieldClone = { ...field };
-    if (confimValue.length >= passValue.length && passValue !== confimValue) {
+    if (confirmValue.length >= passValue.length && passValue !== confirmValue) {
       fieldClone.valid = false;
       fieldClone.invalidFeedBack = t(
         'pass_not_identical',
@@ -191,11 +191,11 @@ export const checkPassConfirm = (thisK) => {
 const renameObjKey = (obj, oldKey, newKey) => {
   const objArr = [];
   for (const key in obj) {
-    const elementobj = {
+    const elementObj = {
       key,
       ...obj[key],
     };
-    objArr.push(elementobj);
+    objArr.push(elementObj);
   }
   objArr.forEach((ele, i) => {
     if (ele.key === oldKey) {
@@ -238,7 +238,7 @@ export const changePropName = (
   fields,
   startPropName,
   propFieldName,
-  gatherdFieldName,
+  gatheredFieldName,
   extension,
 ) => {
   let currentKey = null;
@@ -260,8 +260,8 @@ export const changePropName = (
   if (parseInt(props.lanState) === 1) {
     newKey = d_name;
   }
-  if (gatherdFieldName) {
-    fields[gatherdFieldName].readOnlyField = newKey;
+  if (gatheredFieldName) {
+    fields[gatheredFieldName].readOnlyField = newKey;
   }
   const fieldsUpdate = renameObjKey(fields, currentKey, newKey);
   return fieldsUpdate;

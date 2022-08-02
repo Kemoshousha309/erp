@@ -1,17 +1,17 @@
 import Input from '../Components/Input/input';
-import Treeview from '../Components/Treeview/Treeview';
+import TreeView from '../Components/TreeView/TreeView';
 
 const formatItems = (array, format) => {
   const finalArr = [];
   for (let i = 0; i < array.length; i += format) {
-    const tribleArr = [];
+    const triArr = [];
     for (let n = 0; n < format; n++) {
       const item = array[i + n];
       if (item) {
-        tribleArr.push(item);
+        triArr.push(item);
       }
     }
-    finalArr.push(tribleArr);
+    finalArr.push(triArr);
   }
   return finalArr;
 };
@@ -20,19 +20,19 @@ const gridContent = (fields, grid) => {
   // console.log("[gridContent func] render")
   const fieldsArr = [];
   for (const key in fields) {
-    let fieldobj;
+    let fieldObj;
     if (!fields[key].hide) {
       if (fields[key].id) {
-        fieldobj = {
+        fieldObj = {
           ...fields[key],
         };
-        fieldsArr.push(fieldobj);
+        fieldsArr.push(fieldObj);
       } else {
-        fieldobj = {
+        fieldObj = {
           id: key,
           ...fields[key],
         };
-        fieldsArr.push(fieldobj);
+        fieldsArr.push(fieldObj);
       }
     }
   }
@@ -91,8 +91,8 @@ const displayGrid = (fields, gridType, changeHandler, thisK) => {
   return content;
 };
 
-export const displayPattren = (fields, changeHandler, thisK, additional) => {
-  // console.log("[displayPattren func] render")
+export const displayPattern = (fields, changeHandler, thisK, additional) => {
+  // console.log("[displayPattern func] render")
   let tapContent = displayGrid(fields, 2, changeHandler, thisK);
   if (thisK.state.gridType) {
     tapContent = displayGrid(
@@ -111,7 +111,7 @@ export const displayPattren = (fields, changeHandler, thisK, additional) => {
   );
 };
 
-export const displayPattrenTree = (
+export const displayPatternTree = (
   fields,
   changeHandler,
   thisK,
@@ -136,7 +136,7 @@ export const displayPattrenTree = (
         </form>
       </div>
       <div className="col-sm-4 px-0 ">
-        <Treeview thisK={thisK} tree={tree} loading={thisK.state.treeLoading} />
+        <TreeView thisK={thisK} tree={tree} loading={thisK.state.treeLoading} />
       </div>
     </div>
   );

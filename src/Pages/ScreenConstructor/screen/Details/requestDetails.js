@@ -2,11 +2,6 @@ import _, { cloneDeep } from 'lodash';
 import axios from '../../../../axios';
 
 
-/**
- * This funtion should return a promise
- * 
- * @returns {Promise} This promise should resolve a record with requested dtl
- */
 export function getDetails(record, screen) {
   return new Promise((resolve, reject) => {
     const {
@@ -31,16 +26,16 @@ export function getDetails(record, screen) {
   })
 }
 
-// this function transform the data get form forieng screen to look like the current details
-export const transformForiegnDetailsData = (record, headers) => {
+// this function transform the data get form foreign screen to look like the current details
+export const transformForeignDetailsData = (record, headers) => {
   const newRecord = {
     action: 'add',
     frontRow: true,
   };
   Object.values(headers).forEach((header) => {
-    const { foriegnPropName, propName, defaultValue } = header;
-    if (record.hasOwnProperty(foriegnPropName)) {
-      newRecord[propName] = record[foriegnPropName];
+    const { foreignPropName, propName, defaultValue } = header;
+    if (record.hasOwnProperty(foreignPropName)) {
+      newRecord[propName] = record[foreignPropName];
     } else {
       newRecord[propName] = defaultValue;
     }
