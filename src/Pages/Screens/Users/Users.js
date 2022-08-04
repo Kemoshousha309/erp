@@ -6,7 +6,7 @@ import { displayContent } from '../../ScreenConstructor/screen/displayContent';
 import { setLastIndex } from '../../ScreenConstructor/screen/functions/moves';
 import { handleDerivedState } from '../../ScreenConstructor/screen/handlers';
 import {
-  autoDisplay, changePropName, checkPassConfirm, onlyActiveField,
+  autoDisplay, changeFieldPropNameAccordingToLanNo, checkPassConfirm, onlyActiveField,
 } from '../../ScreenConstructor/screen/inputsHandlers';
 import { functionsListeners } from '../../ScreenConstructor/screen/listeners';
 import ScreenConstructor from '../../ScreenConstructor/ScreenConstructor';
@@ -63,14 +63,14 @@ class Users extends ScreenConstructor {
     // this is the technique of active only one field without affect other things
     if (parseInt(props.lanState) !== parseInt(state.langNo)) {
       lang_no = props.lanState;
-      fieldsUpdate = changePropName(
+      fieldsUpdate = changeFieldPropNameAccordingToLanNo(
         props,
         fieldsClone,
         'group_no_name',
         'group_no',
         'group_no',
       );
-      fieldsUpdate = changePropName(
+      fieldsUpdate = changeFieldPropNameAccordingToLanNo(
         props,
         fieldsUpdate,
         'direct_mang_name',

@@ -5,7 +5,7 @@ import { displayContent } from "../../../../ScreenConstructor/screen/displayCont
 import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
 import {
   autoDisplay,
-  changePropName,
+  changeFieldPropNameAccordingToLanNo,
 } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
@@ -59,25 +59,25 @@ class Branches extends ScreenConstructor {
   }
 
   static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changePropName(
+    let fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       state.fields,
       "company_name",
       "company"
     );
-    fieldsUpdate = changePropName(
+    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       fieldsUpdate,
       "country_name",
       "country"
     );
-    fieldsUpdate = changePropName(
+    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       fieldsUpdate,
       "province_name",
       "province"
     );
-    fieldsUpdate = changePropName(props, fieldsUpdate, "city_name", "city");
+    fieldsUpdate = changeFieldPropNameAccordingToLanNo(props, fieldsUpdate, "city_name", "city");
 
     return {
       fields: fieldsUpdate,

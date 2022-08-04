@@ -11,13 +11,13 @@ function InputPrivsTable(
   mode,
   logged_user_id,
   privChangeHandler,
-  privControlIpnputHandler,
+  privControlInputHandler,
 ) {
   const { header, propsName } = content;
   let table = t('no_match');
-  const controlInputclasses = [style.privControlInput];
+  const controlInputClasses = [style.privControlInput];
   if (mode !== 'modify') {
-    controlInputclasses.push(style.hidden);
+    controlInputClasses.push(style.hidden);
   }
   if (input_privs.length > 0) {
     table = (
@@ -29,9 +29,9 @@ function InputPrivsTable(
                 <div className={style.privControlContainer}>
                   <span>#</span>
                   <input
-                    className={controlInputclasses.join(' ')}
+                    className={controlInputClasses.join(' ')}
                     type="checkbox"
-                    onChange={(e) => privControlIpnputHandler(e, 'ALL')}
+                    onChange={(e) => privControlInputHandler(e, 'ALL')}
                   />
                 </div>
               </th>
@@ -46,9 +46,9 @@ function InputPrivsTable(
                 if (control) {
                   controlInput = (
                     <input
-                      className={controlInputclasses.join(' ')}
+                      className={controlInputClasses.join(' ')}
                       type="checkbox"
-                      onChange={(e) => privControlIpnputHandler(e, 'COLUMN', control)}
+                      onChange={(e) => privControlInputHandler(e, 'COLUMN', control)}
                     />
                   );
                 }
@@ -70,9 +70,9 @@ function InputPrivsTable(
                   <div className={style.privControlContainer}>
                     <span>{index + 1}</span>
                     <input
-                      className={controlInputclasses.join(' ')}
+                      className={controlInputClasses.join(' ')}
                       type="checkbox"
-                      onChange={(e) => privControlIpnputHandler(e, 'ROW', index)}
+                      onChange={(e) => privControlInputHandler(e, 'ROW', index)}
                     />
                   </div>
                 </th>

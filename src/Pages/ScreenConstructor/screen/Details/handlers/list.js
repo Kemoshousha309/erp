@@ -97,8 +97,8 @@ export class DetailsList {
     const detailsFillFields = activeFkHeader[0].fillFields;
     const recordDtlPropName = details.tabs[current_tab].recordDetailPropName;
     const rowIndex = details.tabs[current_tab].detailsRowIndex;
-    const row = stateRecordClone[recordDtlPropName][rowIndex];
     if (!stateRecordClone) throw new Error("there is no record in the state");
+    const row = stateRecordClone[recordDtlPropName][rowIndex];
     detailsFillFields.forEach((fieldName) => {
       row[fieldName] = choosedRecord[fieldName];
       if(row[fieldName]) {

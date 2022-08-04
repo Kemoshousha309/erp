@@ -24,9 +24,9 @@ export class DetailsRemover extends dtlFuncConstructor {
 
 export class LimitDetailsRemover extends DetailsRemover {
   /// this class handles the removing of limited number of records
-  constructor(screen) {
+  constructor(screen, recordsNum) {
     super(screen);
-    this.recordsNum = screen.state.details.tabs.bnk_dtl_list.recordsNum;
+    this.recordsNum = recordsNum;
   }
 
   limitRemover(index, e) {

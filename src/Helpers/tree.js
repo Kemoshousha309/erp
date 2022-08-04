@@ -277,6 +277,10 @@ export const routeMap = [
     route: '',
   },
   {
+    form_no: 2201,
+    route: 'cash?no=2201',
+  },
+  {
     form_no: 2202,
     route: 'banks?no=2202',
   },

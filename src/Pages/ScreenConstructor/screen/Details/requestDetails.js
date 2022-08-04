@@ -1,10 +1,11 @@
-import _, { cloneDeep } from 'lodash';
+import _ from 'lodash';
 import axios from '../../../../axios';
 
 
 export function getDetails(record, screen) {
   return new Promise((resolve, reject) => {
     const {
+      fields,
       details: { tabs },
     } = screen.state;
     const detailsPagesURLs = Object.keys(tabs).map((key) => {
@@ -13,15 +14,19 @@ export function getDetails(record, screen) {
     });
     detailsPagesURLs.forEach((pageURL) => {
       const { master, temp, id } = pageURL;
-      const url = `${temp}/${record[master]}`;
+      let key = record[master] ? record[master] : fields[master].value
+      const url = `${temp}/${key}`;
+      const recordClone = _.cloneDeep(record)
       axios
         .get(url)
         .then((res) => {
-          const recordClone = _.cloneDeep(record)
           recordClone[tabs[id].recordDetailPropName] = res.data[tabs[id].recordDetailPropName];
-          resolve(cloneDeep(recordClone))
+          resolve(recordClone)
         })
-        .catch((err) => console.log(err.response));
+        .catch((err) => {
+          console.log(err)
+          reject({recordClone})
+        });
     });
   })
 }

@@ -1,6 +1,6 @@
 import { getSheet } from '../../../../ExcelPage/fileProcess';
 
-export const excelPageCloseModal = () => {
+export function excelPageCloseModal() {
   this.setState({
     excelSheetOpen: false,
     excelPage: {
@@ -14,7 +14,7 @@ export const excelPageCloseModal = () => {
   });
 };
 
-export const resetExcelPageModal = () => {
+export function resetExcelPageModal() {
   this.setState({
     excelPage: {
       excelLoading: false,
@@ -27,7 +27,7 @@ export const resetExcelPageModal = () => {
   });
 };
 
-export const handleFileChange = (excelSheet) => {
+export function handleFileChange(excelSheet) {
   const {
     excelFileInput,
     props: { resetExcelPage },
@@ -66,7 +66,7 @@ export const handleFileChange = (excelSheet) => {
     });
 };
 
-export const handleValidateExcelSheet = (excelSheet) => {
+export function handleValidateExcelSheet(excelSheet) {
   const {
     props: {
       excelPagePreparer,

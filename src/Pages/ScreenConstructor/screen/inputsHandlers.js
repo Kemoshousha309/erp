@@ -1,6 +1,11 @@
+/**
+ * @module inputsHandlers
+ */
+
 import { isValid } from '../../../Validation/validation';
 import axios from '../../../axios';
 import { selectMessage, t } from '../../../Languages/languages';
+import _ from 'lodash';
 
 // AUTO DISPLAY FUNCTIONS
 
@@ -33,7 +38,8 @@ import { selectMessage, t } from '../../../Languages/languages';
 
 export const autoDisplay = (thisK, listenField, url, fillFields) => {
   // set onChange listener
-  thisK.state.fields[listenField].changeHandler = (event) => {
+  const fieldsClone = _.cloneDeep(thisK.state.fields);
+  fieldsClone[listenField].changeHandler = (event) => {
     const { main, others } = fillFields;
     let {
       state: { fields },
@@ -86,7 +92,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
       thisK.setState({ fields });
     }
   };
-  thisK.setState({ fields: thisK.state.fields });
+  return fieldsClone;
 };
 
 const setMainField = (main, value, fields, lang_no) => {
@@ -189,11 +195,12 @@ export const checkPassConfirm = (thisK) => {
 
 // handle change field name to fit the record prop name
 const renameObjKey = (obj, oldKey, newKey) => {
+  const objClone = _.cloneDeep(obj);
   const objArr = [];
-  for (const key in obj) {
+  for (const key in objClone) {
     const elementObj = {
       key,
-      ...obj[key],
+      ...objClone[key],
     };
     objArr.push(elementObj);
   }
@@ -233,14 +240,26 @@ export const onlyActiveField = (fields, firstField, secondField, mode) => {
   return fields;
 };
 
-export const changePropName = (
+/**
+ * - used to change the field prop name in the state fields when the language changed
+ * - usually used in getDerivedStateFromProps 
+ * - you don't have explicit control on the produced prop names
+ * @param {Object} props 
+ * @param {Object} fields 
+ * @param {string} startPropName the prop name in the state 
+ * @param {string} propFieldName the prop name with out d_ for f_ name
+ * @param {*} gatheredFieldName 
+ * @param {string} extension the extension to be add to the produced prop name 
+ * @returns {Object} fieldsUpdate 
+ */
+export function changeFieldPropNameAccordingToLanNo(
   props,
   fields,
   startPropName,
   propFieldName,
   gatheredFieldName,
   extension,
-) => {
+) {
   let currentKey = null;
   let d_name = `${propFieldName}_d_name`;
   let f_name = `${propFieldName}_f_name`;
@@ -266,3 +285,5 @@ export const changePropName = (
   const fieldsUpdate = renameObjKey(fields, currentKey, newKey);
   return fieldsUpdate;
 };
+
+

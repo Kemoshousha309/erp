@@ -4,7 +4,7 @@ import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import {
   autoDisplay,
-  changePropName,
+  changeFieldPropNameAccordingToLanNo,
 } from "../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
@@ -98,14 +98,14 @@ class CostCenter extends ScreenConstructor {
 
   static getDerivedStateFromProps(props, state) {
     let newState = _.cloneDeep(state);
-    newState.fields = changePropName(
+    newState.fields = changeFieldPropNameAccordingToLanNo(
       props,
       newState.fields,
       "parent_cc_name",
       "parent_cc"
     );
 
-    newState.fields = changePropName(
+    newState.fields = changeFieldPropNameAccordingToLanNo(
       props,
       newState.fields,
       "cc_group_name",

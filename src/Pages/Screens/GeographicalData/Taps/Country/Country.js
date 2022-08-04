@@ -5,7 +5,7 @@ import { displayContent } from "../../../../ScreenConstructor/screen/displayCont
 import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
 import {
   autoDisplay,
-  changePropName,
+  changeFieldPropNameAccordingToLanNo,
 } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
@@ -35,7 +35,7 @@ class Country extends ScreenConstructor {
   }
 
   static getDerivedStateFromProps(props, state) {
-    const fieldsUpdate = changePropName(
+    const fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       state.fields,
       "region_no_name",

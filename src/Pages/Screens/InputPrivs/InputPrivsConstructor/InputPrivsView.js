@@ -13,13 +13,13 @@ function InputPrivsView(props) {
     logged_user_id,
     viewInputPrivs,
     content,
-    privControlIpnputHandler,
+   privControlInputHandler,
   } = props;
-  const aditionalStyle = {
+  const additionalStyle = {
     margin: '2rem',
   };
   return (
-    <div style={aditionalStyle}>
+    <div style={additionalStyle}>
       <Button
         onClick={viewInputPrivs}
         variant="contained"
@@ -38,7 +38,7 @@ function InputPrivsView(props) {
           mode,
           logged_user_id,
           privChangeHandler,
-          privControlIpnputHandler,
+          privControlInputHandler,
         )
         : null}
     </div>
@@ -51,7 +51,7 @@ export function initInputPrivsView() {
     props: { lanState, lanTable },
     viewInputPrivs,
     privChangeHandler,
-    privControlIpnputHandler,
+    privControlInputHandler,
   } = this;
   return (
     <InputPrivsView
@@ -62,7 +62,7 @@ export function initInputPrivsView() {
       mode={mode}
       privChangeHandler={privChangeHandler}
       input_privs={input_privs}
-      privControlIpnputHandler={privControlIpnputHandler}
+      privControlInputHandler={privControlInputHandler}
     />
   );
 }

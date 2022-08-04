@@ -68,3 +68,8 @@ export const getDetailsPropanes = (tabs, headers) => {
   });
   return properties;
 };
+
+
+export function isLangChanged(prevProps, currentProps) {
+  return parseInt(prevProps.lanState) !== parseInt(currentProps.lanState)
+}

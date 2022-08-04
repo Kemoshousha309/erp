@@ -6,6 +6,8 @@ import { withRouter } from "react-router";
 import Boilerplate from "../../../Components/Boilerplate/Boilerplate";
 import SkeletonLoader from "../../../Components/UI/SkeletonLoader/SkeletonLoader";
 import { t } from "../../../Languages/languages";
+import Banks from "./Taps/Banks/Banks";
+import Cash from "./Taps/Cash/Cash";
 
 const Branches = React.lazy(() => import("./Taps/Branches/Branches"));
 const AccountsChart = React.lazy(() =>
@@ -15,7 +17,14 @@ const CostCenter = React.lazy(() => import("./Taps/CostCenter/CostCenter"));
 
 class InputPrivs extends Component {
   state = {
-    tapOptions: ["select_screen", "branches", "acc_chart", "cost_center"], // these options is static just for now
+    tapOptions: [
+      "select_screen",
+      "branches",
+      "acc_chart",
+      "cost_center",
+      "bank",
+      "cash_on_hand",
+    ], // these options is static just for now
     currentTap: "select_screen",
     dropDownChange: false,
   };
@@ -51,9 +60,16 @@ class InputPrivs extends Component {
       case "cost_center":
         content = <CostCenter {...this.props} dropDown={dropDown} />;
         break;
+      case "bank":
+        content = <Banks {...this.props} dropDown={dropDown} />;
+        break;
+      case "cash_on_hand":
+        content = <Cash {...this.props} dropDown={dropDown} />;
+        break;
       case "select_screen":
         content = <Boilerplate dropDown={dropDown} />;
         break;
+
       default:
         content = <h1>Not Exist</h1>;
     }

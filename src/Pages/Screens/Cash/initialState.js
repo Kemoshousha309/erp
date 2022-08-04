@@ -1,0 +1,218 @@
+export const cashInitState = {
+  fields: {
+    cash_no: {
+      fieldType: "input",
+      type: "number",
+      label: "cash_no",
+      validation: {
+        required: true,
+        length: 30,
+      },
+      validity: {
+        valid: true,
+        touched: false,
+        message: null,
+      },
+      writability: false,
+      value: "",
+    },
+    cash_d_name: {
+      fieldType: "input",
+      type: "text",
+      label: "name",
+      validation: {
+        required: true,
+        length: 200,
+      },
+      validity: {
+        valid: true,
+        touched: false,
+        message: null,
+      },
+      writability: false,
+      value: "",
+    },
+    cash_f_name: {
+      fieldType: "input",
+      type: "text",
+      label: "foreign_name",
+      validation: {
+        required: false,
+        length: 200,
+      },
+      validity: {
+        valid: true,
+        touched: false,
+        message: null,
+      },
+      writability: false,
+      value: "",
+    },
+    holer: {},
+    branch_no: {
+      fieldType: "input",
+      type: "number",
+      label: "branch_no",
+      validation: {
+        required: true,
+        length: 30,
+      },
+      validity: {
+        valid: true,
+        touched: false,
+        message: null,
+      },
+      writability: false,
+      value: "",
+      fillFields: [
+        {
+          recordName: 'branch_no',
+          stateName: 'branch_no',
+        },
+        {
+          recordName: 'branch_d_name',
+          stateName: 'branch_d_name',
+        },
+        {
+          recordName: 'branch_f_name',
+          stateName: 'branch_f_name',
+        },
+      ],
+    },
+    branch_name: {
+      fieldType: "input",
+      type: "text",
+      label: "name",
+      value: "",
+      readOnly: true,
+    },
+    inactive: {
+      fieldType: "checkbox",
+      type: "checkbox",
+      label: "inactive",
+      writability: false,
+      value: false,
+    },
+    pos: {
+      fieldType: "checkbox",
+      type: "checkbox",
+      label: "pos",
+      writability: false,
+      value: false,
+    },
+
+  },
+  pks: ["cash_no"],
+  urls: {
+    add: "cash",
+    modify: "cash",
+    search: "cash",
+    pages: "cash/pages",
+    page: "cash/page",
+    lastPage: "cash/lastPage",
+    filter: "cash/filteredPages",
+    pageNo: "cash/pageNo",
+    delete: "cash",
+    preAdd: "cash/preAdd",
+  },
+  fks: ["branch_no"],
+  fkListShow: null,
+  preAdd: {
+    state: true,
+    content: null,
+  },
+  fkList: {
+    branch_no: {
+      mainFields: ["branch_no", { label: "name", propName: "branch_d_name" }],
+      urls: {
+        add: "branches",
+        modify: "branches",
+        search: "branches",
+        pages: "branches/pages",
+        page: "branches/page",
+        lastPage: "branches/lastPage",
+        filter: "branches/filteredPages",
+        pageNo: "branches/pageNo",
+        delete: "branches",
+      },
+    },
+  },
+  mainFields: ["cash_no", { label: "name", propName: "cash_d_name" }],
+  tapName: "cash",
+  searchFields: ["cash_no"],
+  details: {
+    current_tab: "cash_dtl_list",
+    loading: false,
+    show: true,
+    tabs: {
+      cash_dtl_list: {
+        label: "cash_dtl_list",
+        headers: {
+          acc_no: {
+            propName: "acc_no",
+            label: "acc_no",
+            disabled: false,
+            type: "number",
+            validationRules: {
+              required: true,
+            },
+            foreignPropName: "acc_no",
+            fk: true,
+            fillFields: ["acc_no"],
+            foreignURLs: {
+              pages: "chartofaccounts/pages",
+              page: "chartofaccounts/page",
+              lastPage: "chartofaccounts/lastPage",
+              filter: "chartofaccounts/filteredPages",
+              pageNo: "chartofaccounts/pageNo",
+            },
+            foreignMainFields: [
+              "acc_no",
+              { label: "name", propName: "acc_d_name" },
+            ],
+            filterBody: {
+              acc_no: null,
+              acc_d_name: null,
+              acc_f_name: null,
+              sub: true,
+              parent_acc: null,
+              bs: null,
+              acc_type: 2,
+              inactive: false,
+            },
+          },
+          acc_curr: {
+            propName: "acc_curr",
+            label: "acc_curr",
+            disabled: false,
+            type: "text",
+            validationRules: {
+              required: true,
+            },
+          },
+          inactive: {
+            propName: "inactive",
+            label: "inactive",
+            disabled: false,
+            type: "checkbox",
+            validationRules: {
+              required: true,
+            },
+            defaultValue: false,
+          },
+        },
+        viewOnly: false,
+        recordDetailPropName: "cash_dtl_list",
+        activeForeignList: null,
+        detailsRowIndex: null,
+        foreignKeys: ["acc_no"],
+        pageURL: {
+          master: "cash_no",
+          temp: "cash",
+        },
+        addState: true,
+        recordsNum: 1,
+      },
+    },
+  },
+};

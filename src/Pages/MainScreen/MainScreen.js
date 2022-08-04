@@ -18,9 +18,23 @@ const ChartsOfAccounts = React.lazy(() => import('../Screens/ChartsOfAccounts/Ch
 const EmployeeInformation = React.lazy(() => import('../Screens/EmployeeInformation/EmployeeInformation'));
 const CostCenter = React.lazy(() => import('../Screens/CostCenter/CostCenter'));
 const Banks = React.lazy(() => import('../Screens/Banks/Banks'));
+const Cash = React.lazy(() => import('../Screens/Cash/Cash'));
 
+
+/**
+ * A component responsible for rendering the matched screen with url
+ */
 class MainScreen extends PureComponent {
+  /**
+   * - decide the style state ar | en
+   * - link to the matched rout (component)
+   * @returns a route to the the matched screen
+   */
+  componentDidMount() {
+    console.log("mainscreen mount")
+  }
   render() {
+    console.log("MainScreen render ")
     let lanState;
     if (parseInt(this.props.lanState) === 2) {
       lanState = style.arState;
@@ -37,7 +51,6 @@ class MainScreen extends PureComponent {
       <div className={classes}>
         <Suspense fallback={<SkeletonLoader type="Bp" />}>
           <Switch>
-            {/* <ExcelPage /> */}
             <Route path={`${rootPath}/internal-coding`} exact component={InternalCoding} />
             <Route path={`${rootPath}/geographical-data`} exact component={GeographicalData} />
             <Route path={`${rootPath}/companies-barnches`} exact component={Companies_Branches} />
@@ -52,6 +65,7 @@ class MainScreen extends PureComponent {
             <Route path={`${rootPath}/employee-info`} exact component={EmployeeInformation} />
             <Route path={`${rootPath}/cost-center`} exact component={CostCenter} />
             <Route path={`${rootPath}/Banks`} exact component={Banks} />
+            <Route path={`${rootPath}/cash`} exact component={Cash} />
           </Switch>
         </Suspense>
       </div>
@@ -59,7 +73,7 @@ class MainScreen extends PureComponent {
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state) => ({ 
   lanState: state.lang.lan,
   lanTable: state.lang.langTables,
 });

@@ -24,7 +24,6 @@ export class BanksSave extends Saver {
     const fieldsValues = getValues(masterFields);
     // add the account number of details to the master
 
-
     const { record } = this.screen.state;
     if (record) {
       fieldsValues.account_no = record.bnk_dtl_list[0].acc_no;
@@ -34,8 +33,6 @@ export class BanksSave extends Saver {
       ...detailsValues,
       ...fieldsValues,
     };
-
-    console.log({ body });
     return new Promise((resolve, reject) => {
       axios({
         method,
@@ -51,7 +48,7 @@ export class BanksSave extends Saver {
     const { mode, fields } = this.screen.state;
     const detailsChange = trackDetailsChange(this.screen);
     return new Promise((resolve, reject) => {
-      if (mode === "add" || mode === "copy") resolve(detailsChange);
+      if (mode === "add" || mode === "copy") return resolve(detailsChange);
       // modify
       if (detailsChange.bnk_dtl_list.length > 0) {
         // make the trick of update
@@ -67,13 +64,13 @@ export class BanksSave extends Saver {
               deletePage[key] = fetchedPage[key];
             });
             deletePage.action = "delete";
-            resolve({bnk_dtl_list: [addPage, deletePage]});
+            resolve({ bnk_dtl_list: [addPage, deletePage] });
           })
           .catch((err) => {
             console.log(err);
           });
       }
-      resolve({bnk_dtl_list: []})
+      resolve({ bnk_dtl_list: [] });
     });
   }
 }
@@ -91,7 +88,6 @@ export async function handleBanksSaveModel() {
   this.setState({ loading: true });
   try {
     const res = await this.banksSaver.handleBanksSave();
-    console.log(res);
     const { message, fieldsUpdate, record } = res;
     const updateRecord = record ? record : this.state.record;
     const { tools } = updateMode("d_record", this.state, this.props);
@@ -118,47 +114,34 @@ export async function handleBanksSaveModel() {
   }
 }
 
-// set listener to acc_cur to trigger the custom list
-export function setAccCurListener() {
-  // set listeners to the account currency
-  // set timeout function make sure to run the code after set the state
-  setTimeout(() => {
-    const presentAccCurrFields = document.querySelectorAll("#acc_curr");
-    presentAccCurrFields.forEach((element) => {
-      if (element.dataset.hasListener === "true") return;
-      element.addEventListener("keydown", (event) => {
-        event.preventDefault();
-        if (event.key === "F4") {
-          let currentElement = event.target;
-          while (currentElement.tagName !== "TR") {
-            currentElement = currentElement.parentElement;
-          }
-          const rowIndex = currentElement.dataset.rowindex;
-          const { customizedList } = this.state;
-          this.setState({ loading: true });
-          prepareData(this, rowIndex)
-            .then((currList) => {
-              customizedList.open = true;
-              customizedList.render = renderCustomBanksDtlAccCurrList(
-                currList,
-                accCurRecordClick.bind(this, rowIndex)
-              );
-              this.setState({ customizedList, loading: false });
-              timer().then((res) => this.setState({ message: false }));
-            })
-            .catch((errMess) => {
-              const message = {
-                content: selectMessage(errMess),
-                type: "error",
-              };
-              this.setState({ message, loading: false });
-              timer().then((res) => this.setState({ message: false }));
-            });
-        }
-      });
-      element.dataset.hasListener = true;
+
+
+export function handleAccCurList(event) {
+  let currentElement = event.target;
+  while (currentElement.tagName !== "TR") {
+    currentElement = currentElement.parentElement;
+  }
+  const rowIndex = currentElement.dataset.rowindex;
+  const { customizedList } = this.state;
+  this.setState({ loading: true });
+  prepareData(this, rowIndex)
+    .then((currList) => {
+      customizedList.open = true;
+      customizedList.render = renderCustomBanksDtlAccCurrList(
+        currList,
+        accCurRecordClick.bind(this, rowIndex)
+      );
+      this.setState({ customizedList, loading: false });
+      timer().then((res) => this.setState({ message: false }));
+    })
+    .catch((errMess) => {
+      const message = {
+        content: selectMessage(errMess),
+        type: "error",
+      };
+      this.setState({ message, loading: false });
+      timer().then((res) => this.setState({ message: false }));
     });
-  });
 }
 
 function renderCustomBanksDtlAccCurrList(data, accCurRecordClick) {

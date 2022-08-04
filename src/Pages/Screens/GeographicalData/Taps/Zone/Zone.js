@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { langChangeActivity } from '../../../../../Context/actions/lang';
 import { displayContent } from '../../../../ScreenConstructor/screen/displayContent';
 import { setLastIndex } from '../../../../ScreenConstructor/screen/functions/moves';
-import { autoDisplay, changePropName } from '../../../../ScreenConstructor/screen/inputsHandlers';
+import { autoDisplay, changeFieldPropNameAccordingToLanNo } from '../../../../ScreenConstructor/screen/inputsHandlers';
 import { functionsListeners } from '../../../../ScreenConstructor/screen/listeners';
 import { updateMode } from '../../../../ScreenConstructor/screen/mode';
 import ScreenConstructor from '../../../../ScreenConstructor/ScreenConstructor';
@@ -71,25 +71,25 @@ class Zone extends ScreenConstructor {
   }
 
   static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changePropName(
+    let fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       state.fields,
       'region_no_name',
       'region_no',
     );
-    fieldsUpdate = changePropName(
+    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       fieldsUpdate,
       'country_no_name',
       'country_no',
     );
-    fieldsUpdate = changePropName(
+    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       fieldsUpdate,
       'province_no_name',
       'province_no',
     );
-    fieldsUpdate = changePropName(
+    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       fieldsUpdate,
       'city_no_name',

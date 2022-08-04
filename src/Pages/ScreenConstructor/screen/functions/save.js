@@ -141,7 +141,11 @@ export class Saver extends FuncConstructor {
       record = getDetails(stateRecord, this.screen);
     }
     const fieldsUpdate = handleFields(masterFields, "close", false);
-    record.then((rec) => resolve({ fieldsUpdate, message, rec }));
+    record
+    .then((rec) => resolve({ fieldsUpdate, message, rec }))
+    .catch(rec => {
+      resolve({fieldsUpdate, message: null, rec})
+    })
   }
 
   /**

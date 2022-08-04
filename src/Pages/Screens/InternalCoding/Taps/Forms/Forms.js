@@ -5,7 +5,7 @@ import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { getTree } from "../../../../ScreenConstructor/screen/async";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
-import { autoDisplay, changePropName } from "../../../../ScreenConstructor/screen/inputsHandlers";
+import { autoDisplay, changeFieldPropNameAccordingToLanNo } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
 import ScreenConstructor from "../../../../ScreenConstructor/ScreenConstructor";
@@ -50,14 +50,14 @@ class Forms extends ScreenConstructor {
   }
 
   static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changePropName(
+    let fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       state.fields,
       "module_no_name",
       "module_no",
       "module_no"
     );
-    fieldsUpdate = changePropName(
+    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       fieldsUpdate,
       "parent_form_name",

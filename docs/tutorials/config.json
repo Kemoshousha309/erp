@@ -1,5 +1,8 @@
 {
   "doc-rules": {
       "title": "Documentation standards"
+  },
+  "add-new-screen": {
+    "title": "Add a new screen"
   }
 }

@@ -1,3 +1,7 @@
+/**
+ * @module listeners 
+ */
+
 import $ from "jquery";
 import { getSelectLangDir } from "../../../Languages/languages";
 import { checkActiveList } from "./functions/list";
@@ -156,3 +160,29 @@ export const functionsListeners = (thisK, mode) => {
     document.onkeydown = null;
   }
 };
+
+/**
+ * set a keyboard listeners to a field
+ * - set time out to sure that the process is done after the state is updated
+ * - get all the fields with that id then go through them
+ * - if it has not a listener set one 
+ * - execute the callback function if the matched key is clicked 
+ * @param {string} id the id of the field 
+ * @param {string} key the key code that should be listened to
+ * @param {Function} callback the callback function that should be called when the event trigger
+ * @returns {undefined} 
+ *  */
+export function setFieldKeyListener (id, key, callback) {
+  setTimeout(() => {
+    const presentAccCurrFields = document.querySelectorAll(`#${id}`);
+    presentAccCurrFields.forEach((element) => {
+      if (element.dataset.hasListener === "true") return;
+      element.addEventListener("keydown", (event) => {
+        element.dataset.hasListener = true;
+        event.preventDefault();
+        if (event.key !== key) return;
+        callback(event)
+      });
+    });
+  });
+}

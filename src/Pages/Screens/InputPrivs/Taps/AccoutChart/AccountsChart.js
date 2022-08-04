@@ -11,7 +11,7 @@ class AccountsChart extends InputPrivsConstructor {
     super();
     this.state = {
       ...this.state,
-      ..._.cloneDeep(accChartPrivInitSate)
+      ..._.cloneDeep(accChartPrivInitSate.call(this))
     };
   }
 

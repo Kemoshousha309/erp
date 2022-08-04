@@ -6,7 +6,7 @@ import { functionsListeners } from "../../../../ScreenConstructor/screen/listene
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
 import {
   autoDisplay,
-  changePropName,
+  changeFieldPropNameAccordingToLanNo,
 } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { langChangeActivity } from "../../../../../Context/actions/lang";
@@ -59,19 +59,19 @@ class City extends ScreenConstructor {
   }
 
   static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changePropName(
+    let fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       state.fields,
       "region_no_name",
       "region_no"
     );
-    fieldsUpdate = changePropName(
+    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       fieldsUpdate,
       "country_no_name",
       "country_no"
     );
-    fieldsUpdate = changePropName(
+    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       fieldsUpdate,
       "province_no_name",

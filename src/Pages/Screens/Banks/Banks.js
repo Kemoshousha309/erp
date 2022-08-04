@@ -6,10 +6,11 @@ import { LimitDetailsRemover } from "../../ScreenConstructor/screen/Details/hand
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
 import _ from "lodash";
-import { BanksSave, handleBanksSaveModel, setAccCurListener } from "./helper";
+import { BanksSave, handleAccCurList, handleBanksSaveModel } from "./helper";
 import { handleModifyModel } from "../../ScreenConstructor/screen/functions/modify";
 import { handleCopyModel } from "../../ScreenConstructor/screen/functions/copy";
 import { banksInitState } from "./initialState";
+import { setFieldKeyListener } from "../../ScreenConstructor/screen/listeners";
 
 class Banks extends ScreenConstructor {
   constructor() {
@@ -18,8 +19,8 @@ class Banks extends ScreenConstructor {
       ...this.state,
       ..._.cloneDeep(banksInitState)
     };
-    this.limitAdder = new LimitAdder(this);
-    this.limitDtlRemover = new LimitDetailsRemover(this);
+    this.limitAdder = new LimitAdder(this, this.state.details.tabs.bnk_dtl_list.recordsNum);
+    this.limitDtlRemover = new LimitDetailsRemover(this, this.state.details.tabs.bnk_dtl_list.recordsNum);
     this.banksSaver = new BanksSave(this);
   }
 detailsRemoveHandler = (index, e) => {
@@ -38,12 +39,12 @@ detailsRemoveHandler = (index, e) => {
 
   modify = () => {
     handleModifyModel.call(this);
-    setAccCurListener.call(this);
+    setFieldKeyListener("acc_curr", "F4", handleAccCurList.bind(this));
   };
 
   copy = () => {
     handleCopyModel.call(this);
-    setAccCurListener.call(this);
+    setFieldKeyListener("acc_curr", "F4", handleAccCurList.bind(this));
   }
   
 
@@ -58,7 +59,8 @@ detailsRemoveHandler = (index, e) => {
     detailsClone.tabs[current_tab].addState = addState;
     this.setState({ record: recordUpdate, details: detailsClone });
 
-    setAccCurListener.call(this)
+    setFieldKeyListener("acc_curr", "F4", handleAccCurList.bind(this));
+  
   };
 
   save = () => handleBanksSaveModel.call(this);

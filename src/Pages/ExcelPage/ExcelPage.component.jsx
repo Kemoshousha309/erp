@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import { connect } from "react-redux";
 import InputFile from "../../Components/UI/InputFile/InputFile.component";
 import { t } from "../../Languages/languages";
 import {
@@ -31,13 +32,13 @@ class ExcelPageWrapper extends PureComponent {
 
   render() {
     const {
-      props: { children },
+      props: { children, lanState },
       state: { selectedFile },
     } = this;
 
     return (
       <ExcelPageContext.Provider value={this}>
-        <ExcelPage>
+        <ExcelPage lanState={lanState}>
           <ExcelPage.CloseBtn>Close</ExcelPage.CloseBtn>
           <ExcelPage.Header>{t("add_excel_sheet")} :</ExcelPage.Header>
           <ExcelPage.Instructions>{children}</ExcelPage.Instructions>
@@ -61,5 +62,18 @@ class ExcelPageWrapper extends PureComponent {
     );
   }
 }
+
+
+
 export const ExcelPageContext = React.createContext(null);
-export default ExcelPageWrapper;
+
+
+const mapStateToProps = (state) => {
+  return {
+    lanState: state.lang.lan
+  };
+};
+
+
+export default connect(mapStateToProps, null)(ExcelPageWrapper);
+

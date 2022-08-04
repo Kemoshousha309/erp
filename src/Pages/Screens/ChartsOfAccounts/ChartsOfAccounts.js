@@ -4,7 +4,7 @@ import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import {
   autoDisplay,
-  changePropName,
+  changeFieldPropNameAccordingToLanNo,
 } from "../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
@@ -27,7 +27,7 @@ class ChartsOfAccounts extends ScreenConstructor {
     super(props);
     this.state = {
       ...this.state,
-      ..._.cloneDeep(ChartsOfAccountsInitState),
+      ..._.cloneDeep(ChartsOfAccountsInitState.call(this)),
     };
   }
   recordFkClick = async (record) => {
@@ -101,14 +101,14 @@ class ChartsOfAccounts extends ScreenConstructor {
 
   static getDerivedStateFromProps(props, state) {
     let newState = _.cloneDeep(state);
-    newState.fields = changePropName(
+    newState.fields = changeFieldPropNameAccordingToLanNo(
       props,
       newState.fields,
       "parent_acc_name",
       "parent_acc"
     );
 
-    newState.fields = changePropName(
+    newState.fields = changeFieldPropNameAccordingToLanNo(
       props,
       newState.fields,
       "acc_group_name",

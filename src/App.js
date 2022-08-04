@@ -4,32 +4,33 @@ import { connect } from "react-redux";
 import { Component } from "react";
 import { HashRouter, Route, Switch } from "react-router-dom";
 import Login from "./Pages/Login/Login";
-import {  checkLabelsLocalStorage } from "./Context";
+import { checkLabelsLocalStorage } from "./Context";
 import { Redirect } from "react-router";
 import Modal from "./Components/UI/Modal/Modal";
 import * as actionsTypes from "./Context/actions/actionTypes";
 import NetworkError from "./Error/NetworkError/NetworkError";
 import { ThemeProvider } from "@mui/system";
 import { getCssVar } from "./Helpers/styles";
-import rtlPlugin from 'stylis-plugin-rtl';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import { prefixer } from 'stylis';
+// import rtlPlugin from "stylis-plugin-rtl";
+// import { CacheProvider } from '@emotion/react';
+// import createCache from "@emotion/cache";
+// import { prefixer } from "stylis";
 import { createTheme } from "@mui/material";
 
 // Create rtl cache
-const cacheRtl = createCache({
-  key: 'muirtl',
-  stylisPlugins: [prefixer, rtlPlugin],
-});
+// const cacheRtl = createCache({
+//   key: "muirtl",
+//   stylisPlugins: [prefixer, rtlPlugin],
+// });
 
-function RTL(app) {
-  return <CacheProvider value={cacheRtl}>{app}</CacheProvider>;
-}
+// function RTL(app) {
+//   return <CacheProvider value={cacheRtl}>{app}</CacheProvider>;
+// }
 
 class App extends Component {
   componentDidMount = () => {
     this.props.onLoadApp();
+    console.log("App mount");
   };
   render() {
     let dir = "ltr";
@@ -39,24 +40,23 @@ class App extends Component {
       appLangState = style.rtl;
     } else {
       appLangState = style.ltr;
-    } 
+    }
 
     const theme = createTheme({
-      direction: dir,
+      // direction: dir,
       palette: {
         primary: {
-          main: getCssVar("--primaryColor")
+          main: getCssVar("--primaryColor"),
         },
       },
       typography: {
         // 1 unit => .7px
-        fontSize: 22, 
+        fontSize: 22,
       },
     });
 
     const app = (
-      <div className={appLangState} dir={dir} >
-        
+      <div className={appLangState} dir={dir}>
         {this.props.networkError ? (
           <Modal
             clicked={() => this.props.close_networkError()}
@@ -75,7 +75,10 @@ class App extends Component {
     return (
       <HashRouter>
         <ThemeProvider theme={theme}>
-          {dir === "rtl" ?  RTL(app): app}
+          {/* LEGACY  this approach cause to remount the screen 
+          whenever the language is changed*/}
+          {/* {dir === "rtl" ?  RTL(app): app} */}
+          {app}
         </ThemeProvider>
       </HashRouter>
     );

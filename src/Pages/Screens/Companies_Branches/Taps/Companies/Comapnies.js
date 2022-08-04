@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
-import { autoDisplay, changePropName } from "../../../../ScreenConstructor/screen/inputsHandlers";
+import { autoDisplay, changeFieldPropNameAccordingToLanNo } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
 import ScreenConstructor from "../../../../ScreenConstructor/ScreenConstructor";
@@ -38,13 +38,13 @@ class Companies extends ScreenConstructor {
   }
 
   static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changePropName(
+    let fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       state.fields,
       'group_d_name',
       'group',
     );
-    fieldsUpdate = changePropName(
+    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
       props,
       fieldsUpdate,
       'country_d_name',

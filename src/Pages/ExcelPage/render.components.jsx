@@ -7,15 +7,13 @@ import { ExcelPageContext } from "./ExcelPage.component";
 import { selectMessage } from "../../Languages/languages";
 
 // RENDER COMPONENTS
-export function ExcelPage({ children, ...restProps }) {
-  const { props } = useContext(ExcelPageContext);
+export function ExcelPage({ children, lanState }) {
   const containerClasses = [style.container];
-  if (parseInt(props.lanState) === 1) {
+  if (parseInt(lanState) === 1) {
     containerClasses.push(style.rtl);
   } else {
     containerClasses.push(style.ltr);
   }
-
   return <div className={containerClasses.join(" ")}>{children}</div>;
 }
 
