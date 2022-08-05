@@ -4,7 +4,9 @@ import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import {
   autoDisplay,
+  autoDisplayModel,
   changeFieldPropNameAccordingToLanNo,
+  FieldsAutoDisplayer,
 } from "../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
@@ -29,6 +31,7 @@ class ChartsOfAccounts extends ScreenConstructor {
       ...this.state,
       ..._.cloneDeep(ChartsOfAccountsInitState.call(this)),
     };
+    this.autoDisplayHandler = new FieldsAutoDisplayer(this);
   }
   recordFkClick = async (record) => {
     let fieldsUpdate = this.fkListHandler.recordClick(record);
@@ -74,19 +77,25 @@ class ChartsOfAccounts extends ScreenConstructor {
       getAccTreeStructure
     );
     this.setState({ tree });
-    autoDisplay(this, "parent_acc", "chartofaccounts", {
+    autoDisplayModel.call(this, "parent_acc", "chartofaccounts", {
       main: {
         d: { recordProp: "acc_d_name", stateProp: "parent_acc_d_name" },
         f: { recordProp: "acc_f_name", stateProp: "parent_acc_f_name" },
       },
     });
+    // autoDisplay(this, "parent_acc", "chartofaccounts", {
+    //   main: {
+    //     d: { recordProp: "acc_d_name", stateProp: "parent_acc_d_name" },
+    //     f: { recordProp: "acc_f_name", stateProp: "parent_acc_f_name" },
+    //   },
+    // });
 
-    autoDisplay(this, "acc_group", "accountsgroup", {
-      main: {
-        d: { recordProp: "group_d_name", stateProp: "group_d_name" },
-        f: { recordProp: "group_f_name", stateProp: "group_f_name" },
-      },
-    });
+    // autoDisplay(this, "acc_group", "accountsgroup", {
+    //   main: {
+    //     d: { recordProp: "group_d_name", stateProp: "group_d_name" },
+    //     f: { recordProp: "group_f_name", stateProp: "group_f_name" },
+    //   },
+    // });
   }
 
   // return a new validator specific to this screen

@@ -2,39 +2,224 @@
  * @module inputsHandlers
  */
 
-import { isValid } from '../../../Validation/validation';
-import axios from '../../../axios';
-import { selectMessage, t } from '../../../Languages/languages';
-import _ from 'lodash';
+import { isValid } from "../../../Validation/validation";
+import axios from "../../../axios";
+import { selectMessage, t } from "../../../Languages/languages";
+import _ from "lodash";
+import { FuncConstructor } from "./functions/funcConstructor";
 
-// AUTO DISPLAY FUNCTIONS
+export class FieldsAutoDisplayer extends FuncConstructor {
+  async changeHandler(event, listenField, fillFields, url) {
+    const { main, others, fields, lanState, value } = this.#retrieveData(
+      event,
+      fillFields
+    );
 
-// How auto Display work??
-// the algorithm is based on the supply of props names in each record and state throw the fillFields object =>
-// {
-//     main: { // the main auto display field usually next to the listen field
-//         d: { recordProp: "city_d_name", stateProp: "city_no_d_name" },
-//         f: { recordProp: "city_f_name", stateProp: "city_no_f_name" },
-//     },
-//     others: [ // other fields that should auto display based on listen and main field
-//         {
-//             d: { recordProp: "province_no_d_name", stateProp: "province_no_d_name" },
-//             f: { recordProp: "province_no_f_name", stateProp: "province_no_f_name" },
-//         },
-//         {
-//             d: { recordProp: "province_no", stateProp: "province_no" },
-//             f: { recordProp: "province_no", stateProp: "province_no" },
-//         },
-//         {
-//             d: { recordProp: "country_no_d_name", stateProp: "country_no_d_name" },
-//             f: { recordProp: "country_no_f_name", stateProp: "country_no_f_name" },
-//         },
-//         {
-//             d: { recordProp: "country_no", stateProp: "country_no" },
-//             f: { recordProp: "country_no", stateProp: "country_no" },
-//         },
-//     ]
-// }
+    let fieldsUpdate = _.cloneDeep(fields);
+
+    if (value === "") {
+      // empty the main field and other fielded
+      fieldsUpdate = this.setMainField(main, "", fieldsUpdate);
+      if (others) {
+        fieldsUpdate = emptyOtherFields(others, fieldsUpdate, lanState);
+      }
+      fieldsUpdate[listenField].usedRecord = null;
+      this.screen.setState({ fields: fieldsUpdate });
+      return;
+    }
+
+    // prepare for a request
+
+    // set loading ui until the response is fulfilled
+    fieldsUpdate = this.setMainField(main, t("loading"), fields);
+
+    // set the used record in filling the records as it's used in other places
+    fieldsUpdate[listenField].usedRecord = "LOADING";
+
+    this.screen.setState({ fields: fieldsUpdate });
+
+    // send a request
+    try {
+      const res = await this.requestSender(value, listenField, fillFields, url);
+      const { fieldsUpdate } = res;
+      this.screen.setState({ fields: fieldsUpdate });
+    } catch ({ fieldsUpdate }) {
+      this.screen.setState({ fields: fieldsUpdate });
+    }
+  }
+
+  requestSender(value, listenField, fillFields, url) {
+    return new Promise((resolve, reject) => {
+      let {
+        state: { fields },
+      } = this.screen;
+      axios
+        .get(`${url}/${value}`)
+        .then((res) => {
+          const { data: record } = res;
+          // fill the fields main and others
+          let fieldsUpdate = this.fillFields(record, fillFields, fields);
+          fieldsUpdate[listenField].usedRecord = record;
+          resolve({ fieldsUpdate });
+        })
+        .catch((err) => {
+          let errorMess = "";
+          if (err.response) {
+            const {
+              data: { message },
+            } = err.response;
+            errorMess = selectMessage(message);
+          }
+          // put the err message
+          console.log(err);
+          const fieldsUpdate = this.setMainField(
+            fillFields.main,
+            errorMess,
+            fields
+          );
+          fieldsUpdate[listenField].usedRecord = null;
+          reject({ fieldsUpdate });
+        });
+    });
+  }
+
+  #retrieveData(event, fillFields) {
+    // structure the data
+    const { main, others } = fillFields;
+    let {
+      state: { fields },
+      props: { lanState },
+    } = this.screen;
+    const {
+      target: { value },
+    } = event;
+    return { main, others, fields, lanState, value };
+  }
+  fillFields(record, fillFields, fields) {
+    // set the fillFields that are provided form there record
+    // decide the lanState to access the right prop names
+    const {
+      props: { lanState: lang_no },
+    } = this.screen;
+    let lanState = "d";
+    let otherState = "f";
+    if (parseInt(lang_no) === 2) {
+      lanState = "f";
+      otherState = "d";
+    }
+
+    let fieldClone = _.cloneDeep(fields);
+    for (const key in fillFields) {
+      const item = fillFields[key];
+      if (key === "main") {
+        const { stateProp, recordProp } = item[lanState];
+        // other props names based on other state
+        const { recordProp: recordPropO } = item[otherState];
+        fill(fieldClone, stateProp, recordProp, record, recordPropO);
+      } else {
+        item.forEach((i) => {
+          const { stateProp, recordProp } = i[lanState];
+          const { recordProp: recordPropO } = i[otherState];
+          fill(fieldClone, stateProp, recordProp, record, recordPropO);
+        });
+      }
+    }
+
+    return fieldClone;
+  }
+
+  fill(fields, stateProp, recordProp, record, recordPropO) {
+    // not pure function
+    if (fields[stateProp]) {
+      if (record[recordProp]) {
+        fields[stateProp].value = record[recordProp];
+        fields[stateProp].autoFilledSuccess = true;
+      }
+      // if the f props is null we should display the f prop by using recordPropO
+      else if (record[recordPropO]) {
+        fields[stateProp].value = record[recordPropO];
+        fields[stateProp].autoFilledSuccess = true;
+      } else if (record[recordProp] === null) {
+        fields[stateProp].value = "null";
+        fields[stateProp].autoFilledSuccess = false;
+      }
+    }
+    return fields;
+  }
+  setChangeHandler(listenField, callback) {
+    const fieldsClone = _.cloneDeep(this.screen.state.fields);
+    fieldsClone[listenField].changeHandler = (event) => callback(event);
+    return fieldsClone;
+  }
+
+  setMainField(main, value, fields) {
+    // helps us to set the value of main field of auto display fields
+    // we use is in setting the "" and loading value
+    const {
+      props: { lanState: lang_no },
+    } = this.screen;
+    const fieldClone = _.cloneDeep(fields);
+    let lanState = "d";
+    if (parseInt(lang_no) === 2) {
+      lanState = "f";
+    }
+    const { stateProp } = main[lanState];
+    if (fieldClone[stateProp]) {
+      fieldClone[stateProp].value = value;
+      fieldClone[stateProp].autoFilledSuccess = false;
+    }
+    return fieldClone;
+  }
+
+  emptyOtherFields(otherFields, fields) {
+    const {
+      props: { lanState: lang_no },
+    } = this.screen;
+    const fieldsClone = _.cloneDeep(fields);
+    let lanState = "d";
+    if (parseInt(lang_no) === 2) {
+      lanState = "f";
+    }
+    for (const key in otherFields) {
+      const item = otherFields[key];
+      const { stateProp } = item[lanState];
+      if (fieldsClone[stateProp]) {
+        fieldsClone[stateProp].value = "";
+      }
+    }
+    return fieldsClone;
+  }
+}
+
+export function autoDisplayModel(listenField, fillFields, url) {
+  // set change Handler
+  const fieldsUpdate = this.autoDisplayHandler.setChangeHandler(
+    listenField,
+    (event) => {
+      this.autoDisplayHandler.changeHandler(
+        event,
+        listenField,
+        url,
+        fillFields
+      );
+    }
+  );
+  this.setState({ fields: fieldsUpdate });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const autoDisplay = (thisK, listenField, url, fillFields) => {
   // set onChange listener
@@ -50,16 +235,11 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
     } = event;
 
     // set loading ui until the response is fulfilled
-    fields = setMainField(
-      main,
-      t('loading'),
-      fields,
-      lanState,
-    );
-    fields[listenField].usedRecord = 'LOADING';
+    fields = setMainField(main, t("loading"), fields, lanState);
+    fields[listenField].usedRecord = "LOADING";
     thisK.setState({ fields });
 
-    if (value !== '') {
+    if (value !== "") {
       // if input value not "" we don't send a request
       axios
         .get(`${url}/${value}`)
@@ -70,7 +250,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
           fillAutoDisplayFields(record, fillFields, fields, thisK, lanState);
         })
         .catch((err) => {
-          let errorMess = '';
+          let errorMess = "";
           if (err.response) {
             const {
               data: { message },
@@ -84,7 +264,7 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
         });
     } else {
       // empty the main field and other fielded
-      fields = setMainField(main, '', fields, lanState);
+      fields = setMainField(main, "", fields, lanState);
       if (others) {
         fields = emptyOtherFields(others, fields, lanState);
       }
@@ -97,9 +277,9 @@ export const autoDisplay = (thisK, listenField, url, fillFields) => {
 
 const setMainField = (main, value, fields, lang_no) => {
   // helps us to set the value of main field of auto display fields // we use is in setting the "" and loading value
-  let lanState = 'd';
+  let lanState = "d";
   if (parseInt(lang_no) === 2) {
-    lanState = 'f';
+    lanState = "f";
   }
   const { stateProp } = main[lanState];
   if (fields[stateProp]) {
@@ -120,7 +300,7 @@ const fill = (fields, stateProp, recordProp, record, recordPropO) => {
       fields[stateProp].value = record[recordPropO];
       fields[stateProp].autoFilledSuccess = true;
     } else if (record[recordProp] === null) {
-      fields[stateProp].value = 'null';
+      fields[stateProp].value = "null";
       fields[stateProp].autoFilledSuccess = false;
     }
   }
@@ -128,15 +308,15 @@ const fill = (fields, stateProp, recordProp, record, recordPropO) => {
 
 const fillAutoDisplayFields = (record, fillFields, fields, thisK, lang_no) => {
   // set the fillFields that are provided form there record
-  let lanState = 'd';
-  let otherState = 'f';
+  let lanState = "d";
+  let otherState = "f";
   if (parseInt(lang_no) === 2) {
-    lanState = 'f';
-    otherState = 'd';
+    lanState = "f";
+    otherState = "d";
   }
   for (const key in fillFields) {
     const item = fillFields[key];
-    if (key === 'main') {
+    if (key === "main") {
       const { stateProp, recordProp } = item[lanState];
       // other props names based on other state
       const { recordProp: recordPropO } = item[otherState];
@@ -154,15 +334,15 @@ const fillAutoDisplayFields = (record, fillFields, fields, thisK, lang_no) => {
 };
 
 const emptyOtherFields = (otherFields, fields, lang_no) => {
-  let lanState = 'd';
+  let lanState = "d";
   if (parseInt(lang_no) === 2) {
-    lanState = 'f';
+    lanState = "f";
   }
   for (const key in otherFields) {
     const item = otherFields[key];
     const { stateProp } = item[lanState];
     if (fields[stateProp]) {
-      fields[stateProp].value = '';
+      fields[stateProp].value = "";
     }
   }
   return fields;
@@ -176,20 +356,18 @@ export const checkPassConfirm = (thisK) => {
     const fieldClone = { ...field };
     if (confirmValue.length >= passValue.length && passValue !== confirmValue) {
       fieldClone.valid = false;
-      fieldClone.invalidFeedBack = t(
-        'pass_not_identical',
-      );
+      fieldClone.invalidFeedBack = t("pass_not_identical");
     } else {
       const [valid, message] = isValid(
         event.target.value,
         field.props.field.validation,
-        thisK,
+        thisK
       );
       fieldClone.valid = valid;
       fieldClone.invalidFeedBack = message;
     }
     field.setState(fieldClone);
-    return 'pass_confirm';
+    return "pass_confirm";
   };
 };
 
@@ -223,16 +401,16 @@ const renameObjKey = (obj, oldKey, newKey) => {
 export const onlyActiveField = (fields, firstField, secondField, mode) => {
   const fieldOne = fields[firstField];
   const fieldTwo = fields[secondField];
-  if (mode === 'modify') {
+  if (mode === "modify") {
     if (fieldOne.value.toString().length >= 1) {
       fields[secondField].writability = false;
-      fields[secondField].value = '';
+      fields[secondField].value = "";
     } else {
       fields[secondField].writability = true;
     }
     if (fieldTwo.value.toString().length >= 1) {
       fields[firstField].writability = false;
-      fields[firstField].value = '';
+      fields[firstField].value = "";
     } else {
       fields[firstField].writability = true;
     }
@@ -242,15 +420,15 @@ export const onlyActiveField = (fields, firstField, secondField, mode) => {
 
 /**
  * - used to change the field prop name in the state fields when the language changed
- * - usually used in getDerivedStateFromProps 
+ * - usually used in getDerivedStateFromProps
  * - you don't have explicit control on the produced prop names
- * @param {Object} props 
- * @param {Object} fields 
- * @param {string} startPropName the prop name in the state 
+ * @param {Object} props
+ * @param {Object} fields
+ * @param {string} startPropName the prop name in the state
  * @param {string} propFieldName the prop name with out d_ for f_ name
- * @param {*} gatheredFieldName 
- * @param {string} extension the extension to be add to the produced prop name 
- * @returns {Object} fieldsUpdate 
+ * @param {*} gatheredFieldName
+ * @param {string} extension the extension to be add to the produced prop name
+ * @returns {Object} fieldsUpdate
  */
 export function changeFieldPropNameAccordingToLanNo(
   props,
@@ -258,7 +436,7 @@ export function changeFieldPropNameAccordingToLanNo(
   startPropName,
   propFieldName,
   gatheredFieldName,
-  extension,
+  extension
 ) {
   let currentKey = null;
   let d_name = `${propFieldName}_d_name`;
@@ -284,6 +462,4 @@ export function changeFieldPropNameAccordingToLanNo(
   }
   const fieldsUpdate = renameObjKey(fields, currentKey, newKey);
   return fieldsUpdate;
-};
-
-
+}
