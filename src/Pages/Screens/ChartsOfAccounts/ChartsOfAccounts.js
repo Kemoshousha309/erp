@@ -96,6 +96,7 @@ class ChartsOfAccounts extends ScreenConstructor {
       fields
     );
   }
+  
   groupNameAutoDisplay(fields) {
     return autoDisplayModel.call(
       this,
