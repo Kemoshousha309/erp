@@ -3,8 +3,9 @@ import { langChangeActivity } from "../../../Context/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import {
-  autoDisplay,
+  autoDisplayModel,
   changeFieldPropNameAccordingToLanNo,
+  FieldsAutoDisplayer,
 } from "../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
@@ -14,15 +15,16 @@ import { getTree } from "../../ScreenConstructor/screen/async";
 import { checkValidity } from "../../../Validation/validation";
 import { timer } from "../../ScreenConstructor/screen/utilities";
 import { updateMode } from "../../ScreenConstructor/screen/mode";
-import { constCenterInitState } from "./state";
+import { CenterInitState, } from "./state";
 
 class CostCenter extends ScreenConstructor {
   constructor(props) {
     super(props);
     this.state = {
       ...this.state,
-      ..._.cloneDeep(constCenterInitState)
+      ..._.cloneDeep(CenterInitState.call(this)),
     };
+    this.autoDisplayHandler = new FieldsAutoDisplayer(this);
   }
   treeNodeClick = (record) => this.recordClick(record, null);
   save = async () => {
@@ -39,7 +41,7 @@ class CostCenter extends ScreenConstructor {
         message,
         recordIndex: null,
         fields: fieldsUpdate,
-        tree
+        tree,
       });
       timer().then((res) => this.setState({ message: false }));
     } catch (err) {
@@ -50,12 +52,12 @@ class CostCenter extends ScreenConstructor {
         message: message,
         recordIndex: null,
         fields: fieldsUpdate,
-        tree
+        tree,
       });
       timer().then((res) => this.setState({ message: false }));
     }
   };
-  
+
   deleteConfirmation = async (res) => {
     if (!res) return this.setState({ deleteConfirm: false });
     const { fieldsUpdate, message } = await this.deleteHandler.handleRequest();
@@ -67,51 +69,72 @@ class CostCenter extends ScreenConstructor {
       record: null,
       fields: fieldsUpdate,
       deleteConfirm: false,
-      tree: null
+      tree: null,
     });
     timer().then((res) => this.setState({ message: false }));
-    const tree = await getTree.call(this, "costcenters", getCCTreestructure)
-    this.setState({tree})
-  }
+    const tree = await getTree.call(this, "costcenters", getCCTreestructure);
+    this.setState({ tree });
+  };
 
   async componentDidMount() {
     setLastIndex(this);
     functionsListeners(this, true);
-    const {tools} = updateMode("start", this.state, this.props)
-    this.setState({tools})
+    const { tools } = updateMode("start", this.state, this.props);
     const tree = await getTree.call(this, "costcenters", getCCTreestructure);
-    this.setState({tree})
-    autoDisplay(this, "parent_cc", "costcenters", {
-      main: {
-        d: { recordProp: "cc_d_name", stateProp: "parent_cc_d_name" },
-        f: { recordProp: "cc_f_name", stateProp: "parent_cc_f_name" },
-      },
-    });
-
-    autoDisplay(this, "cc_group", "accountsgroup", {
-      main: {
-        d: { recordProp: "group_d_name", stateProp: "group_d_name" },
-        f: { recordProp: "group_f_name", stateProp: "group_f_name" },
-      },
-    });
+    const {fields} = this.state;
+    let fieldsUpdate = this.ccGroupAutoDisplay(fields);
+    fieldsUpdate = this.parentAccAutoDisplay(fieldsUpdate);
+    fieldsUpdate = this.changeParentAccName(fieldsUpdate);
+    fieldsUpdate = this.changeCCGroupName(fieldsUpdate);
+    this.setState({ tree, tools, fields: fieldsUpdate });
   }
 
-  static getDerivedStateFromProps(props, state) {
-    let newState = _.cloneDeep(state);
-    newState.fields = changeFieldPropNameAccordingToLanNo(
-      props,
-      newState.fields,
+  ccGroupAutoDisplay(fields) {
+    return autoDisplayModel.call(
+      this,
+      "cc_group",
+      "accountsgroup",
+      {
+        main: {
+          d: { recordProp: "group_d_name", stateProp: "group_d_name" },
+          f: { recordProp: "group_f_name", stateProp: "group_f_name" },
+        },
+      },
+      fields
+    );
+  }
+  parentAccAutoDisplay(fields) {
+    return autoDisplayModel.call(
+      this,
+      "parent_cc",
+      "costcenters",
+      {
+        main: {
+          d: { recordProp: "cc_d_name", stateProp: "parent_cc_d_name" },
+          f: { recordProp: "cc_f_name", stateProp: "parent_cc_f_name" },
+        },
+      },
+      fields
+    );
+  }
+  changeParentAccName(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       "parent_cc_name",
       "parent_cc"
     );
-
-    newState.fields = changeFieldPropNameAccordingToLanNo(
-      props,
-      newState.fields,
+  }
+  changeCCGroupName(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       "cc_group_name",
       "group"
     );
-
+  }
+  static getDerivedStateFromProps(props, state) {
+    let newState = _.cloneDeep(state);
     if (["add", "modify", "copy"].includes(newState.mode)) {
       newState.fields.inactive_reason.writability =
         newState.fields.inactive.value;

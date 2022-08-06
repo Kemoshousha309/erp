@@ -3,7 +3,6 @@ import ChartsExcelInstructions from "./ChartsOfAccsXlsx/ChartsOfAccsXlsx";
 import { parentAccHandler } from "./Utilities";
 
 export function ChartsOfAccountsInitState() {
-  console.log(this)
   return {
     fields: {
       parent_acc: {

@@ -6,7 +6,7 @@ import { displayContent } from "../../../../ScreenConstructor/screen/displayCont
 import { handleFields } from "../../../../ScreenConstructor/screen/fields";
 import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
 import { handleDerivedState } from "../../../../ScreenConstructor/screen/handlers";
-import { autoDisplay } from "../../../../ScreenConstructor/screen/inputsHandlers";
+import { autoDisplayModel, FieldsAutoDisplayer } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../../../ScreenConstructor/ScreenConstructor";
 import { flagsInitState } from "./state";
@@ -18,6 +18,7 @@ class Flags extends ScreenConstructor {
       ...this.state,
       ..._.cloneDeep(flagsInitState)
     };
+    this.autoDisplayHandler = new FieldsAutoDisplayer(this);
   }
   // async handle
   async_lang_no_options = (mode) => {
@@ -28,15 +29,18 @@ class Flags extends ScreenConstructor {
   componentDidMount() {
     setLastIndex(this);
     functionsListeners(this, true);
-    this.setState({ mode: "list" });
-    
+    const {fields} = this.state;
+    let fieldsUpdate = this.flagCodeAutoDisplay(fields);
+    this.setState({ mode: "list", fields: fieldsUpdate });
+  }
 
-    autoDisplay(this, "flag_code", "public/flagMaster", {
+  flagCodeAutoDisplay(fields) {
+    return autoDisplayModel.call(this, "flag_code", "public/flagMaster", {
       main: {
         d: { recordProp: "label_code", stateProp: "label_code_m" },
         f: { recordProp: "label_code", stateProp: "label_code_m" },
       },
-    });
+    }, fields);
   }
 
   static getDerivedStateFromProps(props, state) {

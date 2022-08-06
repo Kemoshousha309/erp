@@ -16,7 +16,6 @@ import {
 import {
   handleAccCurList,
 } from "../Banks/helper";
-import { isLangChanged } from "../../ScreenConstructor/screen/utilities";
 import { changeFieldPropNameAccordingToLanNo } from "../../ScreenConstructor/screen/inputsHandlers";
 import { updateMode } from "../../ScreenConstructor/screen/mode";
 import { setLastIndex } from "../../ScreenConstructor/screen/functions/moves";
@@ -77,12 +76,6 @@ class Cash extends ScreenConstructor {
   };
 
   save = () => handleCashSaveModel.call(this);
-
-  componentDidUpdate(prevProps, prevState) {
-    if (isLangChanged(prevProps, this.props)) {
-      this.setState({ fields: this.changeBranchPropName(this.state.fields) });
-    }
-  }
 
   componentDidMount() {
     setLastIndex(this);

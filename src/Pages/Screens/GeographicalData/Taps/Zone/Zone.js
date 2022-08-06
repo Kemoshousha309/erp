@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { langChangeActivity } from '../../../../../Context/actions/lang';
 import { displayContent } from '../../../../ScreenConstructor/screen/displayContent';
 import { setLastIndex } from '../../../../ScreenConstructor/screen/functions/moves';
-import { autoDisplay, changeFieldPropNameAccordingToLanNo } from '../../../../ScreenConstructor/screen/inputsHandlers';
+import { autoDisplayModel, changeFieldPropNameAccordingToLanNo, FieldsAutoDisplayer } from '../../../../ScreenConstructor/screen/inputsHandlers';
 import { functionsListeners } from '../../../../ScreenConstructor/screen/listeners';
 import { updateMode } from '../../../../ScreenConstructor/screen/mode';
 import ScreenConstructor from '../../../../ScreenConstructor/ScreenConstructor';
@@ -17,14 +17,24 @@ class Zone extends ScreenConstructor {
       ...this.state,
       ..._.cloneDeep(zoneInitState)
     };
+    this.autoDisplayHandler = new FieldsAutoDisplayer(this);
   }
 
   componentDidMount() {
     setLastIndex(this);
     functionsListeners(this, true);
     const {tools} = updateMode("start", this.state, this.props)
-    this.setState({tools})
-    autoDisplay(this, 'city_no', 'city', {
+    const {fields} = this.state;
+    let fieldsUpdate = this.zoneAutoDisplay(fields);
+    fieldsUpdate = this.changeCityNameProp(fieldsUpdate);
+    fieldsUpdate = this.changeProvinceNameProp(fieldsUpdate);
+    fieldsUpdate = this.changeCountryNameProp(fieldsUpdate);
+    fieldsUpdate = this.changeRegionNameProp(fieldsUpdate);
+    this.setState({tools, fields: fieldsUpdate})
+  }
+
+  zoneAutoDisplay(fields) {
+    return autoDisplayModel.call(this, 'city_no', 'city', {
       main: {
         d: { recordProp: 'city_d_name', stateProp: 'city_no_d_name' },
         f: { recordProp: 'city_f_name', stateProp: 'city_no_f_name' },
@@ -67,39 +77,42 @@ class Zone extends ScreenConstructor {
           f: { recordProp: 'region_no', stateProp: 'region_no' },
         },
       ],
-    });
+    }, fields);
   }
 
-  static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      state.fields,
+  changeRegionNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       'region_no_name',
       'region_no',
     );
-    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      fieldsUpdate,
+  }
+  changeCountryNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       'country_no_name',
       'country_no',
     );
-    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      fieldsUpdate,
+  }
+  changeProvinceNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       'province_no_name',
       'province_no',
     );
-    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      fieldsUpdate,
+  }
+  changeCityNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       'city_no_name',
       'city_no',
     );
-
-    return {
-      fields: fieldsUpdate,
-    };
   }
+
 
   render() {
     return displayContent(this, this.props.location);

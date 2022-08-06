@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
-import { autoDisplay, changeFieldPropNameAccordingToLanNo } from "../../../../ScreenConstructor/screen/inputsHandlers";
+import {  autoDisplayModel, changeFieldPropNameAccordingToLanNo, FieldsAutoDisplayer } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
 import ScreenConstructor from "../../../../ScreenConstructor/ScreenConstructor";
@@ -16,44 +16,53 @@ class Companies extends ScreenConstructor {
       ...this.state,
       ..._.cloneDeep(companiesInitState)
     };
+    this.autoDisplayHandler = new FieldsAutoDisplayer(this);
   }
 
   componentDidMount() {
     setLastIndex(this);
     functionsListeners(this, true);
     const {tools} = updateMode("start", this.state, this.props)
-    this.setState({tools})
-    autoDisplay(this, 'company_group', 'companyGroup', {
-      main: {
-        d: { recordProp: 'group_d_name', stateProp: 'group_d_name' },
-        f: { recordProp: 'group_f_name', stateProp: 'group_f_name' },
-      },
-    });
-    autoDisplay(this, 'country_no', 'country', {
+    const {fields} = this.state;
+    let fieldsUpdate = this.countryAutoDisplay(fields);
+    fieldsUpdate = this.groupNameAutoDisplay(fieldsUpdate);
+    fieldsUpdate = this.changeCountryNameProp(fieldsUpdate);
+    fieldsUpdate = this.changeGroupNameProp(fieldsUpdate);
+    this.setState({tools, fields: fieldsUpdate})
+  }
+
+  countryAutoDisplay(fields) {
+    return autoDisplayModel.call(this, 'country_no', 'country', {
       main: {
         d: { recordProp: 'country_d_name', stateProp: 'country_d_name' },
         f: { recordProp: 'country_f_name', stateProp: 'country_f_name' },
       },
-    });
+    }, fields)
+  }
+  groupNameAutoDisplay(fields) {
+    return autoDisplayModel.call(this, 'company_group', 'companyGroup', {
+      main: {
+        d: { recordProp: 'group_d_name', stateProp: 'group_d_name' },
+        f: { recordProp: 'group_f_name', stateProp: 'group_f_name' },
+      },
+    }, fields)
   }
 
-  static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      state.fields,
+  changeGroupNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       'group_d_name',
       'group',
     );
-    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      fieldsUpdate,
+  }
+  changeCountryNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       'country_d_name',
       'country',
     );
-
-    return {
-      fields: fieldsUpdate,
-    };
   }
 
   render() {

@@ -5,69 +5,94 @@ import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { getTree } from "../../../../ScreenConstructor/screen/async";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
-import { autoDisplay, changeFieldPropNameAccordingToLanNo } from "../../../../ScreenConstructor/screen/inputsHandlers";
+import {
+  autoDisplayModel,
+  changeFieldPropNameAccordingToLanNo,
+  FieldsAutoDisplayer,
+} from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
 import ScreenConstructor from "../../../../ScreenConstructor/ScreenConstructor";
 import { formsInitState } from "./state";
-
 
 class Forms extends ScreenConstructor {
   constructor() {
     super();
     this.state = {
       ...this.state,
-      ..._.cloneDeep(formsInitState)
+      ..._.cloneDeep(formsInitState),
     };
+    this.autoDisplayHandler = new FieldsAutoDisplayer(this);
+
   }
   async componentDidMount() {
     const tree = await getTree.call(this, "forms/mainTree", getTreeStructure);
     setLastIndex(this);
     functionsListeners(this, true);
-    const {tools} = updateMode("start", this.state, this.props)
-    this.setState({tools, tree})
-
-    // inputs handlers
-    autoDisplay(this, "parent_form", "forms", {
-      main: {
-        d: {
-          recordProp: "parent_form_d_name",
-          stateProp: "parent_form_d_name",
-        },
-        f: {
-          recordProp: "parent_form_f_name",
-          stateProp: "parent_form_f_name",
-        },
-      },
-    });
-
-    autoDisplay(this, "module_no", "modules", {
-      main: {
-        d: { recordProp: "module_d_name", stateProp: "module_no_d_name" },
-        f: { recordProp: "module_f_name", stateProp: "module_no_f_name" },
-      },
-    });
+    const { tools } = updateMode("start", this.state, this.props);
+    const {fields} = this.state;
+    let fieldsUpdate = this.parentFormAutoDisplay(fields);
+    fieldsUpdate = this.moduleNoAutoDisplay(fieldsUpdate);
+    fieldsUpdate = this.changeModuleNameProp(fieldsUpdate);
+    fieldsUpdate = this.changeParentFormNameProp(fieldsUpdate)
+    this.setState({ tools, tree, fields: fieldsUpdate });
   }
 
-  static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      state.fields,
+  parentFormAutoDisplay(fields) {
+    return autoDisplayModel.call(
+      this,
+      "parent_form",
+      "forms",
+      {
+        main: {
+          d: {
+            recordProp: "parent_form_d_name",
+            stateProp: "parent_form_d_name",
+          },
+          f: {
+            recordProp: "parent_form_f_name",
+            stateProp: "parent_form_f_name",
+          },
+        },
+      },
+      fields
+    );
+  }
+
+  moduleNoAutoDisplay(fields) {
+    return autoDisplayModel.call(
+      this,
+      "module_no",
+      "modules",
+      {
+        main: {
+          d: { recordProp: "module_d_name", stateProp: "module_no_d_name" },
+          f: { recordProp: "module_f_name", stateProp: "module_no_f_name" },
+        },
+      },
+      fields
+    );
+  }
+  changeModuleNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       "module_no_name",
       "module_no",
       "module_no"
     );
-    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      fieldsUpdate,
+  }
+
+  changeParentFormNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       "parent_form_name",
       "parent_form",
       "parent_form"
     );
-    return {
-      fields: fieldsUpdate,
-    };
   }
+
   render() {
     return displayContent(this, this.props.location);
   }

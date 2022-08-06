@@ -3,8 +3,9 @@ import { langChangeActivity } from "../../../Context/actions/lang";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../ScreenConstructor/screen/functions/moves";
 import {
-  autoDisplay,
+  autoDisplayModel,
   changeFieldPropNameAccordingToLanNo,
+  FieldsAutoDisplayer,
 } from "../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../ScreenConstructor/screen/listeners";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
@@ -29,6 +30,7 @@ class ChartsOfAccounts extends ScreenConstructor {
       ...this.state,
       ..._.cloneDeep(ChartsOfAccountsInitState.call(this)),
     };
+    this.autoDisplayHandler = new FieldsAutoDisplayer(this);
   }
   recordFkClick = async (record) => {
     let fieldsUpdate = this.fkListHandler.recordClick(record);
@@ -67,26 +69,64 @@ class ChartsOfAccounts extends ScreenConstructor {
     setLastIndex(this);
     functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
-    this.setState({ tools });
     const tree = await getTree.call(
       this,
       "chartofaccounts",
       getAccTreeStructure
     );
-    this.setState({ tree });
-    autoDisplay(this, "parent_acc", "chartofaccounts", {
-      main: {
-        d: { recordProp: "acc_d_name", stateProp: "parent_acc_d_name" },
-        f: { recordProp: "acc_f_name", stateProp: "parent_acc_f_name" },
-      },
-    });
+    const {fields} = this.state;
+    let fieldsUpdate = this.parentAccAutoDisplay(fields)
+    fieldsUpdate = this.groupNameAutoDisplay(fieldsUpdate)
+    fieldsUpdate = this.changeParentAccName(fieldsUpdate);
+    fieldsUpdate = this.changeGroupNoName(fieldsUpdate);
+    this.setState({ tree, tools, fields: fieldsUpdate });
+  }
 
-    autoDisplay(this, "acc_group", "accountsgroup", {
-      main: {
-        d: { recordProp: "group_d_name", stateProp: "group_d_name" },
-        f: { recordProp: "group_f_name", stateProp: "group_f_name" },
+  parentAccAutoDisplay(fields) {
+    return autoDisplayModel.call(
+      this,
+      "parent_acc",
+      "chartofaccounts",
+      {
+        main: {
+          d: { recordProp: "acc_d_name", stateProp: "parent_acc_d_name" },
+          f: { recordProp: "acc_f_name", stateProp: "parent_acc_f_name" },
+        },
       },
-    });
+      fields
+    );
+  }
+  groupNameAutoDisplay(fields) {
+    return autoDisplayModel.call(
+      this,
+      "acc_group",
+      "accountsgroup",
+      {
+        main: {
+          d: { recordProp: "group_d_name", stateProp: "group_d_name" },
+          f: { recordProp: "group_f_name", stateProp: "group_f_name" },
+        },
+      },
+      fields
+    );
+  }
+  changeParentAccName(fields) {
+    const { props } = this;
+    return changeFieldPropNameAccordingToLanNo(
+      props,
+      fields,
+      "parent_acc_name",
+      "parent_acc"
+    );
+  }
+  changeGroupNoName(fields) {
+    const { props } = this;
+    return changeFieldPropNameAccordingToLanNo(
+      props,
+      fields,
+      "acc_group_name",
+      "group"
+    );
   }
 
   // return a new validator specific to this screen
@@ -101,20 +141,6 @@ class ChartsOfAccounts extends ScreenConstructor {
 
   static getDerivedStateFromProps(props, state) {
     let newState = _.cloneDeep(state);
-    newState.fields = changeFieldPropNameAccordingToLanNo(
-      props,
-      newState.fields,
-      "parent_acc_name",
-      "parent_acc"
-    );
-
-    newState.fields = changeFieldPropNameAccordingToLanNo(
-      props,
-      newState.fields,
-      "acc_group_name",
-      "group"
-    );
-
     if (["add", "modify", "copy"].includes(newState.mode)) {
       newState.fields.inactive_reason.writability =
         newState.fields.inactive.value;

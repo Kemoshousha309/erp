@@ -5,8 +5,9 @@ import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/mov
 import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
 import {
-  autoDisplay,
+  autoDisplayModel,
   changeFieldPropNameAccordingToLanNo,
+  FieldsAutoDisplayer,
 } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { langChangeActivity } from "../../../../../Context/actions/lang";
@@ -19,14 +20,24 @@ class City extends ScreenConstructor {
       ...this.state,
       ..._.cloneDeep(cityInitState),
     };
+    this.autoDisplayHandler = new FieldsAutoDisplayer(this);
+
   }
 
   componentDidMount() {
     setLastIndex(this);
     functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
-    this.setState({ tools });
-    autoDisplay(this, "province_no", "province", {
+    const {fields} = this.state;
+    let fieldsUpdate = this.provinceAutoDisplay(fields);
+    fieldsUpdate = this.changeCountryNameProp(fieldsUpdate);
+    fieldsUpdate = this.changeProvinceNameProp(fieldsUpdate);
+    fieldsUpdate = this.changeRegionNameProp(fieldsUpdate);
+    this.setState({ tools, fields: fieldsUpdate });
+  }
+
+  provinceAutoDisplay(fields) {
+    return autoDisplayModel.call(this, "province_no", "province", {
       main: {
         d: { recordProp: "province_d_name", stateProp: "province_no_d_name" },
         f: { recordProp: "province_f_name", stateProp: "province_no_f_name" },
@@ -55,31 +66,32 @@ class City extends ScreenConstructor {
           f: { recordProp: "region_no", stateProp: "region_no" },
         },
       ],
-    });
+    }, fields)
   }
 
-  static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      state.fields,
+  changeRegionNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       "region_no_name",
       "region_no"
     );
-    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      fieldsUpdate,
+  }
+  changeCountryNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       "country_no_name",
       "country_no"
     );
-    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      fieldsUpdate,
+  }
+  changeProvinceNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       "province_no_name",
       "province_no"
     );
-    return {
-      fields: fieldsUpdate,
-    };
   }
 
   render() {

@@ -4,8 +4,9 @@ import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
 import {
-  autoDisplay,
+  autoDisplayModel,
   changeFieldPropNameAccordingToLanNo,
+  FieldsAutoDisplayer,
 } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
@@ -19,31 +20,43 @@ class Country extends ScreenConstructor {
       ...this.state,
       ..._.cloneDeep(countryInitState),
     };
+    this.autoDisplayHandler = new FieldsAutoDisplayer(this);
+
   }
 
   componentDidMount() {
     setLastIndex(this);
     functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
-    this.setState({ tools });
-    autoDisplay(this, "region_no", "region", {
-      main: {
-        d: { recordProp: "region_d_name", stateProp: "region_no_d_name" },
-        f: { recordProp: "region_f_name", stateProp: "region_no_f_name" },
-      },
-    });
+    const {fields} = this.state;
+    let fieldsUpdate = this.changeRegionNameProp(fields);
+    fieldsUpdate = this.regionAutoDisplay(fieldsUpdate);
+    this.setState({ tools, fields: fieldsUpdate });
+   
   }
 
-  static getDerivedStateFromProps(props, state) {
-    const fieldsUpdate = changeFieldPropNameAccordingToLanNo(
-      props,
-      state.fields,
+  regionAutoDisplay(fields) {
+    return autoDisplayModel.call(
+      this,
+      "region_no",
+      "region",
+      {
+        main: {
+          d: { recordProp: "region_d_name", stateProp: "region_no_d_name" },
+          f: { recordProp: "region_f_name", stateProp: "region_no_f_name" },
+        },
+      },
+      fields
+    );
+  }
+
+  changeRegionNameProp(fields) {
+    return changeFieldPropNameAccordingToLanNo(
+      this.props,
+      fields,
       "region_no_name",
       "region_no"
     );
-    return {
-      fields: fieldsUpdate,
-    };
   }
 
   render() {

@@ -4,8 +4,9 @@ import { langChangeActivity } from "../../../../../Context/actions/lang";
 import { displayContent } from "../../../../ScreenConstructor/screen/displayContent";
 import { setLastIndex } from "../../../../ScreenConstructor/screen/functions/moves";
 import {
-  autoDisplay,
+  autoDisplayModel,
   changeFieldPropNameAccordingToLanNo,
+  FieldsAutoDisplayer,
 } from "../../../../ScreenConstructor/screen/inputsHandlers";
 import { functionsListeners } from "../../../../ScreenConstructor/screen/listeners";
 import { updateMode } from "../../../../ScreenConstructor/screen/mode";
@@ -19,14 +20,26 @@ class Branches extends ScreenConstructor {
       ...this.state,
       ..._.cloneDeep(branchesInitState),
     };
+    this.autoDisplayHandler = new FieldsAutoDisplayer(this);
   }
 
   componentDidMount() {
     setLastIndex(this);
     functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
-    this.setState({ tools });
-    autoDisplay(this, "city_no", "city", {
+    const {fields} = this.state;
+   
+    let fieldsUpdate = this.cityAutoDisplay(fields);
+    fieldsUpdate = this.companyAutoDisplay(fieldsUpdate);
+    fieldsUpdate = this.changeCompanyPropName(fieldsUpdate);
+    fieldsUpdate = this.changeCityPropName(fieldsUpdate);
+    fieldsUpdate = this.changeCountryPropName(fieldsUpdate);
+    fieldsUpdate = this.changeProvincePropName(fieldsUpdate);
+    this.setState({ tools, fields: fieldsUpdate });
+  }
+  
+  cityAutoDisplay(fields) {
+    return autoDisplayModel.call(this, "city_no", "city", {
       main: {
         d: { recordProp: "city_d_name", stateProp: "city_d_name" },
         f: { recordProp: "city_f_name", stateProp: "city_f_name" },
@@ -49,40 +62,52 @@ class Branches extends ScreenConstructor {
           f: { recordProp: "country_no", stateProp: "country_no" },
         },
       ],
-    });
-    autoDisplay(this, "company_no", "company", {
+    }, fields);
+  }
+  companyAutoDisplay(fields) {
+    return autoDisplayModel.call(this, "company_no", "company", {
       main: {
         d: { recordProp: "company_d_name", stateProp: "company_d_name" },
         f: { recordProp: "company_f_name", stateProp: "company_f_name" },
       },
-    });
+    }, fields)
   }
-
-  static getDerivedStateFromProps(props, state) {
-    let fieldsUpdate = changeFieldPropNameAccordingToLanNo(
+  changeCompanyPropName(fields){
+    const {props} = this;
+    return changeFieldPropNameAccordingToLanNo(
       props,
-      state.fields,
+      fields,
       "company_name",
       "company"
     );
-    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
+  }
+  changeCountryPropName(fields){
+    const {props} = this;
+    return changeFieldPropNameAccordingToLanNo(
       props,
-      fieldsUpdate,
+      fields,
       "country_name",
       "country"
     );
-    fieldsUpdate = changeFieldPropNameAccordingToLanNo(
+  }
+  changeProvincePropName(fields){
+    const {props} = this;
+    return changeFieldPropNameAccordingToLanNo(
       props,
-      fieldsUpdate,
+      fields,
       "province_name",
       "province"
     );
-    fieldsUpdate = changeFieldPropNameAccordingToLanNo(props, fieldsUpdate, "city_name", "city");
-
-    return {
-      fields: fieldsUpdate,
-    };
   }
+  changeCityPropName(fields){
+    const {props} = this;
+    return changeFieldPropNameAccordingToLanNo(
+      props,
+      fields,
+      "city_name", "city"
+    );
+  }
+
   render() {
     return displayContent(this, this.props.location);
   }
