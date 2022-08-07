@@ -21,21 +21,21 @@ class Country extends ScreenConstructor {
       ..._.cloneDeep(countryInitState),
     };
     this.autoDisplayHandler = new FieldsAutoDisplayer(this);
-
   }
 
   componentDidMount() {
     setLastIndex(this);
     functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
-    const {fields} = this.state;
-    let fieldsUpdate = this.changeRegionNameProp(fields);
-    fieldsUpdate = this.regionAutoDisplay(fieldsUpdate);
+    const { fields } = this.state;
+    const fieldsUpdate = _.flow(
+      this.changeRegionNameProp,
+      this.regionAutoDisplay
+    )(fields);
     this.setState({ tools, fields: fieldsUpdate });
-   
   }
 
-  regionAutoDisplay(fields) {
+  regionAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "region_no",
@@ -50,7 +50,7 @@ class Country extends ScreenConstructor {
     );
   }
 
-  changeRegionNameProp(fields) {
+  changeRegionNameProp = (fields) => {
     return changeFieldPropNameAccordingToLanNo(
       this.props,
       fields,

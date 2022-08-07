@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: Languages/languages.js</title>
+    <title>JSDoc: Tutorial: display-name-of-current-lang</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,117 +17,80 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: Languages/languages.js</h1>
+    <h1 class="page-title">Tutorial: display-name-of-current-lang</h1>
 
-    
-
-
-
-    
     <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
- * Handle languages functions  
- * @module language
- * @tutorial my-tutorial
- */
 
+<header>
+    
 
+    <h2>display-name-of-current-lang</h2>
+</header>
 
-
-import {store} from "../index";
-
-
-/**
- * Produce the translation for labels and messages
- * @param {string}  code - the code of the label or message
- * @param {string}  placeholder - a hash value to put in specific place in the description
- * @returns {string} - description of the code in a specific language
- */
-
-export function t (code, placeholder)  {
-  const {lan: langNo, langTables} = store.getState().lang;
-  let description = null;
-  let holder = null;
-  langTables.forEach((element) => {
-    if (element.label_code === code &amp;&amp; parseInt(element.lang_no) === parseInt(langNo)) {
-      description = element.label_desc;
-    }
-    if (element.message_code === code &amp;&amp; parseInt(element.lang_no) === parseInt(langNo) &amp;&amp; !description) {
-      description = element.message_desc;
-    }
-    if (placeholder) {
-      if (element.label_code === placeholder &amp;&amp; parseInt(element.lang_no) === parseInt(langNo)) {
-        holder = element.label_desc;
-      }
-    }
-  });
-  if (holder) {
-    description = description.replace(/#[1-9]/g, holder);
-  } else if (placeholder) {
-    description = description.replace(/#[1-9]/g, placeholder);
-  }
-  return description;
-};
-
-export const selectMessage = (messages) => {
-  const {lan: langNo} = store.getState().lang;
-  if (messages) {
-    if (parseInt(langNo) === 1) {
-      return messages.ar;
-    }
-    return messages.en;
-  }
-  return '';
-};
-export const decideLanguageName = (languages, input) => {
-  let name = '';
-  languages.forEach((lan) => {
-    if (parseInt(input) === parseInt(lan.lang_no)) {
-      name = lan.lang_name;
-    } else if (input === '') {
-      name = '';
-    }
-  });
-  return name;
-};
-
-export const getSelectLangDir = (langs) => {
-  const {lan: langNo} = store.getState().lang;
-  let lanDirection = null;
-  langs.forEach((lang) => {
-    if (parseInt(lang.lang_no) === parseInt(langNo)) {
-      lanDirection = lang.lang_dir;
-    }
-  });
-  return lanDirection;
-};
-
-export const decideName = (fieldName) => {
-  const {lan: langNo} = store.getState().lang;
-  let returnName = `${fieldName}_f_name`;
-  if (parseInt(langNo) === 1) {
-    returnName = `${fieldName}_d_name`;
-  }
-  return returnName;
-};
-
-export const getAvailableValue = (d_value, f_value) => {
-  const {lan: langNo} = store.getState().lang;
-  let currentValue = d_value;
-  let otherValue = f_value;
-  if (parseInt(langNo) === 2) {
-    currentValue = f_value;
-    otherValue = d_value;
-  }
-  return currentValue || otherValue;
-};
+<article>
+    <h2>Display the name</h2>
+<p>we have two methods to display the name of the field</p>
+<hr>
+<h3>auto display</h3>
+<p>when you write to a field the system should fill other fields automatically
+based on the value you entered and auto display function config</p>
+<blockquote>
+<p>How doses autoDisplay function work?</p>
+</blockquote>
+<ol>
+<li>we set a lister to that field</li>
+<li>when the field changes set the value loading</li>
+<li>send to get the value from the server</li>
+<li>then display it</li>
+</ol>
+<p><strong>API</strong></p>
+<p>In the component did mount method you call the auto display function
+with some config information tell the function about the names of fields we deal with</p>
+<p>example</p>
+<pre class="prettyprint source lang-javascript"><code>    const config = {
+      main: {
+        d: { recordProp: &quot;province_d_name&quot;, stateProp: &quot;province_no_d_name&quot; },
+        f: { recordProp: &quot;province_f_name&quot;, stateProp: &quot;province_no_f_name&quot; },
+      },
+      others: [
+        {
+          d: {
+            recordProp: &quot;country_no_d_name&quot;,
+            stateProp: &quot;country_no_d_name&quot;,
+          },
+          f: {
+            recordProp: &quot;country_no_f_name&quot;,
+            stateProp: &quot;country_no_f_name&quot;,
+          },
+        },
+        {
+          d: { recordProp: &quot;country_no&quot;, stateProp: &quot;country_no&quot; },
+          f: { recordProp: &quot;country_no&quot;, stateProp: &quot;country_no&quot; },
+        },
+      ],
+    };
+    autoDisplayModel.call(this, &quot;province_no&quot;, &quot;province&quot;, config);
 </code></pre>
-        </article>
-    </section>
+<ul>
+<li>the auto Display model works behind the sense by using FieldsAutoDisplayer class so make sure that you init
+an object form it called autoDisplayHandler</li>
+<li>config object contain all the fields names that should be displayed automatically in the d and f mode</li>
+</ul>
+<hr>
+<h3>display the d_name or f_name according to the langNo</h3>
+<p>to solve this problem we change the field property name according to the langNO and by this way when the record is filled the name name will be shown according to the langNo</p>
+<blockquote>
+<p>How does this work?</p>
+</blockquote>
+<ol>
+<li>using changeFieldPropNameAccordingToLanNo which is well documented</li>
+<li>isolate a method in the component responsible for calling that function</li>
+<li>call that method in the componentDidMount</li>
+<li>call it in the componentDidUpdate in the condition of language changed</li>
+</ol>
+</article>
 
-
-
+</section>
 
 </div>
 

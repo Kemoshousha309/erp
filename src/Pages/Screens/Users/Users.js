@@ -29,20 +29,23 @@ class Users extends ScreenConstructor {
   componentDidMount() {
     setLastIndex(this);
     functionsListeners(this, true);
-
-    const {fields} = this.state;
-    let fieldsUpdate = this.copyPrivFromAutoDisplay(fields);
-    fieldsUpdate = this.directMangeAutoDisplay(fieldsUpdate);
-    fieldsUpdate = this.copyPrivToAutoDisplay(fieldsUpdate);
-    fieldsUpdate = this.groupNoAutoDisplay(fieldsUpdate);
-    fieldsUpdate = this.changeGroupNoNameProp(fieldsUpdate);
-    fieldsUpdate = this.changeDirectMangProp(fieldsUpdate);
-    fieldsUpdate = checkPassConfirm(this, fieldsUpdate);
-    fieldsUpdate = handleInactiveFields(this, fieldsUpdate);
-    this.setState({fields: fieldsUpdate})
+    // currying 
+    const bindCheckPassConfirm = (thisK) => (fields) => checkPassConfirm(thisK, fields); 
+    const bindHandleInactiveFields = (thisK) => (fields) => handleInactiveFields(thisK, fields)
+    const { fields } = this.state;
+    const fieldsUpdate = _.flow(
+      this.copyPrivFromAutoDisplay,
+      this.directMangeAutoDisplay,
+      this.copyPrivToAutoDisplay,
+      this.groupNoAutoDisplay,
+      this.changeGroupNoNameProp,
+      this.changeDirectMangProp,
+      bindCheckPassConfirm(this),
+      bindHandleInactiveFields(this)
+    )(fields);
+    this.setState({ fields: fieldsUpdate });
   }
-
-  copyPrivToAutoDisplay(fields) {
+  copyPrivToAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "copy_priv_to",
@@ -56,7 +59,7 @@ class Users extends ScreenConstructor {
       fields
     );
   }
-  directMangeAutoDisplay(fields) {
+  directMangeAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "direct_mang",
@@ -70,7 +73,7 @@ class Users extends ScreenConstructor {
       fields
     );
   }
-  copyPrivFromAutoDisplay(fields) {
+  copyPrivFromAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "copy_priv_from",
@@ -84,7 +87,7 @@ class Users extends ScreenConstructor {
       fields
     );
   }
-  groupNoAutoDisplay(fields) {
+  groupNoAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "group_no",
@@ -98,7 +101,7 @@ class Users extends ScreenConstructor {
       fields
     );
   }
-  changeGroupNoNameProp(fields) {
+  changeGroupNoNameProp = (fields) => {
     return changeFieldPropNameAccordingToLanNo(
       this.props,
       fields,
@@ -107,7 +110,7 @@ class Users extends ScreenConstructor {
       "group_no"
     );
   }
-  changeDirectMangProp(fields) {
+  changeDirectMangProp = (fields) => {
     return changeFieldPropNameAccordingToLanNo(
       this.props,
       fields,
@@ -143,7 +146,7 @@ class Users extends ScreenConstructor {
   render() {
     return displayContent(this, this.props.location);
   }
-}
+} 
 
 const mapStateToProps = (state) => ({
   lanState: state.lang.lan,
@@ -168,7 +171,8 @@ const handleInactiveFields = (screen, fields) => {
     if (flag) {
       fieldsUpdate.inactive_reason.writability = true;
       if (screen.state.mode !== "add") {
-        fieldsUpdate.inactive_reason.value = screen.state.record.inactive_reason;
+        fieldsUpdate.inactive_reason.value =
+          screen.state.record.inactive_reason;
         fieldsUpdate.inactive_user.value = screen.state.record.inactive_user;
         fieldsUpdate.inactive_date.value = formatDate(
           screen.state.record.inactive_date
@@ -185,5 +189,5 @@ const handleInactiveFields = (screen, fields) => {
       screen.setState({ fields: fieldsUpdate });
     }
   };
-  return fieldsClone
+  return fieldsClone;
 };

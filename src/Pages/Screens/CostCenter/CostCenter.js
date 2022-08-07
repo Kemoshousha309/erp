@@ -15,7 +15,7 @@ import { getTree } from "../../ScreenConstructor/screen/async";
 import { checkValidity } from "../../../Validation/validation";
 import { timer } from "../../ScreenConstructor/screen/utilities";
 import { updateMode } from "../../ScreenConstructor/screen/mode";
-import { CenterInitState, } from "./state";
+import { CenterInitState } from "./state";
 
 class CostCenter extends ScreenConstructor {
   constructor(props) {
@@ -81,15 +81,17 @@ class CostCenter extends ScreenConstructor {
     functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
     const tree = await getTree.call(this, "costcenters", getCCTreestructure);
-    const {fields} = this.state;
-    let fieldsUpdate = this.ccGroupAutoDisplay(fields);
-    fieldsUpdate = this.parentAccAutoDisplay(fieldsUpdate);
-    fieldsUpdate = this.changeParentAccName(fieldsUpdate);
-    fieldsUpdate = this.changeCCGroupName(fieldsUpdate);
+    const { fields } = this.state;
+    const fieldsUpdate = _.flow(
+      this.ccGroupAutoDisplay,
+      this.parentAccAutoDisplay,
+      this.changeParentAccName,
+      this.changeCCGroupName
+    )(fields);
     this.setState({ tree, tools, fields: fieldsUpdate });
   }
 
-  ccGroupAutoDisplay(fields) {
+  ccGroupAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "cc_group",
@@ -103,7 +105,7 @@ class CostCenter extends ScreenConstructor {
       fields
     );
   }
-  parentAccAutoDisplay(fields) {
+  parentAccAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "parent_cc",
@@ -117,7 +119,7 @@ class CostCenter extends ScreenConstructor {
       fields
     );
   }
-  changeParentAccName(fields) {
+  changeParentAccName = (fields) => {
     return changeFieldPropNameAccordingToLanNo(
       this.props,
       fields,
@@ -125,7 +127,7 @@ class CostCenter extends ScreenConstructor {
       "parent_cc"
     );
   }
-  changeCCGroupName(fields) {
+  changeCCGroupName = (fields) => {
     return changeFieldPropNameAccordingToLanNo(
       this.props,
       fields,

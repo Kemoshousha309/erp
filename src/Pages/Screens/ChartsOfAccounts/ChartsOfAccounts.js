@@ -74,15 +74,17 @@ class ChartsOfAccounts extends ScreenConstructor {
       "chartofaccounts",
       getAccTreeStructure
     );
-    const {fields} = this.state;
-    let fieldsUpdate = this.parentAccAutoDisplay(fields)
-    fieldsUpdate = this.groupNameAutoDisplay(fieldsUpdate)
-    fieldsUpdate = this.changeParentAccName(fieldsUpdate);
-    fieldsUpdate = this.changeGroupNoName(fieldsUpdate);
+    const { fields } = this.state;
+    const fieldsUpdate = _.flow(
+      this.parentAccAutoDisplay,
+      this.groupNameAutoDisplay,
+      this.changeParentAccName,
+      this.changeGroupNoName
+    )(fields);
     this.setState({ tree, tools, fields: fieldsUpdate });
   }
 
-  parentAccAutoDisplay(fields) {
+  parentAccAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "parent_acc",
@@ -96,8 +98,8 @@ class ChartsOfAccounts extends ScreenConstructor {
       fields
     );
   }
-  
-  groupNameAutoDisplay(fields) {
+
+  groupNameAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "acc_group",
@@ -111,7 +113,7 @@ class ChartsOfAccounts extends ScreenConstructor {
       fields
     );
   }
-  changeParentAccName(fields) {
+  changeParentAccName = (fields) => {
     const { props } = this;
     return changeFieldPropNameAccordingToLanNo(
       props,
@@ -120,7 +122,7 @@ class ChartsOfAccounts extends ScreenConstructor {
       "parent_acc"
     );
   }
-  changeGroupNoName(fields) {
+  changeGroupNoName = (fields) => {
     const { props } = this;
     return changeFieldPropNameAccordingToLanNo(
       props,

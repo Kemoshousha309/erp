@@ -23,22 +23,23 @@ class Forms extends ScreenConstructor {
       ..._.cloneDeep(formsInitState),
     };
     this.autoDisplayHandler = new FieldsAutoDisplayer(this);
-
   }
   async componentDidMount() {
     const tree = await getTree.call(this, "forms/mainTree", getTreeStructure);
     setLastIndex(this);
     functionsListeners(this, true);
     const { tools } = updateMode("start", this.state, this.props);
-    const {fields} = this.state;
-    let fieldsUpdate = this.parentFormAutoDisplay(fields);
-    fieldsUpdate = this.moduleNoAutoDisplay(fieldsUpdate);
-    fieldsUpdate = this.changeModuleNameProp(fieldsUpdate);
-    fieldsUpdate = this.changeParentFormNameProp(fieldsUpdate)
+    const { fields } = this.state;
+    const fieldsUpdate = _.flow(
+      this.parentFormAutoDisplay,
+      this.moduleNoAutoDisplay,
+      this.changeModuleNameProp,
+      this.changeParentFormNameProp
+    )(fields);
     this.setState({ tools, tree, fields: fieldsUpdate });
   }
 
-  parentFormAutoDisplay(fields) {
+  parentFormAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "parent_form",
@@ -57,9 +58,9 @@ class Forms extends ScreenConstructor {
       },
       fields
     );
-  }
+  };
 
-  moduleNoAutoDisplay(fields) {
+  moduleNoAutoDisplay = (fields) => {
     return autoDisplayModel.call(
       this,
       "module_no",
@@ -72,8 +73,8 @@ class Forms extends ScreenConstructor {
       },
       fields
     );
-  }
-  changeModuleNameProp(fields) {
+  };
+  changeModuleNameProp = (fields) => {
     return changeFieldPropNameAccordingToLanNo(
       this.props,
       fields,
@@ -81,9 +82,9 @@ class Forms extends ScreenConstructor {
       "module_no",
       "module_no"
     );
-  }
+  };
 
-  changeParentFormNameProp(fields) {
+  changeParentFormNameProp = (fields) => {
     return changeFieldPropNameAccordingToLanNo(
       this.props,
       fields,
@@ -91,7 +92,7 @@ class Forms extends ScreenConstructor {
       "parent_form",
       "parent_form"
     );
-  }
+  };
 
   render() {
     return displayContent(this, this.props.location);

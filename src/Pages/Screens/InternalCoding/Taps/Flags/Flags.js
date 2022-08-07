@@ -30,11 +30,11 @@ class Flags extends ScreenConstructor {
     setLastIndex(this);
     functionsListeners(this, true);
     const {fields} = this.state;
-    let fieldsUpdate = this.flagCodeAutoDisplay(fields);
+    const fieldsUpdate = this.flagCodeAutoDisplay(fields);
     this.setState({ mode: "list", fields: fieldsUpdate });
   }
 
-  flagCodeAutoDisplay(fields) {
+  flagCodeAutoDisplay = (fields) => {
     return autoDisplayModel.call(this, "flag_code", "public/flagMaster", {
       main: {
         d: { recordProp: "label_code", stateProp: "label_code_m" },
