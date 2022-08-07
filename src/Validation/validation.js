@@ -3,7 +3,7 @@ import { t } from "../Languages/languages";
 import { getDetailsPropanes } from "../Pages/ScreenConstructor/screen/utilities";
 
 export const setValidity = (fields) => {
-  const fieldsClone = { ...fields };
+  const fieldsClone = _.cloneDeep(fields)
   let validState = true;
   for (const key in fieldsClone) {
     if (!fieldsClone[key].readOnly) {
@@ -22,9 +22,7 @@ export const setValidity = (fields) => {
   return [fieldsClone, validState];
 };
 
- 
-
-export const isValid = (value, rule, thisK) => {
+export const isValid = (value, rule) => {
   let message = null;
   let isValid = true;
   if (rule) {
@@ -62,14 +60,6 @@ export const isValid = (value, rule, thisK) => {
     }
   }
   return [isValid, message];
-};
-
-export const deepClone = (l) => {
-  const list = [];
-  l.forEach((i) => {
-    list.push({ ...i });
-  });
-  return list;
 };
 
 export const checkValidity = (screen) => {

@@ -1,8 +1,8 @@
 import { startMode, toolsNameMap } from '../../../Helpers/tools';
-import { deepClone } from '../../../Validation/validation';
 import { getParam } from '../../../Helpers/utilities';
 import { toolsPriv } from './utilities';
 import { getSelectLangDir } from '../../../Languages/languages';
+import _ from 'lodash';
 
 // mode processes *******************************************************
 export const handleMode = (mode, langs, tools, changeLangSelectActivity) => {
@@ -47,7 +47,7 @@ export const handleMode = (mode, langs, tools, changeLangSelectActivity) => {
 };
 
 const activate = (activeList, mode = null, lang_dir, tools) => {
-  const modeClone = deepClone(startMode(lang_dir, tools));
+  const modeClone = _.cloneDeep(startMode(lang_dir, tools))
   modeClone.forEach((tool) => tool.state = false);
   activeList.forEach((toolName) => {
     modeClone.forEach((tool) => {

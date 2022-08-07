@@ -9,7 +9,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./Styles/bootstrap.min.css";
-import "./index.scss";
+import "./Styles/index.scss";
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { Provider } from "react-redux";

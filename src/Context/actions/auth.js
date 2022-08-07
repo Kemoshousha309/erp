@@ -1,5 +1,5 @@
+import _ from 'lodash';
 import axios from '../../axios';
-import { deepClone } from '../../Validation/validation';
 import { isExpire, storeLocally } from '../../Helpers/reduce';
 import { getTreeStructure } from '../../Helpers/tree';
 import { hash } from '../../Helpers/utilities';
@@ -21,19 +21,19 @@ export const authRequest = (authData, redirect) => (dispatch) => {
   axios.post('/public/login', authData)
     .then((res) => {
       // raw tree  => form_no
-      res.data.raw_tree = deepClone(res.data.main_tree);
-      res.data.raw_tree_hash = hash(deepClone(res.data.raw_tree), 'form_no');
+      res.data.raw_tree = _.cloneDeep(res.data.main_tree);
+      res.data.raw_tree_hash = hash(_.cloneDeep(res.data.raw_tree), 'form_no');
 
       // flag_detail_main_tree => flag_code
-      res.data.flag_details_hash = hash(deepClone(res.data.flag_detail_main_tree), 'label_code');
+      res.data.flag_details_hash = hash(_.cloneDeep(res.data.flag_detail_main_tree), 'label_code');
 
       // forms_privs => form_no
-      res.data.forms_privs_hash = hash(deepClone(res.data.forms_privs), 'form_no');
+      res.data.forms_privs_hash = hash(_.cloneDeep(res.data.forms_privs), 'form_no');
       // structure tree
       res.data.main_tree = getTreeStructure(res.data.main_tree);
 
       // flag tree
-      const raw_tree_clone = deepClone(res.data.raw_tree);
+      const raw_tree_clone = _.cloneDeep(res.data.raw_tree);
       raw_tree_clone.forEach((k) => {
         if (k.flag_code) {
           const flags = res.data.flag_detail_main_tree.filter((i) => i.flag_code === k.flag_code);

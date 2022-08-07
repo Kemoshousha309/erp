@@ -4,9 +4,6 @@
  * @tutorial my-tutorial
  */
 
-
-
-
 import {store} from "../index";
 
 
@@ -16,7 +13,6 @@ import {store} from "../index";
  * @param {string}  placeholder - a hash value to put in specific place in the description
  * @returns {string} - description of the code in a specific language
  */
-
 export function t (code, placeholder)  {
   const {lan: langNo, langTables} = store.getState().lang;
   let description = null;

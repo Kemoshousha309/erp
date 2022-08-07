@@ -1,4 +1,4 @@
-import style from "./App.module.scss";
+import style from "./Styles/App.module.scss";
 import Layout from "./Pages/Layout/Layout";
 import { connect } from "react-redux";
 import { Component } from "react";

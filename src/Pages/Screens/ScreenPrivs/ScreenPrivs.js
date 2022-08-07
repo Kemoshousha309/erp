@@ -4,7 +4,7 @@ import axios from "../../../axios";
 import PrivDisplay from "./PrivDisplay";
 import Hint from "../../../Components/UI/Hint/Hint";
 import ScreenConstructor from "../../ScreenConstructor/ScreenConstructor";
-import { deepClone } from "../../../Validation/validation";
+// import { deepClone } from "../../../Validation/validation";
 import { handleFields } from "../../ScreenConstructor/screen/fields";
 import { timer } from "../../ScreenConstructor/screen/utilities";
 import { displayContent } from "../../ScreenConstructor/screen/displayContent";
@@ -35,7 +35,7 @@ class ScreenPrivs extends ScreenConstructor {
       data: formPriv,
     })
       .then((res) => {
-        const user_formPrivs_clone = deepClone(this.state.user_formPrivs);
+        const user_formPrivs_clone = _.cloneDeep(this.state.user_formPrivs)
         if (res.status === 200) {
           const form_no = formPriv.form_no;
           user_formPrivs_clone.forEach((i, n) => {
