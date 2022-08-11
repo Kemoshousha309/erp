@@ -2,8 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Breadcrumbs } from '@mui/material';
 import { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { getRelatedIcon, iconMap } from '../../../Helpers/tree';
+import { ICON_MAP } from '../../../Constants/TREE';
 import { getParam } from '../../../Helpers/utilities';
+import { getRelatedIcon } from '../../../System/model/screen/handlers/tree';
 import style from './BreadcrumbConstructor.module.scss';
 
 class BreadcrumbConstructor extends PureComponent {
@@ -20,7 +21,7 @@ class BreadcrumbConstructor extends PureComponent {
             if (i) {
               return (
                 <div key={index}>
-                  <FontAwesomeIcon icon={getRelatedIcon(i.form_no, iconMap)} />
+                  <FontAwesomeIcon icon={getRelatedIcon(i.form_no, ICON_MAP)} />
                   <span>
                     {' '}
                     {parseInt(lanState) === 1 ? i.form_d_name : i.form_f_name}

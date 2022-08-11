@@ -1,0 +1,33 @@
+@import "../../../Styles/styleUtility.scss";
+
+.Boilerplate{
+    height: 100%;
+    padding: .7rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-basis: 6rem;
+    flex-wrap: wrap;
+}
+
+
+
+.container{
+    flex-grow: 1;
+    max-height: 75vh;
+    @extend %scrollBar-y;
+    background-color: var(--tabColor);
+    padding: .5rem;
+}
+
+.statusBar {
+    display: flex;
+    flex-basis: 8rem;
+    justify-content: center;
+    align-items: center;
+}

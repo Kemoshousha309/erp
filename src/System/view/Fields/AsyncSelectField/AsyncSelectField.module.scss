@@ -1,0 +1,63 @@
+@import "../../../../Styles/styleUtility.scss";
+$fontSize: 1.5rem;
+
+.inputField {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  label {
+    @extend %labelOverflow;
+  }
+}
+.downAngle {
+  position: absolute;
+  top: 20%;
+  inset-inline-end: 2%;
+  svg {
+    transition: all 0.5s;
+    transform: rotate(0deg);
+  }
+}
+.listHidden {
+  display: none;
+}
+.listShow {
+  display: block;
+}
+.angleUp {
+  svg {
+    transform: rotate(180deg);
+  }
+}
+
+.dropList {
+  position: absolute;
+  width: 66.6%;
+  z-index: 20;
+
+  ul {
+    padding-inline-start: 0px;
+    list-style: none;
+    background-color: white;
+    li {
+      padding: 0.5rem 1rem;
+      transition: all 0.1s;
+      cursor: pointer;
+      &:hover {
+        color: white;
+        background-color: rgb(155, 155, 155);
+      }
+    }
+  }
+}
+
+.invalidMessage {
+  @extend %invalidMess;
+}
+.invalidInput {
+  @extend %invalidInput;
+}
+
+.disabled {
+  opacity: 0.5 !important;
+}

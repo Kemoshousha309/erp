@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: System/model/screen/handlers/listeners.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: System/model/screen/handlers/listeners.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module listeners 
+ */
+
+import $ from "jquery";
+import { getSelectLangDir } from "../../../../Languages/languages";
+import { checkActiveList } from "../functions/list";
+
+// function listeners *******************************************
+const getToolState = (tools, name) => {
+  let state = null;
+  tools.forEach((t) => {
+    if (t.name === name) {
+      state = t.state;
+    }
+  });
+  return state;
+};
+
+const isFk = (fks) => {
+  // is the focus field foreign key or not
+  let fk = null;
+  if (fks) {
+    fks.forEach((f) => {
+      if (f === document.activeElement.id) {
+        fk = f;
+      }
+    });
+  }
+  return fk;
+};
+
+const handleListenerClick = (event, tools, name, func) => {
+  const state = getToolState(tools, name);
+  if (name === "next" || name === "previous") {
+    // no blur
+  } else {
+    const inputs = document
+      .getElementById("tap")
+      .querySelectorAll("input, select");
+    inputs.forEach((ele) => ele.blur());
+  }
+  if (state) {
+    event.preventDefault();
+    func();
+  }
+};
+
+const handleF4 = (event, thisK) => {
+  // know the tool is disabled or not
+  const {
+    state: { tools, fks, details },
+  } = thisK;
+  let currentDetailsFks = null;
+  if (details) {
+    currentDetailsFks = details.tabs[details.current_tab].foreignKeys;
+  }
+  const state = getToolState(tools, "list");
+  const activeFk = isFk(fks);
+  const activeDtlFk = isFk(currentDetailsFks);
+
+  if (activeFk) {
+    event.preventDefault();
+    thisK.openFkList(activeFk);
+  } else if (activeDtlFk) {
+    event.preventDefault();
+    thisK.openDtlFkList(activeDtlFk);
+  } else if (state) {
+    event.preventDefault();
+    thisK.list();
+  }
+};
+
+const setListeners = (event, thisK) => {
+  const dir = getSelectLangDir(thisK.props.languages);
+  const { tools } = thisK.state;
+  switch (event.key) {
+    case "Delete":
+      handleListenerClick(event, tools, "delete", thisK.delete);
+      break;
+    case "F12":
+      handleListenerClick(event, tools, "delete", thisK.delete);
+      break;
+    case "F2":
+      handleListenerClick(event, tools, "add", thisK.add);
+      break;
+    case "Insert":
+      handleListenerClick(event, tools, "add", thisK.add);
+      break;
+    case "F3":
+      handleListenerClick(event, tools, "copy", thisK.copy);
+      break;
+    case "F5":
+      handleListenerClick(event, tools, "search", thisK.search);
+      break;
+    case "F7":
+      handleListenerClick(event, tools, "modify", thisK.modify);
+      break;
+    case "Home":
+      handleListenerClick(event, tools, "first", thisK.first);
+      break;
+    case "End":
+      handleListenerClick(event, tools, "last", thisK.last);
+      break;
+    case "Escape":
+      if(checkActiveList(thisK)) return thisK.clearLists();
+      handleListenerClick(event, tools, "undo", thisK.undo);
+      break;
+    case "F10":
+      handleListenerClick(event, tools, "save", thisK.save);
+      break;
+    case "ArrowRight":
+      if (parseInt(dir) === 2) {
+        handleListenerClick(event, tools, "next", thisK.next);
+      } else {
+        handleListenerClick(event, tools, "previous", thisK.previous);
+      }
+      break;
+    case "ArrowLeft":
+      if (parseInt(dir) === 2) {
+        handleListenerClick(event, tools, "previous", thisK.previous);
+      } else {
+        handleListenerClick(event, tools, "next", thisK.next);
+      }
+      break;
+    case "F8": // should be f1
+      event.preventDefault();
+      thisK.ShortCutsListCloseHandler();
+      break;
+    case "F4":
+      handleF4(event, thisK);
+      break;
+    default:
+      break;
+  }
+};
+
+export const functionsListeners = (thisK, mode) => {
+  function callbackFunc(e) {
+    if (e.key === "Enter") {
+      const self = $(this);
+      const form = self.parents("form:eq(0)");
+      let focusable;
+      let next;
+      focusable = form
+        .find("input,a,select,button,textarea")
+        .filter(":visible");
+      next = focusable.eq(focusable.index(this) + 1);
+      if (next.length) {
+        next.focus();
+      }
+      return false;
+    }
+  }
+  if (mode) {
+    $("body").on("keydown", "input, select", callbackFunc);
+    document.onkeydown = (e) => setListeners(e, thisK);
+  } else {
+    $("body").off("keydown", "input, select", callbackFunc);
+    document.onkeydown = null;
+  }
+};
+
+/**
+ * set a keyboard listeners to a field
+ * - set time out to sure that the process is done after the state is updated
+ * - get all the fields with that id then go through them
+ * - if it has not a listener set one 
+ * - execute the callback function if the matched key is clicked 
+ * @param {string} id the id of the field 
+ * @param {string} key the key code that should be listened to
+ * @param {Function} callback the callback function that should be called when the event trigger
+ * @returns {undefined} 
+ *  */
+export function setFieldKeyListener (id, key, callback) {
+  setTimeout(() => {
+    const presentAccCurrFields = document.querySelectorAll(`#${id}`);
+    presentAccCurrFields.forEach((element) => {
+      if (element.dataset.hasListener === "true") return;
+      element.addEventListener("keydown", (event) => {
+        element.dataset.hasListener = true;
+        event.preventDefault();
+        if (event.key !== key) return;
+        callback(event)
+      });
+    });
+  });
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-add.html">add</a></li><li><a href="module-copy.html">copy</a></li><li><a href="module-delete.html">delete</a></li><li><a href="module-displayPatterns.html">displayPatterns</a></li><li><a href="module-inputsHandlers.html">inputsHandlers</a></li><li><a href="module-language.html">language</a></li><li><a href="module-list.html">list</a></li><li><a href="module-listeners.html">listeners</a></li><li><a href="module-modify.html">modify</a></li><li><a href="module-moves.html">moves</a></li><li><a href="module-privInputs.html">privInputs</a></li><li><a href="module-PrivSave.html">PrivSave</a></li><li><a href="module-RenderDialogs.html">RenderDialogs</a></li><li><a href="module-RenderDisplayPattern.html">RenderDisplayPattern</a></li><li><a href="module-RenderLists.html">RenderLists</a></li><li><a href="module-RenderScreen.html">RenderScreen</a></li><li><a href="module-save.html">save</a></li><li><a href="module-search.html">search</a></li><li><a href="module-undo.html">undo</a></li><li><a href="module-viewPrivs.html">viewPrivs</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#FkList">FkList</a></li><li><a href="FuncConstructor.html">FuncConstructor</a></li><li><a href="MainScreen.html">MainScreen</a></li><li><a href="module-add.Adder.html">Adder</a></li><li><a href="module-copy.Copier.html">Copier</a></li><li><a href="module-delete.Deleter.html">Deleter</a></li><li><a href="module-inputsHandlers.FieldsAutoDisplayer.html">FieldsAutoDisplayer</a></li><li><a href="module-list.List.html">List</a></li><li><a href="module-modify.Modifier.html">Modifier</a></li><li><a href="module-moves.Mover.html">Mover</a></li><li><a href="module-privInputs.PrivInputsHandler.html">PrivInputsHandler</a></li><li><a href="module-PrivSave.PrivSaver.html">PrivSaver</a></li><li><a href="module-save.Saver.html">Saver</a></li><li><a href="module-search.Searcher.html">Searcher</a></li><li><a href="module-undo.DetailsUndoHandler.html">DetailsUndoHandler</a></li><li><a href="module-undo.UndoHandler.html">UndoHandler</a></li><li><a href="module-viewPrivs.PrivsViewer.html">PrivsViewer</a></li><li><a href="ScreenConstructor.html">ScreenConstructor</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-add-new-screen.html">Add a new screen</a></li><li><a href="tutorial-display-name-of-current-lang.html">display-name-of-current-lang</a></li><li><a href="tutorial-doc-rules.html">Documentation standards</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Thu Aug 11 2022 21:02:19 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,14 +1,9 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import style from './TreeNode.module.scss';
-import {
-  getRelatedIcon,
-  iconMap,
-  treeHandler,
-  getRelatedRoute,
-  routeMap,
-} from '../../../Helpers/tree';
-import { getAvailableValue, t } from '../../../Languages/languages';
+import React from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import style from "./TreeNode.module.scss";
+import { getAvailableValue, t } from "../../../Languages/languages";
+import { getRelatedIcon, getRelatedRoute, treeHandler } from "../../../System/model/screen/handlers/tree";
+import { ICON_MAP, ROUTE_MAP } from "../../../Constants/TREE";
 
 function TreeNode(props) {
   let children = null;
@@ -18,8 +13,8 @@ function TreeNode(props) {
       if (props.thisK.state.treeInfo) {
         key = ele[props.thisK.state.treeInfo.nodeIdentifier];
       }
-      const icon = getRelatedIcon(ele.form_no, iconMap);
-      const route = getRelatedRoute(ele.form_no, routeMap);
+      const icon = getRelatedIcon(ele.form_no, ICON_MAP);
+      const route = getRelatedRoute(ele.form_no, ROUTE_MAP);
       if (ele.children && ele.children.length > 0) {
         return (
           <TreeNode
@@ -28,8 +23,6 @@ function TreeNode(props) {
             route={route}
             lang={props.lang}
             lanTable={props.lanTable}
-            sideNavClick={props.sideNavClick}
-            sideNavActivity={props.sideNavActivity}
             key={key}
             icon={icon}
             config={ele}
@@ -44,8 +37,6 @@ function TreeNode(props) {
           route={route}
           lang={props.lang}
           lanTable={props.lanTable}
-          sideNavClick={props.sideNavClick}
-          sideNavActivity={props.sideNavActivity}
           key={key}
           icon={icon}
           config={ele}
@@ -68,19 +59,17 @@ function TreeNode(props) {
       output = output + delimiter + contain(props.config[propToAddToLabel]);
     }
   } else {
-    output = parseInt(props.lang) === 1
-      ? props.config.form_d_name
-      : props.config.form_f_name;
+    output =
+      parseInt(props.lang) === 1
+        ? props.config.form_d_name
+        : props.config.form_f_name;
     if (!props.config.form_d_name) {
       output = t(props.config.label_code);
     }
   }
   const itemContent = (
     <i>
-      <FontAwesomeIcon icon={props.icon} />
-      {' '}
-      {output}
-      {' '}
+      <FontAwesomeIcon icon={props.icon} /> {output}{" "}
     </i>
   );
   const itemClick = (e) => {

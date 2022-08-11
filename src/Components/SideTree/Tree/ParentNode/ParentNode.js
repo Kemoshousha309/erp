@@ -3,21 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { NavLink } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import style from './ParentNode.module.scss';
-import {
-  getRelatedIcon,
-  getRelatedRoute,
-  iconMap,
-  routeMap,
-  treeHandler,
-} from '../../../../Helpers/tree';
+import { getRelatedIcon, getRelatedRoute, treeHandler } from '../../../../System/model/screen/handlers/tree';
+import { ICON_MAP, ROUTE_MAP } from '../../../../Constants/TREE';
 
 function ParentNode(props) {
   // console.log("ParentNode render")
   let children = null;
   if (props.children) {
     children = props.children.map((ele) => {
-      const icon = getRelatedIcon(ele.form_no, iconMap);
-      const route = getRelatedRoute(ele.form_no, routeMap);
+      const icon = getRelatedIcon(ele.form_no, ICON_MAP);
+      const route = getRelatedRoute(ele.form_no, ROUTE_MAP);
       if (ele.children && ele.children.length > 0) {
         return (
           <ParentNode

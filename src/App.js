@@ -10,7 +10,7 @@ import Modal from "./Components/UI/Modal/Modal";
 import * as actionsTypes from "./Context/actions/actionTypes";
 import NetworkError from "./Error/NetworkError/NetworkError";
 import { ThemeProvider } from "@mui/system";
-import { getCssVar } from "./Helpers/styles";
+import { getCssVar } from "./Styles/styles";
 import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from '@emotion/react';
 import createCache from "@emotion/cache";

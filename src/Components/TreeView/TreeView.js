@@ -1,18 +1,18 @@
-import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import style from './TreeView.module.scss';
-import {
-  getRelatedIcon,
-  iconMap,
-  getRelatedRoute,
-  routeMap,
-} from '../../Helpers/tree';
-import TreeNode from './TreeNode/TreeNode';
+import React, { PureComponent } from "react";
+import { connect } from "react-redux";
+import style from "./TreeView.module.scss";
+import TreeNode from "./TreeNode/TreeNode";
+import { getRelatedIcon, getRelatedRoute } from "../../System/model/screen/handlers/tree";
+import { ICON_MAP, ROUTE_MAP } from "../../Constants/TREE";
 
 class TreeView extends PureComponent {
   render() {
     const {
-      tree, loading, thisK, lanState, lanTable, sideNavClick, sideNavActivity,
+      tree,
+      loading,
+      thisK,
+      lanState,
+      lanTable,
     } = this.props;
     let treeContent = loading;
     if (tree) {
@@ -21,8 +21,8 @@ class TreeView extends PureComponent {
         if (thisK.state.treeInfo) {
           key = ele[thisK.state.treeInfo.nodeIdentifier];
         }
-        const icon = getRelatedIcon(ele.form_no, iconMap);
-        const route = getRelatedRoute(ele.form_no, routeMap);
+        const icon = getRelatedIcon(ele.form_no, ICON_MAP);
+        const route = getRelatedRoute(ele.form_no, ROUTE_MAP);
         return (
           <TreeNode
             thisK={thisK}
@@ -30,8 +30,6 @@ class TreeView extends PureComponent {
             route={route}
             lang={lanState}
             lanTable={lanTable}
-            sideNavClick={sideNavClick}
-            sideNavActivity={sideNavActivity}
             key={key}
             icon={icon}
             config={ele}

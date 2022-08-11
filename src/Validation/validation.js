@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { t } from "../Languages/languages";
-import { getDetailsPropanes } from "../Pages/ScreenConstructor/screen/utilities";
+import { getDetailsPropanes } from "../System/model/screen/handlers/utilities";
 
 export const setValidity = (fields) => {
   const fieldsClone = _.cloneDeep(fields)

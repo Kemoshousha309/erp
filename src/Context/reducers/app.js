@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateState } from '../../Helpers/reduce';
+import { updateState } from './utls';
 
 const initState = {
   currentScreen: null,

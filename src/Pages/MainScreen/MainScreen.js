@@ -4,21 +4,21 @@ import { Route, Switch } from 'react-router';
 import style from './MainScreen.module.scss';
 import SkeletonLoader from '../../Components/UI/SkeletonLoader/SkeletonLoader';
 
-const Users = React.lazy(() => import('../Screens/Users/Users'));
-const UsersGroups = React.lazy(() => import('../Screens/UsersGroups/UsersGroups'));
-const InternalCoding = React.lazy(() => import('../Screens/InternalCoding/InternalCoding'));
-const FinancialCoding = React.lazy(() => import('../Screens/FinancialCoding/FinancialCoding'));
-const GeographicalData = React.lazy(() => import('../Screens/GeographicalData/GeographicalData'));
-const Companies_Branches = React.lazy(() => import('../Screens/Companies_Branches/Companies_Branches'));
-const ScreenPrivs = React.lazy(() => import('../Screens/ScreenPrivs/ScreenPrivs'));
-const InputPrivs = React.lazy(() => import('../Screens/InputPrivs/InputPrivs'));
-const SystemCommands = React.lazy(() => import('../Screens/SystemCommands/SystemCommands.js'));
-const Currency = React.lazy(() => import('../Screens/Currency/Currency'));
-const ChartsOfAccounts = React.lazy(() => import('../Screens/ChartsOfAccounts/ChartsOfAccounts'));
-const EmployeeInformation = React.lazy(() => import('../Screens/EmployeeInformation/EmployeeInformation'));
-const CostCenter = React.lazy(() => import('../Screens/CostCenter/CostCenter'));
-const Banks = React.lazy(() => import('../Screens/Banks/Banks'));
-const Cash = React.lazy(() => import('../Screens/Cash/Cash'));
+const Users = React.lazy(() => import('../../System/Screens/Users/Users'));
+const UsersGroups = React.lazy(() => import('../../System/Screens/UsersGroups/UsersGroups'));
+const InternalCoding = React.lazy(() => import('../../System/Screens/InternalCoding/InternalCoding'));
+const FinancialCoding = React.lazy(() => import('../../System/Screens/FinancialCoding/FinancialCoding'));
+const GeographicalData = React.lazy(() => import('../../System/Screens/GeographicalData/GeographicalData'));
+const Companies_Branches = React.lazy(() => import('../../System/Screens/Companies_Branches/Companies_Branches'));
+const ScreenPrivs = React.lazy(() => import('../../System/Screens/ScreenPrivs/ScreenPrivs'));
+const InputPrivs = React.lazy(() => import('../../System/Screens/InputPrivs/InputPrivs'));
+const SystemCommands = React.lazy(() => import('../../System/Screens/SystemCommands/SystemCommands'));
+const Currency = React.lazy(() => import('../../System/Screens/Currency/Currency'));
+const ChartsOfAccounts = React.lazy(() => import('../../System/Screens/ChartsOfAccounts/ChartsOfAccounts'));
+const EmployeeInformation = React.lazy(() => import('../../System/Screens/EmployeeInformation/EmployeeInformation'));
+const CostCenter = React.lazy(() => import('../../System/Screens/CostCenter/CostCenter'));
+const Banks = React.lazy(() => import('../../System/Screens/Banks/Banks'));
+const Cash = React.lazy(() => import('../../System/Screens/Cash/Cash'));
 
 
 /**

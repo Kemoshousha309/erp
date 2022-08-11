@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: System/model/screen/functions/modify.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: System/model/screen/functions/modify.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module modify
+ */
+
+import { handleFields } from "../handlers/fields";
+import { updateMode } from "../handlers/mode";
+import { FuncConstructor } from "./funcConstructor";
+
+// modify handle *******************************
+
+/**
+ * Modifier manages the modify process in the screen
+ */
+export class Modifier extends FuncConstructor {
+  /**
+   * handle the local behavior of the modify process
+   * @returns {Object} fieldsUpdate 
+   */
+  localHandle() {
+    const { fields, pks, specialFields } = this.screen.state;
+    // handle modify fields
+    let fieldsUpdate = handleFields(fields, "open", false);
+    fieldsUpdate = handleFields(fieldsUpdate, "close", false, pks);
+    if (specialFields) {
+      specialFields.forEach((f) => {
+        if (f.modify) {
+          const specific = [f.key];
+          fieldsUpdate = handleFields(fieldsUpdate, f.modify, false, specific);
+        }
+      });
+    }
+    return fieldsUpdate;
+  }
+
+  /**
+   * handle the async behavior of the modify process
+   * @param {Object} fieldsUpdate the updated fields from local handle
+   * @returns {Object} object contains:
+   * - preModify data to be put to the pre modify content
+   * - fields update
+   */
+  asyncHandle(fieldsUpdate) {
+    const { preModify } = this.screen.state;
+    if (!preModify) return null;
+    return new Promise((resolve, reject) => {
+      this.preHandler("Modify", fieldsUpdate)
+        .then(({ data, fieldsUpdate }) =>
+          resolve({ preData: data, fieldsUpdate })
+        )
+        .catch((err) => console.log(err));
+    });
+  }
+}
+
+
+/** manages the modify model behavior */
+export async function handleModifyModel() {
+  const fieldsUpdate = this.modifyHandler.localHandle();
+  const {tools} = updateMode("modify", this.state, this.props)
+  this.setState({ mode: "modify", fields: fieldsUpdate, tools });
+  const res = await this.modifyHandler.asyncHandle(fieldsUpdate);
+  if (!res) return;
+  const { preData, fieldsUpdate: changedFields } = res;
+  this.setState((state) => {
+    const preModify = state.preModify;
+    preModify.content = preData;
+    return { mode: "modify", fields: changedFields, preModify, tools };
+  });
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-add.html">add</a></li><li><a href="module-copy.html">copy</a></li><li><a href="module-delete.html">delete</a></li><li><a href="module-displayPatterns.html">displayPatterns</a></li><li><a href="module-inputsHandlers.html">inputsHandlers</a></li><li><a href="module-language.html">language</a></li><li><a href="module-list.html">list</a></li><li><a href="module-listeners.html">listeners</a></li><li><a href="module-modify.html">modify</a></li><li><a href="module-moves.html">moves</a></li><li><a href="module-privInputs.html">privInputs</a></li><li><a href="module-PrivSave.html">PrivSave</a></li><li><a href="module-RenderDialogs.html">RenderDialogs</a></li><li><a href="module-RenderDisplayPattern.html">RenderDisplayPattern</a></li><li><a href="module-RenderLists.html">RenderLists</a></li><li><a href="module-RenderScreen.html">RenderScreen</a></li><li><a href="module-save.html">save</a></li><li><a href="module-search.html">search</a></li><li><a href="module-undo.html">undo</a></li><li><a href="module-viewPrivs.html">viewPrivs</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#FkList">FkList</a></li><li><a href="FuncConstructor.html">FuncConstructor</a></li><li><a href="MainScreen.html">MainScreen</a></li><li><a href="module-add.Adder.html">Adder</a></li><li><a href="module-copy.Copier.html">Copier</a></li><li><a href="module-delete.Deleter.html">Deleter</a></li><li><a href="module-inputsHandlers.FieldsAutoDisplayer.html">FieldsAutoDisplayer</a></li><li><a href="module-list.List.html">List</a></li><li><a href="module-modify.Modifier.html">Modifier</a></li><li><a href="module-moves.Mover.html">Mover</a></li><li><a href="module-privInputs.PrivInputsHandler.html">PrivInputsHandler</a></li><li><a href="module-PrivSave.PrivSaver.html">PrivSaver</a></li><li><a href="module-save.Saver.html">Saver</a></li><li><a href="module-search.Searcher.html">Searcher</a></li><li><a href="module-undo.DetailsUndoHandler.html">DetailsUndoHandler</a></li><li><a href="module-undo.UndoHandler.html">UndoHandler</a></li><li><a href="module-viewPrivs.PrivsViewer.html">PrivsViewer</a></li><li><a href="ScreenConstructor.html">ScreenConstructor</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-add-new-screen.html">Add a new screen</a></li><li><a href="tutorial-display-name-of-current-lang.html">display-name-of-current-lang</a></li><li><a href="tutorial-doc-rules.html">Documentation standards</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Thu Aug 11 2022 21:02:19 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

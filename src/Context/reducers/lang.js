@@ -1,5 +1,6 @@
-import { storeLocally, updateState } from '../../Helpers/reduce';
+import { storeLocally } from '../../Helpers/localStorage';
 import * as actionTypes from '../actions/actionTypes';
+import { updateState } from './utls';
 
 const initState = {
   lan: 2,

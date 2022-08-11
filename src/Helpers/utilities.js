@@ -1,5 +1,5 @@
 import { decideName } from '../Languages/languages';
-import { extractName } from '../Pages/ScreenConstructor/screen/functions/list';
+import { extractName } from '../System/model/screen/functions/list';
 
 export const getParam = (searchParam, paramName) => {
   const string = searchParam.replace(`?${paramName}=`, '');
@@ -75,8 +75,3 @@ export const check_exist = (props, obj) => {
   return contain;
 };
 
-// pipe
-export const pipe = (...funcs) => (agrs) => funcs.reduce((accum, func) => func(accum), agrs);
-
-// compose
-export const compose = (...funcs) => (agrs) => funcs.reduceRight((accum, func) => func(accum), agrs);

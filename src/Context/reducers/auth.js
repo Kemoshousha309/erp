@@ -1,5 +1,5 @@
-import { updateState } from '../../Helpers/reduce';
 import * as actionTypes from '../actions/actionTypes';
+import { updateState } from './utls';
 
 const initState = {
   authError: null,

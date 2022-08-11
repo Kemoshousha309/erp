@@ -1,6 +1,6 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios';
-import { storeLocally, isExpire } from '../../Helpers/reduce';
+import { storeLocally, isExpire } from '../../Helpers/localStorage';
 
 export const changeLanguage = (langValue) => ({ type: actionTypes.CHANGE_LANGUAGE, langValue });
 export const storeLanguagesTable = (langTable) => ({ type: actionTypes.GET_LANG_TABLE, langTable });

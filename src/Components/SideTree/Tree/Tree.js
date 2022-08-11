@@ -2,14 +2,10 @@ import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { CircularProgress } from '@mui/material';
 import style from './Tree.module.scss';
-import {
-  getRelatedIcon,
-  iconMap,
-  getRelatedRoute,
-  routeMap,
-} from '../../../Helpers/tree';
 import ParentNode from './ParentNode/ParentNode';
 import { treeRequest } from '../../../Context';
+import { getRelatedIcon, getRelatedRoute } from '../../../System/model/screen/handlers/tree';
+import { ICON_MAP, ROUTE_MAP } from '../../../Constants/TREE';
 
 class Tree extends PureComponent {
   render() {
@@ -23,8 +19,8 @@ class Tree extends PureComponent {
     );
     if (this.props.tree) {
       const tree = this.props.tree.map((ele) => {
-        const icon = getRelatedIcon(ele.form_no, iconMap);
-        const route = getRelatedRoute(ele.form_no, routeMap);
+        const icon = getRelatedIcon(ele.form_no, ICON_MAP);
+        const route = getRelatedRoute(ele.form_no, ROUTE_MAP);
         if (ele.children && ele.children.length > 0) {
           return (
             <ParentNode

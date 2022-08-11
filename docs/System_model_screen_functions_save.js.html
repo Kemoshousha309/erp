@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: System/model/screen/functions/save.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: System/model/screen/functions/save.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @module save
+ */
+
+import {
+  checkDetailsValidity,
+  checkValidity,
+} from "../../../../Validation/validation";
+import axios from "../../../../axios";
+import { logout } from "../../../../Context";
+import { store } from "../../../../index";
+import { getDetails } from "../Details/requestDetails";
+import { FuncConstructor } from "./funcConstructor";
+import { selectMessage } from "../../../../Languages/languages";
+import { getHeaders, getValues, handleFields } from "../handlers/fields";
+import { getDetailsPropanes, timer } from "../handlers/utilities";
+import { updateMode } from "../handlers/mode";
+
+// save processes ***************************************************
+
+/**
+ * Responsible for save behavior of the screen
+ */
+
+export class Saver extends FuncConstructor {
+  /**
+   * decide which save process to be token
+   */
+  save() {
+    const { details } = this.screen.state;
+    if (!details) return this.handleSaveRequest();
+    return this.handleDtlSaveRequest();
+  }
+
+  /**
+   * manages the normal save request
+   * @returns {Promise} a promise that resolves the message and the fieldsUpdate
+   */
+  handleSaveRequest() {
+    const {
+      state: { fields },
+    } = this.screen;
+    const { url, method } = this.getRequestInfo();
+    return new Promise((resolve, reject) => {
+      axios({
+        method,
+        url,
+        data: getValues(fields),
+        headers: getHeaders(this.screen),
+      })
+        .then((res) => {
+          const fieldsUpdate = handleFields(fields, "close", false);
+          const message = {
+            content: selectMessage(res.data.message),
+            type: "success",
+          };
+          resolve({ message, fieldsUpdate });
+        })
+        .catch((err) => this.handleCatch(err, resolve));
+    });
+  }
+
+   /**
+   * manages the normal save request
+   * @returns {Promise} resolves either handleDtlResponse or handleCatch
+   */
+  handleDtlSaveRequest() {
+    const { fields: masterFields } = this.screen.state;
+    const { url, method } = this.getRequestInfo();
+
+    // prepare the body
+    const detailsValues = trackDetailsChange(this.screen);
+    console.log({ detailsValues });
+    const fieldsValues = getValues(masterFields);
+    const body = {
+      ...detailsValues,
+      ...fieldsValues,
+    };
+
+    return new Promise((resolve, reject) => {
+      axios({
+        method,
+        url,
+        data: body,
+      })
+        .then((res) => this.handleDtlResponse(res, resolve))
+        .catch((err) => this.handleCatch(err, reject));
+    });
+  }
+
+  /**
+   * handle some data to send the request
+   * @returns the url and the method which are used in the save request
+   */
+  getRequestInfo() {
+    const {
+      state: { mode, urls },
+    } = this.screen;
+    let method = null;
+    let url = null;
+    if (mode === "modify") {
+      method = "put";
+      url = urls.modify;
+    } else {
+      method = "post";
+      url = urls.add;
+    }
+    return { url, method };
+  }
+
+  /**
+   * handle the response of the details request
+   * @param {Object} res the response fetched form details save request
+   * @param {Function} resolve used to resolve (fieldsUpdate, message, record) 
+   */
+  handleDtlResponse(res, resolve) {
+    const {
+      mode,
+      fields: masterFields,
+      record: stateRecord,
+      details: { tabs },
+    } = this.screen.state;
+    const message = {
+      content: selectMessage(res.data.message),
+      type: "success",
+    };
+    let record = null;
+    if (mode === "add") {
+      // prepare a record for getDetails function as in add mode the record is null
+      const detailsPagesURLs = Object.keys(tabs).map((key) => {
+        tabs[key].pageURL.id = key;
+        return tabs[key].pageURL;
+      });
+      const preparedRecord = {};
+      detailsPagesURLs.forEach((pageURL) => {
+        const { master } = pageURL;
+        preparedRecord[master] = masterFields[master].value;
+      });
+      record = getDetails(preparedRecord, this.screen);
+    } else {
+      record = getDetails(stateRecord, this.screen);
+    }
+    const fieldsUpdate = handleFields(masterFields, "close", false);
+    record
+    .then((rec) => resolve({ fieldsUpdate, message, rec }))
+    .catch(rec => {
+      resolve({fieldsUpdate, message: null, rec})
+    })
+  }
+
+  /**
+   * handle the response of the details request
+   * @param {Object} err the error fetched form save request
+   * @param {Function} reject used to reject the promise with (fieldsUpdate, message) 
+   */
+  handleCatch(err, reject) {
+    const {
+      state: { fields },
+    } = this.screen;
+    console.log(err);
+    const fieldsUpdate = handleFields(fields, "open", false);
+    let message = null;
+    if (err.response) {
+      // update the previlleges
+      if (err.response.status === 401) {
+        store.dispatch(logout());
+      }
+      message = {
+        content: selectMessage(err.response.data.message),
+        type: "error",
+      };
+      if (err.response.data.error) {
+        message.content = err.response.data.error;
+      }
+    }
+    reject({ fieldsUpdate, message });
+  }
+}
+/**
+ * track all changes in the details so we can use them in save process
+ * @param {Object} screen the current screen
+ * @returns an object contain the dtl records that changed (have action property)
+ */
+export function trackDetailsChange(screen) {
+  const {
+    record,
+    details: { tabs },
+    mode,
+  } = screen.state;
+  const properties = getDetailsPropanes(tabs, true);
+  const detailsToSave = {};
+  properties.forEach((prop) => {
+    if (prop) {
+      const { recordDetailPropName, headers } = prop;
+      detailsToSave[recordDetailPropName] = [];
+      if (record) {
+        const pages = record[recordDetailPropName];
+        if (pages) {
+          if (mode === "copy") {
+            pages.forEach((page) => {
+              const updatedPage = {};
+              Object.values(headers).forEach((header) => {
+                updatedPage[header.propName] = page[header.propName];
+              });
+              updatedPage.action = "add";
+              detailsToSave[recordDetailPropName].push(updatedPage);
+            });
+          } else {
+            pages.forEach((page) => {
+              if (page.action) {
+                const updatedPage = {};
+                Object.values(headers).forEach((header) => {
+                  updatedPage[header.propName] = page[header.propName];
+                });
+                updatedPage.action = page.action;
+                if (page.action !== "delete") {
+                  detailsToSave[recordDetailPropName].push(updatedPage);
+                } else if (page.action === "delete" &amp;&amp; !page.frontRow) {
+                  detailsToSave[recordDetailPropName].push(updatedPage);
+                }
+              }
+            });
+          }
+        }
+      }
+    }
+  });
+  return detailsToSave;
+}
+/**
+ * The model that manages the behavior of the save process and update the state based on that 
+ * @returns undefined 
+ */
+export async function handleSaveModel() {
+  const { details } = this.state;
+  const [valid, fieldsUpdate] = checkValidity(this);
+  if (details) {
+    const [detailsValid, record] = checkDetailsValidity.call(this);
+    if (!valid || !detailsValid)
+      return this.setState({ fields: fieldsUpdate, record });
+  }
+  if (!valid) return this.setState({ fields: fieldsUpdate });
+
+  this.setState({ loading: true });
+  try {
+    const res = await this.saveHandler.save();
+    const { message, fieldsUpdate, record } = res;
+    const updateRecord = record ? record : this.state.record;
+    const { tools } = updateMode("d_record", this.state, this.props);
+    this.setState({
+      mode: "d_record",
+      loading: false,
+      message,
+      recordIndex: null,
+      fields: fieldsUpdate,
+      record: updateRecord,
+      tools,
+    });
+    timer().then((res) => this.setState({ message: false }));
+  } catch (err) {
+    const { message, fieldsUpdate } = err;
+    this.setState({
+      loading: false,
+      message: message,
+      recordIndex: null,
+      fields: fieldsUpdate,
+    });
+    timer().then((res) => this.setState({ message: false }));
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-add.html">add</a></li><li><a href="module-copy.html">copy</a></li><li><a href="module-delete.html">delete</a></li><li><a href="module-displayPatterns.html">displayPatterns</a></li><li><a href="module-inputsHandlers.html">inputsHandlers</a></li><li><a href="module-language.html">language</a></li><li><a href="module-list.html">list</a></li><li><a href="module-listeners.html">listeners</a></li><li><a href="module-modify.html">modify</a></li><li><a href="module-moves.html">moves</a></li><li><a href="module-privInputs.html">privInputs</a></li><li><a href="module-PrivSave.html">PrivSave</a></li><li><a href="module-RenderDialogs.html">RenderDialogs</a></li><li><a href="module-RenderDisplayPattern.html">RenderDisplayPattern</a></li><li><a href="module-RenderLists.html">RenderLists</a></li><li><a href="module-RenderScreen.html">RenderScreen</a></li><li><a href="module-save.html">save</a></li><li><a href="module-search.html">search</a></li><li><a href="module-undo.html">undo</a></li><li><a href="module-viewPrivs.html">viewPrivs</a></li></ul><h3>Classes</h3><ul><li><a href="global.html#FkList">FkList</a></li><li><a href="FuncConstructor.html">FuncConstructor</a></li><li><a href="MainScreen.html">MainScreen</a></li><li><a href="module-add.Adder.html">Adder</a></li><li><a href="module-copy.Copier.html">Copier</a></li><li><a href="module-delete.Deleter.html">Deleter</a></li><li><a href="module-inputsHandlers.FieldsAutoDisplayer.html">FieldsAutoDisplayer</a></li><li><a href="module-list.List.html">List</a></li><li><a href="module-modify.Modifier.html">Modifier</a></li><li><a href="module-moves.Mover.html">Mover</a></li><li><a href="module-privInputs.PrivInputsHandler.html">PrivInputsHandler</a></li><li><a href="module-PrivSave.PrivSaver.html">PrivSaver</a></li><li><a href="module-save.Saver.html">Saver</a></li><li><a href="module-search.Searcher.html">Searcher</a></li><li><a href="module-undo.DetailsUndoHandler.html">DetailsUndoHandler</a></li><li><a href="module-undo.UndoHandler.html">UndoHandler</a></li><li><a href="module-viewPrivs.PrivsViewer.html">PrivsViewer</a></li><li><a href="ScreenConstructor.html">ScreenConstructor</a></li></ul><h3>Tutorials</h3><ul><li><a href="tutorial-add-new-screen.html">Add a new screen</a></li><li><a href="tutorial-display-name-of-current-lang.html">display-name-of-current-lang</a></li><li><a href="tutorial-doc-rules.html">Documentation standards</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.11</a> on Thu Aug 11 2022 21:02:19 GMT+0200 (Eastern European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

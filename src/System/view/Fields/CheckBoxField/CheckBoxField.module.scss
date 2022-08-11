@@ -1,0 +1,11 @@
+@import "../../../../Styles/styleUtility.scss";
+
+.checkboxField {
+    display: flex;
+    label{
+        @extend %labelOverflow;
+        display: flex;
+        align-items: center;
+    }
+}
+

@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import axios from '../../axios';
-import { isExpire, storeLocally } from '../../Helpers/reduce';
-import { getTreeStructure } from '../../Helpers/tree';
+import { isExpire, storeLocally } from '../../Helpers/localStorage';
 import { hash } from '../../Helpers/utilities';
+import { getTreeStructure } from '../../System/model/screen/handlers/tree';
 import * as actionTypes from './actionTypes';
 
 const authSuccess = (authData) => ({
